@@ -11,6 +11,35 @@ setTimeout(() => {
 
 
 $(document).ready(function () {
+
+  //아이디 입력란 포커스 해제시 자동 중복확인
+  $("#join-userId").blur((e) => {
+    const userId = $('#join-userId').val();
+
+    $.ajax({
+      type: "POST",
+      url: "/checkData",
+      contentType: "application/json",
+      data: JSON.stringify({
+        userId: userId
+      }),
+      success: (res) => {
+        if (res.RESULT === "SUCCESS"){
+          console.log("중복확인 성공")
+          $("#join-userId").css("border-color", "green");
+        }
+        else {
+          console.log("중복확인 실패");
+          $("#join-userId").css("border-color", "red");
+        }
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    })
+  })
+
+
   //로그인 버튼 클릭시
   $("#loginButton").on('click', (e) => {
     e.preventDefault();

@@ -22,6 +22,7 @@ public class JoinController {
     @PostMapping("/checkData")
     @ResponseBody
     public Map<String, String> checkProcess(@RequestBody Map<String, String> checkData) {
+        log.info("checkData: {}", checkData);
         boolean isCheck = checkService.checkProcess(checkData);
         if (isCheck){
             return Map.of("RESULT", "SUCCESS");

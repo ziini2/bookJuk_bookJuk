@@ -45,7 +45,7 @@ public class UserEntity {
     private String userPhone;
 
     //유저 Role 값 (enum 클래스의 정의된 것만 사용)
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 

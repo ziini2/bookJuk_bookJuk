@@ -87,6 +87,10 @@ $(document).ready(function () {
         else{
           console.log("중복확인 실패")
           $(formId).css("border-color", "red");
+          // 동적으로 에러 메시지 <div> 생성 및 입력 그룹 밖에 추가
+          const errorDiv = $('<div class="error-message" style="color:#db4437"> 중복됩니다.</div>');
+          // input-group 바로 아래에 추가
+          $(formId).closest('.input-group').after(errorDiv);
         }
       },
       error: (err) => {

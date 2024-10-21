@@ -7,13 +7,11 @@ $(document).ready(function () {
     const userIdRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9]{5,15}$/;
     return userIdRegex.test(userId);
   };
-
   //비밀번호1 유효성 검사
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
     return passwordRegex.test(password);
   };
-
   //비밀번호2 유효성 검사
   const validatePassword2 = (password) => {
     const password1 = $("#join-userPassword1").val();
@@ -22,31 +20,28 @@ $(document).ready(function () {
     }
     return false;
   }
-
   //이름 유효성 검사
   const validateName = (name) => {
     const nameRegex = /^[가-힣]{2,}$/;
     return nameRegex.test(name);
   }
-
   //생년월일 유효성 검사
   const validateBirthday = (birthday) => {
     const birthdayRegex = /^(19|20)\d{2}년(0[1-9]|1[0-2])월(0[1-9]|[12]\d|3[01])일$/;
     return birthdayRegex.test(birthday);
   }
-
   //이메일 유효성 검사
   const validateEmail = (email) => {
     const emailRegex =  /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     //test() 메서드는 입력된 문자열이 정규식 패턴에 일치하는지 여부 판단후 true/false 반환
     return emailRegex.test(email);
   };
-
   //전화번호 유효성 검사
   const validatePhone = (phone) => {
     const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
     return phoneRegex.test(phone);
   };
+
 
   //유효성 검사 처리 함수
   const handleValidation = (formId, validator) => {
@@ -68,7 +63,6 @@ $(document).ready(function () {
       return false;
     }
   };
-
   //유효성 검사 + 중복확인 처리 함수
   const checkDuplicate = (formId, dataKey, validator) => {
     const value = $(formId).val();
@@ -113,8 +107,115 @@ $(document).ready(function () {
   $("#join-userName").blur(() => handleValidation("#join-userName", validateName));
   $("#join-userBirthday").blur(() => handleValidation("#join-userBirthday", validateBirthday));
 
-//==================================================================================================================
+  //회원가입 버튼 클릭시 전체 유효성 검사 통과 여부 확인
+  function validateAll() {
+    const validations = [
+      {id: "#join-userId", validator: validateId},
+      {id: "#join-userPassword1", validator: validatePassword},
+      {id: "#join-userName", validator: validateName},
+      {id: "#join-userBirthday", validator: validateBirthday},
+      {id: "#join-userEmail", validator: validateEmail},
+      {id: "#join-userPhone", validator: validatePhone}
+    ]
 
+    //유효성 검사를 통과하지 못한 첫 번째 필드를 찾아야함
+    const firstInvalid = validations.find(({ id, validator }) => !handleValidation(id, validator));
+    if (firstInvalid){
+      alert("모든 필드의 형식을 맞추어야 합니다.")
+      $(firstInvalid.id).focus();
+      return false;
+    }
+
+    if (!$("#join-agreeAll").is(":checked")) {
+      alert("모든 약관에 동의해야 합니다.");
+      $("#join-agreeAll").focus();
+      return false;
+    }
+
+    return true;
+  }
+
+
+  //=================================================================
+
+  // 전체 동의 체크박스 클릭 시 하위 체크박스 상태 동기화
+  $("#join-agreeAll").on("change", function () {
+    const isChecked = $(this).is(":checked");
+    $(".agreeBox").prop("checked", isChecked);
+  });
+
+  //하위 체크박스 상태 변경시 전체 동의 체크박스 업데이트
+  $(".agreeBox").on("change", function () {
+    // $(".agreeBox").length = agreeBox 인 체크박스 개수 반환
+    // $(".agreeBox:checked").length = agreeBox 의 체크된 개수만 반환
+    const isChecked = $(".agreeBox").length === $(".agreeBox:checked").length;
+    $("#join-agreeAll").prop("checked", isChecked);
+  })
+
+  //이름 한글만 쓸수있게
+  $("#join-userName").on("keydown", function (e) {
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+
+    // 한글 입력 허용
+    if (allowedKeys.includes(e.key) || (e.key >= '가' && e.key <= '힣')) {
+      return true; // 정상 처리
+    }
+    else {
+      e.preventDefault(); // 그 외 입력 차단
+    }
+  });
+
+  //생년월일 숫자만 쓸수있고 년/월/일 형시으로 자동 포맷
+  $('#join-userBirthday').on('input', function (e) {
+    //숫자만 남기기
+    let value = $(this).val().replace(/[^0-9]/g, '');
+
+    // 백스페이스 시 포맷 처리 유연하게 유지
+    if (e.originalEvent && e.originalEvent.inputType === 'deleteContentBackward') {
+      return; // 기본 삭제 동작 유지
+    }
+
+    //4자리 후 '년' 추가
+    if (value.length >= 4) {
+      value = value.slice(0, 4) + '년' + value.slice(4);
+    }
+    //2자리 후 '월' 추가
+    if (value.length >= 7) {
+      value = value.slice(0, 7) + '월' + value.slice(7);
+    }
+    //마지막에 '일' 추가
+    if (value.length >= 10) {
+      value = value.slice(0, 10) + '일';
+    }
+    //최대 길이 제한
+    $(this).val(value.slice(0, 11));
+  });
+
+  //전화번호 '-' 자동으로 생성
+  $('#join-userPhone').on('input', function (e) {
+    //숫자만 남기기
+    let value = $(this).val().replace(/[^0-9]/g, '');
+
+    // 백스페이스 시 포맷 처리 유연하게 유지
+    if (e.originalEvent && e.originalEvent.inputType === 'deleteContentBackward') {
+      return; // 기본 삭제 동작 유지
+    }
+
+    //3자리 후 '-' 추가
+    if (value.length >= 3) {
+      value = value.slice(0, 3) + '-' + value.slice(3);
+    }
+    //4자리 후 '-' 추가
+    if (value.length >= 8) {
+      value = value.slice(0, 8) + '-' + value.slice(8);
+    }
+    //최대 길이 제한
+    $(this).val(value.slice(0, 13));
+  });
+
+
+
+  //=================================================================
   //로그인 버튼 클릭시
   $("#loginButton").on('click', (e) => {
     e.preventDefault();
@@ -145,25 +246,38 @@ $(document).ready(function () {
   //회원가입 버튼 클릭시
   $("#joinButton").on('click', (e) => {
     e.preventDefault();
-    console.log("머튼 클릭")
+    const isValid = validateAll();
 
-    //폼데이터 직렬화
-    const joinFormData = new FormData($("#joinForm")[0]);
-    console.log(joinFormData);
+    if (isValid) {
+      //폼데이터 직렬화
+      // const joinFormData = new FormData($("#joinForm")[0]);
 
-    $.ajax({
-      type: "POST",
-      url: "/join",
-      data: joinFormData,
-      processData: false, // jQuery가 데이터를 처리하지 않도록 설정
-      contentType: false, // 콘텐츠 타입을 자동 설정하지 않도록 설정
-      success: function (response) {
-        console.log("회원가입 성공");
-        window.location.href = "/login";
-      },
-      error: function (xhr, status, error) {
-        console.log("회원가입 실패" + error);
-      }
-    });
+      const formData = {};
+      $("#joinForm")
+        .serializeArray()
+        .forEach(({ name, value }) => {
+          formData[name] = value;
+        });
+      console.log(formData);
+
+      $.ajax({
+        type: "POST",
+        url: "/join",
+        data: JSON.stringify(formData),
+        contentType: "application/json",
+        success: function (response) {
+          console.log("회원가입 성공");
+          window.location.href = "/login";
+        },
+        error: function (xhr, status, error) {
+          console.log("회원가입 실패" + error);
+        }
+      });
+    }
+    else console.log("회원가입 실패: 유효성 검사 또는 중복 확인 실패")
   });
+
+
+
+
 });

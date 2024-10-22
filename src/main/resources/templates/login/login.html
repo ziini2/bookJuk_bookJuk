@@ -82,7 +82,7 @@
                     </form>
                     <p>
                         <span> Already have an account? </span>
-                        <b onclick="toggle()" class="pointer"> Sign in here </b>
+                        <b onclick="toggle(); clearAllErrorMessages();" class="pointer"> Sign in here </b>
                     </p>
                 </div>
             </div>
@@ -160,6 +160,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:src="@{/login/js/index.js}"></script>
 <script th:src="@{/login/js/login.js}"></script>
+<script th:src="@{/login/js/join.js}"></script>
 
 </body>
 </html>

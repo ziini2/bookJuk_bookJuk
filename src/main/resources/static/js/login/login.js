@@ -6,6 +6,7 @@ $(document).ready(function () {
 
     const userId = $('#userId').val();
     const userPassword = $('#userPassword').val();
+    console.log(userId + userPassword);
 
     $.ajax({
       type: "POST",

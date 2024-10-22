@@ -30,7 +30,7 @@ public class SecurityConfig {
     //정적리소스는 시큐리트 접근권한에서 제외한다.
     @Bean
     public WebSecurityCustomizer configure() {
-        return web -> web.ignoring().requestMatchers("/**");
+        return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
 

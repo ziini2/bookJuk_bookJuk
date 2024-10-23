@@ -1,4 +1,4 @@
-package com.itwillbs.bookjuk.controller;
+package com.itwillbs.bookjuk.controller.rent;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,6 +1,8 @@
 package com.itwillbs.bookjuk.config;
 
 
+import com.itwillbs.bookjuk.security.CustomOAuth2User;
+import com.itwillbs.bookjuk.service.login.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -18,7 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig {
-//    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     //BCrypt 암호화 설정
     @Bean
@@ -80,29 +82,28 @@ public class SecurityConfig {
         );
 
         //OAuth2 login
-//        http.oauth2Login((oauth2) -> oauth2
-//                .loginPage("/oauth2")
-//                .successHandler((request, response, authentication) -> {
-//                    HttpSession session = request.getSession();
-//
-//                    // 사용자 ID를 세션에 저장
-//                    Long userNum = ((CustomOAuth2User) authentication.getPrincipal()).getUserNum();
-//                    System.out.println("userNum: " + userNum);
-//                    session.setAttribute("userNum", userNum);
-//
-//                    // 사용자 권한(롤)을 세션에 저장
-//                    String role = authentication.getAuthorities().stream()
-//                            .map(GrantedAuthority::getAuthority)
-//                            .findFirst() // 첫 번째 권한만 가져오기
-//                            .orElse(null);
-//
-//                    session.setAttribute("role", role);
-//                    response.sendRedirect("/"); // 원하는 페이지로 리다이렉트
-//                })
-//                .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
-//                        .userService(customOAuth2UserService))
-//                )
-//        );
+        http.oauth2Login((oauth2) -> oauth2
+                .loginPage("/oauth2")
+                .successHandler((request, response, authentication) -> {
+                    HttpSession session = request.getSession();
+
+                    // 사용자 고유 pk 를 세션에 저장
+                    Long userNum = ((CustomOAuth2User) authentication.getPrincipal()).getUserNum();
+                    session.setAttribute("userNum", userNum);
+
+                    // 사용자 권한(롤)을 세션에 저장
+                    String role = authentication.getAuthorities().stream()
+                            .map(GrantedAuthority::getAuthority)
+                            .findFirst() // 첫 번째 권한만 가져오기
+                            .orElse(null);
+
+                    session.setAttribute("role", role);
+                    response.sendRedirect("/"); // 원하는 페이지로 리다이렉트
+                })
+                .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
+                        .userService(customOAuth2UserService))
+                )
+        );
 
 
 

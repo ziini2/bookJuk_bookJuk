@@ -1,4 +1,4 @@
-package com.itwillbs.controller;
+package com.itwillbs.bookjuk.controller.event;
 
 import org.springframework.stereotype.Controller;
 
@@ -8,7 +8,7 @@ import lombok.extern.java.Log;
 @Controller
 @RequiredArgsConstructor
 @Log
-public class CouponController {
+public class NotificationController {
 
 	
 	

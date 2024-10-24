@@ -1,9 +1,9 @@
-package com.itwillbs.controller;
+package com.itwillbs.bookjuk.controller.event;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.itwillbs.service.EventService;
+import com.itwillbs.bookjuk.service.event.EventService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;

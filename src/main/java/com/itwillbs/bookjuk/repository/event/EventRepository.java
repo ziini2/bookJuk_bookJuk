@@ -1,8 +1,8 @@
-package com.itwillbs.repository;
+package com.itwillbs.bookjuk.repository.event;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.itwillbs.entity.Event;
+import com.itwillbs.bookjuk.entity.event.Event;
 
 public interface EventRepository extends JpaRepository<Event, Integer> {
 

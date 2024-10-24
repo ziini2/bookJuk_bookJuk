@@ -1,4 +1,4 @@
-package com.itwillbs.entity;
+package com.itwillbs.bookjuk.entity.event;
 
 import java.sql.Timestamp;
 

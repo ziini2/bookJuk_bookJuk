@@ -1,4 +1,4 @@
-package com.itwillbs.service;
+package com.itwillbs.bookjuk.service.event;
 
 import org.springframework.stereotype.Service;
 

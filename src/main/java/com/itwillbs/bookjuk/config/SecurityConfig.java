@@ -2,6 +2,7 @@ package com.itwillbs.bookjuk.config;
 
 
 import com.itwillbs.bookjuk.security.CustomOAuth2User;
+import com.itwillbs.bookjuk.security.CustomUserDetails;
 import com.itwillbs.bookjuk.service.login.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -64,8 +65,8 @@ public class SecurityConfig {
                 .successHandler((request, response, authentication) -> {
                     // 로그인 성공 시 AJAX 요청에 대한 응답 처리
                     HttpSession session = request.getSession();
-                    // 사용자 ID를 세션에 저장
-                    session.setAttribute("id", authentication.getName()); // 사용자 ID
+                    // 사용자 PK 를 세션에 저장
+                    session.setAttribute("userNum", ((CustomUserDetails) authentication.getPrincipal()).getUserNum()); // 사용자 ID
                     // 사용자 롤을 세션에 저장
                     String role = authentication.getAuthorities().stream()
                             .map(GrantedAuthority::getAuthority)

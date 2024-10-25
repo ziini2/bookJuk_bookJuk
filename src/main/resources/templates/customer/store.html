@@ -2,8 +2,6 @@
 
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<html xmlns:th="http://www.thymeleaf.org">
-
 <head>
 	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -41,7 +39,7 @@
 	<main id="main" class="main">
 
 		<div class="pagetitle">
-			<h1>지점관리</h1>
+			<h1>지점목록</h1>
 			<nav>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -57,24 +55,92 @@
 
 					<div class="card">
 						<div class="card-body">
-							<div class="col">
-								<div class="row-auto">지점목록</div>
-								<button class="row-auto" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Open modal for @mdo</button>
+
+							<div class="col d-flex justify-content-between">
+								<!--검색-->
+								<div class="search-bar">
+									<form class="search-form d-flex align-items-center" method="POST" action="#">
+										<input type="text" name="query" placeholder="Search"
+											title="Enter search keyword">
+										<button type="submit" title="Search"><i class="bi bi-search"></i></button>
+										<div>개</div>
+									</form>
+								</div>
+								<!--검색 끝-->
+
+								<!--지점등록 버튼-->
+								<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+									data-bs-target="#exampleModal" data-bs-whatever="@mdo">지점등록
+								</button>
+								<!--지점등록 버튼 끝-->
 							</div>
-<!--비트윈-->
-							
+
+							<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">지점등록</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal"
+												aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<form>
+												<div class="mb-3">
+													<label for="store-name" class="col-form-label">지점명</label>
+													<input name="storeName" type="text" class="form-control"
+														id="store-name">
+												</div>
+
+												<div class="mb-3">
+													<label for="store-tel" class="col-form-label">전화번호</label>
+													<input name="storeTel" type="text" class="form-control"
+														id="store-tel"></input>
+												</div>
+
+												<div class="mb-3">
+													<label for="store-tel" class="col-form-label">대표자명</label>
+													<input name="storeTel" type="text" class="form-control"
+														id="store-tel"></input>
+												</div>
+
+												<div class="mb-3">
+													<label for="store-tel" class="col-form-label">이메일</label>
+													<input name="storeTel" type="text" class="form-control"
+														id="store-tel"></input>
+												</div>
+
+												<div class="mb-3">
+													<label for="store-tel" class="col-form-label">사업자등록번호</label>
+													<input name="storeTel" type="text" class="form-control"
+														id="store-tel"></input>
+												</div>
+
+												<div class="mb-3">
+													<label for="store-tel" class="col-form-label">위치</label>
+													<input name="storeTel" type="text" class="form-control"
+														id="store-tel"></input>
+												</div>
+											</form>
+											
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">닫기</button>
+											<button type="button" class="btn btn-primary">등록</button>
+										</div>
+									</div>
+								</div>
+							</div>
 
 
-							<div class="search-bar">
-								<form class="search-form d-flex align-items-center" method="POST" action="#">
-									<input type="text" name="query" placeholder="Search" title="Enter search keyword">
-									<button type="submit" title="Search"><i class="bi bi-search"></i></button>
-								</form>
-							</div><!-- End Search Bar -->
+
 
 							<!-- Table with stripped rows -->
 							<table class="table datatable">
 								<thead>
+									
+									<a href="/store/store_info">
 									<tr>
 										<th>
 											<b>지점명</b>
@@ -85,6 +151,8 @@
 										<th data-type="date" data-format="YYYY/DD/MM">등록일자</th>
 										<th>수정일</th>
 									</tr>
+									</a>
+									
 								</thead>
 								<tbody>
 									<tr>

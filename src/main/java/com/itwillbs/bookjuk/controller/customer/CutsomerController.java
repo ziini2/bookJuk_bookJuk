@@ -13,4 +13,10 @@ public class CutsomerController {
 		return "customer/store";
 	}
 	
+	@GetMapping("/store/store_info")
+	public String getMethodName() {
+		return "customer/store_info";
+	}
+	
+	
 }

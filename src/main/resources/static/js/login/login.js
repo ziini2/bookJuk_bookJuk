@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     const userId = $('#userId').val();
     const userPassword = $('#userPassword').val();
-    const autoLogin = $('#auto-login').val();
+    const autoLogin = $('#auto-login').is(':checked')
     console.log(userId + userPassword);
 
     $.ajax({

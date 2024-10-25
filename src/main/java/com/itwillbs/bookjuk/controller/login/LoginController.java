@@ -13,6 +13,7 @@ public class LoginController {
     @GetMapping("/login")
     public String loginPage(HttpSession session){
         log.info("loginPage");
+        log.info("userNum: {}", session.getAttribute("userNum"));
         if (session.getAttribute("userNum") != null){
             return "redirect:/";
         }

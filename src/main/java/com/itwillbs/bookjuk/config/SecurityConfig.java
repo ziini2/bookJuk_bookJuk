@@ -115,6 +115,19 @@ public class SecurityConfig {
                 .rememberMeParameter("rememberMe") //form 에서 받아올 파라미터 명
                 .tokenValiditySeconds(86400) //쿠키 유효기간 (1일)
                 .userDetailsService(customUserDetailsService)
+                .useSecureCookie(false)  // HTTPS가 아닌 경우 false 설정
+                .rememberMeCookieDomain("localhost")  // 도메인 설정
+                .authenticationSuccessHandler((request, response, authentication) -> {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("userNum", ((CustomUserDetails) authentication.getPrincipal()).getUserNum());
+                    // 사용자 권한(롤)을 세션에 저장
+                    String role = authentication.getAuthorities().stream()
+                            .map(GrantedAuthority::getAuthority)
+                            .findFirst() // 첫 번째 권한만 가져오기
+                            .orElse(null);
+
+                    response.sendRedirect("/");
+                })
         );
 
 
@@ -124,6 +137,7 @@ public class SecurityConfig {
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID", "remember-me")
                 .clearAuthentication(true)
                 .permitAll()
         );

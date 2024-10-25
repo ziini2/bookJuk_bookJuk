@@ -42,7 +42,8 @@ public class SecurityConfig {
 
         //접근 권한에 대한 설정 부분
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/", "/join", "/login","/oauth2/**", "/checkData", "/loginCheck", "/actuator/**", "/logs/**", "/find").permitAll()
+                .requestMatchers("/**").permitAll()
+//                .requestMatchers("/", "/join", "/login","/oauth2/**", "/checkData", "/loginCheck", "/actuator/**", "/logs/**", "/find").permitAll()
                 .requestMatchers("/admin").hasRole("ADMIN")
                 .requestMatchers("/test").hasAnyRole("ADMIN", "USER") //여기에 로그인 된사람만 할수있는 페이지 추가
                 .anyRequest().authenticated()

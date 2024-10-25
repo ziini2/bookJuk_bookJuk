@@ -29,7 +29,6 @@
 
 	<link th:href="@{/css/common/style.css}" rel="stylesheet">
 
-
 </head>
 
 <body>
@@ -116,13 +115,17 @@
 														id="store-tel"></input>
 												</div>
 
-												<div class="mb-3">
-													<label for="store-tel" class="col-form-label">위치</label>
-													<input name="storeTel" type="text" class="form-control"
-														id="store-tel"></input>
+												<div class="mb-3 position-relative">
+												    <label for="store-tel" class="col-form-label">위치</label>
+												    <input name="storeTel" type="text" class="form-control pr-5" id="store-tel" placeholder="Enter location">
+												    
+													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
+												        class="bi bi-map position-absolute" style="top: 75%; right: 10px; transform: translateY(-50%);">
+												        <path fill-rule="evenodd" d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z"/>
+													</svg>
 												</div>
 											</form>
-											
+
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary"
@@ -139,8 +142,8 @@
 							<!-- Table with stripped rows -->
 							<table class="table datatable">
 								<thead>
-									
-									<tr >
+
+									<tr>
 										<th>
 											<b>지점명</b>
 										</th>
@@ -150,7 +153,7 @@
 										<th data-type="date" data-format="YYYY/DD/MM">등록일자</th>
 										<th>수정일</th>
 									</tr>
-									
+
 								</thead>
 								<tbody>
 									<tr>
@@ -172,6 +175,16 @@
 								</tbody>
 							</table>
 							<!-- End Table with stripped rows -->
+
+							<nav aria-label="Page navigation example">
+								<ul class="pagination">
+									<li class="page-item"><a class="page-link" href="#">Previous</a></li>
+
+									<li class="page-item"><a class="page-link" href="#">1</a></li>
+
+									<li class="page-item"><a class="page-link" href="#">Next</a></li>
+								</ul>
+							</nav><!-- End Basic Pagination -->
 
 						</div>
 					</div>

@@ -39,10 +39,7 @@ public class JoinController {
         if (isSave){
             return Map.of("RESULT", "SUCCESS");
         }
-
         return Map.of("RESULT", "FAIL");
     }
-
-
 
 }

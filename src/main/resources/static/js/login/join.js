@@ -105,6 +105,7 @@ $(document).ready(function () {
         }
       },
       error: (err) => {
+        alert("오류: " + err.responseText);
         console.error(err);
       }
     })

@@ -4,6 +4,7 @@ package com.itwillbs.bookjuk.config;
 import com.itwillbs.bookjuk.security.CustomOAuth2User;
 import com.itwillbs.bookjuk.security.CustomUserDetails;
 import com.itwillbs.bookjuk.service.login.CustomOAuth2UserService;
+import com.itwillbs.bookjuk.service.login.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @AllArgsConstructor
 public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     //BCrypt 암호화 설정
     @Bean
@@ -105,6 +107,14 @@ public class SecurityConfig {
                 .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
                         .userService(customOAuth2UserService))
                 )
+        );
+
+        //자동로그인(Remember-me)설정
+        http.rememberMe((auth) -> auth
+                .key("BookJukBookJuk_rememberKey") //암호화 키
+                .rememberMeParameter("rememberMe") //form 에서 받아올 파라미터 명
+                .tokenValiditySeconds(86400) //쿠키 유효기간 (1일)
+                .userDetailsService(customUserDetailsService)
         );
 
 

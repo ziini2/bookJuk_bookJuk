@@ -9,12 +9,12 @@ body {
 }
 
 a {
-  color: rgb(47, 145, 115);
+  color: #3c955a;
   text-decoration: none;
 }
 
 a:hover {
-  color: #c5e774;;
+  color: #c5e774;
   text-decoration: none;
 }
 
@@ -157,7 +157,7 @@ h6 {
 .sidebar-nav .nav-heading {
   font-size: 11px;
   text-transform: uppercase;
-  color: rgb(47, 145, 115);
+  color: rgb#3c955a;
   font-weight: 600;
   margin: 10px 0 5px 15px;
 }
@@ -167,7 +167,7 @@ h6 {
   align-items: center;
   font-size: 15px;
   font-weight: 600;
-  color: rgb(50, 163, 89);
+  color: #3c955a;
   background: #fff;
   padding: 10px 15px;
   border-radius: 4px;
@@ -180,7 +180,7 @@ h6 {
 }
 
 .sidebar-nav .nav-link.collapsed {
-  color: rgb(60, 149, 90);
+  color: #3c955a;
   background: #fff;
 }
 
@@ -217,7 +217,7 @@ h6 {
   align-items: center;
   font-size: 14px;
   font-weight: 600;
-  color: rgb(50, 163, 89);
+  color: #3c955a;
   padding: 10px 0 10px 40px;
   transition: 0.3s;
 }

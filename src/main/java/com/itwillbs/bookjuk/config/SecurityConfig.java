@@ -8,6 +8,8 @@ import com.itwillbs.bookjuk.service.login.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig {
+    private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomUserDetailsService customUserDetailsService;
 
@@ -42,10 +45,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+
         //접근 권한에 대한 설정 부분
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/**").permitAll()
-//                .requestMatchers("/", "/join", "/login","/oauth2/**", "/checkData", "/loginCheck", "/actuator/**", "/logs/**", "/find").permitAll()
+//                .requestMatchers("/**").permitAll()
+                .requestMatchers("/", "/join", "/login","/oauth2/**", "/checkData", "/loginCheck", "/actuator/**", "/logs/**", "/find").permitAll()
+                .requestMatchers("/phone").hasAnyRole("INACTIVE") //소셜로그인 회원은 전화번호 입력하지않으면 계속해서 전화번호 입력창으로 리다이렉트!
                 .requestMatchers("/admin").hasRole("ADMIN")
                 .requestMatchers("/test").hasAnyRole("ADMIN", "USER") //여기에 로그인 된사람만 할수있는 페이지 추가
                 .anyRequest().authenticated()
@@ -76,6 +81,7 @@ public class SecurityConfig {
                             .findFirst() // 첫 번째 롤만 가져옵니다. (여러 롤이 있을 수 있음)
                             .orElse(null);
                     session.setAttribute("role", role); // 사용자 롤
+
                     // 로그인 성공 시 AJAX 요청에 대한 응답 처리
                     response.setStatus(HttpServletResponse.SC_OK);
                 })
@@ -100,9 +106,17 @@ public class SecurityConfig {
                             .map(GrantedAuthority::getAuthority)
                             .findFirst() // 첫 번째 권한만 가져오기
                             .orElse(null);
-
                     session.setAttribute("role", role);
-                    response.sendRedirect("/"); // 원하는 페이지로 리다이렉트
+                    // 로그로 세션 값 출력
+                    log.info("UserNum: {}", userNum);
+                    log.info("Role: {}", role);
+
+                    //사용자 권한에 따라 리다이렉트 주소 변경
+                    if ("ROLE_INACTIVE".equals(role)) {
+                        response.sendRedirect("/phone");
+                    } else {
+                        response.sendRedirect("/");
+                    }
                 })
                 .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
                         .userService(customOAuth2UserService))

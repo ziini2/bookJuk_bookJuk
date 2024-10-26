@@ -10,13 +10,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LoginController {
 
+    //일반회원 로그인
     @GetMapping("/login")
     public String loginPage(HttpSession session){
         log.info("loginPage");
         log.info("userNum: {}", session.getAttribute("userNum"));
+        log.info("role: {}", session.getAttribute("role"));
+
         if (session.getAttribute("userNum") != null){
             return "redirect:/";
         }
         return "/login/login";
+    }
+
+    //소셜로그인 후 전화번호 입력 페이지로 이동
+    @GetMapping("/phone")
+    public String joinPhone(HttpSession session){
+        if (session.getAttribute("userNum") == null || !"ROLE_INACTIVE".equals(session.getAttribute("role"))) {
+            return "redirect:/";
+        }
+        return "/login/joinPhone";
     }
 }

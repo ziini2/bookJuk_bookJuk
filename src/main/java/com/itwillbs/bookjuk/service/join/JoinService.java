@@ -8,6 +8,7 @@ import com.itwillbs.bookjuk.exception.ValidationException;
 import com.itwillbs.bookjuk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -79,5 +80,13 @@ public class JoinService {
         if (!Pattern.matches(emailPattern, userDTO.getUserEmail())) {
             throw new ValidationException("유효하지 않은 이메일 형식입니다.");
         }
+    }
+
+    //소셜로그인 전화번호 저장
+    public boolean saveUserPhone(Long userNum, String userPhone) {
+        UserEntity user = userRepository.findByUserNum(userNum);
+        user.setUserPhone(userPhone);
+        userRepository.save(user);
+        return true;
     }
 }

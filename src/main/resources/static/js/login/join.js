@@ -1,3 +1,5 @@
+
+
 //모든 에러 메시지 삭제 함수
 clearAllErrorMessages = () => {
   $(".error-message").remove(); // 에러 메시지 클래스 전체 제거
@@ -70,6 +72,7 @@ $(document).ready(function () {
   //유효성 검사 + 중복확인 처리 함수
   const checkDuplicate = (formId, dataKey, validator) => {
     const value = $(formId).val();
+    const validate_button = $("#validate-button");
 
     //유효성 검사 실패 시 중복 확인 하지 않음
     if(!handleValidation(formId, validator)){
@@ -92,9 +95,11 @@ $(document).ready(function () {
           //성공 시 true 로 변경
           duplicateCheckResults[formId] = true;
           $(formId).css("border-color", "#4ea685");
+          validate_button.prop("disabled", false);
         }
-        else{
+        else {
           console.log("중복확인 실패")
+          validate_button.text("보내기");
           $(formId).css("border-color", "red");
           //실패 시 false 로 변경
           duplicateCheckResults[formId] = false;
@@ -102,6 +107,8 @@ $(document).ready(function () {
           const errorDiv = $('<div class="error-message" style="color:#db4437"> 중복됩니다.</div>');
           // input-group 바로 아래에 추가
           $(formId).closest('.input-group').after(errorDiv);
+          $("#validate-button").prop("disabled", true);
+          $("#sms-validate").remove();
         }
       },
       error: (err) => {
@@ -159,9 +166,6 @@ $(document).ready(function () {
         return false; // 유효성 검사 실패 시 바로 중단
       }
     }
-
-
-
 
     if (!$("#join-agreeAll").is(":checked")) {
       alert("모든 약관에 동의해야 합니다.");

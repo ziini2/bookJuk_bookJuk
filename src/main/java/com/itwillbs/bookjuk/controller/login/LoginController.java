@@ -26,9 +26,9 @@ public class LoginController {
     //소셜로그인 후 전화번호 입력 페이지로 이동
     @GetMapping("/phone")
     public String joinPhone(HttpSession session){
-        if (session.getAttribute("userNum") == null || !"ROLE_INACTIVE".equals(session.getAttribute("role"))) {
-            return "redirect:/";
-        }
+        log.info("joinPhone");
+        log.info("userNum: {}", session.getAttribute("userNum"));
+        log.info("role: {}", session.getAttribute("role"));
         return "/login/joinPhone";
     }
 }

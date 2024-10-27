@@ -3,6 +3,7 @@ package com.itwillbs.bookjuk.config;
 
 import com.itwillbs.bookjuk.security.CustomOAuth2User;
 import com.itwillbs.bookjuk.security.CustomUserDetails;
+import com.itwillbs.bookjuk.security.SessionSyncFilter;
 import com.itwillbs.bookjuk.service.login.CustomOAuth2UserService;
 import com.itwillbs.bookjuk.service.login.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,6 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -27,6 +29,7 @@ public class SecurityConfig {
     private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomUserDetailsService customUserDetailsService;
+    private final SessionSyncFilter sessionSyncFilter;
 
     //BCrypt 암호화 설정
     @Bean
@@ -44,7 +47,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
+        http.addFilterBefore(sessionSyncFilter, UsernamePasswordAuthenticationFilter.class);
 
         //접근 권한에 대한 설정 부분
         http.authorizeHttpRequests((auth) -> auth

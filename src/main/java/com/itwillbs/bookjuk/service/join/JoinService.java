@@ -85,7 +85,11 @@ public class JoinService {
     //소셜로그인 전화번호 저장
     public boolean saveUserPhone(Long userNum, String userPhone) {
         UserEntity user = userRepository.findByUserNum(userNum);
+        if (user == null) {
+            return false;
+        }
         user.setUserPhone(userPhone);
+        user.setUserRole(UserRole.ROLE_USER);
         userRepository.save(user);
         return true;
     }

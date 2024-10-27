@@ -48,6 +48,7 @@ checkSmsCode = () => {
   let userCode = input_code.val().trim();
 
   if (userCode === String(code)){
+    alert("인증성공")
     //에러메세지가 있는경우 에러메세지 삭제
     $(".error-message").remove();
     //성공시 입력했던 코드 비활성화 및 테두리 색상 변경
@@ -74,4 +75,24 @@ checkSmsCode = () => {
   }
 }
 
+//소셜로그인 유저 전화번호 따로 저장하기 버튼 클릭시
+saveUserPhone = () => {
+  const userPhone = $("#join-userPhone").val()
+  $.ajax({
+    type: "POST",
+    url: "/join/phone",
+    contentType: "application/json",
+    data: userPhone,
+    success: (res) => {
+      if (res.RESULT === "SUCCESS"){
+        alert("저장되었습니다.")
+        window.location.href = "/";
+      }
+      else{
+        alert("오류입니다. 관리자에게 문의하여 주세요 email(bookjuk@bookjuk.com)");
+        window.location.href = "/login";
+      }
+    }
+  })
+}
 

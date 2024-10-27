@@ -1,6 +1,7 @@
 package com.itwillbs.bookjuk.controller.join;
 
 
+import com.itwillbs.bookjuk.domain.login.UserRole;
 import com.itwillbs.bookjuk.dto.UserDTO;
 import com.itwillbs.bookjuk.service.join.CheckService;
 import com.itwillbs.bookjuk.service.join.JoinService;
@@ -69,6 +70,8 @@ public class JoinController {
     @PostMapping("/join/phone")
     @ResponseBody
     public Map<String, String> phoneSave(@RequestBody String userPhone, HttpSession session) {
+        log.info("phoneSave");
+        log.info("userPhone: {}", userPhone);
         //1. 전화번호 입력페이지로 이동시키고 전화번호 등록후 USER_ROLE값 변경 시켜주면됨!
         //  - 전화번호 입력하는 페이지 보여주고
         //  - 전화번호 중복확인 - userCheck 로 보내서 체크
@@ -77,6 +80,7 @@ public class JoinController {
         Long userNum = (Long) session.getAttribute("userNum");
         boolean isSaved = joinService.saveUserPhone(userNum, userPhone);
         if (isSaved){
+            session.setAttribute("role", UserRole.ROLE_USER);
             return Map.of("RESULT", "SUCCESS");
         }
         return Map.of("RESULT", "FAIL");

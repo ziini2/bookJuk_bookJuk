@@ -16,7 +16,11 @@
 				<!--로그인했을때 세션 저장, userNum -->
 				<div th:if="${session.userNum}">
 					<span th:text="${session.userNum}"></span>님
-					<button type ="button" class="btn btn-outline-success" th:href="@{/logout}">로그아웃</button>
+					<button type ="button" class="btn btn-outline-success" onclick="location.href='/logout'">로그아웃</button>
+				</div>
+				<!--비로그인시 -->
+				<div th:if="${session.userNum == null}">
+					<button type ="button" class="btn btn-outline-success" onclick="location.href='/login'">로그인</button>
 				</div>
 				
 			</div>

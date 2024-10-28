@@ -27,7 +27,6 @@ public class JoinService {
 
         //DTO를 엔티티로 변환
         UserEntity userEntity = toEntity(userDTO);
-        log.info("userEntity: {}", userEntity.toString());
 
         //비밀번호 암호화 후 저장 (단방향 해쉬 암호화)
         userEntity.setUserPassword(bCryptPasswordEncoder.encode(userDTO.getUserPassword()));

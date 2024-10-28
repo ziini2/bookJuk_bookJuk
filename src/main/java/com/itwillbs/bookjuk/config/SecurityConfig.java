@@ -9,8 +9,7 @@ import com.itwillbs.bookjuk.service.login.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,11 +21,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig {
-    private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomUserDetailsService customUserDetailsService;
     private final SessionSyncFilter sessionSyncFilter;
@@ -52,6 +51,8 @@ public class SecurityConfig {
         //접근 권한에 대한 설정 부분
         http.authorizeHttpRequests((auth) -> auth
 //                .requestMatchers("/**").permitAll()
+                //이래서 url 주소에 /OOO/OO 으로 나눠주는구나 너무많아진다 ... 점점
+                //수정해야겠는디 ..
                 .requestMatchers("/", "/join", "/login","/oauth2/**", "/checkData",
                         "/loginCheck", "/actuator/**", "/logs/**", "/find",
                         "/sendSmsCodeTest", "/codeValidate", "/verifySmsCode").permitAll()
@@ -102,19 +103,16 @@ public class SecurityConfig {
                 .successHandler((request, response, authentication) -> {
                     HttpSession session = request.getSession();
 
-                    // 사용자 고유 pk 를 세션에 저장
+                    //사용자 pk 를 세션에 저장
                     Long userNum = ((CustomOAuth2User) authentication.getPrincipal()).getUserNum();
                     session.setAttribute("userNum", userNum);
 
-                    // 사용자 권한(롤)을 세션에 저장
+                    //사용자 권한 세션에 저장
                     String role = authentication.getAuthorities().stream()
                             .map(GrantedAuthority::getAuthority)
                             .findFirst() // 첫 번째 권한만 가져오기
                             .orElse(null);
                     session.setAttribute("role", role);
-                    // 로그로 세션 값 출력
-                    log.info("UserNum: {}", userNum);
-                    log.info("Role: {}", role);
 
                     //사용자 권한에 따라 리다이렉트 주소 변경
                     if ("ROLE_INACTIVE".equals(role)) {
@@ -144,6 +142,7 @@ public class SecurityConfig {
                             .map(GrantedAuthority::getAuthority)
                             .findFirst() // 첫 번째 권한만 가져오기
                             .orElse(null);
+                    session.setAttribute("role", role);
 
                     response.sendRedirect("/");
                 })

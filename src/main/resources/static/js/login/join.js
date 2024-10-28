@@ -153,7 +153,7 @@ $(document).ready(function () {
       if (key && !duplicateCheckResults[key]) {
         $(id).css("border-color", "red");
         $(id).focus();
-        alert("중복된 값이 있습니다. 중복 확인을 해주세요.");
+        alert("모두 입력해 주세요!");
         return false; // 중복 확인 실패 시 바로 중단
       }
     }

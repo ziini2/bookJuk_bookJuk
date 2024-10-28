@@ -57,9 +57,14 @@
                             <i class="bx bx-mail-send"></i>
                             <input id="join-userPhone" name="userPhone" type="text" placeholder="전화번호 (ex. 010-1111-1111)" />
                             <div class="phoneValidate">
-                                <button> 인증 </button>
+                                <button id="validate-button" type="button" onclick="validateSMS()" disabled>보내기</button>
                             </div>
                         </div>
+                        <!-- 인증번호 입력란 -->
+                        <div class="input-group" id="input-validateNumber"></div>
+                        <!-- 남은 시간을 표시할 곳 -->
+                        <div class="timer"></div>
+                        <div id="error-message"></div>
 
                         <!-- 약관동의 체크박스 -->
                         <div class="agree">
@@ -108,7 +113,7 @@
 
                     <!-- 자동로그인 설정 체크박스 -->
                     <div class="checkBox">
-                        <input type="checkbox" id="auto-login" name="auto-login" value="true"/>
+                        <input type="checkbox" id="auto-login" name="rememberMe" value="true"/>
                         <label for="auto-login">자동 로그인</label>
                     </div>
 
@@ -161,6 +166,8 @@
 <script th:src="@{/js/login/index.js}"></script>
 <script th:src="@{/js/login/login.js}"></script>
 <script th:src="@{/js/login/join.js}"></script>
+<script th:src="@{/js/login/validateSMS.js}"></script>
+<script th:src="@{/js/login/timer.js}"></script>
 
 </body>
 </html>

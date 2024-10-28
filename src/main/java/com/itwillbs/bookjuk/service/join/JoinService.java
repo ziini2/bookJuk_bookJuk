@@ -8,11 +8,9 @@ import com.itwillbs.bookjuk.exception.ValidationException;
 import com.itwillbs.bookjuk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Slf4j
@@ -29,6 +27,7 @@ public class JoinService {
 
         //DTO를 엔티티로 변환
         UserEntity userEntity = toEntity(userDTO);
+        log.info("userEntity: {}", userEntity.toString());
 
         //비밀번호 암호화 후 저장 (단방향 해쉬 암호화)
         userEntity.setUserPassword(bCryptPasswordEncoder.encode(userDTO.getUserPassword()));
@@ -37,7 +36,7 @@ public class JoinService {
         UserEntity saveUser = userRepository.save(userEntity);
 
         //저장 성공 여부 확인
-        return userEntity != null ? true : false;
+        return saveUser != null ? true : false;
     }
 
     //UserDTO -> UserEntity 변환 메서드

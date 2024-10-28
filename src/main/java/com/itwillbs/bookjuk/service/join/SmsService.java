@@ -23,7 +23,7 @@ public class SmsService {
 
     //테스트 SMS 인증 서비스
     public String sendSMSTest(String phoneNumber){
-        log.info("phoneNumber: {}", phoneNumber);
+        log.info("sendSMSTest phoneNumber: {}", phoneNumber);
         String code = Integer.toString((int)(Math.random() * (999999 - 100000 + 1)) + 100000);
         log.warn("code: {}", code);
         return code;

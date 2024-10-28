@@ -34,7 +34,6 @@ public class JoinController {
         return Map.of("RESULT", "FAIL");
     }
 
-
     //SMS 코드 보내기 요청
     @PostMapping("/sendSmsCode")
     @ResponseBody
@@ -42,12 +41,48 @@ public class JoinController {
         String code = smsService.sendSMS(userPhone);
         return Map.of("RESULT", "SUCCESS", "code", code);
     }
+
     //SMS 코드 보내기 요청 테스트
     @PostMapping("/sendSmsCodeTest")
     @ResponseBody
-    public Map<String, String> checkPhoneTest(@RequestBody String userPhone) {
+    public Map<String, String> checkPhoneTest(@RequestBody String userPhone, HttpSession session) {
         String code = smsService.sendSMSTest(userPhone);
+        if (session.getAttribute("code") != null ) {
+            session.removeAttribute("code");
+        }
+        session.setAttribute("code", code);
+        //세션에 코드 유효시간 처리
+        session.setMaxInactiveInterval(30);
         return Map.of("RESULT", "SUCCESS", "code", code);
+    }
+
+    //휴대폰 인증번호 검증
+    @PostMapping("/codeValidate")
+    @ResponseBody
+    public Map<String, String> codeValidate(@RequestBody String code, HttpSession session) {
+        log.info("codeValidate : {}", code);
+        //sms 인증코드 불러오기
+        String systemCode = (String) session.getAttribute("code");
+        //sms 인증코드와 유저 코드 비교
+        if (code.equals(systemCode)){
+            session.removeAttribute("code");
+            //일치시 세션에 성공값 저장
+            session.setAttribute("RESULT", "SUCCESS");
+            return Map.of("RESULT", "SUCCESS");
+        }
+        return Map.of("RESULT", "FAIL");
+    }
+
+    //휴대폰 번호 인증 완료했는지 확인
+    @PostMapping("/verifySmsCode")
+    @ResponseBody
+    public Map<String, Boolean> verifySmsCode(HttpSession session) {
+        log.info("verifySmsCode : {}", session.getAttribute("RESULT"));
+        if (session.getAttribute("RESULT") != null){
+            return Map.of("RESULT", true);
+        }
+        else
+            return Map.of("RESULT", false);
     }
 
 
@@ -57,10 +92,11 @@ public class JoinController {
     //회원가입
     @PostMapping("/join")
     @ResponseBody
-    public Map<String, String> join(@RequestBody UserDTO userDTO) {
+    public Map<String, String> join(@RequestBody UserDTO userDTO, HttpSession session) {
         //먼저 가져오 userDTO.userID 값이 같은 아이디가 있는지 없는 중복확인부터 해야함
         boolean isSave = joinService.joinProcess(userDTO);
         if (isSave){
+            session.removeAttribute("RESULT");
             return Map.of("RESULT", "SUCCESS");
         }
         return Map.of("RESULT", "FAIL");

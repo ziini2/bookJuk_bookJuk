@@ -1,5 +1,4 @@
 
-
 //모든 에러 메시지 삭제 함수
 clearAllErrorMessages = () => {
   $(".error-message").remove(); // 에러 메시지 클래스 전체 제거
@@ -95,7 +94,9 @@ $(document).ready(function () {
           //성공 시 true 로 변경
           duplicateCheckResults[formId] = true;
           $(formId).css("border-color", "#4ea685");
-          validate_button.prop("disabled", false);
+          if (formId === "#join-userPhone"){
+            validate_button.prop("disabled", false);
+          }
         }
         else {
           console.log("중복확인 실패")
@@ -137,18 +138,18 @@ $(document).ready(function () {
   $("#join-userBirthday").blur(() => handleValidation("#join-userBirthday", validateBirthday));
 
   //회원가입 버튼 클릭시 전체 유효성 검사 통과 여부 확인
-  function validateAll() {
+  async function validateAll(callback) {
     const validations = [
-      { id: "#join-userId", validator: validateId, key: "#join-userId" },
-      { id: "#join-userPassword1", validator: validatePassword},
-      { id: "#join-userName", validator: validateName},
-      { id: "#join-userBirthday", validator: validateBirthday},
-      { id: "#join-userEmail", validator: validateEmail, key: "#join-userEmail" },
-      { id: "#join-userPhone", validator: validatePhone, key: "#join-userPhone" },
+      {id: "#join-userId", validator: validateId, key: "#join-userId"},
+      {id: "#join-userPassword1", validator: validatePassword},
+      {id: "#join-userName", validator: validateName},
+      {id: "#join-userBirthday", validator: validateBirthday},
+      {id: "#join-userEmail", validator: validateEmail, key: "#join-userEmail"},
+      {id: "#join-userPhone", validator: validatePhone, key: "#join-userPhone"},
     ]
 
     // 1. 중복 확인부터 처리 (첫 실패 시 중단)
-    for (const { id, key } of validations) {
+    for (const {id, key} of validations) {
       if (key && !duplicateCheckResults[key]) {
         $(id).css("border-color", "red");
         $(id).focus();
@@ -158,13 +159,22 @@ $(document).ready(function () {
     }
 
     // 2. 유효성 검사 처리 (첫 실패 시 중단)
-    for (const { id, validator } of validations) {
+    for (const {id, validator} of validations) {
       const isValid = handleValidation(id, validator);
       if (!isValid) {
         $(id).focus();
         alert("모든 필드의 형식을 맞추어야 합니다.");
-        return false; // 유효성 검사 실패 시 바로 중단
+        return false;
       }
+    }
+
+    // 3. 휴대폰 인증 완료하였는지 판단
+    // 휴대폰 인증후 세션에 값저장한거 불러와서 거기서 true인지 false 인지 판단하는 검증소가 필요하다
+    // ajax 통해서 검증소에서 반환하는 값으로 인증와료인지 아닌지 판단해야함
+    const isVerified = await verifySmsCode(); // 결과를 기다림
+    if (!isVerified) {
+      alert("휴대폰 인증을 완료해야 합니다.");
+      return false;
     }
 
     if (!$("#join-agreeAll").is(":checked")) {
@@ -172,10 +182,8 @@ $(document).ready(function () {
       $("#join-agreeAll").focus();
       return false;
     }
-
     return true;
   }
-
 
   //=================================================================
 
@@ -254,21 +262,35 @@ $(document).ready(function () {
     $(this).val(value.slice(0, 13));
   });
 
+  //휴대폰 인증 검증
+  function verifySmsCode() {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        type: "POST",
+        url: "/verifySmsCode",
+        success: (res) => {
+          console.log(res.RESULT);
+          resolve(res.RESULT); // 인증 결과 반환
+        },
+        error: (err) => {
+          console.error(err);
+          reject(false); // 실패 시 false 반환
+        },
+      });
+    });
+  }
+
   //=================================================================
 
   //회원가입 버튼 클릭시
-  $("#joinButton").on('click', (e) => {
+  $("#joinButton").on('click', async (e) => {
     e.preventDefault();
-    const isValid = validateAll();
-
+    const isValid = await validateAll();
     if (isValid) {
       //폼데이터 직렬화
       // const joinFormData = new FormData($("#joinForm")[0]);
-
       const formData = {};
-      $("#joinForm")
-        .serializeArray()
-        .forEach(({ name, value }) => {
+      $("#joinForm").serializeArray().forEach(({ name, value }) => {
           formData[name] = value;
         });
       console.log(formData);
@@ -290,5 +312,5 @@ $(document).ready(function () {
     else console.log("회원가입 실패: 유효성 검사 또는 중복 확인 실패")
   });
 
-
 });
+

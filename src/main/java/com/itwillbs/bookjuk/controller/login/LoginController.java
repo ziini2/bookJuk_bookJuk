@@ -14,9 +14,7 @@ public class LoginController {
     @GetMapping("/login")
     public String loginPage(HttpSession session){
         log.info("loginPage");
-        log.info("userNum: {}", session.getAttribute("userNum"));
-        log.info("role: {}", session.getAttribute("role"));
-
+        //세션에 값이 존재한다면 로그인 된것으로 판단하고 main 페이지로 이동
         if (session.getAttribute("userNum") != null){
             return "redirect:/";
         }
@@ -27,8 +25,6 @@ public class LoginController {
     @GetMapping("/phone")
     public String joinPhone(HttpSession session){
         log.info("joinPhone");
-        log.info("userNum: {}", session.getAttribute("userNum"));
-        log.info("role: {}", session.getAttribute("role"));
         return "/login/joinPhone";
     }
 }

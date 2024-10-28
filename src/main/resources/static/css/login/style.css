@@ -83,6 +83,7 @@ body {
 }
 
 .input-group input {
+    flex: 1;
     width: 100%;
     padding: 1rem 1rem;
     font-size: 1rem;
@@ -113,8 +114,7 @@ body {
 }
 
 .form .phoneValidate{
-    width: 10rem;
-    padding: 0.4rem;
+    margin-left: 1rem;
 }
 
 
@@ -258,10 +258,32 @@ body {
     color: orange;
     font-size: 0.8rem;
     text-align: left;
-    margin: 0.5rem 0.5rem;
+    margin: 0.5rem 0.5rem 2rem 0.5rem;
+}
+
+/* 버튼 비활성 상태시 */
+button:disabled{
+    background-color: #989898;
+}
+#input-validateNumber{
+    display: flex;
+}
+.phoneValidate button {
+    padding: 0.6rem 1.2rem;
+    color: var(--white);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    height: 100%;
+}
+.timer{
+    text-align: left;
+    color: #db4437;
+    margin: 0.5rem;
 }
 
 
+/*==============================================================*/
 /* RESPONSIVE */
 @media only screen and (max-width: 425px) {
     .container::before,

@@ -18,4 +18,10 @@ public class PayController {
 		return "/pay/refund";
 	}
 	
+	@GetMapping("/cart")
+	public String cart() {
+
+		return "/pay/cart";
+	}
+	
 }

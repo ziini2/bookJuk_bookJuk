@@ -167,9 +167,20 @@
   }
   
   
-  
+  /*테이블 간격*/
   .table th, .table td {
       padding: 13px; /* 좌우 및 상하 패딩*/
       vertical-align: middle; /*텍스트 세로 중앙 정렬*/
       text-align: center; /*텍스트 가로 중앙 정렬*/
   }
+  
+  /*장바구니*/
+.cart-card {
+	width: 250px;
+	height: 350px;
+}
+
+.card-text {
+	font-size: small;
+	
+}

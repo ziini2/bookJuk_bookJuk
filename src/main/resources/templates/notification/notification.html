@@ -21,13 +21,12 @@
   <link th:href="@{css/common/style.css}" rel="stylesheet">
   <link th:href="@{css/event/style.css}" rel="stylesheet">
   
-  <!--웹 소켓-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+  <!--  jQuery-->
+  <script src="/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-	<div th:replace="/fragment/header :: header2"></div>
-	<div th:replace="/fragment/sidebar :: sidebar2"></div>
+  <div th:replace="/fragment/header :: header2"></div>
+  <div th:replace="/fragment/sidebar :: sidebar2"></div>
 	<table class="table">
 	  <thead>
 	    <tr>
@@ -58,44 +57,40 @@
 	    </tr>
 	  </tbody>
 	</table>
-	<input type="text" id="messageContent" placeholder="Enter message">
-	<button onclick="sendMessage()">Send Message</button>
-
-<!--웹 소켓-->
+<textarea id="notiContent" placeholder="메시지를 입력하세요."></textarea>
+<input type="text" id="recipient" placeholder="수신자"/>
+<button id="sendNoti">전송</button>
 <script>
-	
-	var socket = new SockJS('/ws');
-	var stompClient = Stomp.over(socket);
-	
-	stompClient.connect({}, function(frame){
-		console.log('Connected : ' + frame);
-		
-		// 메시지를 수신하는 부분
-		stompClient.subscribe('/user/topic/messages', function(message){
-			alert("Received: " + message.body);
+	$(document).ready(function(){
+		$('#sendNoti').click(function(){
+			const notiContent = $('#notiContent').val();
+			const recipient = $('#recipient').val();
+			
+			$.ajax({
+				url: '/notification/send',
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify({content: notiContent, recipient: recipient}),
+				success: function(response){
+					alert('메시지가 성공적으로 전송되었습니다.');
+				},
+				error: function(xhr){
+					alert('메시지 전송 실패: ' + xhr.responseText);
+				}
+			});
 		});
-		
-		// 메시지 전송 예시
-		//var message = {
-			//sender: "kjw123",
-			//recipient: "user1",
-			//content: "Hello, this is."
-		//};
-		//stompClient.send("/app/sendMessage", {}, JSON.stringify(message));
+		setInterval(function(){
+			$.ajax({
+				url: '/notification/user1',
+				type: 'GET',
+				success: function(notification){
+					console.log(notification);
+				}
+			});
+		}, 300000);
 	});
-	
-	function sendMessage(){
-		var messageContent = document.getElementById("messageContent").value;
-		var message = {
-			recipient: "user1",
-			content: messageContent
-		};
-		stompClient.send("/app/sendMessage", {}, JSON.stringify(message));
-		document.getElementById("messageContent").value = '';
-	}
 </script>
-	
-  <!-- 사이드바 열었다 닫았다 하는거 -->
-  <script th:src="@{/js/common/main.js}"></script>
+<!-- 사이드바 열었다 닫았다 하는거 -->
+<script th:src="@{/js/common/main.js}"></script>
 </body>
 </html>

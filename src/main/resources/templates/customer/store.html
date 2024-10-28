@@ -61,7 +61,11 @@
 									<form class="search-form d-flex align-items-center" method="POST" action="#">
 										<input type="text" name="query" placeholder="Search"
 											title="Enter search keyword">
-										<button type="submit" title="Search"><i class="bi bi-search"></i></button>
+										<button type="submit" title="Search">
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+											  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+											</svg>
+										</button>
 										<div>개</div>
 									</form>
 								</div>
@@ -98,26 +102,26 @@
 												</div>
 
 												<div class="mb-3">
-													<label for="store-tel" class="col-form-label">대표자명</label>
-													<input name="storeTel" type="text" class="form-control"
-														id="store-tel"></input>
+													<label for="store-represent" class="col-form-label">대표자명</label>
+													<input name="storeRepresent" type="text" class="form-control"
+														id="store-represent"></input>
 												</div>
 
 												<div class="mb-3">
-													<label for="store-tel" class="col-form-label">이메일</label>
-													<input name="storeTel" type="text" class="form-control"
-														id="store-tel"></input>
+													<label for="store-email" class="col-form-label">이메일</label>
+													<input name="storeEmail" type="text" class="form-control"
+														id="store-email"></input>
 												</div>
 
 												<div class="mb-3">
-													<label for="store-tel" class="col-form-label">사업자등록번호</label>
-													<input name="storeTel" type="text" class="form-control"
-														id="store-tel"></input>
+													<label for="store-regiNum" class="col-form-label">사업자등록번호</label>
+													<input name="storeRegiNum" type="text" class="form-control"
+														id="store-regiNum"></input>
 												</div>
 
 												<div class="mb-3 position-relative">
-												    <label for="store-tel" class="col-form-label">위치</label>
-												    <input name="storeTel" type="text" class="form-control pr-5" id="store-tel" placeholder="Enter location">
+												    <label for="store-location" class="col-form-label">위치</label>
+												    <input name="storeLocation" type="text" class="form-control pr-5" id="store-location">
 												    
 													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
 												        class="bi bi-map position-absolute" style="top: 75%; right: 10px; transform: translateY(-50%);">
@@ -178,11 +182,11 @@
 
 							<nav aria-label="Page navigation example">
 								<ul class="pagination">
-									<li class="page-item"><a class="page-link" href="#">Previous</a></li>
+									<li class="page-item"><a class="page-link" href="#">이전</a></li>
 
 									<li class="page-item"><a class="page-link" href="#">1</a></li>
 
-									<li class="page-item"><a class="page-link" href="#">Next</a></li>
+									<li class="page-item"><a class="page-link" href="#">다음</a></li>
 								</ul>
 							</nav><!-- End Basic Pagination -->
 

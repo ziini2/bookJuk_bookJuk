@@ -12,11 +12,11 @@ import lombok.extern.java.Log;
 @Log
 public class RentService {
 	
-	public Page<Rent> getRentList(Pageable pageable) {
-		log.info("RentService getRentList()");
-		
-		return rentRepository.findAll(pageable);
-	}
+//	public Page<Rent> getRentList(Pageable pageable) {
+//		log.info("RentService getRentList()");
+//		
+//		return rentRepository.findAll(pageable);
+//	}
 	
 	
 }

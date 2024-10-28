@@ -17,11 +17,11 @@ import lombok.extern.java.Log;
 public class NotificationController {
 
 	@Autowired
-	private final NotificationService notificationService;
+	private final NotificationService notiService;
 	
 	@MessageMapping("/sendMessage")
-	public void sendMessage(Notification notification) {
-		notificationService.sendMessage(notification.getUserNum().getUserId(), notification.getNotificationContent());
+	public void sendMessage(Notification noti) {
+		notiService.sendMessage(noti.getUserNum().getUserId(), noti.getNotiContent());
 	}
 	
 	@GetMapping("/notification")

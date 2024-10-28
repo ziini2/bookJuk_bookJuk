@@ -22,24 +22,42 @@ import lombok.Setter;
 @Table(name = "notification")
 public class Notification {
 
+	// 알림 아이디
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "notificationId", nullable = false)
-	private Long notificationId;
+	@Column(name = "notiId", nullable = false)
+	private Long notiId;
 	
-	// 유저 PK
+	// 알림 수신인(유저 PK)
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userNum")
     private UserEntity userNum;
 	
-	@Column(name = "notificationContent", columnDefinition = "TEXT", nullable = false)
-	private String notificationContent;
+	// 알림 발신인
+	@Column(name = "notiSender", length = 255, nullable = false)
+	private String notiSender;
 	
-	@Column(name = "notificationDate", nullable = false)
-	private Timestamp notificationDate;
+	// 알림 내용
+	@Column(name = "notiContent", columnDefinition = "TEXT", nullable = false)
+	private String notiContent;
 	
-	@Column(name = "notificationType", length = 10, nullable = false)
-	private String notificationType;
+	// 알림 유형(note, sms)
+	@Column(name = "notiType", length = 10, nullable = false)
+	private String notiType;
+	
+	// 알림 상태(대기, 전송, 실패)
+	@Column(name = "notiStatus", length = 10, nullable = false)
+	private String notiStatus;
+	
+	// 알림 생성 날짜
+	@Column(name = "notiCreationDate", nullable = false)
+	private Timestamp notiCreationDate;
+	
+	// 알림 전송 날짜
+	@Column(name = "notiSentDate")
+	private Timestamp notiSentDate;
+	
+	
 	
 	
 	

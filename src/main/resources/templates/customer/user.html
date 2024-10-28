@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-	<title>지점목록 | 북적북적</title>
+	<title>유저목록 | 북적북적</title>
 
 	<!-- 구글폰트 -->
 	<link href="https://fonts.gstatic.com" rel="preconnect">
@@ -38,14 +38,14 @@
 	<main id="main" class="main">
 
 		<div class="pagetitle">
-			<h1>지점목록</h1>
-			<nav>
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="index.html">Home</a></li>
-					<li class="breadcrumb-item">Tables</li>
-					<li class="breadcrumb-item active">Data</li>
-				</ol>
-			</nav>
+			<h1>고객목록</h1>
+			<!--			<nav>-->
+			<!--				<ol class="breadcrumb">-->
+			<!--					<li class="breadcrumb-item"><a href="index.html">Home</a></li>-->
+			<!--					<li class="breadcrumb-item">Tables</li>-->
+			<!--					<li class="breadcrumb-item active">Data</li>-->
+			<!--				</ol>-->
+			<!--			</nav>-->
 		</div><!-- End Page Title -->
 
 		<section class="section">
@@ -62,8 +62,10 @@
 										<input type="text" name="query" placeholder="Search"
 											title="Enter search keyword">
 										<button type="submit" title="Search">
-											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-											  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+												fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+												<path
+													d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
 											</svg>
 										</button>
 										<div>개</div>
@@ -72,9 +74,9 @@
 								<!--검색 끝-->
 
 								<!--지점등록 버튼-->
-								<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-									data-bs-target="#exampleModal" data-bs-whatever="@mdo">지점등록
-								</button>
+								<!--								<button type="button" class="btn btn-primary" data-bs-toggle="modal"-->
+								<!--									data-bs-target="#exampleModal" data-bs-whatever="@mdo">지점등록-->
+								<!--								</button>-->
 								<!--지점등록 버튼 끝-->
 							</div>
 
@@ -120,12 +122,15 @@
 												</div>
 
 												<div class="mb-3 position-relative">
-												    <label for="store-location" class="col-form-label">위치</label>
-												    <input name="storeLocation" type="text" class="form-control pr-5" id="store-location">
-												    
-													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
-												        class="bi bi-map position-absolute" style="top: 75%; right: 10px; transform: translateY(-50%);">
-												        <path fill-rule="evenodd" d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z"/>
+													<label for="store-location" class="col-form-label">위치</label>
+													<input name="storeLocation" type="text" class="form-control pr-5"
+														id="store-location">
+
+													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+														fill="currentColor" class="bi bi-map position-absolute"
+														style="top: 75%; right: 10px; transform: translateY(-50%);">
+														<path fill-rule="evenodd"
+															d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z" />
 													</svg>
 												</div>
 											</form>
@@ -149,32 +154,34 @@
 
 									<tr>
 										<th>
-											<b>지점명</b>
+											<b>이름</b>
 										</th>
-										<th>전화번호</th>
-										<th>지역</th>
-										<th>지역상세</th>
-										<th data-type="date" data-format="YYYY/DD/MM">등록일자</th>
-										<th>수정일</th>
+										<th>아이디</th>
+										<th>생년월일</th>
+										<th>이메일</th>
+										<th data-type="date" data-format="YYYY/DD/MM">생성일</th>
+										<th>등급</th>
+										<th></th>
 									</tr>
 
 								</thead>
 								<tbody>
 									<tr>
-										<td>Unity Pugh</td>
-										<td>9958</td>
-										<td>Curicó</td>
-										<td>2005/02/11</td>
-										<td>37%</td>
-										<td>37%</td>
-									</tr>
-									<tr>
-										<td>Theodore Duran</td>
-										<td>8971</td>
+										<td>김씨</td>
 										<td>Dhanbad</td>
 										<td>1999/04/07</td>
-										<td>97%</td>
-										<td>97%</td>
+										<td>2d@nam.com</td>
+										<td>2024/04/07</td>
+										<td>일반</td>
+										<td>
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+											fill="currentColor" class="bi bi-trash me-2" viewBox="0 0 16 16">
+											<path
+												d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+											<path
+												d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+										</svg>
+										</td>
 									</tr>
 								</tbody>
 							</table>

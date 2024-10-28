@@ -13,7 +13,12 @@
 	<div class ="container">
 		<div class="row">
 			<div class="col d-flex justify-content-end">
-				<button type ="button" class="btn btn-outline-success">로그아웃</button>
+				<!--로그인했을때 세션 저장, userNum -->
+				<div th:if="${session.userNum}">
+					<span th:text="${session.userNum}"></span>님
+					<button type ="button" class="btn btn-outline-success" th:href="@{/logout}">로그아웃</button>
+				</div>
+				
 			</div>
 		</div>
 	</div>

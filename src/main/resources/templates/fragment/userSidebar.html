@@ -2,40 +2,16 @@
 <!-- ======= 사이드바 ======= -->
 <aside id="sidebar" class="sidebar" th:fragment="sidebar2">
 
-	<ul class="sidebar-nav" id="sidebar-nav">
+  <ul class="sidebar-nav" id="sidebar-nav">
 
-	    <!-- 통계관리 -->
-	    <li class="nav-item">
-	        <a class="nav-link collapsed" data-bs-target="#stats-nav" data-bs-toggle="collapse" href="#">
-	            <i class="ri-dashboard-fill"></i>
-	            <span>통계관리</span><i class="ri-arrow-down-s-fill ms-auto"></i>
-	        </a>
-	        <ul id="stats-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-	            <li>
-	                <a href="#">
-	                    <i class="ri-checkbox-blank-circle-fill"></i><span>매출 분석</span>
-	                </a>
-	            </li>
-	            <li>
-	                <a href="#">
-	                    <i class="ri-checkbox-blank-circle-fill"></i><span>고객 분석</span>
-	                </a>
-	            </li>
-	            <li>
-	                <a href="#">
-	                    <i class="ri-checkbox-blank-circle-fill"></i><span>반납지연 분석</span>
-	                </a>
-	            </li>
-	            <li>
-	                <a href="#">
-	                    <i class="ri-checkbox-blank-circle-fill"></i><span>대여책 분석</span>
-	                </a>
-	            </li>
-	        </ul>
-	    </li>
-		
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="@{/main.html}">
+        <i class="ri-dashboard-fill"></i>
+        <span>통계관리</span>
+      </a>
+    </li>
   <!--통계관리 끝-->
-  
+
     <li class="nav-item">
       <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
         <i class="ri-contacts-fill"></i><span>고객관리</span><i class="ri-arrow-down-s-fill ms-auto"></i>
@@ -78,7 +54,7 @@
           </a>
         </li>
         <li>
-          <a href="/rent">
+          <a href="#">
             <i class="ri-checkbox-blank-circle-fill"></i><span>대여/연체 관리</span>
           </a>
         </li>

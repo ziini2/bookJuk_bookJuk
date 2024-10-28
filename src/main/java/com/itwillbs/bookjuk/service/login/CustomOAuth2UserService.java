@@ -52,7 +52,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         //데이터 베이스에 저장후 user 의 고유한 키값 을 저장하기 위함
         Long userNum;
         //User_Role 설정
-        UserRole userRole = UserRole.ROLE_USER;
+        UserRole userRole = UserRole.ROLE_INACTIVE;
 
         if (exitsData == null){
             UserEntity userEntity = new UserEntity();

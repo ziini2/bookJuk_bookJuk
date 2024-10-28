@@ -12,10 +12,10 @@ public class PayController {
 		return "/pay/pay_list";
 	}
 	
-	@GetMapping("/adwa")
-	public String adwa() {
+	@GetMapping("/refund")
+	public String refund() {
 
-		return "/pay/adwa";
+		return "/pay/refund";
 	}
 	
 }

@@ -184,3 +184,31 @@
 	font-size: small;
 	
 }
+
+.card-item-body {
+	height: 150px;
+	background-color: #fcfef8;
+	margin-top: 2rem;
+	margin-bottom: 1.3rem;
+}
+
+.card-item-image {
+	width: 100px;
+	height: 130px;
+	margin-top: 10px;
+}
+
+.form-check-input:checked {
+    background-color: rgb(0, 64, 0);
+    border-color: rgb(0, 64, 0);
+}
+
+.form-check-input {
+    --bs-form-check-bg: var(--bs-body-bg);
+    width: 1.2em;
+    height: 1.2em;
+    margin-top: 0.5em;
+	margin-left: 0.5em;
+}
+
+

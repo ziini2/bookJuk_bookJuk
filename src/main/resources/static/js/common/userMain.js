@@ -37,7 +37,7 @@
    */
   if (select('.toggle-sidebar-btn')) {
     on('click', '.toggle-sidebar-btn', function(e) {
-      select('body').classList.toggle('toggle-sidebar')
+      select('body').classList.toggle('toggle-sidebar1')
     })
   }
 
@@ -62,8 +62,7 @@
   onscroll(document, navbarlinksActive)
 
   /**
-   * Toggle .header-scrolled class to #header when page is scrolled
-   */
+   * Toggle .header-scrolled class to #header when page is scrolled */
   let selectHeader = select('#header')
   if (selectHeader) {
     const headerScrolled = () => {
@@ -76,6 +75,7 @@
     window.addEventListener('load', headerScrolled)
     onscroll(document, headerScrolled)
   }
+
 
 
 })();

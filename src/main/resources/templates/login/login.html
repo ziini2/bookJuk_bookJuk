@@ -86,8 +86,8 @@
                         <button id="joinButton">회원가입</button>
                     </form>
                     <p>
-                        <span> Already have an account? </span>
-                        <b onclick="toggle(); clearAllErrorMessages();" class="pointer"> Sign in here </b>
+                        <span> 이미 회원 인가요? </span>
+                        <b onclick="toggle(); clearAllErrorMessages();" class="pointer"> 로그인 하기 </b>
                     </p>
                 </div>
             </div>
@@ -110,6 +110,7 @@
                         <i class="bx bxs-lock-alt"></i>
                         <input id="userPassword" type="password" placeholder="비밀번호" />
                     </div>
+                    <div id="login-error-message"></div>
 
                     <!-- 자동로그인 설정 체크박스 -->
                     <div class="checkBox">
@@ -125,8 +126,8 @@
                     </p>
 
                     <p>
-                        <span> Don't have an account? </span>
-                        <b onclick="toggle()" class="pointer"> Sign up here </b>
+                        <span> 회원이 아니신가요? </span>
+                        <b onclick="toggle()" class="pointer"> 회원가입 하기 </b>
                     </p>
                     <div class="social-login-list">
                         <button class="social-login" onclick="location.href='/oauth2/authorization/naver'" id="loginButton-google">naver</button>

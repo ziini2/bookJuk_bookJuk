@@ -95,7 +95,12 @@ $(document).ready(function () {
           duplicateCheckResults[formId] = true;
           $(formId).css("border-color", "#4ea685");
           if (formId === "#join-userPhone"){
-            validate_button.prop("disabled", false);
+            if (!$("#join-userPhone").prop("readonly")){
+              validate_button.prop("disabled", false);
+            }
+            else {
+              validate_button.prop("disabled", true);
+            }
           }
         }
         else {

@@ -54,7 +54,7 @@ public class SecurityConfig {
                 //이래서 url 주소에 /OOO/OO 으로 나눠주는구나 너무많아진다 ... 점점
                 //수정해야겠는디 ..
                 .requestMatchers("/", "/join", "/login","/oauth2/**", "/checkData",
-                        "/loginCheck", "/actuator/**", "/logs/**", "/find",
+                        "/loginCheck", "/actuator/**", "/logs/**", "/find", "/findId", "/findPass", "/findCheck",
                         "/sendSmsCodeTest", "/codeValidate", "/verifySmsCode").permitAll()
                 .requestMatchers("/phone").hasAnyRole("INACTIVE") //소셜로그인 회원은 전화번호 입력하지않으면 계속해서 전화번호 입력창으로 리다이렉트!
                 .requestMatchers("/admin").hasRole("ADMIN")

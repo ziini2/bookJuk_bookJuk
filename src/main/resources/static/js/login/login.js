@@ -6,7 +6,6 @@ $(document).ready(function () {
 
     const userId = $('#userId').val();
     const userPassword = $('#userPassword').val();
-    const autoLogin = $('#auto-login').is(':checked')
     console.log(userId + userPassword);
 
     $.ajax({
@@ -14,8 +13,7 @@ $(document).ready(function () {
       url: "/loginCheck",
       data: {
         userId: userId,
-        userPassword: userPassword,
-        rememberMe: autoLogin
+        userPassword: userPassword
       },
       success: function (response) {
         console.log("로그인 성공" );

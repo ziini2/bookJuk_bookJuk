@@ -34,7 +34,7 @@ public class RentController {
 	public String rent(Model model,
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 			@RequestParam(value = "size", defaultValue = "3", required = false) int size) {
-		log.info("BoardController rent()");
+		log.info("RentController rent()");
 //		import org.springframework.data.domain.Page;
 //		import org.springframework.data.domain.PageRequest;
 //		import org.springframework.data.domain.Pageable;
@@ -42,7 +42,7 @@ public class RentController {
 		// 페이지번호 page
 		// 한화면에 보여줄 글 개수 size
 		// PageRequest 에서는 page 0부터 시작 => page-1 설정
-		Pageable pageable = PageRequest.of(page-1, size, Sort.by("num").descending());
+		Pageable pageable = PageRequest.of(page-1, size, Sort.by("rentNum").descending());
 		
 		Page<RentEntity> rentList = rentService.getRentList(pageable);
 		

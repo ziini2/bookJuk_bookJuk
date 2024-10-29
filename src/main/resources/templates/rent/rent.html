@@ -28,6 +28,7 @@
 
 
   <link th:href="@{/css/common/style.css}" rel="stylesheet">
+  <link th:href="@{/css/rent/rent.css}" rel="stylesheet">
 
 
 </head>
@@ -37,125 +38,171 @@
 	<div th:replace="~{/fragment/header :: header2}"></div>
 	<div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
 	
+	<main id="main" class="main">
+	
 	<div class="container rent">
 	<!-- 도서 대여 관리 폼 시작 -->
 	  <div class="container my-5">
 	    <h2>도서 대여 관리</h2>
-	    <div class="form-container mb-4">
-	      <form action="#" method="POST">
-	        <div class="row mb-3">
-	          <div class="col">
-	            <label for="memberId">회원 아이디</label>
-	            <input type="text" class="form-control" id="memberId" name="memberId">
-	          </div>
-			  <div class="col">
-			  	<label for="memberName">회원 이름</label>
-			  	<input type="text" class="form-control" id="memberName" name="memberName">
-			  </div>
-	          <div class="col">
-	            <label for="bookId">책 번호</label>
-	            <input type="text" class="form-control" id="bookId" name="bookId">
-	          </div>
-			  <div class="col">
-		        <label for="bookId">책 이름</label>
-			 	<input type="text" class="form-control" id="bookName" name="bookName">
-			  </div>
-	        </div>
-	        <div class="row mb-3">
-	          <div class="col">
-	            <label for="contact">연락처</label>
-	            <input type="text" class="form-control" id="contact" name="contact">
-	          </div>
-	          <div class="col">
-	            <label for="rentalDate">대여일</label>
-	            <input type="date" class="form-control" id="rentalDate" name="rentalDate">
-	          </div>
-	        </div>
-	        <div class="row">
-	          <div class="col">
-	            <button type="submit" class="btn btn-primary">대여 등록</button>
-	            <button type="reset" class="btn btn-secondary">초기화</button>
-	          </div>
-	        </div>
-	      </form>
-	    </div>
+		<form class="rental-form" id="rentalForm">
+		      <div class="form-group">
+		        <label for="memberId">회원 아이디</label>
+		        <input type="text" id="memberId" placeholder="회원 아이디 입력">
+		      </div>
+		      
+		      <div class="form-group">
+		        <label for="memberName">회원 이름</label>
+		        <input type="text" id="memberName" placeholder="회원 이름 입력">
+		      </div>
+		      
+		      <div class="form-group">
+		        <label for="bookId">책 번호</label>
+		        <input type="text" id="bookId" placeholder="책 번호 입력">
+		      </div>
+		      
+		      <div class="form-group">
+		        <label for="bookName">책 이름</label>
+		        <input type="text" id="bookName" placeholder="책 이름 입력">
+		      </div>
+		      
+		      <div class="form-group">
+		        <label for="contact">연락처</label>
+		        <input type="text" id="contact" placeholder="연락처 입력">
+		      </div>
+		      
+		      <div class="form-group">
+		        <label for="rentalDate">대여일</label>
+		        <input type="date" id="rentalDate">
+		      </div>
+		      
+		      <div class="button-group">
+		        <button type="submit" class="btn primary">대여 등록</button>
+		        <button type="reset" class="btn secondary">초기화</button>
+		      </div>
+		    </form>
 		
-		<table>
-		        <thead>
-		            <tr>
-		                <th>회원 아이디</th>
-		                <th>회원 이름</th>
-		                <th>연락처</th>
-		                <th>책 번호</th>
-		                <th>책 이름</th>
-		                <th>대여일</th>
-		                <th>반납일</th>
-		                <th>반납 상태</th>
-		            </tr>
-		        </thead>
-		        <tbody>
-		            <tr>
-		                <td>gildong</td>
-		                <td>홍길동</td>
-		                <td>010-1111-1111</td>
-		                <td>101</td>
-		                <td>1Q84</td>
-		                <td>2024/10/10</td>
-		                <td></td>
-		                <td>
-		                    <select>
-		                        <option value="대여중">대여중</option>
-		                        <option value="연체중">연체중</option>
-		                        <option value="반납완료">반납완료</option>
-		                    </select>
-		                </td>
-		            </tr>
-		            <tr>
-		                <td>cskim</td>
-		                <td>김철수</td>
-		                <td>010-2222-2222</td>
-		                <td>91</td>
-		                <td>총균쇠</td>
-		                <td>2024/10/15</td>
-		                <td></td>
-		                <td>
-		                    <select>
-		                        <option value="대여중">대여중</option>
-		                        <option value="연체중">연체중</option>
-		                        <option value="반납완료">반납완료</option>
-		                    </select>
-		                </td>
-		            </tr>
-		            <tr>
-		                <td>minji</td>
-		                <td>이민지</td>
-		                <td>010-3333-3333</td>
-		                <td>275</td>
-		                <td>문명의 충돌</td>
-		                <td>2024/10/13</td>
-		                <td></td>
-		                <td>
-		                    <select>
-		                        <option value="대여중">대여중</option>
-		                        <option value="연체중">연체중</option>
-		                        <option value="반납완료">반납완료</option>
-		                    </select>
-		                </td>
-		            </tr>
-		        </tbody>
-		    </table>
+		<table class="rental-table">
+		    <thead>
+		        <tr>
+		            <th>대여 번호</th>
+		            <th>회원 번호</th>
+		            <th>회원 ID</th>
+		            <th>회원 이름</th>
+		            <th>회원 전화번호</th>
+		            <th>도서 번호</th>
+		            <th>도서 이름</th>
+		            <th>대여일</th>
+		            <th>반납일</th>
+		            <th>반납 여부</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr th:each="rent : ${rentList}">
+		            <td th:text="${rent.rentNum}"></td>
+		            <td th:text="${rent.userNum}"></td>
+		            <td th:text="${rent.userId}"></td>
+		            <td th:text="${rent.userName}"></td>
+		            <td th:text="${rent.userPhone}"></td>
+		            <td th:text="${rent.bookNum}"></td>
+		            <td th:text="${rent.bookName}"></td>
+		            <td th:text="${#dates.format(rent.rentDate, 'yyyy-MM-dd')}"></td>
+		            <td th:text="${#dates.format(rent.returnDate, 'yyyy-MM-dd')}"></td>
+					<td>
+						<select>
+							<option value="대여중">대여중</option>
+							<option value="연체중">연체중</option>
+							<option value="반납완료">반납완료</option>
+						</select>
+					</td>
+		        </tr>
+		    </tbody>
+		</table>
+		
+		
+<!--		<table>-->
+<!--		        <thead>-->
+<!--		            <tr>-->
+<!--		                <th>회원 아이디</th>-->
+<!--		                <th>회원 이름</th>-->
+<!--		                <th>연락처</th>-->
+<!--		                <th>책 번호</th>-->
+<!--		                <th>책 이름</th>-->
+<!--		                <th>대여일</th>-->
+<!--		                <th>반납일</th>-->
+<!--		                <th>반납 상태</th>-->
+<!--		            </tr>-->
+<!--		        </thead>-->
+<!--		        <tbody>-->
+<!--		            <tr>-->
+<!--		                <td>gildong</td>-->
+<!--		                <td>홍길동</td>-->
+<!--		                <td>010-1111-1111</td>-->
+<!--		                <td>101</td>-->
+<!--		                <td>1Q84</td>-->
+<!--		                <td>2024/10/10</td>-->
+<!--		                <td></td>-->
+<!--		                <td>-->
+<!--		                    <select>-->
+<!--		                        <option value="대여중">대여중</option>-->
+<!--		                        <option value="연체중">연체중</option>-->
+<!--		                        <option value="반납완료">반납완료</option>-->
+<!--		                    </select>-->
+<!--		                </td>-->
+<!--		            </tr>-->
+<!--		            <tr>-->
+<!--		                <td>cskim</td>-->
+<!--		                <td>김철수</td>-->
+<!--		                <td>010-2222-2222</td>-->
+<!--		                <td>91</td>-->
+<!--		                <td>총균쇠</td>-->
+<!--		                <td>2024/10/15</td>-->
+<!--		                <td></td>-->
+<!--		                <td>-->
+<!--		                    <select>-->
+<!--		                        <option value="대여중">대여중</option>-->
+<!--		                        <option value="연체중">연체중</option>-->
+<!--		                        <option value="반납완료">반납완료</option>-->
+<!--		                    </select>-->
+<!--		                </td>-->
+<!--		            </tr>-->
+<!--		            <tr>-->
+<!--		                <td>minji</td>-->
+<!--		                <td>이민지</td>-->
+<!--		                <td>010-3333-3333</td>-->
+<!--		                <td>275</td>-->
+<!--		                <td>문명의 충돌</td>-->
+<!--		                <td>2024/10/13</td>-->
+<!--		                <td></td>-->
+<!--		                <td>-->
+<!--		                    <select>-->
+<!--		                        <option value="대여중">대여중</option>-->
+<!--		                        <option value="연체중">연체중</option>-->
+<!--		                        <option value="반납완료">반납완료</option>-->
+<!--		                    </select>-->
+<!--		                </td>-->
+<!--		            </tr>-->
+<!--		        </tbody>-->
+<!--		    </table>-->
 		
 		</div>
-    
-
+    </div>
+	</main>
   <!-- 사이드바 열었다 닫았다 하는거 -->
   <script th:src="@{/js/common/main.js}"></script>
 
   <script>
-    // 현재 날짜 가져오기
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('rentalDate').value = today;
-  </script>
+      // 현재 날짜 가져오기 및 초기화 버튼 클릭 시 현재 날짜 설정
+      const today = new Date().toISOString().split('T')[0];
+      const rentalDateInput = document.getElementById('rentalDate');
+      rentalDateInput.value = today;
+
+      // 초기화 버튼 눌렀을 때, 대여일 다시 현재 날짜로 설정
+      document.getElementById('rentalForm').addEventListener('reset', function() {
+        setTimeout(function() {
+          rentalDateInput.value = today;
+        }, 0); // 초기화 후 바로 오늘 날짜로 세팅
+      });
+    </script>
   
 </body>
 

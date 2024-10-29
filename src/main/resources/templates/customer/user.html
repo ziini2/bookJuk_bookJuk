@@ -128,7 +128,8 @@
 
 													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 														fill="currentColor" class="bi bi-map position-absolute"
-														style="top: 75%; right: 10px; transform: translateY(-50%);">
+														onclick="deleteUser()"
+														style="top: 75%; right: 10px; transform: translateY(-50%); cursor: pointer;">
 														<path fill-rule="evenodd"
 															d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z" />
 													</svg>
@@ -174,8 +175,9 @@
 										<td>2024/04/07</td>
 										<td>일반</td>
 										<td>
-										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-											fill="currentColor" class="bi bi-trash me-2" viewBox="0 0 16 16">
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="cursor: pointer;"
+											fill="currentColor" class="bi bi-trash me-2" viewBox="0 0 16 16"
+											onclick="deleteUser()">
 											<path
 												d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
 											<path
@@ -209,6 +211,12 @@
 
 	<!-- 사이드바 열었다 닫았다 하는거 -->
 	<script th:src="@{/js/common/main.js}"></script>
+	
+	<script>
+		function deleteUser(){
+			alert("클릭");
+		}
+	</script>
 
 </body>
 

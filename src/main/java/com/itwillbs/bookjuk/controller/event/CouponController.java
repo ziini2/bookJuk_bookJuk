@@ -2,6 +2,7 @@ package com.itwillbs.bookjuk.controller.event;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.itwillbs.bookjuk.service.event.CouponService;
 
@@ -20,6 +21,5 @@ public class CouponController {
 		log.info("CouponController coupon()");
 		return "/coupon/coupon";
 	}
-	
-	
+		
 }

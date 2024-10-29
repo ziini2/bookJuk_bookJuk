@@ -4,6 +4,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.bookjuk.entity.RentEntity;
+import com.itwillbs.bookjuk.repository.RentRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -12,11 +15,13 @@ import lombok.extern.java.Log;
 @Log
 public class RentService {
 	
-//	public Page<Rent> getRentList(Pageable pageable) {
-//		log.info("RentService getRentList()");
-//		
-//		return rentRepository.findAll(pageable);
-//	}
+	private final RentRepository rentRepository;
+	
+	public Page<RentEntity> getRentList(Pageable pageable) {
+		log.info("RentService getRentList()");
+		
+		return rentRepository.findAll(pageable);
+	}
 	
 	
 }

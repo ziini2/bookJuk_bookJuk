@@ -124,7 +124,8 @@
 												    <input name="storeLocation" type="text" class="form-control pr-5" id="store-location">
 												    
 													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
-												        class="bi bi-map position-absolute" style="top: 75%; right: 10px; transform: translateY(-50%);">
+														onclick="addressUpdate()"
+												        class="bi bi-map position-absolute" style="top: 75%; right: 10px; transform: translateY(-50%); cursor: pointer;">
 												        <path fill-rule="evenodd" d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z"/>
 													</svg>
 												</div>
@@ -202,7 +203,12 @@
 
 	<!-- 사이드바 열었다 닫았다 하는거 -->
 	<script th:src="@{/js/common/main.js}"></script>
-
+	<script>
+		function addressUpdate() {
+			alert("click");
+		}
+	</script>
+	
 </body>
 
 </html>

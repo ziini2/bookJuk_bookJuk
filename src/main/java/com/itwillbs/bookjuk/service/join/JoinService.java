@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Slf4j
@@ -36,7 +35,7 @@ public class JoinService {
         UserEntity saveUser = userRepository.save(userEntity);
 
         //저장 성공 여부 확인
-        return userEntity != null ? true : false;
+        return saveUser != null ? true : false;
     }
 
     //UserDTO -> UserEntity 변환 메서드
@@ -79,5 +78,17 @@ public class JoinService {
         if (!Pattern.matches(emailPattern, userDTO.getUserEmail())) {
             throw new ValidationException("유효하지 않은 이메일 형식입니다.");
         }
+    }
+
+    //소셜로그인 전화번호 저장
+    public boolean saveUserPhone(Long userNum, String userPhone) {
+        UserEntity user = userRepository.findByUserNum(userNum);
+        if (user == null) {
+            return false;
+        }
+        user.setUserPhone(userPhone);
+        user.setUserRole(UserRole.ROLE_USER);
+        userRepository.save(user);
+        return true;
     }
 }

@@ -6,7 +6,7 @@ clearAllErrorMessages = () => {
 };
 
 $(document).ready(function () {
-  //유효성 검사 함수
+  //유효성 검사 함수Å
   //아이디 유효성 검사
   const validateId = (userId) => {
     //5 ~ 15자 영문, 숫자 조합

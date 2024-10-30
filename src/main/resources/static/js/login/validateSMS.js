@@ -109,7 +109,7 @@ saveUserPhone = () => {
       }
       else{
         alert("오류입니다. 관리자에게 문의하여 주세요 email(bookjuk@bookjuk.com)");
-        window.location.href = "/login/login";
+        window.location.href = "/login";
       }
     }
   })

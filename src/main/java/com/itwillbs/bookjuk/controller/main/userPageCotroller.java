@@ -20,6 +20,8 @@ public class userPageCotroller {
 	public String userMain(Model model) {
 		log.info("userMain");
 		log.info("userRole: {}", SecurityUtil.getUserRoles());
+		log.info("userName: {}", SecurityUtil.getUserName());
+		log.info("userNum: {}", SecurityUtil.getUserNum());
 		//회원의 이름을 가져오기!
 		model.addAttribute("userName", SecurityUtil.getUserName());
 

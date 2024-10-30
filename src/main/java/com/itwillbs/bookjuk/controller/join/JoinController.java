@@ -6,6 +6,7 @@ import com.itwillbs.bookjuk.dto.UserDTO;
 import com.itwillbs.bookjuk.service.join.CheckService;
 import com.itwillbs.bookjuk.service.join.JoinService;
 import com.itwillbs.bookjuk.service.join.SmsService;
+import com.itwillbs.bookjuk.util.SecurityUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -114,10 +115,10 @@ public class JoinController {
         //  - 전화번호 중복확인 - userCheck 로 보내서 체크
         //  - 전화번호 중복확인후 저장 - saveUserPhone <<
         //  - 전화번호 저장후 리다이렉트 메인으로 - SUCCESS 반환해서 js에서 메인으로 리다이렉트
-        Long userNum = (Long) session.getAttribute("userNum");
+        Long userNum = SecurityUtil.getUserNum();
         boolean isSaved = joinService.saveUserPhone(userNum, userPhone);
+        log.info("isSaved: {}", isSaved);
         if (isSaved){
-            session.setAttribute("role", UserRole.ROLE_USER);
             return Map.of("RESULT", "SUCCESS");
         }
         return Map.of("RESULT", "FAIL");

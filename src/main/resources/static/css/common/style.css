@@ -9,12 +9,12 @@ body {
 }
 
 a {
-  color: rgb(47, 145, 115);
+  color: #3c955a;
   text-decoration: none;
 }
 
 a:hover {
-  color: #c5e774;;
+  color: #c5e774;
   text-decoration: none;
 }
 
@@ -157,7 +157,7 @@ h6 {
 .sidebar-nav .nav-heading {
   font-size: 11px;
   text-transform: uppercase;
-  color: rgb(47, 145, 115);
+  color: rgb#3c955a;
   font-weight: 600;
   margin: 10px 0 5px 15px;
 }
@@ -167,8 +167,7 @@ h6 {
   align-items: center;
   font-size: 15px;
   font-weight: 600;
-  color: rgb(50, 163, 89);
-  transition: 0.3;
+  color: #3c955a;
   background: #fff;
   padding: 10px 15px;
   border-radius: 4px;
@@ -177,11 +176,11 @@ h6 {
 .sidebar-nav .nav-link i {
   font-size: 16px;
   margin-right: 10px;
-  color: rgb(99, 192, 130);
+  color: #63c082;
 }
 
 .sidebar-nav .nav-link.collapsed {
-  color: rgb(60, 149, 90);
+  color: #3c955a;
   background: #fff;
 }
 
@@ -218,8 +217,7 @@ h6 {
   align-items: center;
   font-size: 14px;
   font-weight: 600;
-  color: rgb(50, 163, 89);
-  transition: 0.3;
+  color: #3c955a;
   padding: 10px 0 10px 40px;
   transition: 0.3s;
 }
@@ -237,7 +235,7 @@ h6 {
 }
 
 .sidebar-nav .nav-content a.active i {
-  background-color: rgb(232, 241, 165);
+  background-color: #e8f1a5;
 }
 
 /* 사이드바 메뉴 클릭 시 포커스 및 활성 상태에서 배경과 테두리를 제거 */

@@ -37,7 +37,7 @@
    */
   if (select('.toggle-sidebar-btn')) {
     on('click', '.toggle-sidebar-btn', function(e) {
-      select('body').classList.toggle('toggle-sidebar')
+      select('body').classList.toggle('toggle-sidebar1')
     })
   }
 
@@ -62,8 +62,7 @@
   onscroll(document, navbarlinksActive)
 
   /**
-   * Toggle .header-scrolled class to #header when page is scrolled
-   */
+   * Toggle .header-scrolled class to #header when page is scrolled */
   let selectHeader = select('#header')
   if (selectHeader) {
     const headerScrolled = () => {
@@ -77,33 +76,6 @@
     onscroll(document, headerScrolled)
   }
 
-
-  /**
-   * Initiate tooltips
-   */
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
-
- 
-
-  /**
-   * Initiate Bootstrap validation check
-   */
-  var needsValidation = document.querySelectorAll('.needs-validation')
-
-  Array.prototype.slice.call(needsValidation)
-    .forEach(function(form) {
-      form.addEventListener('submit', function(event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
-
-        form.classList.add('was-validated')
-      }, false)
-    })
 
 
 })();

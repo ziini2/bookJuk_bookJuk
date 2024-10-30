@@ -23,10 +23,13 @@
   <link th:href="@{/css/books/books.css}" rel="stylesheet">
 
   <!--달력 조회-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Bootstrap Datepicker CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+  <!-- Bootstrap Datepicker JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
 
 
 </head>
@@ -36,55 +39,99 @@
   <div th:replace="/fragment/sidebar :: sidebar2"></div>
 
   <main id="main" class="main">
-    <div class="container text-center">
-      <div class="row">
-        <div class="col">
-          <div class="card" style="width: 12rem;">
-            <img th:src="@{/images/books/noimage.png}" alt="No Image" id="bookImage">
-            <div class="card-body">
-              <p class="card-text">
-                <input type="file" accept="image/*" onchange="previewImage(event)" style="display: none;" id="imageInput">
-                <button type="button" class="btn btn-dark" onclick="document.getElementById('imageInput').click();">추가</button>
-                <button type="button" class="btn btn-dark" onclick="deleteImage()">삭제</button>
-              </p>
-            </div>
-          </div>
-        </div>
+      <div class="container text-center">
+          <div class="row justify-content-center"> <!-- 중앙 정렬을 위한 클래스 추가 -->
+              <div class="col-auto"> <!-- col-auto로 너비 조정 -->
+                  <div class="card" style="width: 12rem; margin-bottom: 1rem;">
+                      <img th:src="@{/images/books/noimage.png}" alt="No Image" id="bookImage">
+                      <div class="card-body">
+                          <p class="card-text">
+                              <input type="file" accept="image/*" onchange="previewImage(event)" style="display: none;" id="imageInput">
+                              <button type="button" class="btn btn-dark" onclick="document.getElementById('imageInput').click();">추가</button>
+                              <button type="button" class="btn btn-dark" onclick="deleteImage()">삭제</button>
+                          </p>
+                      </div>
+                  </div>
+              </div>
 
-        <div class="col">
-          <div class="input-group mb-3">
-            <span class="input-group-text">ISBN</span>
-            <input type="text" class="form-control" placeholder="도서 ISBN번호를 입력하세요">
-			<button type="button" class="btn btn-secondary">조회</button>
+              <div class="col-auto"> <!-- col-auto로 너비 조정 -->
+                  <div class="input-group mb-3">
+                      <span class="input-group-text">ISBN</span>
+                      <input type="text" class="form-control" placeholder="도서 ISBN번호를 입력하세요">
+                      <button type="button" class="btn btn-secondary">조회</button>
+                  </div>
+                  <div class="input-group mb-3">
+                      <span class="input-group-text">도서명</span>
+                      <input type="text" class="form-control" placeholder="">
+                  </div>
+                  <div class="input-group mb-3">
+                      <span class="input-group-text">저자</span>
+                      <input type="text" class="form-control" placeholder="">
+                      <span class="input-group-text">출판사</span>
+                      <input type="text" class="form-control" placeholder="">
+                  </div>
+                  <div class="input-group mb-3">
+                      <span class="input-group-text">입고일</span>
+                      <div class="custom-date-picker">
+                          <form autocomplete="off">
+                              <div class="input-group input-daterange">
+                                  <input type="text" class="form-control datepicker" placeholder="입고일 선택">
+                              </div>
+                          </form>
+                      </div>
+                      
+                      <span class="input-group-text">지점</span>
+                      <select class="form-select form-select-sm" aria-label="Small select store" style="width: 100px;">
+                          <option selected>지점선택</option>
+                          <option value="1">부전점</option>
+                          <option value="2">해운대점</option>
+                          <option value="3">양정점</option>
+                          <option value="4">강남점</option>
+                      </select>
+                  </div>
+                  <div class="input-group mb-3">
+                      <span class="input-group-text">대여현황</span>
+                      <select class="form-select form-select-sm" aria-label="Small select store" style="width: 100px;">
+                          <option selected>대여 상태를 선택하세요</option>
+                          <option value="1">대여가능</option>
+                          <option value="2">대여불가</option>
+                      </select>
+                      <span class="input-group-text">대여금액</span>
+                      <input type="text" class="form-control" placeholder="금액입력">
+                  </div>
+
+                  <div class="input-group mb-3">
+                      <span class="input-group-text">도서상태</span>
+                      <select class="form-select form-select-sm" aria-label="Small select store" style="width: 50%;">
+                          <option selected>도서 상태를 선택하세요</option>
+                          <option value="1">양호</option>
+                          <option value="2">보통</option>
+                          <option value="3">불량</option>
+                          <option value="4">폐기</option>
+                          <option value="5">분실</option>
+                      </select>
+                      <span class="input-group-text" style="margin-right: 1rem;">수량</span>
+                      <div class="d-flex align-items-center">
+                          <button type="button" class="btn btn-outline-secondary btn-sm" onclick='count("minus", 1)'>
+                              <i class="ri-subtract-line" style="font-size: 0.75rem;"></i>
+                          </button>
+                          <div id="result-1" class="mx-2">0</div>
+                          <button type="button" class="btn btn-outline-secondary btn-sm" onclick='count("plus", 1)'>
+                              <i class="ri-add-fill" style="font-size: 0.75rem;"></i>
+                          </button>
+                      </div>
+                  </div>
+              </div>
           </div>
-          <div class="input-group mb-3">
-            <span class="input-group-text">도서명</span>
-            <input type="text" class="form-control" placeholder="">
+
+          <div class="text-end">
+              <button type="button" class="btn btn-outline-dark">초기화</button>
+              <button type="button" class="btn btn-outline-success">등록하기</button>
           </div>
-          <div class="input-group mb-3">
-            <span class="input-group-text">저자</span>
-            <input type="text" class="form-control" placeholder="">
-            <span class="input-group-text">출판사</span>
-            <input type="text" class="form-control" placeholder="">
-          </div>
-          <div class="input-group mb-4">
-            <span class="input-group-text">입고일</span>
-            <i class="ri-calendar-check-fill input-group-text"></i>
-			<!--달력-->
-			<div class="custom-date-picker">
-				<form autocomplete="off">
-					<div class="input-group input-daterange">
-					    <input type="text" class="form-control" placeholder="입고일 선택" readonly>
-					</div>
-			   </form>
-			 </div>
-           </div>
-         </div>
-       </div>
-     </div>
+      </div>
   </main>
 
-  
+
   <!--이미지 파일 추가하는거 -->
   <script>
 	function previewImage(event) {
@@ -98,17 +145,35 @@
 		    image.src = '/images/books/noimage.png'; // 기본 이미지로 되돌리기
 		}
   </script>
+  <!--달력 js-->
   <script>
 	$(document).ready(function() {
-	    $('.input-daterange input').datepicker({
-	        format: 'yyyy-mm-dd',
-	        autoclose: true
+	    $('.datepicker').datepicker({
+	        format: 'yyyy-mm-dd', // 날짜 형식 설정
+	        autoclose: true, // 날짜 선택 후 자동으로 닫기
+	        todayHighlight: true // 오늘 날짜 강조
+	    }).on('changeDate', function(e) {
+	        // 날짜 변경 시 원하는 작업을 추가할 수 있습니다.
 	    });
 	});
 
     </script>
+	<script>
+	    function count(type, bookId) {
+	        const resultElement = document.getElementById(`result-${bookId}`);
+	        let number = parseInt(resultElement.innerText);
 
-  <!-- 사이드바 열었다 닫았다 하는거 -->
+	        if (type === 'plus') {
+	            number += 1;
+	        } else if (type === 'minus') {
+	            if (number > 0) {
+	                number -= 1;
+	            }
+	        }
+
+	        resultElement.innerText = number; // 결과 출력
+	    }
+	</script>
    <script th:src="@{/js/common/main.js}"></script>
 </body>
 </html>

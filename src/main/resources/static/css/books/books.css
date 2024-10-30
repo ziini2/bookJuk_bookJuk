@@ -1,159 +1,32 @@
 /*달력*/
-
-.custom-date-picker {
-  padding-left: 10px;
-}
-
-.custom-date-picker .input-group.input-daterange {
-    height: auto; /* 높이를 자동으로 조정 */
-}
-
-.custom-date-picker input {
-	height: 38px; /* 원하는 높이로 조정 */
-	padding: 5px 10px; /* 패딩을 줄여서 세로 길이 감소 */
-	border: 1px solid lightgrey !important;
-	border-radius: 10px;
-	box-sizing: border-box;
-	background-color: #fff !important;
-	color: #4CAF50 !important;
-	font-size: 16px; /* 폰트 크기 조정 */
-	letter-spacing: 1px;
-	font-weight: bold !important;
-}
-
-.custom-date-picker .input1 {
-  text-align: left !important;
-  width: 10px;
-  height: 10px;
-}
-
-.custom-date-picker .input2 {
-  text-align: right !important;
-  height: 10px;
-}
-
-
-.custom-date-picker input:focus {
-    -moz-box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-    border: 1px solid #512DA8;
-    outline-width: 0;
-}
-
-.custom-date-picker ::placeholder {
-    color: #BDBDBD;
-    opacity: 1;
-}
-
-.custom-date-picker :-ms-input-placeholder {
-    color: #BDBDBD;
-}
-
-.custom-date-picker ::-ms-input-placeholder {
-    color: #BDBDBD;
-}
-
-.custom-date-picker button:focus {
-    -moz-box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-    outline-width: 0;
-}
-
 .datepicker {
-  background-color: #fff;
-  border-radius: 0 !important;
-  padding: 15px 20px !important;
-  align-content: center !important;
+    z-index: 1000; /* 다른 요소 위에 표시되도록 z-index 설정 */
+	
 }
 
 .datepicker-dropdown {
-  top: 0;
-  left: calc(50% - 161px) !important;
+	top: 280px !important; 
+	left: 642.333px; 
+	z-index: 10; 
+	display: block;
 }
 
-.datepicker-dropdown.datepicker-orient-left:before {
-  left: calc(50% - 6px) !important;
+.input-group .form-control {
+    height: calc(2.25rem + 2px); /* 다른 입력 필드와 높이를 맞춥니다 */
+    padding: 0.375rem 0.75rem; /* 패딩을 통일합니다 */
+    margin: 0; /* 마진을 초기화합니다 */
 }
 
-.datepicker-dropdown.datepicker-orient-left:after {
-  left: calc(50% - 5px) !important;
+.custom-date-picker .input-group {
+    align-items: center; /* 수직 정렬을 맞춥니다 */
 }
 
-.datepicker table tr td.today, span.focused {
-  border-radius: 50% !important;
-  background-image: linear-gradient(#FFF3E0, #FFE0B2);
+.custom-select {
+    width: 120px; /* 원하는 너비로 조정 */
 }
 
-.datepicker table tr td.today.range {
-  background-image: linear-gradient(#eeeeee, #eeeeee) !important;
-  border-radius: 0 !important;
+.card {
+    margin-bottom: 1rem; /* 카드 아래 여백 */
+    margin-left: auto; /* 자동 마진으로 오른쪽으로 이동 */
+    margin-right: 0; /* 오른쪽 마진 제거 */
 }
-
-/*Weekday title*/
-.custom-date-picker thead tr:nth-child(3) th {
-  font-weight: bold !important;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.old, .day, .new {
-  width: 40px !important;
-  height: 40px !important;
-  border-radius: 0px !important;
-  border: 1px solid lightgrey !important;
-}
-
-.day.old, .day.new {
-  background-color: #F5F5F5 !important;
-  color: #E0E0E0 !important;
-}
-
-.day.old:hover, .day.new:hover {
-  border-radius: 0px !important;
-}
-
-.old-day:hover, .day:hover, .new-day:hover, .month:hover, .year:hover, .decade:hover, .century:hover {
-  border-radius: 50% !important;
-  background-color: #eee;
-}
-
-.custom-date-picker .active {
-  border-radius: 50% !important;
-  background-image: linear-gradient(#90CAF9, #64B5F6) !important;
-  color: #fff !important;
-}
-
-.range-start, .range-end {
-  border-radius: 50% !important;
-  background-image: linear-gradient(#4CAF50, #4CAF50) !important;
-}
-
-.range {
-  color: #4CAF50 !important;
-}
-
-.prev, .next, .datepicker-switch {
-  border-radius: 0 !important;
-  padding: 10px 10px 10px 10px !important;
-  font-size: 18px;
-  opacity: 0.7;
-  color: #4CAF50;
-}
-
-.prev:hover, .next:hover, .datepicker-switch:hover {
-  background-color: inherit !important;
-  opacity: 1;
-}
-
-@media screen and (max-width: 500px) {
-  .datepicker-dropdown.datepicker-orient-right:before {
-    right: calc(50% - 6px) !important;
-  }
-
-  .datepicker-dropdown.datepicker-orient-right:after {
-    right: calc(50% - 5px) !important;
-  }
-}
-/*달력 END*/

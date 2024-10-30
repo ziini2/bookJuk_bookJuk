@@ -6,6 +6,7 @@ import com.itwillbs.bookjuk.dto.UserDTO;
 import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.exception.ValidationException;
 import com.itwillbs.bookjuk.repository.UserRepository;
+import com.itwillbs.bookjuk.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -82,13 +83,15 @@ public class JoinService {
 
     //소셜로그인 전화번호 저장
     public boolean saveUserPhone(Long userNum, String userPhone) {
+        log.info("saveUserPhone: {}", userNum);
         UserEntity user = userRepository.findByUserNum(userNum);
         if (user == null) {
             return false;
         }
         user.setUserPhone(userPhone);
         user.setUserRole(UserRole.ROLE_USER);
-        userRepository.save(user);
-        return true;
+        UserEntity updateUser = userRepository.save(user);
+
+        return SecurityUtil.reloadUserRole(updateUser);
     }
 }

@@ -17,7 +17,12 @@ public class CustomUserDetails implements UserDetails {
     public Long getUserNum(){
         return userEntity.getUserNum();
     }
+    //사용자의 이름 불러오기
+    public String getName(){
+        return userEntity.getUserName();
+    }
 
+    //스프링 시큐리티 name 읜 userID 를 가져온다
     @Override
     public String getUsername() {
         return userEntity.getUserId();

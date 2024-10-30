@@ -39,13 +39,13 @@
 
 		<div class="pagetitle">
 			<h1>지점목록</h1>
-<!--			<nav>-->
-<!--				<ol class="breadcrumb">-->
-<!--					<li class="breadcrumb-item"><a href="index.html">Home</a></li>-->
-<!--					<li class="breadcrumb-item">Tables</li>-->
-<!--					<li class="breadcrumb-item active">Data</li>-->
-<!--				</ol>-->
-<!--			</nav>-->
+			<!--			<nav>-->
+			<!--				<ol class="breadcrumb">-->
+			<!--					<li class="breadcrumb-item"><a href="index.html">Home</a></li>-->
+			<!--					<li class="breadcrumb-item">Tables</li>-->
+			<!--					<li class="breadcrumb-item active">Data</li>-->
+			<!--				</ol>-->
+			<!--			</nav>-->
 		</div><!-- End Page Title -->
 
 		<section class="section">
@@ -62,8 +62,10 @@
 										<input type="text" name="query" placeholder="Search"
 											title="Enter search keyword">
 										<button type="submit" title="Search">
-											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-											  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+												fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+												<path
+													d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
 											</svg>
 										</button>
 										<div>개</div>
@@ -73,17 +75,17 @@
 
 								<!--지점등록 버튼-->
 								<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-									data-bs-target="#exampleModal" data-bs-whatever="@mdo">지점등록
+									data-bs-target="#storeModal" data-bs-whatever="@mdo">지점등록
 								</button>
 								<!--지점등록 버튼 끝-->
 							</div>
 
-							<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+							<div class="modal fade" id="storeModal" tabindex="-1" aria-labelledby="storeModalLabel"
 								aria-hidden="true">
 								<div class="modal-dialog">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLabel">지점등록</h5>
+											<h5 class="modal-title" id="storeModalLabel">지점등록</h5>
 											<button type="button" class="btn-close" data-bs-dismiss="modal"
 												aria-label="Close"></button>
 										</div>
@@ -120,14 +122,24 @@
 												</div>
 
 												<div class="mb-3 position-relative">
-												    <label for="store-location" class="col-form-label">위치</label>
-												    <input name="storeLocation" type="text" class="form-control pr-5" id="store-location">
-												    
-													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
-														onclick="addressUpdate()"
-												        class="bi bi-map position-absolute" style="top: 75%; right: 10px; transform: translateY(-50%); cursor: pointer;">
-												        <path fill-rule="evenodd" d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z"/>
+													<label for="store-location" class="col-form-label">위치</label>
+													<input name="storeLocation" type="text" class="form-control pr-5"
+														id="store-location">
+
+													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+														fill="currentColor" onclick="addressUpdate()"
+														class="bi bi-map position-absolute"
+														style="top: 75%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+														<path fill-rule="evenodd"
+															d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z" />
 													</svg>
+
+												</div>
+
+												<div class="mb-3">
+													<label for="store-location2" class="col-form-label">위치 참고 항목</label>
+													<input name="storeLocation2" type="text" class="form-control pr-5"
+														id="store-location2"></input>
 												</div>
 											</form>
 
@@ -203,12 +215,59 @@
 
 	<!-- 사이드바 열었다 닫았다 하는거 -->
 	<script th:src="@{/js/common/main.js}"></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<link th:href="@{/css/customer/customer.css}" rel="stylesheet">
+
 	<script>
 		function addressUpdate() {
-			alert("click");
+			new daum.Postcode({
+				oncomplete: function (data) {
+					// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+					// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+					// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+					var addr = ''; // 주소 변수
+					var extraAddr = ''; // 참고항목 변수
+
+					//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+					if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+						addr = data.roadAddress;
+					} else { // 사용자가 지번 주소를 선택했을 경우(J)
+						addr = data.jibunAddress;
+					}
+
+					// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+					if (data.userSelectedType === 'R') {
+						// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+						// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+						if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+							extraAddr += data.bname;
+						}
+						// 건물명이 있고, 공동주택일 경우 추가한다.
+						if (data.buildingName !== '' && data.apartment === 'Y') {
+							extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+						}
+						// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+						if (extraAddr !== '') {
+							extraAddr = ' (' + extraAddr + ')';
+						}
+						// 조합된 참고항목을 해당 필드에 넣는다.
+						//document.getElementById("sample6_extraAddress").value = extraAddr;
+
+					} else {
+						//document.getElementById("sample6_extraAddress").value = '';
+					}
+
+					// 우편번호와 주소 정보를 해당 필드에 넣는다.
+					//document.getElementById('sample6_postcode').value = data.zonecode;
+					//document.getElementById("sample6_address").value = addr;
+					// 커서를 상세주소 필드로 이동한다.
+					//document.getElementById("sample6_detailAddress").focus();
+				}
+			}).open();
 		}
 	</script>
-	
+
 </body>
 
 </html>

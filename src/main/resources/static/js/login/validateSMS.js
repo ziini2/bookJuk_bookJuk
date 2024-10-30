@@ -78,6 +78,8 @@ checkSmsCode = () => {
         $("#saveButton").prop("disabled", false);
         //비밀번호 찾기 페이지 버튼 활성화
         $("#findPassword").prop("disabled", false);
+        //비밀번호 찾기 페이지 조회 방지로 (blur)이벤트 해제
+        $("#join-userPhone").off("blur");
       }
       else {
         //에러메세지가 존재 하는지 아닌지 판단하기

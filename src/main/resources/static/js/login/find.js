@@ -46,10 +46,19 @@ $(document).ready(function () {
   //디비에 아이디 와 전화번호가 일치한다면 인증번호 보내기 버튼 활성화 하고
   //그런다음 sms 인증 하고
   $("#join-userPhone").blur( () => {
-
     const userId = $("#findPassword-userId");
     const userPhone = $("#join-userPhone");
 
+    //입력필드 값이 비어있는지 확인
+    if (!userId.val().trim()){
+      alert("아이디를 입력해주세요.")
+      userId.focus()
+      return;
+    }
+    if (!userPhone.val().trim()){
+      alert("전화번호를 입력해주세요.")
+      return;
+    }
 
     $.ajax({
       type: "POST",
@@ -103,7 +112,7 @@ $(document).ready(function () {
           const result = $(`
             <i class="bx bxs-lock-alt"></i>
             <input id="findPass-userPass" type="text" readonly/>
-            <p style="color: #db4437">로그인 후 아이디를 변경해주세요!</p>
+            <b style="color: #db4437">로그인 후 비밀번호를 변경해주세요!</b>
           `);
           $("#findPass-result").append(result);
           $("#findPass-userPass").val(newPass);

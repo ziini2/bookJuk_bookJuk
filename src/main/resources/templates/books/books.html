@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>전체도서관리</title>
+  <title>전체도서조회</title>
   
   <!-- 구글폰트 -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -20,7 +20,7 @@
 
   <!-- Main CSS File -->
   <link th:href="@{/css/common/style.css}" rel="stylesheet">
-  <link th:href="@{/css/books/books.css}" rel="stylesheet">
+<!--  <link th:href="@{/css/books/books.css}" rel="stylesheet">-->
   
 </head>
 
@@ -32,16 +32,20 @@
     <div class="pagetitle mb-4">
       <div class="row g-3 align-items-center">
         <div class="col-auto">
-          <h1>전체 도서 관리</h1>
+          <h1>전체도서조회</h1>
         </div>
         <div class="col d-flex align-items-center ms-auto">
-          <div class="col-auto me-2">
-            <select class="form-select form-select-sm" aria-label="Small select example">
-              <option selected>도서상태</option>
-              <option value="1">대여가능</option>
-              <option value="2">대여불가</option>
-              <option value="3">재고없음</option>
-            </select>
+			<!--도서상태 드롭바-->
+			<div class="dropdown-bookStatus" style="padding-top: 0.5%;">
+				<button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+					선택
+				</button>
+				<ul class="dropdown-menu align-middle">
+					<li><a class="dropdown-item" href="#">대여가능</a></li>
+					<li><a class="dropdown-item" href="#">대여불가</a></li>
+					<li><a class="dropdown-item" href="#">재고없음</a></li>
+				</ul>
+			</div>
           </div>
           <div class="col-auto">
             <div class="input-group">
@@ -108,9 +112,7 @@
             <h5 class="modal-title" id="modalLabel">수량이 변경되었습니다!</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body" id="modalBody">
-            수량이 변경되었습니다.
-          </div>
+          <div class="modal-body" id="modalBody"></div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
           </div>
@@ -119,9 +121,8 @@
     </div>
 
     <div class="d-grid gap-2 d-md-block">
-      <button class="btn btn-success" type="button">도서등록</button>
-      <button class="btn btn-secondary" type="button">도서정보수정</button>
-      <button class="btn btn-secondary" type="button">상태변경</button>
+		<a class="btn btn-success" th:href="@{/admin/addBook}" role="button">도서등록</a>
+		<a class="btn btn-success" th:href="@{/updateBook}" role="button">도서정보수정</a>
     </div>
   </main><!-- End main -->
 
@@ -159,6 +160,7 @@
 	});
 
   </script>
-
+  <!-- 사이드바 열었다 닫았다 하는거 -->
+   <script th:src="@{/js/common/main.js}"></script>
 </body>
 </html>

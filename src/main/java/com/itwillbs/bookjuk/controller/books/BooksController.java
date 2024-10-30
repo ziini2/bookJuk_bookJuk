@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Slf4j
@@ -16,5 +18,10 @@ public class BooksController {
 		return "/books/books";
 	}
 
+	@GetMapping("/admin/addBook")
+	public String addBook() {
+		return "/books/addBook";
+	}
+	
 	
 }

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>전체도서관리</title>
+  
+  <!-- 구글폰트 -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- 사이드바 아이콘 -->
+  <link th:href="@{/images/common/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{/images/common/remixicon/remixicon.css}" rel="stylesheet">
+  
+  <!--부트스트랩 외부링크-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Main CSS File -->
+  <link th:href="@{/css/common/style.css}" rel="stylesheet">
+  <link th:href="@{/css/books/books.css}" rel="stylesheet">
+  
+</head>
+
+<body>
+  <div th:replace="/fragment/header :: header2"></div>
+  <div th:replace="/fragment/sidebar :: sidebar2"></div>
+
+  <main id="main" class="main">
+    <div class="pagetitle mb-4">
+      <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <h1>전체 도서 관리</h1>
+        </div>
+        <div class="col d-flex align-items-center ms-auto">
+          <div class="col-auto me-2">
+            <select class="form-select form-select-sm" aria-label="Small select example">
+              <option selected>도서상태</option>
+              <option value="1">대여가능</option>
+              <option value="2">대여불가</option>
+              <option value="3">재고없음</option>
+            </select>
+          </div>
+          <div class="col-auto">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-sm" placeholder="도서명, 저자명으로 검색" 
+                     aria-label="도서명, 저자명으로 검색" aria-describedby="button-addon2">
+              <button class="btn btn-outline-secondary btn-sm" type="button" id="button-addon2">검색</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive mt-4">
+      <table class="table datatable">
+        <thead>
+          <tr>
+            <th>도서번호</th>
+            <th>ISBN번호</th>
+            <th>도서명</th>
+            <th>저자</th>
+            <th>출판사</th>
+            <th>입고일</th>
+            <th>대여현황</th>
+            <th>도서상태</th>
+            <th>재고</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>215684613</td>
+            <td>호랑나비</td>
+            <td>김흥국</td>
+            <td>나비야</td>
+            <td>24-10-30</td>
+            <td>대여가능</td>
+            <td>양호</td>
+            <td>
+              <div class="d-flex align-items-center">
+                <button type="button" class="btn btn-outline-secondary btn-sm" onclick='count("minus", 1)'>
+                  <i class="ri-subtract-line" style="font-size: 0.75rem;"></i>
+                </button>
+                <div id="result-1" class="mx-2">0</div>
+                <button type="button" class="btn btn-outline-secondary btn-sm" onclick='count("plus", 1)'>
+                  <i class="ri-add-fill" style="font-size: 0.75rem;"></i>
+                </button>
+              </div>
+            </td>
+            <td>
+              <button type="button" class="btn btn-outline-warning">상세보기</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+	<!--모달알림-->
+    <div class="modal fade" id="modalMessage" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">수량이 변경되었습니다!</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="modalBody">
+            수량이 변경되었습니다.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-grid gap-2 d-md-block">
+      <button class="btn btn-success" type="button">도서등록</button>
+      <button class="btn btn-secondary" type="button">도서정보수정</button>
+      <button class="btn btn-secondary" type="button">상태변경</button>
+    </div>
+  </main><!-- End main -->
+
+  <script>
+    function count(type, bookId) {
+      // 결과를 표시할 element
+      const resultElement = document.getElementById(`result-${bookId}`);
+
+      // 현재 화면에 표시된 값
+      let number = parseInt(resultElement.innerText);
+
+      // 더하기/빼기
+      if (type === 'plus') {
+        number += 1; // 수량 증가
+      } else if (type === 'minus') {
+        if (number > 0) {
+          number -= 1; // 수량 감소 (0보다 클 경우에만)
+        }
+      }
+
+      // 결과 출력
+      resultElement.innerText = number; // 결과 출력
+
+      // 모달 창 표시
+      const modalBody = document.getElementById('modalBody');
+      modalBody.innerText = `현재 수량: ${number}`;
+      const modal = new bootstrap.Modal(document.getElementById('modalMessage'));
+      modal.show();
+    }
+  </script>
+  <script>
+	document.getElementById('sidebarToggle').addEventListener('click', function() {
+	    const sidebar = document.getElementById('sidebar');
+	    sidebar.classList.toggle('active'); // 'active' 클래스가 사이드바 열기/닫기 상태를 관리
+	});
+
+  </script>
+
+</body>
+</html>

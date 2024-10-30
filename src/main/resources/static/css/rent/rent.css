@@ -10,7 +10,7 @@ body {
   color: #333;
 }
 
-#container rent {
+.container.rent {
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
@@ -25,54 +25,33 @@ h2 {
   margin-bottom: 20px;
 }
 
-.rental-form {
-  display: grid;
-  grid-template-columns: repeat(2, 0.5fr);
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-.form-group {
+.rental-form .row {
   display: flex;
-  flex-direction: column;
+  align-items: center;
 }
 
-.form-group label {
-  margin-bottom: 5px;
-  font-weight: 600;
-}
-
-.form-group input, .form-group select {
-  width: 50%; /* 입력칸 가로 길이를 50%로 설정 */
+.form-control {
+  width: 100%;
   padding: 10px;
   font-size: 1rem;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
-.button-group {
-  grid-column: span 2; /* 버튼이 2개의 칸을 차지하도록 설정 */
-  display: flex;
-  justify-content: flex-end; /* 버튼을 오른쪽으로 정렬 */
-  align-self: end; /* 버튼을 하단에 정렬 */
-  gap: 10px; /* 버튼 간 간격 */
-}
-
 .btn {
-  width: 120px; /* 원하는 가로 크기로 버튼 너비를 설정 */
-  padding: 10px 0; /* 세로 패딩을 추가하여 버튼 높이를 맞춤 */
+  padding: 8px 16px;
+  font-size: 0.9rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  text-align: center; /* 텍스트 중앙 정렬 */
 }
 
-.btn.primary {
+.btn-success {
   background-color: #4caf50;
   color: #fff;
 }
 
-.btn.secondary {
+.btn-danger {
   background-color: #f44336;
   color: #fff;
 }
@@ -99,8 +78,110 @@ h2 {
   border-radius: 4px;
 }
 
-.form-group:nth-child(2),
-.form-group:nth-child(4),
-.form-group:nth-child(6) {
-  grid-column: 1 / 2; /* 2번째, 4번째, 6번째 입력 요소를 첫 번째 열로 이동 */
-}
+
+/** {*/
+/*  margin: 0;*/
+/*  padding: 0;*/
+/*  box-sizing: border-box;*/
+/*}*/
+
+/*body {*/
+/*  font-family: 'Nunito', sans-serif;*/
+/*  background-color: #f9f9f9;*/
+/*  color: #333;*/
+/*}*/
+
+/*#container rent {*/
+/*  width: 90%;*/
+/*  max-width: 1200px;*/
+/*  margin: 0 auto;*/
+/*  padding: 20px;*/
+/*  background-color: #fff;*/
+/*  border-radius: 8px;*/
+/*  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*h2 {*/
+/*  text-align: center;*/
+/*  margin-bottom: 20px;*/
+/*}*/
+
+/*.rental-form {*/
+/*  display: grid;*/
+/*  grid-template-columns: repeat(2, 0.5fr);*/
+/*  gap: 20px;*/
+/*  margin-bottom: 30px;*/
+/*}*/
+
+/*.form-group {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*}*/
+
+/*.form-group label {*/
+/*  margin-bottom: 5px;*/
+/*  font-weight: 600;*/
+/*}*/
+
+/*.form-group input, .form-group select {*/
+/*  width: 50%;  입력칸 가로 길이를 50%로 설정 */
+/*  padding: 10px;*/
+/*  font-size: 1rem;*/
+/*  border: 1px solid #ddd;*/
+/*  border-radius: 4px;*/
+/*}*/
+
+/*.button-group {*/
+/*  grid-column: span 2;  버튼이 2개의 칸을 차지하도록 설정 */
+/*  display: flex;*/
+/*  justify-content: flex-end;  버튼을 오른쪽으로 정렬 */
+/*  align-self: end;  버튼을 하단에 정렬 */
+/*  gap: 10px;  버튼 간 간격 */
+/*}*/
+
+/*.btn {*/
+/*  width: 120px;  원하는 가로 크기로 버튼 너비를 설정 */
+/*  padding: 10px 0;  세로 패딩을 추가하여 버튼 높이를 맞춤 */
+/*  border: none;*/
+/*  border-radius: 4px;*/
+/*  cursor: pointer;*/
+/*  text-align: center;  텍스트 중앙 정렬 */
+/*}*/
+
+/*.btn.primary {*/
+/*  background-color: #4caf50;*/
+/*  color: #fff;*/
+/*}*/
+
+/*.btn.secondary {*/
+/*  background-color: #f44336;*/
+/*  color: #fff;*/
+/*}*/
+
+/*.rental-table {*/
+/*  width: 100%;*/
+/*  border-collapse: collapse;*/
+/*  margin-top: 20px;*/
+/*}*/
+
+/*.rental-table th, .rental-table td {*/
+/*  padding: 10px;*/
+/*  text-align: left;*/
+/*  border: 1px solid #ddd;*/
+/*}*/
+
+/*.rental-table th {*/
+/*  background-color: #4caf50;*/
+/*  color: #fff;*/
+/*}*/
+
+/*.rental-table select {*/
+/*  padding: 5px;*/
+/*  border-radius: 4px;*/
+/*}*/
+
+/*.form-group:nth-child(2),*/
+/*.form-group:nth-child(4),*/
+/*.form-group:nth-child(6) {*/
+/*  grid-column: 1 / 2;  2번째, 4번째, 6번째 입력 요소를 첫 번째 열로 이동 */
+/*}*/

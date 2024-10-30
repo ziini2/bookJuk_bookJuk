@@ -6,6 +6,7 @@ import com.itwillbs.bookjuk.security.CustomUserDetails;
 import com.itwillbs.bookjuk.security.SessionSyncFilter;
 import com.itwillbs.bookjuk.service.login.CustomOAuth2UserService;
 import com.itwillbs.bookjuk.service.login.CustomUserDetailsService;
+import com.itwillbs.bookjuk.util.SecurityUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomUserDetailsService customUserDetailsService;
-    private final SessionSyncFilter sessionSyncFilter;
+//    private final SessionSyncFilter sessionSyncFilter;
 
     //BCrypt 암호화 설정
     @Bean
@@ -46,17 +47,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.addFilterBefore(sessionSyncFilter, UsernamePasswordAuthenticationFilter.class);
 
         //접근 권한에 대한 설정 부분
         http.authorizeHttpRequests((auth) -> auth
 //                .requestMatchers("/**").permitAll()
-                //이래서 url 주소에 /OOO/OO 으로 나눠주는구나 너무많아진다 ... 점점
-                //수정해야겠는디 ..
-                .requestMatchers("/", "/join", "/login","/oauth2/**", "/checkData",
-                        "/loginCheck", "/actuator/**", "/logs/**", "/find", "/findId", "/findPass", "/findCheck",
-                        "/sendSmsCodeTest", "/codeValidate", "/verifySmsCode").permitAll()
-                .requestMatchers("/phone").hasAnyRole("INACTIVE") //소셜로그인 회원은 전화번호 입력하지않으면 계속해서 전화번호 입력창으로 리다이렉트!
+                .requestMatchers("/login/phone").hasAnyRole("INACTIVE") //소셜로그인 회원은 전화번호 입력하지않으면 계속해서 전화번호 입력창으로 리다이렉트!
+                .requestMatchers("/", "/login/**").permitAll()
                 .requestMatchers("/admin").hasRole("ADMIN")
                 .requestMatchers("/test").hasAnyRole("ADMIN", "USER") //여기에 로그인 된사람만 할수있는 페이지 추가
                 .anyRequest().authenticated()
@@ -72,21 +68,19 @@ public class SecurityConfig {
 
         //로그인 페이지 관련 설정
         http.formLogin((auth) -> auth.loginPage("/login")
-                .loginProcessingUrl("/loginCheck") //로그인 체크 시 시큐리티가 자동으로 사용자 인증을 처리하는 경로
+                .loginProcessingUrl("/login/loginCheck") //로그인 체크 시 시큐리티가 자동으로 사용자 인증을 처리하는 경로
                 .usernameParameter("userId") //userName 으로 인식하기 때문에 id 의 파라미터 값을 userId 로 변경
                 .passwordParameter("userPassword") //password 으로 인식하기 때문에 password 의 파라미터 값을 userPassword 로 변경
                 .permitAll()
                 .successHandler((request, response, authentication) -> {
                     // 로그인 성공 시 AJAX 요청에 대한 응답 처리
-                    HttpSession session = request.getSession();
-                    // 사용자 PK 를 세션에 저장
-                    session.setAttribute("userNum", ((CustomUserDetails) authentication.getPrincipal()).getUserNum()); // 사용자 ID
+                    log.info("userNum : {}", ((CustomUserDetails) authentication.getPrincipal()).getUserNum()); // 사용자 PK
                     // 사용자 롤을 세션에 저장
                     String role = authentication.getAuthorities().stream()
                             .map(GrantedAuthority::getAuthority)
                             .findFirst() // 첫 번째 롤만 가져옵니다. (여러 롤이 있을 수 있음)
                             .orElse(null);
-                    session.setAttribute("role", role); // 사용자 롤
+                    log.info("role : {}", role);
 
                     // 로그인 성공 시 AJAX 요청에 대한 응답 처리
                     response.setStatus(HttpServletResponse.SC_OK);
@@ -101,22 +95,15 @@ public class SecurityConfig {
         http.oauth2Login((oauth2) -> oauth2
                 .loginPage("/oauth2")
                 .successHandler((request, response, authentication) -> {
-                    HttpSession session = request.getSession();
 
-                    //사용자 pk 를 세션에 저장
-                    Long userNum = ((CustomOAuth2User) authentication.getPrincipal()).getUserNum();
-                    session.setAttribute("userNum", userNum);
+                    log.info("userNum: {}", SecurityUtil.getUserNum());
 
-                    //사용자 권한 세션에 저장
-                    String role = authentication.getAuthorities().stream()
-                            .map(GrantedAuthority::getAuthority)
-                            .findFirst() // 첫 번째 권한만 가져오기
-                            .orElse(null);
-                    session.setAttribute("role", role);
+                    String role = SecurityUtil.getUserRoles().get(0);
+                    log.info("role : {}", role);
 
                     //사용자 권한에 따라 리다이렉트 주소 변경
                     if ("ROLE_INACTIVE".equals(role)) {
-                        response.sendRedirect("/phone");
+                        response.sendRedirect("/login/phone");
                     } else {
                         response.sendRedirect("/");
                     }
@@ -135,14 +122,10 @@ public class SecurityConfig {
                 .useSecureCookie(false)  // HTTPS가 아닌 경우 false 설정
                 .rememberMeCookieDomain("localhost")  // 도메인 설정
                 .authenticationSuccessHandler((request, response, authentication) -> {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("userNum", ((CustomUserDetails) authentication.getPrincipal()).getUserNum());
-                    // 사용자 권한(롤)을 세션에 저장
-                    String role = authentication.getAuthorities().stream()
-                            .map(GrantedAuthority::getAuthority)
-                            .findFirst() // 첫 번째 권한만 가져오기
-                            .orElse(null);
-                    session.setAttribute("role", role);
+                    log.info("userNum: {}", SecurityUtil.getUserNum());
+
+                    String role = SecurityUtil.getUserRoles().get(0);
+                    log.info("role : {}", role);
 
                     response.sendRedirect("/");
                 })

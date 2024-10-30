@@ -10,7 +10,7 @@ $(document).ready(function () {
 
     $.ajax({
       type: "POST",
-      url: "/loginCheck",
+      url: "/login/loginCheck",
       data: {
         userId: userId,
         userPassword: userPassword,

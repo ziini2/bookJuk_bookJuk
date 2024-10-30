@@ -9,7 +9,7 @@ $(document).ready(function () {
 
     $.ajax({
       type: "POST",
-      url: "/findId",
+      url: "/login/findId",
       contentType: "application/json",
       data: JSON.stringify({
         userName: userName.val(),
@@ -52,7 +52,7 @@ $(document).ready(function () {
 
     $.ajax({
       type: "POST",
-      url: "/findCheck",
+      url: "/login/findCheck",
       contentType: "application/json",
       data: JSON.stringify({
         userId: userId.val(),
@@ -90,7 +90,7 @@ $(document).ready(function () {
 
     $.ajax({
       type: "POST",
-      url: "/findPass",
+      url: "/login/findPass",
       contentType: "application/json",
       data: JSON.stringify({
         userId: userId.val(),

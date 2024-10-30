@@ -25,7 +25,7 @@ validateSMS = () => {
 
   $.ajax({
     type: "POST",
-    url: "/sendSmsCodeTest",
+    url: "/login/sendSmsCodeTest",
     contentType: "application/json",
     data: userPhone.val(),
     success: (res) => {
@@ -54,7 +54,7 @@ checkSmsCode = () => {
   let userCode = input_code.val().trim();
   $.ajax({
     type: "POST",
-    url: "/codeValidate",
+    url: "/login/codeValidate",
     contentType: "application/json",
     data: userCode,
     success: (res) => {
@@ -99,7 +99,7 @@ saveUserPhone = () => {
   const userPhone = $("#join-userPhone").val()
   $.ajax({
     type: "POST",
-    url: "/join/phone",
+    url: "/login/join/phone",
     contentType: "application/json",
     data: userPhone,
     success: (res) => {
@@ -109,7 +109,7 @@ saveUserPhone = () => {
       }
       else{
         alert("오류입니다. 관리자에게 문의하여 주세요 email(bookjuk@bookjuk.com)");
-        window.location.href = "/login";
+        window.location.href = "/login/login";
       }
     }
   })

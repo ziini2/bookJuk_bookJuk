@@ -16,6 +16,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/login")
 public class JoinController {
 
     private final JoinService joinService;

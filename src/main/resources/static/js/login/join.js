@@ -80,7 +80,7 @@ $(document).ready(function () {
 
     $.ajax({
       type: "POST",
-      url: "/checkData",
+      url: "/login/checkData",
       contentType: "application/json",
       data: JSON.stringify({
         [dataKey]: value
@@ -272,7 +272,7 @@ $(document).ready(function () {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: "POST",
-        url: "/verifySmsCode",
+        url: "/login/verifySmsCode",
         success: (res) => {
           console.log(res.RESULT);
           resolve(res.RESULT); // 인증 결과 반환
@@ -302,12 +302,12 @@ $(document).ready(function () {
 
       $.ajax({
         type: "POST",
-        url: "/join",
+        url: "/login/join",
         data: JSON.stringify(formData),
         contentType: "application/json",
         success: function (response) {
           console.log("회원가입 성공");
-          window.location.href = "/login";
+          window.location.href = "/login/login";
         },
         error: function (xhr, status, error) {
           console.log("회원가입 실패" + error);

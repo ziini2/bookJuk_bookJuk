@@ -18,31 +18,34 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <!-- Main CSS File -->
-  <link th:href="@{css/common/style.css}" rel="stylesheet">
   <link th:href="@{css/common/userStyle.css}" rel="stylesheet">
+  
 </head>
 
 <body>
   <div th:replace="~{/fragment/header :: header2}"></div>
-  <div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
+  <div th:replace="~{/fragment/userSidebar :: sidebar3}"></div>
 
   <!-- 메인 배너 시작 -->
   <div id="mainContent" class="content" style="transition: margin-left 0.3s;">
-    <div class="container-fluid py-5 mb-5 hero-header">
-      <div class="container py-5">
-        <div class="row g-5 align-items-center justify-content-center">
-          <div class="col-md-12 col-lg-8 text-center">
-            <!-- 검색란 -->
-            <div>
-              <div class="position-relative mx-auto" style="max-width: 600px;">
-                <input class="form-control border-2 w-100 py-3 px-4 rounded-pill" type="text" placeholder="도서명, 작가이름을 입력하세요">
-                <button type="submit" class="btn btn-outline-success border-2 py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 20px; background-color: rgb(60, 149, 90);">찾기</button>
+      <div class="container-fluid py-5 mb-5 hero-header">
+          <div class="container py-5">
+              <div class="row g-5 align-items-center justify-content-center">
+                  <div class="col-md-12 col-lg-8 text-center">
+					<!-- 검색란 -->
+					<div class="position-relative mx-auto" style="max-width: 550px; margin-top: 50px;">
+					    <input class="form-control border-2 w-100 py-3 px-4 rounded-pill" type="text" placeholder="도서명, 작가이름을 입력하세요">
+					    <button type="submit" class="btn btn-outline-success1 position-absolute rounded-pill text-white" 
+					            style="top: 0; right: 0; height: 60px; padding: 0 20px; background-color: #63c082; border-bottom-left-radius: 0;">
+					        찾기
+					    </button>
+					</div>
+                  </div>
               </div>
-            </div>       
           </div>
-        </div>
       </div>
-    </div>
+  </div>
+
     <!-- 메인 배너 끝 -->
 
     <!-- 추천 책 리스트 -->
@@ -51,13 +54,13 @@
       <div id="recommendCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <div class="card p-3" style="background-color: #fff;">
+            <div class="card p-3" style="background-color: #cdeea8;">
               <h5 class="card-title">책 제목 1</h5>
               <p class="card-text">작가 이름 1</p>
             </div>
           </div>
           <div class="carousel-item">
-            <div class="card p-3" style="background-color: #fff;">
+            <div class="card p-3" style="background-color: #cdeea8;">
               <h5 class="card-title">책 제목 2</h5>
               <p class="card-text">작가 이름 2</p>
             </div>
@@ -121,9 +124,8 @@
   </div>
 
   <!-- 사이드바 열었다 닫았다 하는거 -->
-  <script th:src="@{/js/common/main.js}"></script>
+  <script th:src="@{/js/common/userMain.js}"></script>
 
-  <!-- 사이드바 열었다 닫았다 하는 스크립트 -->
    
 </body>
 </html>

@@ -68,12 +68,12 @@
 													d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
 											</svg>
 										</button>
-										<div>개</div>
+										<div> 개</div>
 									</form>
 								</div>
 								<!--검색 끝-->
 
-								<!--지점등록 버튼-->
+								<!--지점을 등록하는 버튼-->
 								<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 									data-bs-target="#storeModal" data-bs-whatever="@mdo">지점등록
 								</button>
@@ -173,7 +173,7 @@
 
 								</thead>
 								<tbody>
-									<tr>
+									<tr onclick="location.href='/admin/store/num'">
 										<td>Unity Pugh</td>
 										<td>9958</td>
 										<td>Curicó</td>
@@ -216,21 +216,20 @@
 	<!-- 사이드바 열었다 닫았다 하는거 -->
 	<script th:src="@{/js/common/main.js}"></script>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<link th:href="@{/css/customer/customer.css}" rel="stylesheet">
 
 	<script>
 		function addressUpdate() {
 			new daum.Postcode({
-				oncomplete: function (data) {
-					// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
+				oncomplete: function (data) { 
 					// 각 주소의 노출 규칙에 따라 주소를 조합한다.
 					// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
 					var addr = ''; // 주소 변수
 					var extraAddr = ''; // 참고항목 변수
 
 					//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-					if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+					if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우 R
 						addr = data.roadAddress;
 					} else { // 사용자가 지번 주소를 선택했을 경우(J)
 						addr = data.jibunAddress;
@@ -240,6 +239,7 @@
 					if (data.userSelectedType === 'R') {
 						// 법정동명이 있을 경우 추가한다. (법정리는 제외)
 						// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+						// /[동|로|가]$/g는 JavaScript 정규 표현식 특정 문자로 문자열이 끝나는지를 검사하는 패턴
 						if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
 							extraAddr += data.bname;
 						}
@@ -252,20 +252,26 @@
 							extraAddr = ' (' + extraAddr + ')';
 						}
 						// 조합된 참고항목을 해당 필드에 넣는다.
-						//document.getElementById("sample6_extraAddress").value = extraAddr;
+						document.getElementById("store-location").value = extraAddr;
 
 					} else {
-						//document.getElementById("sample6_extraAddress").value = '';
+						document.getElementById("store-location2").value = '';
 					}
 
 					// 우편번호와 주소 정보를 해당 필드에 넣는다.
 					//document.getElementById('sample6_postcode').value = data.zonecode;
-					//document.getElementById("sample6_address").value = addr;
+					document.getElementById("store-location").value = addr + ' (' + data.buildingName + ')';
+					document.getElementById("store-location2").value = data.bname;
 					// 커서를 상세주소 필드로 이동한다.
 					//document.getElementById("sample6_detailAddress").focus();
 				}
 			}).open();
 		}
+		
+		$('#storeModal').on('hidden.bs.modal', function () {
+		    // 모든 입력 필드 초기화
+		    $(this).find('form')[0].reset();
+		});
 	</script>
 
 </body>

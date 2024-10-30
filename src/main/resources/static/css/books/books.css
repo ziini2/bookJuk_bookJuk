@@ -4,17 +4,21 @@
   padding-left: 10px;
 }
 
+.custom-date-picker .input-group.input-daterange {
+    height: auto; /* 높이를 자동으로 조정 */
+}
+
 .custom-date-picker input {
-    padding: 30px 15px !important;
-    border: 1px solid lightgrey !important;
-    border-radius: 10px;
-    box-sizing: border-box;
-    background-color: #fff !important;
-    color: #4CAF50 !important;
-    font-size: 18px !important;
-    letter-spacing: 1px;
-    position: relative;
-    font-weight: bold !important;
+	height: 38px; /* 원하는 높이로 조정 */
+	padding: 5px 10px; /* 패딩을 줄여서 세로 길이 감소 */
+	border: 1px solid lightgrey !important;
+	border-radius: 10px;
+	box-sizing: border-box;
+	background-color: #fff !important;
+	color: #4CAF50 !important;
+	font-size: 16px; /* 폰트 크기 조정 */
+	letter-spacing: 1px;
+	font-weight: bold !important;
 }
 
 .custom-date-picker .input1 {

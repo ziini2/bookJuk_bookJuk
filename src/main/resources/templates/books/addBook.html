@@ -23,12 +23,11 @@
   <link th:href="@{/css/books/books.css}" rel="stylesheet">
 
   <!--달력 조회-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
-  <!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css">-->
-  <!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css">-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+
 
 </head>
 
@@ -74,15 +73,15 @@
 			<!--달력-->
 			<div class="custom-date-picker">
 				<form autocomplete="off">
-					<div class="input-group input-daterange custom-date-picker">
-						<input type="text" class="form-control input1" placeholder="입고일 선택" readonly>
+					<div class="input-group input-daterange">
+					    <input type="text" class="form-control" placeholder="입고일 선택" readonly>
 					</div>
-				</form>
-			</div>
-          </div>
-        </div>
-      </div>
-    </div>
+			   </form>
+			 </div>
+           </div>
+         </div>
+       </div>
+     </div>
   </main>
 
   
@@ -101,11 +100,12 @@
   </script>
   <script>
 	$(document).ready(function() {
-	    $('.custom-date-picker .input-daterange').datepicker({
-	        format: 'yyyy-mm-dd', // 년-월-일 형식으로 날짜 표시
+	    $('.input-daterange input').datepicker({
+	        format: 'yyyy-mm-dd',
 	        autoclose: true
 	    });
 	});
+
     </script>
 
   <!-- 사이드바 열었다 닫았다 하는거 -->

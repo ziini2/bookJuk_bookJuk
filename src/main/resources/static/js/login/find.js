@@ -50,6 +50,7 @@ $(document).ready(function () {
     const userId = $("#findPassword-userId");
     const userPhone = $("#join-userPhone");
 
+
     $.ajax({
       type: "POST",
       url: "/login/findCheck",
@@ -117,8 +118,6 @@ $(document).ready(function () {
       }
     })
   })
-
-
 
   //전화번호 '-' 자동으로 생성
   $('#join-userPhone').on('input', function (e) {

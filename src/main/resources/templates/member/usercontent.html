@@ -31,19 +31,29 @@
 
   <style>
 	.content-box {
-		width: 860px;
-		height: 550px; 
+		width: 900px;
+		height: 650px; 
 		border: 3px solid rgb(0, 64, 0);
 		border-radius: 5px;
 		margin-top: 165px;
-		margin-left: 500px;
+		margin-left: 700px;
 		background-color: rgb(233, 255, 200);
 	}
 	
 	.content1 {
-		margin-top: 170px;
-		margin-left: 280px;
+		margin-top: 140px;
+		margin-left: 240px;
 		font-size: 22px;
+	}
+	
+	.ct1 {
+		color: rgb(5, 38, 0);
+	}
+	
+	.ct2 {
+		color: rgb(5, 38, 0);
+		margin-top: 10px;
+		margin-left: 380px;
 	}
 
   </style>
@@ -51,7 +61,7 @@
 </head>
 
 <body>
-	<div th:replace="/fragment/header :: header2"></div>
+	<div th:replace="/member/memberheader :: header2"></div>
 	<div th:replace="/member/membersidebar :: sidebar2"></div>
 
  
@@ -62,11 +72,15 @@
   <div class="content-box">
 	
 	<div class="content1">
-	<a>이메일 :</a> <span></span><br>
-	전화번호 : <span></span><br>
-	아이디 : <span></span><br>
-	비밀번호 : <span></span><br>
+	<h4 class="ct1">이메일 : <span></span></h4><br>
+	<h4 class="ct1">전화번호 : <span></span></h4><br>
+	<h4 class="ct1">아이디 : <span></span></h4><br>
+	<h4 class="ct1">비밀번호 : <span></span></h4><br>
 	</div>
+	
+	<h4 class="ct2">포인트 : <span></span>P</h4> <br>
+	
+	<h4 class="ct3">대여 도서 수			관심 도서 수</h4> 
 	
   </div>
 

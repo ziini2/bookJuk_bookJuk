@@ -17,27 +17,35 @@
 
                     <!-- 비밀번호 찾기 -->
                     <form id="find-password">
-                        <!-- userName 입력란 -->
+                        <!-- userID 입력란 -->
                         <div class="input-group">
                             <i class="bx bx-mail-send"></i>
-                            <input name="userName" type="text" placeholder="아이디" />
+                            <input id="findPassword-userId" name="userId" type="text" placeholder="아이디" />
                         </div>
 
                         <!-- userPhoneNumber 입력란 -->
                         <div class="input-group" id="input-userPhone">
                             <i class="bx bx-mail-send"></i>
-                            <input name="userPhone" type="text" placeholder="전화번호 (ex. 010-1111-1111)" />
+                            <input id="join-userPhone" name="userPhone" type="text" placeholder="전화번호 (ex. 010-1111-1111)" />
                             <div class="phoneValidate">
-                                <button> 인증 </button>
+                                <button id="validate-button" type="button" onclick="validateSMS()" disabled>보내기</button>
                             </div>
                         </div>
+                        <!-- 인증번호 입력란 -->
+                        <div class="input-group" id="input-validateNumber"></div>
+                        <!-- 남은 시간을 표시할 곳 -->
+                        <div class="timer"></div>
+                        <div class="input-group" id="findPass-result"></div>
 
                         <!-- 비밀번호 찾기 버튼 -->
-                        <button id="joinButton">비밀번호 찾기</button>
+                        <button id="findPassword" disabled>비밀번호 찾기</button>
                     </form>
                     <p>
-                        <span> Have you lost your ID? </span>
-                        <b onclick="toggle()" class="pointer"> Find ID </b>
+                        <span> 아이디를 잃어 버리셨나요? </span>
+                        <b onclick="toggle()" class="pointer"> 아이디 찾기 </b>
+                    </p>
+                    <p class="pointer-find">
+                        <b onclick="location.href='/login'" class="pointer-find">로그인 페이지</b>
                     </p>
                 </div>
             </div>
@@ -53,21 +61,25 @@
                         <!-- 회원가입 시 입력했던 이름 입력란 -->
                         <div class="input-group">
                             <i class="bx bxs-user"></i>
-                            <input name="userName" type="text" placeholder="이름" />
+                            <input id="findId-userName" name="userName" type="text" placeholder="이름" />
                         </div>
 
                         <!-- 회원가입시 입력했던 이메일 입력란 -->
                         <div class="input-group">
                             <i class="bx bxs-lock-alt"></i>
-                            <input name="userEmail" type="email" placeholder="이메일" />
+                            <input id="findId-userEmail" name="userEmail" type="email" placeholder="이메일" />
                         </div>
+                        <div class="input-group" id="findId-result"></div>
 
                         <!-- 찾기 버튼 -->
-                        <button id="loginButton">아이디 찾기</button>
+                        <button id="findId">아이디 찾기</button>
 
                         <p>
-                            <span> Have you lost your Password? </span>
-                            <b onclick="toggle()" class="pointer"> Find Password </b>
+                            <span> 비밀번호를 잃어버리 셨나요? </span>
+                            <b onclick="toggle()" class="pointer"> 비밀번호 찾기 </b>
+                        </p>
+                        <p class="pointer-find">
+                            <b onclick="location.href='/login'" class="pointer-find">로그인 페이지</b>
                         </p>
                     </form>
                 </div>
@@ -102,6 +114,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:src="@{/js/login/index.js}"></script>
 <script th:src="@{/js/login/login.js}"></script>
+<script th:src="@{/js/login/find.js}"></script>
+<script th:src="@{/js/login/validateSMS.js}"></script>
+<script th:src="@{/js/login/timer.js}"></script>
 
 </body>
 </html>

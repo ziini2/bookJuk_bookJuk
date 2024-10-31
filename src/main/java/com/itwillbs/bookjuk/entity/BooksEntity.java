@@ -31,7 +31,7 @@ import lombok.ToString;
 @Table(name = "books")
 public class BooksEntity {
 	
-	// 책번호
+	// 책번호 자동으로 1씩 증가
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long bookNum;

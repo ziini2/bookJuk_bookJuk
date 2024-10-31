@@ -34,27 +34,38 @@
         <div class="col-auto">
           <h1>전체도서조회</h1>
         </div>
-        <div class="col d-flex align-items-center ms-auto">
-			<!--도서상태 드롭바-->
-			<div class="dropdown-bookStatus" style="padding-top: 0.5%;">
-				<button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-					선택
-				</button>
-				<ul class="dropdown-menu align-middle">
-					<li><a class="dropdown-item" href="#">대여가능</a></li>
-					<li><a class="dropdown-item" href="#">대여불가</a></li>
-					<li><a class="dropdown-item" href="#">재고없음</a></li>
-				</ul>
-			</div>
-          </div>
-          <div class="col-auto">
-            <div class="input-group">
-              <input type="text" class="form-control form-control-sm" placeholder="도서명, 저자명으로 검색" 
-                     aria-label="도서명, 저자명으로 검색" aria-describedby="button-addon2">
-              <button class="btn btn-outline-secondary btn-sm" type="button" id="button-addon2">검색</button>
-            </div>
-          </div>
-        </div>
+<!--        <div class="col d-flex align-items-center ms-auto">-->
+			
+<!--		</div>-->
+         
+<div class="input-group mb-3" style="display: flex; align-items: center;">
+    <div class="dropdown-bookStatus" style="padding-top: 0.5%;">
+        <button 
+            class="btn btn-success dropdown-toggle" 
+            type="button" 
+            data-bs-toggle="dropdown" 
+            aria-expanded="false">
+            선택
+        </button>
+        <ul class="dropdown-menu align-middle">
+            <li><a class="dropdown-item" href="#">대여가능</a></li>
+            <li><a class="dropdown-item" href="#">대여불가</a></li>
+            <li><a class="dropdown-item" href="#">재고없음</a></li>
+        </ul>
+    </div>
+    <span class="input-group-text">검색</span>
+    <input type="text" class="form-control" id="myinput" placeholder="도서명과 저자이름으로 검색하세요" style="flex: 1;">
+    <button type="button" class="btn btn-secondary">조회</button>
+</div>
+
+<!--          <div class="col-auto">-->
+<!--            <div class="input-group">-->
+<!--              <input type="text" class="form-control form-control-sm" placeholder="도서명, 저자명으로 검색" -->
+<!--                     aria-label="도서명, 저자명으로 검색" aria-describedby="button-addon2">-->
+<!--              <button class="btn btn-outline-secondary btn-sm" type="button" id="button-addon2">검색</button>-->
+<!--            </div>-->
+<!--          </div>-->
+        
       </div>
     </div>
 
@@ -75,10 +86,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>215684613</td>
-            <td>호랑나비</td>
+          <tr th:each="books, status:${bookList}">
+            <td th:text="${books.bookNum}"></td>
+            <td th:text="${books.ISBN}"></td>
+            <td th:text="${books.ISBN}"></td>
             <td>김흥국</td>
             <td>나비야</td>
             <td>24-10-30</td>
@@ -103,29 +114,28 @@
         </tbody>
       </table>
     </div>
-
-	<!--모달알림-->
-    <div class="modal fade" id="modalMessage" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalLabel">수량이 변경되었습니다!</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body" id="modalBody"></div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="d-grid gap-2 d-md-block">
 		<a class="btn btn-success" th:href="@{/admin/addBook}" role="button">도서등록</a>
 		<a class="btn btn-success" th:href="@{/updateBook}" role="button">도서정보수정</a>
     </div>
   </main><!-- End main -->
 
+  <!--모달알림-->
+      <div class="modal fade" id="modalMessage" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalLabel">수량 변경 안내</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+	  
   <script>
     function count(type, bookId) {
       // 결과를 표시할 element

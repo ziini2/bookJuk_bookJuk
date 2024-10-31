@@ -1,3 +1,7 @@
+.form-control, .form-select {
+        width: 50%; /* 너비를 50%로 설정 */
+    }
+
 /*달력*/
 .datepicker {
     z-index: 1000; /* 다른 요소 위에 표시되도록 z-index 설정 */

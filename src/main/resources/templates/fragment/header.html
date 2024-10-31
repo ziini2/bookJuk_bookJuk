@@ -1,40 +1,35 @@
  <!-- ======= 헤더 ======= -->
- <header id="header" class="header fixed-top d-flex align-items-center" th:fragment="header2">
-     <div class="d-flex align-items-center justify-content-between">
-         <a href="/" class="logo d-flex align-items-center">
-             <!-- 나중에 로고 이미지 삽입 예정 -->
-             <span class="d-none d-lg-block">북적북적</span>
-         </a>
-         <i class="ri-menu-line toggle-sidebar-btn"></i>
-     </div><!-- End 로고 -->
-     <div class="container">
-         <div class="row">
-             <div class="col d-flex justify-content-end">
-                 <!-- 로그인 여부에 따른 표시 구분 -->
-                 <div th:if="${session.userNum}">
-                     <!-- 로그인 상태 -->
-                     <span th:text="${session.userNum}"></span>님
-                     <span th:text="'충전 포인트: ' + ${session.balance} + '원'"></span>
-					 
-					 <a href="@{/cart}"> <!--장바구니-->
-					     <i class="ri-shopping-cart-2-fill fs-4"></i>
-					 </a>
-					 <a href="@{/mypage}"> <!--마이페이지-->
-					     <i class="ri-user-fill fs-4"></i>
-					 </a>
-					 <a href="@{/charge}"> <!--충전하기-->
-					     <i class="ri-coins-line fs-4"></i>
-					 </a>
-					 <!--button 태그에서 링크 사용 못해서 onclick 으로 변경 -->
-					 <button type="button" class="btn btn-outline-success ms-2" onclick="window.location.href='/logout'">로그아웃</button>
-                 </div>
-                 <div th:if="${session.userNum == null}">
-					
-                     <!-- 비로그인 상태 -->
-                     <a href="/login" class="btn btn-outline-success">로그인</a>
-                 </div>
-             </div>
-         </div>
-     </div>
- </header>
+
+ <header id="header" class="header fixed-top d-flex align-items-center" th:fragment="header2"
+		 xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="/" class="logo d-flex align-items-center">
+		<!--나중에 로고 이미지 삽입 예정! -->
+<!--         <img src="/common/images/bookjuk1.png" alt=""> -->
+        <span class="d-none d-lg-block">북적북적</span>
+      </a>
+      <i class="ri-menu-line toggle-sidebar-btn"></i>
+    </div><!-- End 로고 -->
+	
+	<div class ="container">
+		<div class="row">
+			<div class="col d-flex justify-content-end">
+				<!-- 로그인했을때 -->
+				<div sec:authorize="isAuthenticated()">
+					<span th:text="${userName} + ' 님'"></span>
+					<button type ="button" class="btn btn-outline-success" onclick="location.href='/logout'">로그아웃</button>
+				</div>
+				<!-- 비로그인시 -->
+				<div sec:authorize="isAnonymous()">
+					<button type ="button" class="btn btn-outline-success" onclick="location.href='/login'">로그인</button>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+           
+   <!-- 여기에 로그아웃 버튼 추가하기 -->
+  </header>
+
   <!-- 헤더끝 -->

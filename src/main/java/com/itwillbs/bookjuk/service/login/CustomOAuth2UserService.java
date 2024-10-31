@@ -80,7 +80,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
             userRepository.save(exitsData);
         }
-        return new CustomOAuth2User(oAuth2Response, userRole, userNum);
+        return new CustomOAuth2User(oAuth2Response, userRole, userNum, oAuth2User.getAttributes());
     }
 
 }

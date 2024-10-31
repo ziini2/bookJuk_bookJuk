@@ -6,7 +6,7 @@ clearAllErrorMessages = () => {
 };
 
 $(document).ready(function () {
-  //유효성 검사 함수
+  //유효성 검사 함수Å
   //아이디 유효성 검사
   const validateId = (userId) => {
     //5 ~ 15자 영문, 숫자 조합
@@ -80,7 +80,7 @@ $(document).ready(function () {
 
     $.ajax({
       type: "POST",
-      url: "/checkData",
+      url: "/login/checkData",
       contentType: "application/json",
       data: JSON.stringify({
         [dataKey]: value
@@ -95,7 +95,12 @@ $(document).ready(function () {
           duplicateCheckResults[formId] = true;
           $(formId).css("border-color", "#4ea685");
           if (formId === "#join-userPhone"){
-            validate_button.prop("disabled", false);
+            if (!$("#join-userPhone").prop("readonly")){
+              validate_button.prop("disabled", false);
+            }
+            else {
+              validate_button.prop("disabled", true);
+            }
           }
         }
         else {
@@ -267,7 +272,7 @@ $(document).ready(function () {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: "POST",
-        url: "/verifySmsCode",
+        url: "/login/verifySmsCode",
         success: (res) => {
           console.log(res.RESULT);
           resolve(res.RESULT); // 인증 결과 반환
@@ -297,12 +302,12 @@ $(document).ready(function () {
 
       $.ajax({
         type: "POST",
-        url: "/join",
+        url: "/login/join",
         data: JSON.stringify(formData),
         contentType: "application/json",
         success: function (response) {
           console.log("회원가입 성공");
-          window.location.href = "/login";
+          window.location.href = "/login/login";
         },
         error: function (xhr, status, error) {
           console.log("회원가입 실패" + error);

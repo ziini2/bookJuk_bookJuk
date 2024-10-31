@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+	<title>유저목록 | 북적북적</title>
+
+	<!-- 구글폰트 -->
+	<link href="https://fonts.gstatic.com" rel="preconnect">
+	<link
+		href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+		rel="stylesheet">
+
+	<!-- 사이드바 아이콘 -->
+
+	<link th:href="@{/images/common/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+	<link th:href="@{/images/common/remixicon/remixicon.css}" rel="stylesheet">
+
+
+	<!--부트스트랩 외부링크-->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Main CSS File -->
+
+
+	<link th:href="@{/css/common/style.css}" rel="stylesheet">
+
+</head>
+
+<body>
+	<div th:replace="~{/fragment/header :: header2}"></div>
+	<div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
+
+	<main id="main" class="main">
+
+		<div class="pagetitle">
+			<h1>고객목록</h1>
+			<!--			<nav>-->
+			<!--				<ol class="breadcrumb">-->
+			<!--					<li class="breadcrumb-item"><a href="index.html">Home</a></li>-->
+			<!--					<li class="breadcrumb-item">Tables</li>-->
+			<!--					<li class="breadcrumb-item active">Data</li>-->
+			<!--				</ol>-->
+			<!--			</nav>-->
+		</div><!-- End Page Title -->
+
+		<section class="section">
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="card">
+						<div class="card-body">
+
+							<div class="col d-flex justify-content-between">
+								<!--검색-->
+								<div class="search-bar">
+									<form class="search-form d-flex align-items-center" method="POST" action="#">
+										<input type="text" name="query" placeholder="Search"
+											title="Enter search keyword">
+										<button type="submit" title="Search">
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+												fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+												<path
+													d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+											</svg>
+										</button>
+										<div>개</div>
+									</form>
+								</div>
+								<!--검색 끝-->
+
+								<!--지점등록 버튼-->
+								<!--								<button type="button" class="btn btn-primary" data-bs-toggle="modal"-->
+								<!--									data-bs-target="#exampleModal" data-bs-whatever="@mdo">지점등록-->
+								<!--								</button>-->
+								<!--지점등록 버튼 끝-->
+							</div>
+
+							<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">지점등록</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal"
+												aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<form>
+												<div class="mb-3">
+													<label for="store-name" class="col-form-label">지점명</label>
+													<input name="storeName" type="text" class="form-control"
+														id="store-name">
+												</div>
+
+												<div class="mb-3">
+													<label for="store-tel" class="col-form-label">전화번호</label>
+													<input name="storeTel" type="text" class="form-control"
+														id="store-tel"></input>
+												</div>
+
+												<div class="mb-3">
+													<label for="store-represent" class="col-form-label">대표자명</label>
+													<input name="storeRepresent" type="text" class="form-control"
+														id="store-represent"></input>
+												</div>
+
+												<div class="mb-3">
+													<label for="store-email" class="col-form-label">이메일</label>
+													<input name="storeEmail" type="text" class="form-control"
+														id="store-email"></input>
+												</div>
+
+												<div class="mb-3">
+													<label for="store-regiNum" class="col-form-label">사업자등록번호</label>
+													<input name="storeRegiNum" type="text" class="form-control"
+														id="store-regiNum"></input>
+												</div>
+
+												<div class="mb-3 position-relative">
+													<label for="store-location" class="col-form-label">위치</label>
+													<input name="storeLocation" type="text" class="form-control pr-5"
+														id="store-location">
+
+													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+														fill="currentColor" class="bi bi-map position-absolute"
+														onclick="deleteUser()"
+														style="top: 75%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+														<path fill-rule="evenodd"
+															d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z" />
+													</svg>
+												</div>
+											</form>
+
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">닫기</button>
+											<button type="button" class="btn btn-primary">등록</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+
+
+							<!-- Table with stripped rows -->
+							<table class="table datatable">
+								<thead>
+
+									<tr>
+										<th>
+											<b>이름</b>
+										</th>
+										<th>아이디</th>
+										<th>생년월일</th>
+										<th>이메일</th>
+										<th data-type="date" data-format="YYYY/DD/MM">생성일</th>
+										<th>등급</th>
+										<th></th>
+									</tr>
+
+								</thead>
+								<tbody>
+									<tr>
+										<td>김씨</td>
+										<td>Dhanbad</td>
+										<td>1999/04/07</td>
+										<td>2d@nam.com</td>
+										<td>2024/04/07</td>
+										<td>일반</td>
+										<td>
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="cursor: pointer;"
+											fill="currentColor" class="bi bi-trash me-2" viewBox="0 0 16 16"
+											onclick="deleteUser()">
+											<path
+												d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+											<path
+												d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+										</svg>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<!-- End Table with stripped rows -->
+
+							<nav aria-label="Page navigation example">
+								<ul class="pagination">
+									<li class="page-item"><a class="page-link" href="#">이전</a></li>
+
+									<li class="page-item"><a class="page-link" href="#">1</a></li>
+
+									<li class="page-item"><a class="page-link" href="#">다음</a></li>
+								</ul>
+							</nav><!-- End Basic Pagination -->
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+
+	</main><!-- End #main -->
+
+
+	<!-- 사이드바 열었다 닫았다 하는거 -->
+	<script th:src="@{/js/common/main.js}"></script>
+	
+	<script>
+		function deleteUser(){
+			alert("클릭");
+		}
+	</script>
+
+</body>
+
+</html>

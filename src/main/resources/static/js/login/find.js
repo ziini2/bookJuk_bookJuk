@@ -94,6 +94,8 @@ $(document).ready(function () {
   //비밀번호 찾기 버튼 클릭시
   //인증 완료된 상태면 비밀번호 찾기 버튼 클릭시 임시비밀번호 발급
   $("#findPassword").on('click', (e) => {
+    $("#findPassword").hide();
+    $("#loading").show();
     e.preventDefault();
     const userId = $("#findPassword-userId");
     const userPhone = $("#join-userPhone");
@@ -108,15 +110,9 @@ $(document).ready(function () {
       }),
       success: (res) => {
         if(res.RESULT === "SUCCESS"){
-          const newPass = res.newPass;
-          const result = $(`
-            <i class="bx bxs-lock-alt"></i>
-            <input id="findPass-userPass" type="text" readonly/>
-            <b style="color: #db4437">로그인 후 비밀번호를 변경해주세요!</b>
-          `);
-          $("#findPass-result").append(result);
-          $("#findPass-userPass").val(newPass);
-          $("#findPassword").prop("disabled", true);
+          $("#loading").hide();
+          alert("가입한 이메일로 임시비밀번호 전송하였습니다.\n 로그인후 비밀번호를 변경해주세요!")
+          location.href="/login"
         }
         else {
           alert("오류입니다.")

@@ -49,10 +49,10 @@ public class FindApiController {
     @ResponseBody
     public Map<String, String> findPass(@RequestBody UserDTO userDTO){
         log.info("findPass: {}", userDTO);
-        //임시비밀번호 저장하고 임시비빌번호 값 반환
-        String newPass = findService.updateUserPassword(userDTO);
-        if (newPass != null){
-            return Map.of("RESULT", "SUCCESS", "newPass", newPass);
+        //임시비밀번호 저장후 임시비밀번호 이메일 전송
+        boolean newPass = findService.updateUserPassword(userDTO);
+        if (newPass){
+            return Map.of("RESULT", "SUCCESS");
         }
         return Map.of("RESULT", "FAIL");
     }

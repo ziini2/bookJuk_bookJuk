@@ -127,8 +127,6 @@ public class SecurityConfig {
                 })
         );
 
-
-
         //로그아웃 설정
         http.logout((auth) -> auth
                 .logoutUrl("/logout")

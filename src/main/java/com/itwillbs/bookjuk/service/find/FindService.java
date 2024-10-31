@@ -14,7 +14,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FindService {
     private final UserRepository userRepository;
+    private final MailSendService mailSendService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     //아이디 찾기시 받아온 userName 과 Email 값이 일치하는 User 데이터 값 받아오기
     public Optional<String> findUserId(UserDTO userDTO){
@@ -30,14 +32,15 @@ public class FindService {
         return findUserEntity.isPresent();
     }
 
-    //비밀번호 찾기 시 임시비밀번호 저장후 반환
-    public String updateUserPassword(UserDTO userDTO) {
+    //비밀번호 찾기 시 임시비밀번호 저장후 회원가입했던 메일로 반환
+    public boolean updateUserPassword(UserDTO userDTO) {
         UserEntity userData = userRepository.findByUserId(userDTO.getUserId());
         //함수 임의의 임시비밀번호 생성
         String generatedPassword = PasswordGenerator.generatePassword();
         //시큐리티 사용하기 위해서 암호화로 저장
         userData.setUserPassword(bCryptPasswordEncoder.encode(generatedPassword));
         userRepository.save(userData);
-        return generatedPassword;
+        //가입했던 이메일로 임시비밀번호 전송
+        return mailSendService.sendMail(userData.getUserEmail(), generatedPassword);
     }
 }

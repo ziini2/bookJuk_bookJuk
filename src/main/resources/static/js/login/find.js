@@ -46,10 +46,19 @@ $(document).ready(function () {
   //디비에 아이디 와 전화번호가 일치한다면 인증번호 보내기 버튼 활성화 하고
   //그런다음 sms 인증 하고
   $("#join-userPhone").blur( () => {
-
     const userId = $("#findPassword-userId");
     const userPhone = $("#join-userPhone");
 
+    //입력필드 값이 비어있는지 확인
+    if (!userId.val().trim()){
+      alert("아이디를 입력해주세요.")
+      userId.focus()
+      return;
+    }
+    if (!userPhone.val().trim()){
+      alert("전화번호를 입력해주세요.")
+      return;
+    }
 
     $.ajax({
       type: "POST",
@@ -85,6 +94,8 @@ $(document).ready(function () {
   //비밀번호 찾기 버튼 클릭시
   //인증 완료된 상태면 비밀번호 찾기 버튼 클릭시 임시비밀번호 발급
   $("#findPassword").on('click', (e) => {
+    $("#findPassword").hide();
+    $("#loading").show();
     e.preventDefault();
     const userId = $("#findPassword-userId");
     const userPhone = $("#join-userPhone");
@@ -99,15 +110,9 @@ $(document).ready(function () {
       }),
       success: (res) => {
         if(res.RESULT === "SUCCESS"){
-          const newPass = res.newPass;
-          const result = $(`
-            <i class="bx bxs-lock-alt"></i>
-            <input id="findPass-userPass" type="text" readonly/>
-            <p style="color: #db4437">로그인 후 아이디를 변경해주세요!</p>
-          `);
-          $("#findPass-result").append(result);
-          $("#findPass-userPass").val(newPass);
-          $("#findPassword").prop("disabled", true);
+          $("#loading").hide();
+          alert("가입한 이메일로 임시비밀번호 전송하였습니다.\n 로그인후 비밀번호를 변경해주세요!")
+          location.href="/login"
         }
         else {
           alert("오류입니다.")

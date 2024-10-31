@@ -38,7 +38,7 @@
   <script th:src="@{/js/common/userMain.js}"></script>
 
   <main id="main" class="main">
-  	<div class="container justify-content-center" style="height: auto;">
+  	<div class="container justify-content-center" style="height: 1300px;">
 		
 	<div class="d-flex" style="padding-top: 10%;">
 		<div><h2><b>포인트 충전</b></h2></div>
@@ -50,46 +50,186 @@
 					
 		<div class="justify-content-center" style="width: 80%">
 			
-			<table class="table">
+			<table class="table table-bordered">
 			  <thead>
 			    <tr>
-			      <th scope="col">#</th>
-			      <th scope="col">First</th>
-			      <th scope="col">Last</th>
-			      <th scope="col">Handle</th>
+			      <th scope="col" style="width: 26%;">충전 포인트</th>
+			      <th scope="col" style="width: 37%;">총 결제 금액</th>
+			      <th scope="col" style="width: 37%;">추가 혜택</th>
 			    </tr>
 			  </thead>
-			  <tbody>
+			  <tbody class="table-group-divider">
+				<!--1행-->
 			    <tr>
-			      <th scope="row">1</th>
-			      <td>Mark</td>
-			      <td>Otto</td>
-			      <td>@mdo</td>
+				  <!--1열-->
+			      <td>
+					  <div class="form-check select-point d-flex align-items-center gap-2">
+					  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+					  <label class="form-check-label" for="flexRadioDefault1">
+					    <b>5000P</b>
+					  </label>
+					</div>
+				  </td>
+				  <!--2열-->
+			      <td>
+					  <p class="text-top"><b>6000원</b></p>
+					  <p class="text-bottom">(부가세 10% + 결제처리수수료 10% 포함)</p>
+				  </td>
+				  <!--3열-->
+			      <td></td>
 			    </tr>
+				
+				<!--2행-->
 			    <tr>
-			      <th scope="row">2</th>
-			      <td>Jacob</td>
-			      <td>Thornton</td>
-			      <td>@fat</td>
+				  <!--1열-->
+			      <td>
+					  <div class="form-check select-point d-flex align-items-center gap-2">
+					  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+					  <label class="form-check-label" for="flexRadioDefault1">
+					    <b>10,000P</b>
+					  </label>
+					</div>
+				  </td>
+				  <!--2열-->
+			      <td>
+					  <p class="text-top"><b>12,000원</b></p>
+					  <p class="text-bottom">(부가세 10% + 결제처리수수료 10% 포함)</p>
+				  </td>
+				  <!--3열-->
+			      <td></td>
 			    </tr>
+				
+				<!--3행-->
 			    <tr>
-			      <th scope="row">3</th>
-			      <td colspan="2">Larry the Bird</td>
-			      <td>@twitter</td>
+				  <!--1열-->
+			      <td>
+					  <div class="form-check select-point d-flex align-items-center gap-2">
+					  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+					  <label class="form-check-label" for="flexRadioDefault1">
+					    <b>30,000P</b>
+					  </label>
+					</div>
+				  </td>
+				  <!--2열-->
+			      <td>
+					  <p class="text-top"><b>36,000원</b></p>
+					  <p class="text-bottom">(부가세 10% + 결제처리수수료 10% 포함)</p>
+				  </td>
+				  <!--3열-->
+			      <td>
+					  <p class="text-top"><b>30,000P + 3000P</b></p>
+					  <p class="text-bottom">(총 충전 금액 33,000P)</p>
+				  </td>
 			    </tr>
+				
+				<!--4행-->
+			    <tr>
+				  <!--1열-->
+			      <td>
+					  <div class="form-check select-point d-flex align-items-center gap-2">
+					  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+					  <label class="form-check-label" for="flexRadioDefault1">
+					    <b>50,000P</b>
+					  </label>
+					</div>
+				  </td>
+				  <!--2열-->
+			      <td>
+					  <p class="text-top"><b>60,000원</b></p>
+					  <p class="text-bottom">(부가세 10% + 결제처리수수료 10% 포함)</p>
+				  </td>
+				  <!--3열-->
+				  <td>
+  					  <p class="text-top"><b>50,000P + 5000P</b></p>
+  					  <p class="text-bottom">(총 충전 금액 55,000P)</p>
+  				  </td>
+			    </tr>
+				
+				<!--5행-->
+			    <tr>
+				  <!--1열-->
+			      <td>
+					  <div class="form-check select-point d-flex align-items-center gap-2">
+					  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+					  <label class="form-check-label" for="flexRadioDefault1">
+					    <b>100,000P</b>
+					  </label>
+					</div>
+				  </td>
+				  <!--2열-->
+			      <td>
+					  <p class="text-top"><b>120,000원</b></p>
+					  <p class="text-bottom">(부가세 10% + 결제처리수수료 10% 포함)</p>
+				  </td>
+				  <!--3열-->
+				  <td>
+					  <p class="text-top"><b>100,000P + 12,000P</b></p>
+					  <p class="text-bottom">(총 충전 금액 112,000P)</p>
+				  </td>
+			    </tr>
+
 			  </tbody>
 			</table>
 			
-			
-			
-			
-			
-			
-			
+				<!--페이 카드-->
+				<div class="card card-pay-body rounded-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+					<div class="d-flex gap-3">
+						
+						<div class="row" style="padding-left: 10px;">
+							<p class="pay-title-text">결제 수단 선택</p>
+							<div class="d-flex" style="padding-top: 1%; padding-left: 50%;">
+								
+								<div class="form-check select-point d-flex align-items-center gap-2">
+								  <input class="form-check-input" type="radio" name="paySelect" id="paySelect">
+								  <label class="form-check-label" for="paySelect">
+								    <b>신용카드/카카오페이</b>
+								  </label>
+								</div>
+								
+								<div style="padding-left: 100px;">
+								<div class="form-check select-point d-flex align-items-center gap-2">
+								  <input class="form-check-input" type="radio" name="paySelect" id="paySelect">
+								  <label class="form-check-label" for="paySelect">
+								    <b>무통장 입금</b>
+								  </label>
+								</div>
+								</div>
+							</div>
+							<div style="padding-left: 10%; padding-top: 18px;">
+							 <p class="text-pay-top"><b>요금 청구</b></p>
+							 <p class="text-pay-bottom">현재 결제 진행 건에 대해서만 결제되며, 매월 자동 결제되지 않습니다.</p>
+							 </div>
+						</div>
+						
+					</div> 
+				</div>
+				<!--페이 카드 END-->
+				
+				<!--결제인 정보-->
+				<div class="card card-pay-body rounded-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+					<div class="d-flex gap-3">
+						
+						<div class="row" style="padding-left: 10px;">
+							<p class="pay-title-text">결제인 정보</p>
+							<div class="d-flex gap-2" style="padding-top: 2%; padding-left: 10%;">
+								
+								<p class="pay-email-text">이메일 주소</p>
+									<input class="form-control email-bar" type="text">
+								
+							</div>
+							<div style="padding-left: 10%; padding-top: 18px;">
+							 <p class="text-pay-top"><b>결제 정보</b></p>
+							 <p class="text-pay-bottom">이메일을 통해 결제 정보가 전송됩니다.</p>
+							 </div>
+						</div>
+						
+					</div> 
+				</div>
+				<!--페이 카드 END-->
 		</div>	
-		
-			
-		
+		<div style="padding-left: 26%;">
+		<button type="button" class="btn btn-pay">결제하기</button>	
+		</div>
 	</div>
 </main>
 

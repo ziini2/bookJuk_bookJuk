@@ -57,9 +57,9 @@ public class SecurityConfig {
                         "/loginCheck", "/actuator/**", "/logs/**", "/find",
                         "/sendSmsCodeTest", "/codeValidate", "/verifySmsCode").permitAll()
                 .requestMatchers("/phone").hasAnyRole("INACTIVE") //소셜로그인 회원은 전화번호 입력하지않으면 계속해서 전화번호 입력창으로 리다이렉트!
-                .requestMatchers("/admin").hasRole("ADMIN")
+//                .requestMatchers("/admin").hasRole("ADMIN")
                 .requestMatchers("/test").hasAnyRole("ADMIN", "USER") //여기에 로그인 된사람만 할수있는 페이지 추가
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
         );
 
         //권한이 없는 페이지에 접근할 때 설정

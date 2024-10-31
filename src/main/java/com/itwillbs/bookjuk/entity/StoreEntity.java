@@ -29,44 +29,44 @@ public class StoreEntity {
 	// 지점번호
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(nullable = false)
+	@Column(name = "storeCode", nullable = false)
 	private Long storeCode;
 
 	// 지점이름
-	@Column(nullable = false)
+	@Column(name = "storeName", nullable = false)
 	private String storeName;
 
 	// 지점 전체주소
-	@Column(nullable = false)
+	@Column(name = "storeLocation", nullable = false)
 	private String storeLocation;
 
 	// 지점 동주소
-	@Column(nullable = true)
+	@Column(name = "storeLocation2", nullable = true)
 	private String storeLocation2;
 
 	// 지점 전화번호
-	@Column(nullable = false)
+	@Column(name = "storeTel", nullable = false)
 	private String storeTel;
 
 	// 지점 대표자명
-	@Column(nullable = false)
+	@Column(name = "storeRepresent", nullable = false)
 	private String storeRepresent;
 
 	// 지점 이메일
-	@Column(nullable = false)
+	@Column(name = "storeEmail", nullable = false)
 	private String storeEmail;
 
 	// 지점 사업자등록번호
-	@Column(nullable = false)
+	@Column(name = "storeRegiNum", nullable = false)
 	private String storeRegiNum;
 
 	// 지점 등록일
 	@CreationTimestamp
-	@Column(nullable = false)
+	@Column(name = "storeRegiDate", nullable = false)
 	private Timestamp storeRegiDate;
 
 	// 지점 정보 수정일
 	@UpdateTimestamp
-	@Column(nullable = false)
+	@Column(name = "storeUpdateDate", nullable = false)
 	private Timestamp storeUpdateDate;
 }

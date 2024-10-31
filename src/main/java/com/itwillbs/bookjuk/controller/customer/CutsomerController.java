@@ -24,7 +24,7 @@ public class CutsomerController {
 
 	@GetMapping("/admin/store/store_list")
 	public String storeList(Model model, @RequestParam(value = "page", defaultValue = "1", required = false) int page,
-			@RequestParam(value = "size", defaultValue = "1", required = false) int size) {
+			@RequestParam(value = "size", defaultValue = "3", required = false) int size) {
 		
 		Pageable pageable = PageRequest.of(page-1, size, Sort.by("storeCode").descending());
 
@@ -36,7 +36,7 @@ public class CutsomerController {
 		// 전체 페이지 개수
 		model.addAttribute("totalPages", storeList.getTotalPages());
 		// 한화면에 보여줄 페이지 개수 설정
-		int pageBlock = 1;
+		int pageBlock = 3;
 		int startPage = (page - 1) / pageBlock * pageBlock + 1;
 		int endPage = startPage + pageBlock - 1;
 		if(endPage > storeList.getTotalPages()) {
@@ -49,7 +49,8 @@ public class CutsomerController {
 	}
 
 	@GetMapping("/admin/store/store_info")
-	public String storeInfo() {
+	public String storeInfo(@RequestParam(value = "storeCode") Long storeCode) {
+		log.info(storeCode.toString());
 		return "customer/store_info";
 	}
 

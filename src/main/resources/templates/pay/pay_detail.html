@@ -35,7 +35,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
 
 
-
 </head>
 
 <body>
@@ -96,25 +95,18 @@
 			
 			<!--대여 정보-->
 			<div class="card text-center card-info-body">
-			  <div class="card-body">
-					<div class="d-flex gap-2 mt-3">
-					    <p class="rent-name" style="padding-left: 70px;">대여자 이름</p>
-						<input class="form-control infoinput1" type="text">
-					    <p class="rent-name" style="padding-left: 30px;">대여자 전화번호</p>
-						<input class="form-control infoinput2" type="text">
-					</div>
-
-					<!--달력-->
-				    <div class="custom-flat-picker" id="inline-datepicker">
-				   
-				      </div>
-					 
-						
-					
-			  </div>
-			  <div class="card-footer card-text">
-			    *북적북적은 당일 대여를 원칙으로 하며 예약 시스템은 지원하고 있지 않습니다.
-			  </div>
+			<div class="card-body">
+				<div class="d-flex gap-2 mt-3">
+				    <p class="rent-name" style="padding-left: 70px;">대여자 이름</p>
+					<input class="form-control infoinput1" type="text">
+				    <p class="rent-name" style="padding-left: 30px;">대여자 전화번호</p>
+					<input class="form-control infoinput2" type="text">
+				</div>
+	
+				<!--달력-->
+				<div class="custom-date-picker" id="inline-datepicker"></div>
+		  		
+			</div>  
 			</div>
 			
 			<hr style="border:1px color= silver; width: 100%;">
@@ -195,9 +187,41 @@
 				</div>
 			</div>
 			
-			<hr style="border:1px color= silver; padding-top: 10px; padding-bottom: 5px;">
-
+			<hr style="border:1px color= silver; padding-top: 5px; padding-bottom: 5px;">
+			
+			<div class="row">
+				<div class="col">
+				<div class="card-text" style="width: 120%;"><b>총 결제 금액</b></div>
+				</div>
+				<div class="col">
+				<div class="card-text-price"><span style="color: blue;">2000</span>P</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col">
+				<div class="card-text" style="width: 120%;">결제 후 잔여 포인트</div>
+				</div>
+				<div class="col">
+				<div class="card-text">0P</div>
+				</div>
+			</div>
+			<div style="padding-top: 7%; padding-bottom: 7%;">
+			<button type="button" class="btn btn-add">포인트 충전</button>
+			</div>
+			
+			<div class="agree">
+				<input class="form-check-input" type="checkbox" name="book" value="item" onclick="checkSelectAll()">
+				[필수] 북적북적 대여 약관 동의
+			</div>
+			<div class="agree">
+				<input class="form-check-input" type="checkbox" name="book" value="item" onclick="checkSelectAll()">
+				[선택] 알림 수신
+			</div>
+			
+			<div style="padding-top: 5%;">
 			<button type="button" class="btn btn-rent">대여하기</button>
+			</div>
 			
 			</div>
 			</div>
@@ -239,7 +263,6 @@
 	    checkbox.checked = selectAll.checked
 	  })
 	}
-
 
 </script>
 

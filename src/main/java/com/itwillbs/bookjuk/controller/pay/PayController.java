@@ -30,4 +30,10 @@ public class PayController {
 		return "/pay/pay_detail";
 	}
 	
+	@GetMapping("/pay_add")
+	public String payAdd() {
+
+		return "/pay/pay_add";
+	}
+	
 }

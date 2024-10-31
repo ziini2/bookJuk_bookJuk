@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  
   <title>북적북적::알림 메시지 관리</title>
   
   <!-- 구글폰트 -->
@@ -21,86 +22,68 @@
   <link href="/css/common/style.css" rel="stylesheet">
     
   <!--  DataTables-->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
 </head>
-<body class="noti-body">
+<body>
 	<div th:replace="/fragment/header :: header2"></div>
 	<div th:replace="/fragment/sidebar :: sidebar2"></div>
 	<div class="container my-4">
 	    <h2>알림 메시지 관리</h2>
-		<div>
-		  <!-- Show Entries and Filter Button -->
-		  <button id="filterButton">필터</button>
-		  <div id="selectedFilters"></div>
-		</div>
-
-		<!-- Filter Modal -->
-		<div id="filterModal" class="modal">
-		  <div class="modal-content">
-		    <span class="close">&times;</span>
-		    
-		    <h3>필터 설정</h3>
-		    
-		    <!-- 알림 유형 -->
+		<div id="filterModal" class="noti-modal">
+		  <div class="noti-modal-content">
+		    <span class="close">&times;</span>		    
+		    <h3>필터 설정</h3>		    
 		    <label>알림 유형</label>
-		    <div>
-		      <input type="radio" name="alertType" value="sms"> SMS
-		      <input type="radio" name="alertType" value="note"> 쪽지
-		      <input type="radio" name="alertType" value="" checked> 선택 안 함
-		    </div>
-		    
-		    <!-- 전송 상태 -->
+		    <div id="alertType">
+		      <button type="button" class="toggle-btn" data-value="SMS" value="SMS">SMS</button>
+		      <button type="button" class="toggle-btn" data-value="쪽지" value="쪽지">쪽지</button>
+		    </div>		    
 		    <label>전송 상태</label>
-		    <div>
-		      <input type="checkbox" name="status" value="대기"> 대기
-		      <input type="checkbox" name="status" value="성공"> 성공
-		      <input type="checkbox" name="status" value="실패"> 실패
+		    <div id="statusType">
+		      <button type="button" class="toggle-btn" data-value="대기">대기</button>
+		      <button type="button" class="toggle-btn" data-value="성공">성공</button>
+		      <button type="button" class="toggle-btn" data-value="실패">실패</button>
 		    </div>
-		    
-		    <!-- 전송 날짜 -->
 		    <label>전송 날짜</label>
-		    <div>
+		    <div class="noti-date-container">
 		      <input type="date" id="startDate" value="2024-10-24">
 		      <span> ~ </span>
 		      <input type="date" id="endDate" value="2024-10-24">
-		    </div>
-		    
+		    </div>		    
 		    <button id="applyFilter">완료</button>
 		  </div>
 		</div>
-
-    <table id="marketingTable" class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>수신인</th>
-                <th>알림 내용</th>
-                <th>알림 유형</th>
-                <th>전송 상태</th>
-                <th>전송 날짜</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>6</td>
-                <td>kim123</td>
-                <td>vdffffffffgㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</td>
-                <td>쪽지</td>
-                <td>성공</td>
-                <td>2024-10-08 16:10:07</td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>park456</td>
-                <td>b gb gggh</td>
-                <td>sms</td>
-                <td>성공</td>
-                <td>2024-10-17 04:08:00</td>
-            </tr>
-            <!-- 추가 행들... -->
-        </tbody>
-    </table>
-</div>
+	    <table id="marketingTable" class="table table-striped table-bordered">
+	        <thead>
+	            <tr>
+	                <th>No.</th>
+	                <th>수신인</th>
+	                <th>알림 내용</th>
+	                <th>알림 유형</th>
+	                <th>전송 상태</th>
+	                <th>전송 날짜</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr>
+	                <td>6</td>
+	                <td>kim123</td>
+	                <td>vdffffffffgㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</td>
+	                <td>쪽지</td>
+	                <td>성공</td>
+	                <td>2024-10-08 16:10:07</td>
+	            </tr>
+	            <tr>
+	                <td>5</td>
+	                <td>park456</td>
+	                <td>b gb gggh</td>
+	                <td>sms</td>
+	                <td>성공</td>
+	                <td>2024-10-17 04:08:00</td>
+	            </tr>
+	        </tbody>
+	    </table>
+	</div>
 
 <!-- jQuery and DataTables JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -116,30 +99,57 @@
         const table = $('#marketingTable').DataTable({
             paging: true,
             searching: true,
-            info: false,
+            info: true,
             language: {
-                search: "검색: ",
+                search: "",
+				info: "",
+				infoEmpty: "",
+				infoFiltered: "",
+				infoPostFix: "",
+				lengthMenu: 
+	               `<select class="form-select">
+	                    <option value="10">10개씩 보기</option>
+	                    <option value="25">25개씩 보기</option>
+	                    <option value="50">50개씩 보기</option>
+	                    <option value="100">100개씩 보기</option>
+	                </select>`,
                 paginate: {
                     previous: "이전",
                     next: "다음"
                 }
             },
-			dom: '<"d-flex justify-content-between align-items-center"l<"d-flex align-items-center"f>>rt<"d-flex justify-content-center"p><"d-flex justify-content-between"i>',
+			dom: '<"d-flex justify-content-between"<"d-flex align-items-center dataTables_filter_wrapper"f><"dataTables_length_wrapper"l>>rt<"d-flex justify-content-center"p>',
         });
+		
+		// 검색 결과 개수 상단에 표시
+	    $('.dataTables_length').before('<div id="resultCount" style="margin-right: 15px; text-align: right;"></div>');
 
-        // 검색 상단에 드롭다운 메뉴 추가
-		$(".dataTables_filter").append(`
+	    // DataTables의 draw 이벤트를 사용하여 검색 결과 수 업데이트
+	    table.on('draw', function() {
+	        const info = table.page.info();
+	        $('#resultCount').text(`검색 결과: ${info.recordsDisplay}개`);
+	    });
+	
+		$('#marketingTable_filter input').attr('placeholder', 'search');
+		
+		$(".dataTables_filter").prepend(`
 		    <select id="columnSelect" class="form-select ms-2" style="width: auto; display: inline;">
 		        <option value="">전체</option>
 		        <option value="0">NO</option>
-		        <option value="1">담당자</option>
-		        <option value="2">전송유형</option>
-		        <option value="3">전송내용</option>
-		        <option value="4">수신번호</option>
+		        <option value="1">수신인</option>
+		        <option value="2">알림 내용</option>
+		        <option value="3">알림 유형</option>
+		        <option value="4">전송 상태</option>
 		        <option value="5">전송날짜</option>
 		    </select>
 		`);
-
+		
+		$(".dataTables_filter").append(`
+			<div class="d-flex align-items-center">
+			    <button id="filterButton" class="btn btn-primary me-2">필터</button>
+			    <div id="selectedFilters"></div>
+			</div>
+		`);
         // 검색 이벤트 설정
         $('#marketingTable_filter input').off().on('keyup', function() {
             const column = $('#columnSelect').val();
@@ -155,93 +165,91 @@
 
 <script>
 	$(document).ready(function () {
-	  // Initialize DataTable
 	  const table = $('#marketingTable').DataTable();
-
-	  // Custom Filter Variables
+	  const alertTypeButtons = $('#alertType .toggle-btn');
+	  const statusTypeButtons = $('#statusType .toggle-btn');
 	  let alertType = '';
-	  let status = [];
-	  let startDate = '';
-	  let endDate = '';
+  	  let status = '';
+  	  let startDate = '';
+  	  let endDate = '';
 
-	  // Custom Filter Function
+	  alertTypeButtons.click(function () {
+	      if ($(this).hasClass('active')) {
+	        $(this).removeClass('active');
+			alertType = '';
+	      } else {
+	        alertTypeButtons.removeClass('active');
+	        $(this).addClass('active');
+			alertType = $(this).data('value');
+	      }
+	  });
+
+	    // 전송 상태 버튼 클릭 이벤트
+	  statusTypeButtons.click(function () {
+	    if ($(this).hasClass('active')) {
+	      $(this).removeClass('active');
+		  status = '';
+	    } else {
+	      statusTypeButtons.removeClass('active');
+		  $(this).addClass('active');
+		  status = $(this).data('value');
+	    }
+	  });
+	  
 	  $.fn.dataTable.ext.search.push(function (settings, data) {
-	    const rowAlertType = data[0]; // 알림 유형
-	    const rowStatus = data[1]; // 전송 상태
-	    const rowDate = data[2]; // 전송 날짜
-
-	    // 알림 유형 필터링
+	    const rowAlertType = data[3];
+	    const rowStatus = data[4];
+	    const rowDate = data[5];
 	    if (alertType && rowAlertType !== alertType) return false;
-
-	    // 전송 상태 필터링
-	    if (status.length && !status.includes(rowStatus)) return false;
-
-	    // 전송 날짜 필터링
+	    if (status && rowStatus !== status) return false;
 	    if (startDate || endDate) {
 	      const date = new Date(rowDate);
 	      if (startDate && date < new Date(startDate)) return false;
 	      if (endDate && date > new Date(endDate)) return false;
 	    }
-
 	    return true;
 	  });
 
-	  // Open Filter Modal
 	  $('#filterButton').click(() => {
+		alertTypeButtons.removeClass('active');
+		statusTypeButtons.removeClass('active');
 	    $('#filterModal').css('display', 'block');
 	  });
 
-	  // Close Filter Modal
 	  $('.close').click(() => {
 	    $('#filterModal').css('display', 'none');
 	  });
 
-	  // Apply Filter
 	  $('#applyFilter').click(() => {
-	    // Get selected filters
-	    alertType = $('input[name="alertType"]:checked').val();
-	    status = $('input[name="status"]:checked').map((_, el) => el.value).get();
 	    startDate = $('#startDate').val();
 	    endDate = $('#endDate').val();
-
-	    // Display applied filters
 	    displayAppliedFilters();
-
-	    // Re-draw DataTable with new filters
 	    table.draw();
-
-	    // Close modal
 	    $('#filterModal').css('display', 'none');
 	  });
 
-	  // Display Selected Filters with Remove Option
 	  function displayAppliedFilters() {
 	    $('#selectedFilters').empty();
-
 	    if (alertType) addFilterChip(`알림 유형: ${alertType}`, 'alertType');
-	    status.forEach(st => addFilterChip(`전송 상태: ${st}`, 'status'));
+	    if (status) addFilterChip(`전송 상태: ${status}`, 'status');
 	    if (startDate && endDate) addFilterChip(`${startDate} ~ ${endDate}`, 'date');
 	  }
 
 	  function addFilterChip(text, type) {
 	    const chip = $('<div class="filter-chip"></div>').text(text);
 	    const closeBtn = $('<span>x</span>').click(() => removeFilter(type, text));
-
 	    chip.append(closeBtn);
 	    $('#selectedFilters').append(chip);
 	  }
 
-	  // Remove Filter and Re-apply
 	  function removeFilter(type, text) {
 	    if (type === 'alertType') alertType = '';
-	    else if (type === 'status') status = status.filter(st => `전송 상태: ${st}` !== text);
-	    else if (type === 'date') { startDate = ''; endDate = ''; }
-
+	    if (type === 'status') status = '';
+	    if (type === 'date') { startDate = ''; endDate = ''; }
 	    displayAppliedFilters();
 	    table.draw();
 	  }
 	});
-
 </script>
 </body>
 </html>

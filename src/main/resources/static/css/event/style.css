@@ -2,21 +2,40 @@ body {
   padding-top: 80px;
 }
 
-/* 기본 상태: 상하 화살표 모두 표시 */
-#marketingTable th.sorting:after {
-  content: "▲▼";
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 5px;
+div.dataTables_wrapper div.dataTables_filter input {
+    margin-left: 0 !important;
 }
 
-/* 오름차순/내림차순 정렬 */
-#marketingTable th.sorting_asc:after {
-  content: "▲";
+#columnSelect {
+    -webkit-appearance: none; /* 크롬, 사파리 */
+    -moz-appearance: none; /* 파이어폭스 */
+    appearance: none; /* 기본 */
+    background: white; /* 화살표 배경 제거 */
+    padding-right: 10px; /* 화살표 공간 제거 */
+	margin-left: 0 !important;
 }
 
-#marketingTable th.sorting_desc:after {
-  content: "▼";
+.dataTables_filter {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+	margin-top: 5px;
+}
+
+#columnSelect {
+    height: 100%;
+    padding: 6px 12px;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+
+.dataTables_filter input[type="search"] {
+    width: auto;
+    padding: 6px 12px;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
 }
 
 /* 테이블의 기본 스타일 */
@@ -56,6 +75,7 @@ body {
 }
 
 #filterButton {
+  margin-top: 14px;
   padding: 8px 16px;
   font-size: 14px;
   color: #fff;
@@ -70,20 +90,8 @@ body {
   background-color: #0056b3;
 }
 
-/* DataTables 기본 정렬 화살표 제거 */
-#marketingTable th {
-  position: relative;
-}
-
-/* DataTables 화살표 숨기기 */
-#marketingTable .sorting:before,
-#marketingTable .sorting_asc:before,
-#marketingTable .sorting_desc:before {
-  display: none !important;
-}
-
 /* Filter Modal Styling */
-.modal {
+.noti-modal {
   display: none;
   position: fixed;
   left: 0;
@@ -91,17 +99,41 @@ body {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4) !important;
+  z-index: 1000;
 }
 
-.modal-content {
+.noti-modal-content {
   position: absolute;
   background-color: #fff !important;
   padding: 20px !important;
   border-radius: 5px !important;
-  width: 300px !important;
   top: 50% !important;
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
+}
+
+.noti-date-container {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.noti-date-container input[type="date"] {
+	flex: 1;
+}
+
+.toggle-btn {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  cursor: pointer;
+  background-color: #f1f1f1;
+  transition: background-color 0.3s;
+}
+
+.toggle-btn.active {
+  background-color: #4CAF50;
+  color: white;
 }
 
 .close {
@@ -118,14 +150,18 @@ body {
 }
 
 .filter-chip {
-  display: inline-flex;
-  align-items: center;
-  background-color: #e0e0e0;
-  padding: 5px;
-  border-radius: 3px;
+    display: inline-block; 
+    background-color: #e9ecef; 
+    border-radius: 5px; 
+    padding: 5px 10px; 
+    margin-left: 5px; 
+    position: relative; 
+}
+.filter-chip span {
+    cursor: pointer; 
+    margin-left: 5px; 
+    color: red; 
 }
 
-.filter-chip span {
-  margin-left: 5px;
-  cursor: pointer;
-}
+
+

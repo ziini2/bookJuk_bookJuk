@@ -1,0 +1,193 @@
+/*달력*/
+ 
+.custom-date-picker {
+	padding-left: 5rem;
+}
+
+.datepicker table tr td.today {
+	border-radius: 50% !important;
+	background-image: linear-gradient(#4CAF50, #4CAF50) !important;
+	color:#fff !important;
+}
+
+.datepicker table tr td.nextweek {
+	border-radius: 50% !important;
+	background-image: linear-gradient(#4CAF50, #4CAF50) !important;
+	color:#fff !important;
+}
+
+.old, .day, .new {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 0px !important;
+  border: 1px solid lightgrey !important;
+}
+
+.day.old, .day.new {
+  background-color: #F5F5F5 !important;
+  color: #E0E0E0 !important;
+}
+
+.datepicker .active {
+  border-radius: 50% !important;
+  background-image: linear-gradient(rgb(0, 64, 0), rgb(0, 64, 0)) !important;
+  color: #fff !important;
+ --bs-btn-hover-bg: none;
+}
+
+.prev, .next, .datepicker-switch {
+  border-radius: 0 !important;
+  padding: 10px 10px 10px 10px !important;
+  font-size: 18px;
+  opacity: 0.7;
+  color: #4CAF50;
+}
+
+.prev:hover, .next:hover, .datepicker-switch:hover {
+  background-color: inherit !important;
+  opacity: 1;
+}
+
+   /*장바구니*/
+ .card-item-body {
+ 	height: 160px;
+ 	background-color: #fcfef8;
+ 	border: none;
+ 	margin-top: 1rem;
+ 	margin-bottom: none;
+ }
+
+ .card-item-image {
+ 	width: 100px;
+ 	height: 120px;
+ }
+
+ /*장바구니 항목*/
+ .item-title-text {
+ 	font-weight: bold;
+ 	font-size: medium;
+ 	padding-top: 15px;
+ 	margin-bottom: -100px;
+ }
+
+ .item-author-text {
+ 	font-size: small;
+ }
+
+ .item-price-text {
+ 	font-size: small;
+ 	text-align: right;
+ 	padding-top: 40px;
+ }
+
+ .item-inventory-text {
+ 	font-weight: bold;
+ 	font-size: 12px;
+ 	text-align: right;
+
+ }
+
+ .x-button {
+ 	text-align: right;
+ }
+
+ .btn-secondary {
+ 	width: 100%;
+ 	height: 60px;
+ 	background-color: rgb(0, 64, 0);
+ 	font-weight: bold;
+ 	border: rgb(0, 64, 0);
+ 	--bs-btn-hover-bg: rgb(0, 64, 0);
+ 	--bs-btn-color: rgb(255, 255, 255);
+ 	--bs-btn-hover-color: rgb(255, 255, 255);
+ 	--bs-btn-active-color: rgb(255, 255, 255);
+ 	--bs-btn-active-bg: rgb(0, 64, 0);
+ 	--bs-btn-active-border-color: rgb(0, 64, 0);
+ }
+
+ .cart-card {
+ 	width: 250px;
+ 	height: 420px;
+ }
+
+ .card-text {
+ 	font-size: small;
+ 	padding-top: 15px;
+ }
+
+ .card-text-price {
+	font-size: medium;
+	padding-top: 10px;
+ }
+ 
+ .btn-rent {
+ 	width: 100%;
+ 	height: 50px;
+ 	background-color: rgb(231, 245, 197);
+ 	font-weight: bold;
+ 	--bs-btn-hover-bg: #c5e774;
+ 	--bs-btn-color: rgb(0, 0, 0);
+ 	--bs-btn-hover-color: rgb(0, 0, 0);
+ 	--bs-btn-active-color: rgb(0, 0, 0);
+ 	--bs-btn-active-bg: #c5e774;
+ 	--bs-btn-active-border-color: #c5e774;
+ }
+ 
+ .btn-add {
+	width: 40%;
+ 	height: 30px;
+	font-size: x-small;
+ 	background-color: #f8cecc;
+ 	font-weight: bold;
+ 	--bs-btn-hover-bg: rgb(239, 145, 139);
+ 	--bs-btn-color: rgb(0, 0, 0);
+ 	--bs-btn-hover-color: rgb(0, 0, 0);
+ 	--bs-btn-active-color: rgb(0, 0, 0);
+ 	--bs-btn-active-bg: rgb(239, 145, 139);
+ 	--bs-btn-active-border-color: rgb(239, 145, 139);
+ }
+
+ /*체크박스*/
+ .form-check-input:checked {
+     background-color: rgb(0, 64, 0);
+     border-color: rgb(0, 64, 0);
+ }
+
+ .form-check-input {
+     --bs-form-check-bg: var(--bs-body-bg);
+     width: 0.8em;
+     height: 0.8em;
+     margin-top: 0.3em;
+ 	margin-left: 0.5em;
+ }
+ 
+ .agree {
+	font-size: small;
+ }
+
+ /*대여 상세 페이지*/
+ .card-info-body {
+ 	height: 400px;
+ }
+
+ /*입력창*/
+ .infoinput1 {
+ 	width: 20%;
+ 	height: 35px;
+ }
+
+ .infoinput2 {
+ 	width: 30%;
+ 	height: 35px;
+ }
+
+ .rent-name {
+ 	font-size: medium;
+ 	font-weight: bold;
+ 	padding-top: 6px;
+ }
+
+
+
+
+ 

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>북적북적</title>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+
+    <!-- 사이드바 아이콘 -->
+
+    <link th:href="@{/images/common/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+    <link th:href="@{/images/common/remixicon/remixicon.css}" rel="stylesheet">
+
+
+    <!--부트스트랩 외부링크-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Main CSS File -->
+
+
+    <link th:href="@{/css/common/style.css}" rel="stylesheet">
+    <link th:href="@{/css/statistics/common/statistics_common.css}" rel="stylesheet">
+
+
+</head>
+
+<body>
+<div th:replace="~{/fragment/header :: header2}"></div>
+
+<main class="main-container">
+    <div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
+
+    <!-- 분석 페이지 -->
+    <div class="statistics-container">
+        <div class="page-title"><h2>매출 분석</h2></div>
+        <!-- 상단 버튼 영역 -->
+        <div class="d-flex justify-content-between mb-2">
+            <div class="select-bar">
+                <div class="dropdown me-2">
+                    <div class="input-group me-2">
+                        <span class="input-group-text">기간 설정</span>
+                        <input type="date" class="form-control" id="startDate" placeholder="시작 날짜">
+                        <span class="input-group-text">~</span>
+                        <input type="date" class="form-control" id="endDate" placeholder="종료 날짜">
+                    </div>
+                </div>
+                <div class="dropdown me-2">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                        지점명: <span id="branch">전체</span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('branch', '전체', 'branch')">전체</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('branch', '강남점', 'branch')">강남점</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('branch', '부산점', 'branch')">부산점</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('branch', '대구점', 'branch')">대구점</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown me-2">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                        매출 항목: <span id="salesItem">전체</span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('salesItem', '전체', 'salesItem')">전체</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('salesItem', '대여 수입', 'salesItem')">대여 수입</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('salesItem', '반납지연수입', 'salesItem')">반납지연수입</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown me-2">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
+                        장르: <span id="genre">전체</span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('genre', '전체', 'genre')">전체</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('genre', '소설', 'genre')">소설</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('genre', '경제', 'genre')">경제</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('genre', '자기계발', 'genre')">자기계발</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="select-bar">
+                <button type="button" class="btn btn-success me-2" onclick="sendRequest('current')">엑셀다운 (현재 페이지)</button>
+                <button type="button" class="btn btn-success" onclick="sendRequest('all')">엑셀다운 (전체 페이지)</button>
+                <button class="btn btn-primary" type="button" id="search-button" aria-expanded="false">
+                    검색
+                </button>
+            </div>
+        </div>
+
+        <!-- 테이블 영역 -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="table-primary">
+                <tr>
+                    <th>No</th>
+                    <th>지점명</th>
+                    <th>날짜</th>
+                    <th>매출 항목</th>
+                    <th>금액</th>
+                    <th>대여일</th>
+                    <th>반납일</th>
+                    <th>총 대여일</th>
+                    <th>반납지연일</th>
+                    <th>ISBN</th>
+                    <th>장르</th>
+                    <th>작가</th>
+                    <th>고객 ID</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>북적북적 강남점</td>
+                    <td>2024-10-01</td>
+                    <td>대여 수입</td>
+                    <td>50,000원</td>
+                    <td>2024-09-28</td>
+                    <td>2024-10-05</td>
+                    <td>7일</td>
+                    <td>0일</td>
+                    <td>978-89-01-23456-7</td>
+                    <td>소설</td>
+                    <td>김작가</td>
+                    <td>user1234</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>북적북적 부산점</td>
+                    <td>2024-10-02</td>
+                    <td>반납지연수입</td>
+                    <td>30,000원</td>
+                    <td>2024-09-25</td>
+                    <td>2024-10-02</td>
+                    <td>8일</td>
+                    <td>10일</td>
+                    <td>978-89-02-34567-8</td>
+                    <td>경제</td>
+                    <td>이경제</td>
+                    <td>user5678</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>북적북적 대구점</td>
+                    <td>2024-10-03</td>
+                    <td>대여 수입</td>
+                    <td>70,000원</td>
+                    <td>2024-09-20</td>
+                    <td>2024-10-01</td>
+                    <td>11일</td>
+                    <td>0일</td>
+                    <td>978-89-03-45678-9</td>
+                    <td>자기계발</td>
+                    <td>박작가</td>
+                    <td>user9101</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</main>
+
+<!-- 사이드바 열었다 닫았다 하는거 -->
+<script th:src="@{/js/common/main.js}"></script>
+<script>
+    let selectedOptions = {
+        branch: '',
+        salesItem: '',
+        genre: ''
+    };
+
+    function selectOption(type, value, buttonId) {
+        selectedOptions[type] = value;
+        document.getElementById(buttonId).textContent = value;
+    }
+
+    function sendRequest(type) {
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        const branch = selectedOptions.branch;
+        const salesItem = selectedOptions.salesItem;
+        const genre = selectedOptions.genre;
+    }
+</script>
+</body>
+
+</html>

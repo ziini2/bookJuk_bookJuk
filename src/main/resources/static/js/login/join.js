@@ -307,7 +307,7 @@ $(document).ready(function () {
         contentType: "application/json",
         success: function (response) {
           console.log("회원가입 성공");
-          window.location.href = "/login/login";
+          window.location.href = "/login";
         },
         error: function (xhr, status, error) {
           console.log("회원가입 실패" + error);

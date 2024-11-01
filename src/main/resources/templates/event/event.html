@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" >
-
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>북적북적</title>
+  <title>북적북적::이벤트 관리</title>
   
   <!-- 구글폰트 -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -15,8 +14,8 @@
 
   <!-- 사이드바 아이콘 -->
 
-  <link th:href="@{/images/common/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
-  <link th:href="@{/images/common/remixicon/remixicon.css}" rel="stylesheet">
+  <link th:href="@{images/common/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{images/common/remixicon/remixicon.css}" rel="stylesheet">
 
   
   <!--부트스트랩 외부링크-->
@@ -26,19 +25,16 @@
   <!-- Main CSS File -->
 
 
-  <link th:href="@{/css/common/style.css}" rel="stylesheet">
+  <link th:href="@{css/common/style.css}" rel="stylesheet">
 
 
 </head>
 
 <body>
-	<div th:replace="~{/fragment/header :: header2}"></div>
-	<div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
+	<div th:replace="/fragment/header :: header2"></div>
+	<div th:replace="/fragment/sidebar :: sidebar2"></div>
 
-
-	<!--main content-->
-
-
+ 
 
   <!-- 사이드바 열었다 닫았다 하는거 -->
   <script th:src="@{/js/common/main.js}"></script>

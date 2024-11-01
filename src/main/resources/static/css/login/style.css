@@ -286,7 +286,10 @@ button:disabled{
     color: #db4437;
     margin: 0.5rem;
 }
-
+#loading img{
+    width: 10%;
+    height: 10%;
+}
 
 /*==============================================================*/
 /* RESPONSIVE */

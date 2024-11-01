@@ -1,0 +1,249 @@
+:root {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  background:#fcfef8;
+  color: #444444;
+}
+
+a {
+  color: #3c955a;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #c5e774;
+  text-decoration: none; 
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Nunito", sans-serif;
+}
+
+/*--------------------------------------------------------------
+# Main
+--------------------------------------------------------------*/
+#main {
+  margin-top: 60px;
+  padding: 20px 30px;
+  transition: all 0.3s;
+}
+
+@media (max-width: 1199px) {
+  #main {
+    padding: 20px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Header
+--------------------------------------------------------------*/
+.logo {
+  line-height: 1;
+}
+
+@media (min-width: 1200px) {
+  .logo {
+    width: 280px;
+  }
+}
+
+.header {
+  transition: all 0.5s;
+  z-index: 997;
+  height: 60px;
+  box-shadow: 0px 2px 20px rgb(242, 250, 226);
+  background-color: #fff;
+  padding-left: 20px;
+
+}
+
+.header .toggle-sidebar-btn {
+  font-size: 32px;
+  padding-left: 10px;
+  cursor: pointer;
+  color: rgb(99, 192, 130);
+}
+
+.header .toggle-sidebar-btn:hover {
+  font-size: 32px;
+  padding-left: 10px;
+  cursor: pointer;
+  color: #c5e774;;
+}
+
+/*--------------------------------------------------------------
+# Sidebar
+--------------------------------------------------------------*/
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  z-index: 996;
+  transition: all 0.3s;
+  padding: 20px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(167, 219, 45) transparent;
+/*  box-shadow: 0px 0px 20px rgb(242, 250, 226);*/
+  background-color: #fff;
+}
+
+@media (max-width: 1199px) {
+  .sidebar {
+    left: -300px;
+  }
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background-color: #fff;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: rgb(152, 226, 61);
+}
+
+@media (min-width: 1200px) {
+
+  #main{
+    margin-left: 300px;
+  }
+}
+
+@media (max-width: 1199px) {
+  .toggle-sidebar .sidebar {
+    left: 0;
+  }
+}
+
+@media (min-width: 1200px) {
+
+  .toggle-sidebar #main {
+    margin-left: 0;
+  }
+
+  .toggle-sidebar .sidebar {
+    left: -300px;
+  }
+}
+
+.sidebar-nav {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.sidebar-nav li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.sidebar-nav .nav-item {
+  margin-bottom: 5px;
+}
+
+.sidebar-nav .nav-heading {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: rgb#3c955a;
+  font-weight: 600;
+  margin: 10px 0 5px 15px;
+}
+
+.sidebar-nav .nav-link {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: #3c955a;
+  background: #fff;
+  padding: 10px 15px;
+  border-radius: 4px;
+}
+
+.sidebar-nav .nav-link i {
+  font-size: 16px;
+  margin-right: 10px;
+  color: #63c082;
+}
+
+.sidebar-nav .nav-link.collapsed {
+  color: #3c955a;
+  background: #fff;
+}
+
+.sidebar-nav .nav-link.collapsed i {
+  color: #c5e774;
+}
+
+.sidebar-nav .nav-link:hover {
+  color: #c5e774;
+  background:#fff;
+}
+
+.sidebar-nav .nav-link:hover i {
+  color: #c5e774;
+}
+
+.sidebar-nav .nav-link .ri-arrow-down-s-fill {
+  margin-right: 0;
+  transition: transform 0.2s ease-in-out;
+}
+
+.sidebar-nav .nav-link:not(.collapsed) .ri-arrow-down-s-fill {
+  transform: rotate(180deg);
+}
+
+.sidebar-nav .nav-content {
+  padding: 5px 0 0 0;
+  margin: 0;
+  list-style: none;
+}
+
+.sidebar-nav .nav-content a {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #3c955a;
+  padding: 10px 0 10px 40px;
+  transition: 0.3s;
+}
+
+.sidebar-nav .nav-content a i {
+  font-size: 6px;
+  margin-right: 8px;
+  line-height: 0;
+  border-radius: 50%;
+}
+
+.sidebar-nav .nav-content a:hover,
+.sidebar-nav .nav-content a.active {
+	color: #c5e774;
+}
+
+.sidebar-nav .nav-content a.active i {
+  background-color: #e8f1a5;
+}
+
+/* 사이드바 메뉴 클릭 시 포커스 및 활성 상태에서 배경과 테두리를 제거 */
+.sidebar-nav .nav-link:hover,
+.sidebar-nav .nav-link:focus, 
+.sidebar-nav .nav-link:active, 
+.sidebar-nav .nav-link:visited {
+  outline: none; /* 포커스 outline 제거 */
+  background-color: transparent; /* 배경색 투명 */
+  box-shadow: none; /* 박스 그림자 제거 */
+}

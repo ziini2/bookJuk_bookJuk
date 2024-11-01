@@ -1,0 +1,36 @@
+.form-control, .form-select {
+        width: 50%; /* 너비를 50%로 설정 */
+    }
+
+/*달력*/
+.datepicker {
+    z-index: 1000; /* 다른 요소 위에 표시되도록 z-index 설정 */
+	
+}
+
+.datepicker-dropdown {
+	top: 280px !important; 
+	left: 642.333px; 
+	z-index: 10; 
+	display: block;
+}
+
+.input-group .form-control {
+    height: calc(2.25rem + 2px); /* 다른 입력 필드와 높이를 맞춥니다 */
+    padding: 0.375rem 0.75rem; /* 패딩을 통일합니다 */
+    margin: 0; /* 마진을 초기화합니다 */
+}
+
+.custom-date-picker .input-group {
+    align-items: center; /* 수직 정렬을 맞춥니다 */
+}
+
+.custom-select {
+    width: 120px; /* 원하는 너비로 조정 */
+}
+
+.card {
+    margin-bottom: 1rem; /* 카드 아래 여백 */
+    margin-left: auto; /* 자동 마진으로 오른쪽으로 이동 */
+    margin-right: 0; /* 오른쪽 마진 제거 */
+}

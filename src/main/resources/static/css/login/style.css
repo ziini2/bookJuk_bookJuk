@@ -134,6 +134,11 @@ body {
 .pointer {
     cursor: pointer;
 }
+.pointer-find{
+    text-align: left;
+    margin-left: 0.5rem;
+    color: var(--primary-color);
+}
 
 .container.sign-in .form.sign-in,
 .container.sign-in .container.sign-in ,
@@ -281,7 +286,10 @@ button:disabled{
     color: #db4437;
     margin: 0.5rem;
 }
-
+#loading img{
+    width: 10%;
+    height: 10%;
+}
 
 /*==============================================================*/
 /* RESPONSIVE */

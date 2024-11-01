@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>도서등록</title>
+  
+  <!-- 구글폰트 -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- 사이드바 아이콘 -->
+  <link th:href="@{/images/common/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{/images/common/remixicon/remixicon.css}" rel="stylesheet">
+  
+  <!--부트스트랩 외부링크-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Main CSS File -->
+  <link th:href="@{/css/common/style.css}" rel="stylesheet">
+  <link th:href="@{/css/books/books.css}" rel="stylesheet">
+
+  <!--달력 조회-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+  <!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css">-->
+  <!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css">-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
+
+</head>
+
+<body>
+  <div th:replace="/fragment/header :: header2"></div>
+  <div th:replace="/fragment/sidebar :: sidebar2"></div>
+
+  <main id="main" class="main">
+    <div class="container text-center">
+      <div class="row">
+        <div class="col">
+          <div class="card" style="width: 12rem;">
+            <img th:src="@{/images/books/noimage.png}" alt="No Image" id="bookImage">
+            <div class="card-body">
+              <p class="card-text">
+                <input type="file" accept="image/*" onchange="previewImage(event)" style="display: none;" id="imageInput">
+                <button type="button" class="btn btn-dark" onclick="document.getElementById('imageInput').click();">추가</button>
+                <button type="button" class="btn btn-dark" onclick="deleteImage()">삭제</button>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="input-group mb-3">
+            <span class="input-group-text">ISBN</span>
+            <input type="text" class="form-control" placeholder="도서 ISBN번호를 입력하세요">
+			<button type="button" class="btn btn-secondary">조회</button>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">도서명</span>
+            <input type="text" class="form-control" placeholder="">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">저자</span>
+            <input type="text" class="form-control" placeholder="">
+            <span class="input-group-text">출판사</span>
+            <input type="text" class="form-control" placeholder="">
+          </div>
+          <div class="input-group mb-4">
+            <span class="input-group-text">입고일</span>
+            <i class="ri-calendar-check-fill input-group-text"></i>
+			<!--달력-->
+			<div class="custom-date-picker">
+				<form autocomplete="off">
+					<div class="input-group input-daterange custom-date-picker">
+						<input type="text" class="form-control input1" placeholder="입고일 선택" readonly>
+					</div>
+				</form>
+			</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  
+  <!--이미지 파일 추가하는거 -->
+  <script>
+	function previewImage(event) {
+	    const image = document.getElementById('bookImage');
+	    image.src = URL.createObjectURL(event.target.files[0]);
+	}
+  </script>
+  <script>
+	function deleteImage() {
+		    const image = document.getElementById('bookImage');
+		    image.src = '/images/books/noimage.png'; // 기본 이미지로 되돌리기
+		}
+  </script>
+  <script>
+	$(document).ready(function() {
+	    $('.custom-date-picker .input-daterange').datepicker({
+	        format: 'yyyy-mm-dd', // 년-월-일 형식으로 날짜 표시
+	        autoclose: true
+	    });
+	});
+    </script>
+
+  <!-- 사이드바 열었다 닫았다 하는거 -->
+   <script th:src="@{/js/common/main.js}"></script>
+</body>
+</html>

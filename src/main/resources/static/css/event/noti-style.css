@@ -2,8 +2,10 @@ body {
 	padding-top: 80px;
 }
 
+
+
 /*--- 알림 관리 페이지 datatables ↓ CSS ---*/
-#noti-table tbody td {
+#noti-table tbody td > span{
     cursor: pointer !important;
 }
 #noti-table th, #noti-table td {
@@ -62,6 +64,18 @@ body {
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.6) !important;
 	z-index: 1000;
+}
+.noti-detailModal-content {
+	position: absolute;
+	background-color: #fff !important;
+	padding: 30px !important;
+	border-radius: 8px !important;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+	top: 50% !important;
+	left: 50% !important;
+	transform: translate(-50%, -50%) !important;
+	width: 420px;
+	max-width: 90%;
 }
 /*--- notification 알림 상세 필터 모달창 ↑ CSS ---*/
 

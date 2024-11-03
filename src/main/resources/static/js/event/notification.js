@@ -32,7 +32,7 @@ $(document).ready(function() {
     // 알림 검색 결과 수 업데이트
     table.on('draw', function() {
         const info = table.page.info();
-        $('#noti-searchResults').text(`검색 결과: ${info.recordsDisplay}개`);
+        $('#noti-searchResults').text(`검색 결과 : ${info.recordsDisplay}개`);
     });
 
 	$('#noti-table_filter input').attr('placeholder', 'search');
@@ -62,12 +62,19 @@ $(document).ready(function() {
     $('#noti-table_filter input').off().on('keyup', function() {
         const column = $('#noti-columnSelect').val();
         const searchValue = $(this).val();
+		table.columns().search('');
         if (column) {
             table.column(column).search(searchValue).draw();
         } else {
             table.search(searchValue).draw();
         }
     });
+	
+	// 알림 검색 드롭다운 변경시 이전 검색 조건 초기화
+	$("#noti-columnSelect").on("change", function() {
+	    $(".dataTables_filter input").val("");
+	    table.columns().search('').draw();
+	});
 });
 $(document).ready(function () {
 	const table = $('#noti-table').DataTable();
@@ -80,8 +87,8 @@ $(document).ready(function () {
 	let notiEndDate = '';
 	
 	// DataTables의 'draw' 이벤트에 이벤트 리스너 등록
-    $('#noti-table tbody').on('click', 'tr', function () {
-        const cells = $(this).children('td');
+    $('#noti-table tbody').on('click', 'td span', function () {
+        const cells = $(this).closest('tr').find('td');
 
         // 알림 상세 데이터 추출
         $('#noti-detailReceiver').text(cells.eq(1).text());
@@ -161,6 +168,7 @@ $(document).ready(function () {
 	// 알림 검색 필터 모달창 닫기
 	$('.noti-modal-close').click(() => {
 		$('#noti-filterModal').css('display', 'none');
+		$('#noti-detailModal').css('display', 'none');
 	});
 
 	// 알림 검색 필터 모달창 내 완료 버튼

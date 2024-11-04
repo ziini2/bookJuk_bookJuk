@@ -33,8 +33,8 @@ public class NotiCheckEntity {
 	
 	// 알림 수신인
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userNum")
-	private UserEntity recipient;
+	@JoinColumn(name = "notiRecipient")
+	private UserEntity notiRecipient;
 	
 	// 알림 확인 유무
 	@Column(name = "notiChecked", nullable = false)

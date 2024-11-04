@@ -30,8 +30,8 @@ public class NotificationEntity {
 	
 	// 알림 수신인(유저 PK)
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recipient")
-    private UserEntity recipient;
+    @JoinColumn(name = "notiRecipient")
+    private UserEntity notiRecipient;
 	
 	// 알림 발신인(유저 PK)
 	@ManyToOne(fetch = FetchType.LAZY)

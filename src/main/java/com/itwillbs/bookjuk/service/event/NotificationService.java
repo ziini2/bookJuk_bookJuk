@@ -20,7 +20,7 @@ public class NotificationService {
 	private NotificationRepository notiRepository;
 	
 	public List<NotificationEntity> getNoti(UserEntity recipient) {
-		return notiRepository.findByRecipient(recipient);
+		return notiRepository.findByNotiRecipient(recipient);
 	}
 	
 	public void sendNoti(NotificationEntity noti) {

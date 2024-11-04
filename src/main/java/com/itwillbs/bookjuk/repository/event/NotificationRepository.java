@@ -9,5 +9,6 @@ import com.itwillbs.bookjuk.entity.UserEntity;
 
 
 public interface NotificationRepository extends JpaRepository<NotificationEntity, Long> {
-	List<NotificationEntity> findByRecipient(UserEntity recipient);
+
+	List<NotificationEntity> findByNotiRecipient(UserEntity recipient);
 }

@@ -58,23 +58,31 @@ $(document).ready(function() {
 		</div>
 	`);
 	
-    // 알림 검색 이벤트 설정
-    $('#noti-table_filter input').off().on('keyup', function() {
-        const column = $('#noti-columnSelect').val();
-        const searchValue = $(this).val();
-		table.columns().search('');
-        if (column) {
-            table.column(column).search(searchValue).draw();
-        } else {
-            table.search(searchValue).draw();
-        }
-    });
+	// 동적 쿠폰 검색 기능 끄기
+	$('#noti-table_filter input').unbind();
 	
-	// 알림 검색 드롭다운 변경시 이전 검색 조건 초기화
-	$("#noti-columnSelect").on("change", function() {
-	    $(".dataTables_filter input").val("");
-	    table.columns().search('').draw();
+	// 쿠폰 검색
+	$('#noti-table_filter input').on('keypress', function(e) {
+		if (e.key === 'Enter') {
+			triggerSearch();
+		}
 	});
+	
+	$('#noti-columnSelect').on('change', function() {
+        $('#noti-table_filter input').val('');
+		table.search('').columns().search('').draw();
+    });
+
+	// 쿠폰 검색 함수
+	function triggerSearch() {
+		const column = $('#noti-columnSelect').val();
+		const searchValue = $('#noti-table_filter input').val();
+		if (column) {
+			table.column(column).search(searchValue).draw();
+		} else {
+			table.search(searchValue).draw();
+		}
+	}
 });
 $(document).ready(function () {
 	const table = $('#noti-table').DataTable();

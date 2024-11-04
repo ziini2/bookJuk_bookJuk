@@ -1,0 +1,133 @@
+.text-point {
+	font-size: large;
+}
+ 
+/*테이블*/
+.table {
+	border-color: rgb(71, 71, 71);
+}
+
+.table th {
+    padding: 14px; /* 좌우 및 상하 패딩*/
+    vertical-align: middle; /*텍스트 세로 중앙 정렬*/
+    text-align: center; /*텍스트 가로 중앙 정렬*/
+	background-color: #d5e8d4;
+}
+
+.table td {
+    padding: 20px; /* 좌우 및 상하 패딩*/
+    vertical-align: middle; /*텍스트 세로 중앙 정렬*/
+	text-align: center;
+}
+
+/*요소 중앙 정렬*/
+.select-point {
+	justify-content: center;
+}
+
+p {
+	margin-bottom: 0;
+}
+
+.text-bottom {
+	font-size: small;
+}
+
+.text-pay-top {
+	font-size: x-small;
+	font-weight: bold;
+}
+.text-pay-bottom {
+	font-size: x-small;
+	color: rgb(56, 56, 56);
+}
+
+
+/*충전 항목*/
+ .card-pay-body {
+ 	height: 180px;
+ 	background-color: #fcfef8;
+ 	border: none;
+ 	margin-top: 1rem;
+ 	margin-bottom: none;
+ }
+
+ .card-item-image {
+ 	width: 100px;
+ 	height: 120px;
+ }
+
+ /*페이 카드*/
+ .pay-title-text {
+ 	font-weight: bold;
+ 	font-size: large;
+ 	padding-top: 15px;
+	padding-left: 10%;
+ }
+
+
+ .x-button {
+ 	text-align: right;
+ }
+
+ 
+ .cart-card {
+ 	width: 250px;
+ 	height: 420px;
+ }
+
+ .card-text {
+ 	font-size: small;
+ 	padding-top: 15px;
+ }
+
+ .card-text-price {
+	font-size: medium;
+	padding-top: 10px;
+ }
+ 
+
+ /*체크박스*/
+ .form-check-input:checked {
+     background-color: rgb(0, 64, 0);
+     border-color: rgb(0, 64, 0);
+ }
+
+ .form-check-input {
+     --bs-form-check-bg: var(--bs-body-bg);
+     width: 1em;
+     height: 1em;
+     margin-top: 0.3em;
+ 	margin-left: 0.5em;
+ }
+ 
+ .agree {
+	font-size: small;
+ }
+
+/*결제인 정보*/
+.email-bar {
+	width: 50%;
+}
+
+.pay-email-text {
+	font-size: small;
+	font-weight: bold;
+	padding-top: 8px;
+}
+
+/*결제하기 버튼*/
+.btn-pay {
+	width: 40%;
+ 	height: 50px;
+	font-size: medium;
+ 	background-color: rgb(255, 77, 77);
+ 	--bs-btn-hover-bg: rgb(239, 145, 139);
+ 	--bs-btn-color: rgb(255, 255, 255);
+ 	--bs-btn-hover-color: rgb(255, 255, 255);
+ 	--bs-btn-active-color: rgb(255, 255, 255);
+ 	--bs-btn-active-bg: rgb(239, 145, 139);
+ 	--bs-btn-active-border-color: rgb(239, 145, 139);
+ }
+
+ 

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SmsService {
     private final SmsCertificationUtil smsCertificationUtil;
-    private final InfoEndpoint infoEndpoint;
 
 
     //실제 SMS 인증 서비스
@@ -28,8 +27,4 @@ public class SmsService {
         log.warn("code: {}", code);
         return code;
     }
-
-
-
-
 }

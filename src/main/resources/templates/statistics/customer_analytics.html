@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>북적북적</title>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+
+    <!-- 사이드바 아이콘 -->
+
+    <link th:href="@{/images/common/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+    <link th:href="@{/images/common/remixicon/remixicon.css}" rel="stylesheet">
+
+
+    <!--부트스트랩 외부링크-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Main CSS File -->
+
+
+    <link th:href="@{/css/common/style.css}" rel="stylesheet">
+    <link th:href="@{/css/statistics/common/statistics_common.css}" rel="stylesheet">
+
+
+</head>
+
+<body>
+<div th:replace="~{/fragment/header :: header2}"></div>
+
+<main class="main-container">
+    <div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
+
+    <!-- 분석 페이지 -->
+    <div class="statistics-container">
+        <div class="page-title"><h2>고객 분석</h2></div>
+        <!-- 상단 버튼 영역 -->
+        <div class="d-flex justify-content-between mb-2">
+            <div class="select-bar">
+                <div class="dropdown me-2">
+                    <div class="input-group me-2">
+                        <span class="input-group-text">기간 설정</span>
+                        <input type="date" class="form-control" id="startDate" placeholder="시작 날짜">
+                        <span class="input-group-text">~</span>
+                        <input type="date" class="form-control" id="endDate" placeholder="종료 날짜">
+                    </div>
+                </div>
+                <div class="dropdown me-2">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        지점명: <span id="branch">전체</span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('branch', '전체', 'branch')">전체</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('branch', '강남점', 'branch')">강남점</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('branch', '부산점', 'branch')">부산점</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('branch', '대구점', 'branch')">대구점</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown me-2">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                        고객등급: <span id="class">전체</span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('class', '전체', 'class')">전체</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('class', '실버', 'class')">실버</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('class', '골드', 'class')">골드</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown me-2">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                        성별: <span id="gender">전체</span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('gender', '전체', 'gender')">전체</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('gender', '남', 'gender')">남</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('gender', '여', 'gender')">여</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown me-2">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
+                        나이: <span id="age">전체</span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('age', '전체', 'age')">전체</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('age', '10대', 'age')">10대</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('age', '20대', 'age')">20대</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('age', '30대', 'age')">30대</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('age', '40대', 'age')">40대</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('age', '50대', 'age')">50대</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('age', '60대 이상', 'age')">60대 이상</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="select-bar">
+                <button type="button" class="btn btn-success me-2" onclick="sendRequest('current')">엑셀다운 (현재 페이지)</button>
+                <button type="button" class="btn btn-success" onclick="sendRequest('all')">엑셀다운 (전체 페이지)</button>
+                <button class="btn btn-primary" type="button" id="search-button" aria-expanded="false">
+                    검색
+                </button>
+            </div>
+        </div>
+
+        <!-- 테이블 영역 -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="table-primary">
+                <tr>
+                    <th>No</th>
+                    <th>지점명</th>
+                    <th>고객ID</th>
+                    <th>고객등급</th>
+                    <th>가입일</th>
+                    <th>누적대여금액</th>
+                    <th>성별</th>
+                    <th>나이</th>
+                    <th>주소</th>
+                    <th>누적대여일</th>
+                    <th>누적대여권수</th>
+                    <th>누적연장일</th>
+                    <th>누적연체일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>북적북적 강남점</td>
+                    <td>user1234</td>
+                    <td>골드</td>
+                    <td>2024-01-15</td>
+                    <td>500,000원</td>
+                    <td>남</td>
+                    <td>30</td>
+                    <td>서울 강남구</td>
+                    <td>100일</td>
+                    <td>50권</td>
+                    <td>10일</td>
+                    <td>5일</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>북적북적 부산점</td>
+                    <td>user5678</td>
+                    <td>실버</td>
+                    <td>2023-05-20</td>
+                    <td>300,000원</td>
+                    <td>여</td>
+                    <td>25</td>
+                    <td>부산 해운대구</td>
+                    <td>80일</td>
+                    <td>40권</td>
+                    <td>5일</td>
+                    <td>2일</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>북적북적 대구점</td>
+                    <td>user9101</td>
+                    <td>골드</td>
+                    <td>2022-11-10</td>
+                    <td>700,000원</td>
+                    <td>남</td>
+                    <td>40</td>
+                    <td>대구 수성구</td>
+                    <td>120일</td>
+                    <td>60권</td>
+                    <td>15일</td>
+                    <td>7일</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</main>
+
+<!-- 사이드바 열었다 닫았다 하는거 -->
+<script th:src="@{/js/common/main.js}"></script>
+<script>
+    let selectedOptions = {
+        branch: '',
+        salesItem: '',
+        genre: ''
+    };
+
+    function selectOption(type, value, buttonId) {
+        selectedOptions[type] = value;
+        document.getElementById(buttonId).textContent = value;
+    }
+
+    function sendRequest(type) {
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        const branch = selectedOptions.branch;
+        const salesItem = selectedOptions.salesItem;
+        const genre = selectedOptions.genre;
+
+    }
+</script>
+</body>
+
+</html>

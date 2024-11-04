@@ -90,7 +90,7 @@
 												aria-label="Close"></button>
 										</div>
 										<div class="modal-body">
-											<form>
+											<form id="addStoreForm" method="post" action="/admin/store/addStore">
 												<div class="mb-3">
 													<label for="store-name" class="col-form-label">지점명</label>
 													<input name="storeName" type="text" class="form-control"
@@ -147,7 +147,7 @@
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary"
 												data-bs-dismiss="modal">닫기</button>
-											<button type="button" class="btn btn-primary">등록</button>
+											<button type="button" class="btn btn-primary" onclick="addStore()">등록</button>
 										</div>
 									</div>
 								</div>
@@ -265,6 +265,11 @@
 		    // 모든 입력 필드 초기화
 		    $(this).find('form')[0].reset();
 		});
+		
+		function addStore() {
+			const addstore = document.getElementById('addStoreForm');
+			addstore.submit();
+		}
 	</script>
 
 </body>

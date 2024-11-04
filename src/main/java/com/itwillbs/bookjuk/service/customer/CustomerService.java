@@ -20,6 +20,10 @@ public class CustomerService {
 	public Page<StoreEntity> getStoreList(Pageable pageable) {
 		return storeRepository.findAll(pageable);
 	}
+
+	public void addStore(StoreEntity storeEntity) {
+		storeRepository.save(storeEntity);
+	}
 	
 	
 }

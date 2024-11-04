@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.bookjuk.entity.StoreEntity;
@@ -46,6 +47,13 @@ public class CutsomerController {
 		model.addAttribute("endPage", endPage);
 
 		return "customer/store";
+	}
+	
+	@PostMapping("/admin/store/addStore")
+	public String addStore(StoreEntity storeEntity) {
+		customerService.addStore(storeEntity);
+		log.info(storeEntity.toString());
+		return "redirect:/admin/store/store_list";
 	}
 
 	@GetMapping("/admin/store/store_info")

@@ -1,63 +1,62 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+ 	<title>북적북적::알림 메시지 관리</title>
   
-  <title>북적북적::알림 메시지 관리</title>
+	<!-- 구글폰트 -->
+	<link href="https://fonts.gstatic.com" rel="preconnect">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
   
-  <!-- 구글폰트 -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+	<!-- 사이드바 아이콘 -->
+	<link href="/images/common/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+	<link href="/images/common/remixicon/remixicon.css" rel="stylesheet">
   
-  <!-- 사이드바 아이콘 -->
-  <link href="/images/common/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="/images/common/remixicon/remixicon.css" rel="stylesheet">
+	<!--부트스트랩 외부링크-->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   
-  <!--부트스트랩 외부링크-->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  
-  <!-- Main CSS File -->
-  <link href="/css/event/style.css" rel="stylesheet">
-  <link href="/css/common/style.css" rel="stylesheet">
+	<!-- Main CSS File -->
+	<link href="/css/event/noti-style.css" rel="stylesheet">
+	<link href="/css/common/style.css" rel="stylesheet">
     
-  <!--  DataTables-->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+	<!--  DataTables-->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
 </head>
 <body>
 	<div th:replace="/fragment/header :: header2"></div>
-	<div th:replace="/fragment/sidebar :: sidebar2"></div>
-	<div class="container my-4">
-	    <h2>알림 메시지 관리</h2>
-		<div id="filterModal" class="noti-modal">
-		  <div class="noti-modal-content">
-		    <span class="close">&times;</span>		    
-		    <h3>필터 설정</h3>		    
-		    <label>알림 유형</label>
-		    <div id="alertType">
-		      <button type="button" class="toggle-btn" data-value="SMS" value="SMS">SMS</button>
-		      <button type="button" class="toggle-btn" data-value="쪽지" value="쪽지">쪽지</button>
-		    </div>		    
-		    <label>전송 상태</label>
-		    <div id="statusType">
-		      <button type="button" class="toggle-btn" data-value="대기">대기</button>
-		      <button type="button" class="toggle-btn" data-value="성공">성공</button>
-		      <button type="button" class="toggle-btn" data-value="실패">실패</button>
-		    </div>
-		    <label>전송 날짜</label>
-		    <div class="noti-date-container">
-		      <input type="date" id="startDate" value="2024-10-24">
-		      <span> ~ </span>
-		      <input type="date" id="endDate" value="2024-10-24">
-		    </div>		    
-		    <button id="applyFilter">완료</button>
-		  </div>
+<!--	<div th:replace="/fragment/sidebar :: sidebar2"></div>-->
+	<div class="notification container my-4">
+		<h2 style="margin-bottom: 100px;">알림 메시지 관리</h2>
+		<div id="noti-filterModal">
+			<div class="noti-filterModal-content">
+				<span class="noti-modal-close">&times;</span>		    
+				<h3>필터 설정</h3>		    
+				<label>알림 유형</label>
+				<div id="notiType">
+					<button type="button" class="noti-filterModal-toggleBtn" data-value="SMS" value="SMS">SMS</button>
+					<button type="button" class="noti-filterModal-toggleBtn" data-value="쪽지" value="쪽지">쪽지</button>
+				</div>		    
+				<label>전송 상태</label>
+		    	<div id="transferStatus">
+					<button type="button" class="noti-filterModal-toggleBtn" data-value="대기">대기</button>
+					<button type="button" class="noti-filterModal-toggleBtn" data-value="성공">성공</button>
+					<button type="button" class="noti-filterModal-toggleBtn" data-value="실패">실패</button>
+				</div>
+				<label>전송 날짜</label>
+				<div class="noti-date-container">
+					<input type="date" id="notiStartDate" value="">
+					<span> ~ </span>
+					<input type="date" id="notiEndDate" value="">
+		    	</div>		    
+				<button id="noti-filterModal-apply">완료</button>
+			</div>
 		</div>
-	    <table id="marketingTable" class="table table-striped table-bordered">
+	    <table id="noti-table" class="notification table table-striped table-bordered">
 	        <thead>
 	            <tr>
 	                <th>No.</th>
-	                <th>수신인</th>
+	                <th>수신 아이디</th>
 	                <th>알림 내용</th>
 	                <th>알림 유형</th>
 	                <th>전송 상태</th>
@@ -66,190 +65,46 @@
 	        </thead>
 	        <tbody>
 	            <tr>
-	                <td>6</td>
-	                <td>kim123</td>
-	                <td>vdffffffffgㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</td>
-	                <td>쪽지</td>
-	                <td>성공</td>
-	                <td>2024-10-08 16:10:07</td>
+	                <td><span>6</span></td>
+	                <td><span>kim123</span></td>
+	                <td><span>vdffffffffgㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</span></td>
+	                <td><span>쪽지</span></td>
+	                <td><span>성공</span></td>
+	                <td><span>2024-10-08 16:10:07</span></td>
 	            </tr>
 	            <tr>
-	                <td>5</td>
-	                <td>park456</td>
-	                <td>b gb gggh</td>
-	                <td>sms</td>
-	                <td>성공</td>
-	                <td>2024-10-17 04:08:00</td>
+	                <td><span>5</span></td>
+	                <td><span>park456</span></td>
+	                <td><span>b gb gggh</span></td>
+	                <td><span>sms</span></td>
+	                <td><span>성공</span></td>
+	                <td><span>2024-10-17 04:08:00</span></td>
 	            </tr>
 	        </tbody>
 	    </table>
+		<div id="noti-detailModal">
+		    <div class="noti-detailModal-content">
+		        <span class="noti-modal-close">&times;</span>
+		        <h3>알림 상세 정보</h3>
+		        <p><strong>수신 아이디:</strong><span id="noti-detailReceiver"></span></p>
+		        <p><strong>알림 내용:</strong><span id="noti-detailContent"></span></p>
+		        <p><strong>알림 유형:</strong><span id="noti-detailType"></span></p>
+		        <p><strong>전송 상태:</strong><span id="noti-detailStatus"></span></p>
+		        <p><strong>전송 날짜:</strong><span id="noti-detailSentDate"></span></p>
+		    </div>
+		</div>
 	</div>
 
-<!-- jQuery and DataTables JS -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- jQuery and DataTables JS -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- 사이드바 열었다 닫았다 하는거 -->
-<script src="/js/common/main.js"></script>
+	<!-- 사이드바 열었다 닫았다 하는거 -->
+	<script src="/js/common/main.js"></script>
 
-<script>
-    $(document).ready(function() {
-        const table = $('#marketingTable').DataTable({
-            paging: true,
-            searching: true,
-            info: true,
-            language: {
-                search: "",
-				info: "",
-				infoEmpty: "",
-				infoFiltered: "",
-				infoPostFix: "",
-				lengthMenu: 
-	               `<select class="form-select">
-	                    <option value="10">10개씩 보기</option>
-	                    <option value="25">25개씩 보기</option>
-	                    <option value="50">50개씩 보기</option>
-	                    <option value="100">100개씩 보기</option>
-	                </select>`,
-                paginate: {
-                    previous: "이전",
-                    next: "다음"
-                }
-            },
-			dom: '<"d-flex justify-content-between"<"d-flex align-items-center dataTables_filter_wrapper"f><"dataTables_length_wrapper"l>>rt<"d-flex justify-content-center"p>',
-        });
-		
-		// 검색 결과 개수 상단에 표시
-	    $('.dataTables_length').before('<div id="resultCount" style="margin-right: 15px; text-align: right;"></div>');
-
-	    // DataTables의 draw 이벤트를 사용하여 검색 결과 수 업데이트
-	    table.on('draw', function() {
-	        const info = table.page.info();
-	        $('#resultCount').text(`검색 결과: ${info.recordsDisplay}개`);
-	    });
-	
-		$('#marketingTable_filter input').attr('placeholder', 'search');
-		
-		$(".dataTables_filter").prepend(`
-		    <select id="columnSelect" class="form-select ms-2" style="width: auto; display: inline;">
-		        <option value="">전체</option>
-		        <option value="0">NO</option>
-		        <option value="1">수신인</option>
-		        <option value="2">알림 내용</option>
-		        <option value="3">알림 유형</option>
-		        <option value="4">전송 상태</option>
-		        <option value="5">전송날짜</option>
-		    </select>
-		`);
-		
-		$(".dataTables_filter").append(`
-			<div class="d-flex align-items-center">
-			    <button id="filterButton" class="btn btn-primary me-2">필터</button>
-			    <div id="selectedFilters"></div>
-			</div>
-		`);
-        // 검색 이벤트 설정
-        $('#marketingTable_filter input').off().on('keyup', function() {
-            const column = $('#columnSelect').val();
-            const searchValue = $(this).val();
-            if (column) {
-                table.column(column).search(searchValue).draw();
-            } else {
-                table.search(searchValue).draw();
-            }
-        });
-    });
-</script>
-
-<script>
-	$(document).ready(function () {
-	  const table = $('#marketingTable').DataTable();
-	  const alertTypeButtons = $('#alertType .toggle-btn');
-	  const statusTypeButtons = $('#statusType .toggle-btn');
-	  let alertType = '';
-  	  let status = '';
-  	  let startDate = '';
-  	  let endDate = '';
-
-	  alertTypeButtons.click(function () {
-	      if ($(this).hasClass('active')) {
-	        $(this).removeClass('active');
-			alertType = '';
-	      } else {
-	        alertTypeButtons.removeClass('active');
-	        $(this).addClass('active');
-			alertType = $(this).data('value');
-	      }
-	  });
-
-	    // 전송 상태 버튼 클릭 이벤트
-	  statusTypeButtons.click(function () {
-	    if ($(this).hasClass('active')) {
-	      $(this).removeClass('active');
-		  status = '';
-	    } else {
-	      statusTypeButtons.removeClass('active');
-		  $(this).addClass('active');
-		  status = $(this).data('value');
-	    }
-	  });
-	  
-	  $.fn.dataTable.ext.search.push(function (settings, data) {
-	    const rowAlertType = data[3];
-	    const rowStatus = data[4];
-	    const rowDate = data[5];
-	    if (alertType && rowAlertType !== alertType) return false;
-	    if (status && rowStatus !== status) return false;
-	    if (startDate || endDate) {
-	      const date = new Date(rowDate);
-	      if (startDate && date < new Date(startDate)) return false;
-	      if (endDate && date > new Date(endDate)) return false;
-	    }
-	    return true;
-	  });
-
-	  $('#filterButton').click(() => {
-		alertTypeButtons.removeClass('active');
-		statusTypeButtons.removeClass('active');
-	    $('#filterModal').css('display', 'block');
-	  });
-
-	  $('.close').click(() => {
-	    $('#filterModal').css('display', 'none');
-	  });
-
-	  $('#applyFilter').click(() => {
-	    startDate = $('#startDate').val();
-	    endDate = $('#endDate').val();
-	    displayAppliedFilters();
-	    table.draw();
-	    $('#filterModal').css('display', 'none');
-	  });
-
-	  function displayAppliedFilters() {
-	    $('#selectedFilters').empty();
-	    if (alertType) addFilterChip(`알림 유형: ${alertType}`, 'alertType');
-	    if (status) addFilterChip(`전송 상태: ${status}`, 'status');
-	    if (startDate && endDate) addFilterChip(`${startDate} ~ ${endDate}`, 'date');
-	  }
-
-	  function addFilterChip(text, type) {
-	    const chip = $('<div class="filter-chip"></div>').text(text);
-	    const closeBtn = $('<span>x</span>').click(() => removeFilter(type, text));
-	    chip.append(closeBtn);
-	    $('#selectedFilters').append(chip);
-	  }
-
-	  function removeFilter(type, text) {
-	    if (type === 'alertType') alertType = '';
-	    if (type === 'status') status = '';
-	    if (type === 'date') { startDate = ''; endDate = ''; }
-	    displayAppliedFilters();
-	    table.draw();
-	  }
-	});
-</script>
+	<!-- 알림 관리 페이지 내 메인 자바스크립트-->
+	<script src="/js/event/notification.js"></script>
 </body>
 </html>

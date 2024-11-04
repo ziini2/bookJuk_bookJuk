@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.sql.Timestamp;
 
 @Entity
+@Table(name = "users")
 @Getter
 @Setter
 @ToString

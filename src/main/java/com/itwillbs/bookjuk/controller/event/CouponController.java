@@ -1,24 +1,24 @@
 package com.itwillbs.bookjuk.controller.event;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itwillbs.bookjuk.service.event.CouponService;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
-@RequiredArgsConstructor
-@Log
+@RequestMapping("/admin")
 public class CouponController {
 
-	private final CouponService couponService;
+	@Autowired
+	private CouponService couponService;
 	
 	@GetMapping("/coupon")
 	public String coupon() {
-		log.info("CouponController coupon()");
 		return "/coupon/coupon";
 	}
 		

@@ -6,6 +6,8 @@ clearAllErrorMessages = () => {
 };
 
 $(document).ready(function () {
+  //#region 유효성 및 중복확인 함수 모음
+
   //유효성 검사 함수Å
   //아이디 유효성 검사
   const validateId = (userId) => {
@@ -190,7 +192,9 @@ $(document).ready(function () {
     return true;
   }
 
-  //=================================================================
+//#endregion 유효성 및 중복확인 함수 모음
+
+  //#region 편의성 함수 모음
 
   // 전체 동의 체크박스 클릭 시 하위 체크박스 상태 동기화
   $("#join-agreeAll").on("change", function () {
@@ -285,7 +289,7 @@ $(document).ready(function () {
     });
   }
 
-  //=================================================================
+  //#endregion 안녕
 
   //회원가입 버튼 클릭시
   $("#joinButton").on('click', async (e) => {
@@ -293,7 +297,7 @@ $(document).ready(function () {
     const isValid = await validateAll();
     if (isValid) {
       //폼데이터 직렬화
-      // const joinFormData = new FormData($("#joinForm")[0]);
+      //const joinFormData = new FormData($("#joinForm")[0]);
       const formData = {};
       $("#joinForm").serializeArray().forEach(({ name, value }) => {
           formData[name] = value;
@@ -307,7 +311,7 @@ $(document).ready(function () {
         contentType: "application/json",
         success: function (response) {
           console.log("회원가입 성공");
-          window.location.href = "/login/login";
+          window.location.href = "/login";
         },
         error: function (xhr, status, error) {
           console.log("회원가입 실패" + error);

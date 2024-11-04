@@ -25,7 +25,6 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomUserDetailsService customUserDetailsService;
-//    private final SessionSyncFilter sessionSyncFilter;
 
     //BCrypt 암호화 설정
     @Bean
@@ -46,10 +45,11 @@ public class SecurityConfig {
 
         //접근 권한에 대한 설정 부분
         http.authorizeHttpRequests((auth) -> auth
+                //개발단계에서 사용할 부분(배포때 지워야함)
 //                .requestMatchers("/**").permitAll()
-                .requestMatchers("/login/phone").hasAnyRole("INACTIVE") //소셜로그인 회원은 전화번호 입력하지않으면 계속해서 전화번호 입력창으로 리다이렉트!
+               .requestMatchers("/login/phone").hasAnyRole("INACTIVE") //소셜로그인 회원은 전화번호 입력하지않으면 계속해서 전화번호 입력창으로 리다이렉트!
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/", "/login/**").permitAll()
-                .requestMatchers("/admin").hasRole("ADMIN")
                 .requestMatchers("/test").hasAnyRole("ADMIN", "USER") //여기에 로그인 된사람만 할수있는 페이지 추가
                 .anyRequest().authenticated()
         );
@@ -127,8 +127,6 @@ public class SecurityConfig {
                 })
         );
 
-
-
         //로그아웃 설정
         http.logout((auth) -> auth
                 .logoutUrl("/logout")
@@ -139,7 +137,7 @@ public class SecurityConfig {
                 .permitAll()
         );
 
-        //csrf 토큰 관련 설정(지금은 disable 로 비활성화
+        //csrf 토큰 관련 설정(지금은 disable 로 비활성화)
         http.csrf((auth) -> auth.disable());
 
         //다중로그인 설정

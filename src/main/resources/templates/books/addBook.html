@@ -39,115 +39,152 @@
   <div th:replace="/fragment/header :: header2"></div>
   <div th:replace="/fragment/sidebar :: sidebar2"></div>
 
-  <main id="main" class="main">
-      <div class="container text-center">
-          <div class="row justify-content-center"> <!-- 중앙 정렬을 위한 클래스 추가 -->
-              <div class="col-auto"> <!-- col-auto로 너비 조정 -->
-                  <div class="card" style="width: 12rem; margin-bottom: 1rem;">
-                      <img th:src="@{/images/books/noimage.png}" alt="No Image" id="bookImage">
-                      <div class="card-body">
-                          <p class="card-text">
-                              <input type="file" accept="image/*" onchange="previewImage(event)" style="display: none;" id="imageInput">
-                              <button type="button" class="btn btn-dark" onclick="document.getElementById('imageInput').click();">추가</button>
-                              <button type="button" class="btn btn-dark" onclick="deleteImage()">삭제</button>
-                          </p>
-                      </div>
-                  </div>
-              </div>
+<main id="main" class="main">
+    <div class="container text-center">
+        <div class="row justify-content-center"> <!-- 중앙 정렬을 위한 행 -->
+            <div class="col-auto"> <!-- 카드와 이미지 업로드 버튼 -->
+                <div class="card" style="width: 12rem; margin-bottom: 1rem;">
+                    <img th:src="@{/images/books/noimage.png}" alt="No Image" id="bookImage">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <!-- 이미지 업로드 버튼 -->
+                            <input type="file" accept="image/*" onchange="previewImage(event)" style="display: none;" id="imageInput">
+                            <button type="button" class="btn btn-dark" onclick="document.getElementById('imageInput').click();">추가</button>
+                            <button type="button" class="btn btn-dark" onclick="deleteImage()">삭제</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-			  <form th:action="@{/admin/addBook}" method="post">
-              <div class="col-auto"> <!-- col-auto로 너비 조정 -->
-                  <div class="input-group mb-3">
-                      <span class="input-group-text">ISBN</span>
-                      <input type="text" class="form-control" placeholder="도서 ISBN번호를 입력하세요">
-                      <button type="button" class="btn btn-secondary">조회</button>
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text">도서명</span>
-                      <input type="text" class="form-control">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text">저자</span>
-                      <input type="text" class="form-control">
-                      <span class="input-group-text">출판사</span>
-                      <input type="text" class="form-control">
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text">입고일</span>
-                      <div class="custom-date-picker">
-                          <form autocomplete="off">
-                              <div class="input-group input-daterange">
-                                  <input 
-								  	type="text" 
-									class="form-control datepicker" 
-									placeholder="입고일 선택">
-                              </div>
-                          </form>
-                      </div>
-                      
-                      <span class="input-group-text">지점</span>
-                      <select 
-					  		class="form-select form-select-sm" 
-							aria-label="Small select store" 
-							style="width: 100px;">
-                          <option selected>지점선택</option>
-                          <option value="1">부전점</option>
-                          <option value="2">해운대점</option>
-                          <option value="3">양정점</option>
-                          <option value="4">강남점</option>
-                      </select>
-                  </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text">대여현황</span>
-                      <select 
-					  		class="form-select form-select-sm" 
-							aria-label="Small select store" 
-							style="width: 100px;">
-                          <option selected>대여 상태를 선택하세요</option>
-                          <option value="1">대여가능</option>
-                          <option value="2">대여불가</option>
-                      </select>
-                      <span class="input-group-text">대여금액</span>
-                      <input type="text" class="form-control" id="rentPrice" placeholder="금액입력">
-                  </div>
+            <!-- 도서 등록 폼 -->
+            <form th:action="@{/admin/addBook}" method="post" style="max-width: 700px; margin: 0 auto;">
+                <div class="col-auto">
+                    <!-- ISBN 입력 -->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">ISBN</span>
+                        <input type="text" 
+                        	   class="form-control" 
+                        	   name="isbn" 
+                        	   placeholder="ISBN번호를 입력하세요" 
+                        	   style="max-width: 300px;">
+                        <button type="button" class="btn btn-secondary">조회</button>
+                    </div>
+                    
+                    <!-- 도서명 입력 -->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">도서명</span>
+                        <input type="text" 
+                        	   class="form-control" 
+                        	   name="bookName" 
+                        	   placeholder="도서명을 입력하세요" 
+                        	   style="max-width: 300px;">
+                    </div>
+                    
+                    <!-- 저자 및 출판사 입력 -->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">저자</span>
+                        <input type="text" 
+                        	   class="form-control" 
+                        	   name="author" 
+                        	   placeholder="저자명" 
+                        	   style="max-width: 300px;">
+                        <span class="input-group-text">출판사</span>
+                        <input type="text" 
+                        	   class="form-control" 
+                        	   name="publisher" 
+                        	   placeholder="출판사명" 
+                        	   style="max-width: 150px;">
+                    </div>
+                    
+                    <!-- 입고일 및 지점 선택 -->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">입고일</span>
+                        <input type="text" 
+                        	   class="form-control datepicker" 
+                        	   name="arrivalDate" 
+                        	   placeholder="입고일 선택" 
+                        	   style="max-width: 150px;">
+                        <span class="input-group-text">지점</span>
+                        <select class="form-select" 
+                        		name="storeLocation" 
+                        		style="max-width: 150px;">
+                            <option selected>지점선택</option>
+                            <option value="1">부전점</option>
+                            <option value="2">해운대점</option>
+                            <option value="3">양정점</option>
+                            <option value="4">강남점</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 대여현황 및 대여금액 입력 -->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">대여현황</span>
+                        <select class="form-select" 
+                        		name="rentalStatus" 
+                        		style="max-width: 150px;">
+                            <option selected>대여 상태를 선택하세요</option>
+                            <option value="available">대여가능</option>
+                            <option value="unavailable">대여불가</option>
+                        </select>
+                        <span class="input-group-text">대여금액</span>
+                        <input type="text" 
+                        	   class="form-control" 
+                        	   name="rentalPrice" 
+                        	   id="rentPrice" 
+                        	   placeholder="금액입력" 
+                        	   style="max-width: 150px;">
+                    </div>
+                    
+                    <!-- 도서상태 및 수량 선택 -->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">도서상태</span>
+                        <select class="form-select" 
+                        		name="bookCondition" 
+                        		style="max-width: 150px;">
+                            <option selected>도서 상태를 선택하세요</option>
+                            <option value="good">양호</option>
+                            <option value="normal">보통</option>
+                            <option value="bad">불량</option>
+                            <option value="discard">폐기</option>
+                            <option value="lost">분실</option>
+                        </select>
+                        
+                        <!-- 수량 선택 -->
+                        <span class="input-group-text" style="margin-right: 1rem;">수량</span>
+                        <div class="d-flex align-items-center">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick='count("minus", 1)'>
+                                <i class="ri-subtract-line" style="font-size: 0.75rem;"></i>
+                            </button>
+                            <div id="result-1" class="mx-2">0</div>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick='count("plus", 1)'>
+                                <i class="ri-add-fill" style="font-size: 0.75rem;"></i>
+                            </button>
+                        </div>
+                    </div>
 
-                  <div class="input-group mb-3">
-                      <span class="input-group-text">도서상태</span>
-                      <select 
-					  		class="form-select form-select-sm" 
-							aria-label="Small select store" 
-							style="width:20%;">
-                          <option selected>도서 상태를 선택하세요</option>
-                          <option value="1">양호</option>
-                          <option value="2">보통</option>
-                          <option value="3">불량</option>
-                          <option value="4">폐기</option>
-                          <option value="5">분실</option>
-                      </select>
-                      <span class="input-group-text" style="margin-right: 1rem;">수량</span>
-                      <div class="d-flex align-items-center">
-                          <button type="button" class="btn btn-outline-secondary btn-sm" onclick='count("minus", 1)'>
-                              <i class="ri-subtract-line" style="font-size: 0.75rem;"></i>
-                          </button>
-                          <div id="result-1" class="mx-2">0</div>
-                          <button type="button" class="btn btn-outline-secondary btn-sm" onclick='count("plus", 1)'>
-                              <i class="ri-add-fill" style="font-size: 0.75rem;"></i>
-                          </button>
-                      </div>
-                  </div>
-               </div>
-			 </form>
-          </div>
-		</div>
+                    <!-- 비고 입력 -->
+                    <div class="input-group mb-3">
+    					<span class="input-group-text">줄거리</span>
+    					<textarea class="form-control" 
+    							  name="remarks" 
+    							  rows="4" cols="50" 
+    							  style="resize: none; 
+    							  width: 300px; 
+    							  height: 150px;">
+    					</textarea>
+					</div>
+                    
+                    <!-- 버튼 섹션 -->
+                    <div class="text-end">
+                        <button id="resetbtn" class="btn btn-outline-dark" type="reset">초기화</button>
+                        <button type="submit" class="btn btn-outline-success" id="openModal">등록하기</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
 
-          <div class="text-end">
-              <button id="resetbtn" class="btn btn-outline-dark">초기화</button>
-			  <button type="button" class="btn btn-outline-success" id="openModal" onclick="location.href='/admin/books'">등록하기</button>
-
-          </div>
-		  
-      </div>
-  </main>
   
   <!-- 모달 -->
   <div class="modal fade" tabindex="-1" id="modalBody">

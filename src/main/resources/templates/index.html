@@ -25,15 +25,17 @@
 
   <!-- Main CSS File -->
 
-
+<div th:if="${#authentication.principal.userRole} == 'ROLE_ADMIN'">
+	<div th:replace="~{/fragment/header :: header2}"></div>
+	<div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
+</div>
   <link th:href="@{/css/common/style.css}" rel="stylesheet">
 
 
 </head>
 
 <body>
-	<div th:replace="~{/fragment/header :: header2}"></div>
-	<div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
+	
 
 
 	<!--main content-->

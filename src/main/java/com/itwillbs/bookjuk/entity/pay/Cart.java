@@ -25,7 +25,8 @@ public class Cart {
 	//장바구니ID
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long cartItemID;
+	@Column(name = "cart_item_id")
+	private int cartItemID;
 	
 	//수량
 	@Column(nullable = false)
@@ -37,7 +38,7 @@ public class Cart {
 	private LocalDateTime cartDate;
 	
 	//포인트거래ID
-	@Column(nullable = true)
+	@Column(nullable = true, name = "point_pay_id")
 	private Long pointPayID;
 	
 	//유저 번호

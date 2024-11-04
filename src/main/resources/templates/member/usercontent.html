@@ -29,7 +29,7 @@
 
   <link th:href="@{css/common/style.css}" rel="stylesheet">
 
-  <style>
+  <style>	
 	.content-box {
 		width: 900px;
 		height: 650px; 
@@ -38,6 +38,15 @@
 		margin-top: 165px;
 		margin-left: 700px;
 		background-color: rgb(233, 255, 200);
+	}
+	
+	.grade {
+		background-color: rgb(140, 232, 147);
+		border: 1px solid rgb(140, 232, 147);
+		border-radius: 5px;
+		padding: 15px 22px;
+		margin-left: 210px;
+		font-size: 25px;
 	}
 	
 	.content1 {
@@ -55,6 +64,18 @@
 		margin-top: 10px;
 		margin-left: 380px;
 	}
+	
+	.ct3 {
+		color: rgb(5, 38, 0);
+		margin-left: 220px;
+		font-size: 22px;
+	}
+	
+	.ct4 {
+		color: rgb(5, 38, 0);
+		margin-left: 210px;
+		font-size: 22px;
+	}
 
   </style>
 
@@ -70,7 +91,9 @@
   <script th:src="@{/js/common/main.js}"></script>
   
   <div class="content-box">
-	
+		
+	<a href="" class="grade text-black">등급</a>
+			
 	<div class="content1">
 	<h4 class="ct1">이메일 : <span></span></h4><br>
 	<h4 class="ct1">전화번호 : <span></span></h4><br>
@@ -80,7 +103,8 @@
 	
 	<h4 class="ct2">포인트 : <span></span>P</h4> <br>
 	
-	<h4 class="ct3">대여 도서 수	관심 도서 수</h4> 
+	<b class="ct3">대여 도서 수</b> 
+	<b class="ct4">관심 도서 수</b> 
 	
   </div>
 

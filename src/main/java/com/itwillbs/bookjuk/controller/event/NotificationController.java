@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.bookjuk.entity.UserEntity;
-import com.itwillbs.bookjuk.entity.event.Notification;
+import com.itwillbs.bookjuk.entity.event.NotificationEntity;
 import com.itwillbs.bookjuk.service.event.NotificationService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,13 +27,13 @@ public class NotificationController {
 	
 	@GetMapping("/{recipient}")
 	@ResponseBody
-	public List<Notification> getNoti(@PathVariable UserEntity recipient) {
+	public List<NotificationEntity> getNoti(@PathVariable UserEntity recipient) {
 		return notiService.getNoti(recipient);
 	}
 	
 	@PostMapping("/send")
 	@ResponseBody
-	public void sendNoti(@RequestBody Notification noti) {
+	public void sendNoti(@RequestBody NotificationEntity noti) {
 		notiService.sendNoti(noti);
 	}
 	

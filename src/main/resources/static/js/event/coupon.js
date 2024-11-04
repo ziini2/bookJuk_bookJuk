@@ -67,10 +67,6 @@ $(document).ready(function() {
 			triggerSearch();
 		}
 	});
-
-	$('#coupon-searchBtn').on('click', function() {
-		triggerSearch();
-	});
 	
 	$('#coupon-columnSelect').on('change', function() {
         $('#coupon-table_filter input').val('');

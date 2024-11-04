@@ -33,12 +33,8 @@ public class RentController {
 	@GetMapping("/rent")
 	public String rent(Model model,
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page,
-			@RequestParam(value = "size", defaultValue = "3", required = false) int size) {
+			@RequestParam(value = "size", defaultValue = "10", required = false) int size) {
 		log.info("RentController rent()");
-//		import org.springframework.data.domain.Page;
-//		import org.springframework.data.domain.PageRequest;
-//		import org.springframework.data.domain.Pageable;
-//		import org.springframework.data.domain.Sort;
 		// 페이지번호 page
 		// 한화면에 보여줄 글 개수 size
 		// PageRequest 에서는 page 0부터 시작 => page-1 설정
@@ -53,7 +49,7 @@ public class RentController {
 		model.addAttribute("totalPages", rentList.getTotalPages());
 		
 		//한화면에 보여줄 페이지 개수 설정
-		int pageBlock = 3;
+		int pageBlock = 10;
 		int startPage = (page-1)/pageBlock*pageBlock+1;
 		int endPage=startPage + pageBlock - 1;
 		if(endPage > rentList.getTotalPages()) {
@@ -64,6 +60,20 @@ public class RentController {
 		model.addAttribute("endPage", endPage);
 		
 		return "/rent/rent";
+	}
+	
+	@GetMapping("/membersearch")
+	public String membersearch() {
+		log.info("RentController membersearch()");
+		
+		return "/rent/membersearch";
+	}
+	
+	@GetMapping("/booksearch")
+	public String booksearch() {
+		log.info("RentController booksearch()");
+		
+		return "/rent/booksearch";
 	}
 	
 	

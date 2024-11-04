@@ -86,11 +86,11 @@ $(document).ready(function() {
 });
 $(document).ready(function () {
 	const table = $('#coupon-table').DataTable();
+	const couponStatusButtons = $('#couponStatus .coupon-filterModal-toggleBtn');
 	const couponTypeButtons = $('#couponType .coupon-filterModal-toggleBtn');
-	const transferStatusButtons = $('#transferStatus .coupon-filterModal-toggleBtn');
 	const couponDetailModal = $('#coupon-detailModal');
+	let couponStatus = '';
 	let couponType = '';
-	let transferStatus = '';
 	let couponStartDate = '';
 	let couponEndDate = '';
 	
@@ -99,11 +99,11 @@ $(document).ready(function () {
         const cells = $(this).closest('tr').find('td');
 
         // 쿠폰 상세 데이터 추출
-        $('#coupon-detailReceiver').text(cells.eq(1).text());
-        $('#coupon-detailContent').text(cells.eq(2).text());
-        $('#coupon-detailType').text(cells.eq(3).text());
-        $('#coupon-detailStatus').text(cells.eq(4).text());
-        $('#coupon-detailSentDate').text(cells.eq(5).text());
+        $('#coupon-detailTitle').text(cells.eq(1).text());
+        $('#coupon-detailUser').text(cells.eq(2).text());
+        $('#coupon-detailStatus').text(cells.eq(3).text());
+        $('#coupon-detailType').text(cells.eq(4).text());
+        $('#coupon-detailDate').text(cells.eq(5).text());
         couponDetailModal.show();
 		
         // 쿠폰 상세 모달 외부 클릭 시 닫기 이벤트 추가
@@ -122,6 +122,18 @@ $(document).ready(function () {
     });
 
 	// 쿠폰 검색 필터 모달창 내 쿠폰 유형 버튼
+	couponStatusButtons.click(function () {
+		if ($(this).hasClass('active')) {
+			$(this).removeClass('active');
+			couponStatus = '';
+		} else {
+			couponStatusButtons.removeClass('active');
+			$(this).addClass('active');
+			couponStatus = $(this).data('value');
+		}
+	});
+
+	// 쿠폰 검색 필터 모달창 내 전송 상태 버튼
 	couponTypeButtons.click(function () {
 		if ($(this).hasClass('active')) {
 			$(this).removeClass('active');
@@ -132,26 +144,16 @@ $(document).ready(function () {
 			couponType = $(this).data('value');
 		}
 	});
-
-	// 쿠폰 검색 필터 모달창 내 전송 상태 버튼
-	transferStatusButtons.click(function () {
-		if ($(this).hasClass('active')) {
-			$(this).removeClass('active');
-			transferStatus = '';
-		} else {
-			transferStatusButtons.removeClass('active');
-			$(this).addClass('active');
-			transferStatus = $(this).data('value');
-		}
-	});
   
 	// 쿠폰 검색 필터 모달창 내 전송 날짜 설정
 	$.fn.dataTable.ext.search.push(function (settings, data) {
-		const rowCouponType = data[3];
-		const rowTransferStatus = data[4];
+		const rowCouponStatus = data[3];
+		const rowCouponType = data[4];
 		const rowDate = data[5];
-		if (couponType && rowCouponType !== couponType) return false;
-		if (transferStatus && rowTransferStatus !== transferStatus) return false;
+		if (couponStatus && rowCouponStatus !== couponStatus) return false;
+		if (couponType) {
+			if (couponType === '포인트' && !rowCouponType.endsWith('p')) return false;
+		}
 		if (couponStartDate || couponEndDate) {
 			const date = new Date(rowDate);
 			if (couponStartDate && date < new Date(couponStartDate)) return false;
@@ -162,10 +164,10 @@ $(document).ready(function () {
 
 	// 쿠폰 검색 필터 버튼 눌렀을 때
 	$('#coupon-filterBtn').click(() => {
+		couponStatusButtons.removeClass('active');
 		couponTypeButtons.removeClass('active');
-		transferStatusButtons.removeClass('active');
+		couponStatus = '';
 		couponType = '';
-		transferStatus = '';
 		couponStartDate = '';
 		couponEndDate = '';
 		$('#couponStartDate').val('');
@@ -203,8 +205,8 @@ $(document).ready(function () {
 	// 쿠폰 검색 필터 모달창 내 선택된 버튼 이름 출력
 	function displayAppliedFilters() {
 		$('#coupon-selectedFilter').empty();
-    	if (couponType) addFilterChip(couponType, 'couponType');
-    	if (transferStatus) addFilterChip(`전송 ${transferStatus}`, 'transferStatus');
+    	if (couponStatus) addFilterChip(couponStatus, 'couponStatus');
+    	if (couponType) addFilterChip('포인트', 'couponType');
     	if (couponStartDate && couponEndDate) addFilterChip(`${couponStartDate} ~ ${couponEndDate}`, 'date');
 	}
 
@@ -218,8 +220,8 @@ $(document).ready(function () {
 
 	// 쿠폰 검색 필터 모달창 내 값 초기화
 	function removeFilter(type, text) {
-		if (type === 'couponType') couponType = '';
-    	if (type === 'transferStatus') transferStatus = '';
+		if (type === 'couponStatus') couponStatus = '';
+    	if (type === 'couponType') couponType = '';
     	if (type === 'date') { couponStartDate = ''; couponEndDate = ''; }
     	displayAppliedFilters();
     	table.draw();

@@ -15,15 +15,16 @@ import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.event.NotificationEntity;
 import com.itwillbs.bookjuk.service.event.NotificationService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/admin")
 public class NotificationController {
 
-	@Autowired
-	private NotificationService notiService;
+	private final NotificationService notiService;
 	
 	@GetMapping("/{recipient}")
 	@ResponseBody

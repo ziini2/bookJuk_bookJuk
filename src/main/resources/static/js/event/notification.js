@@ -1,4 +1,25 @@
 $(document).ready(function() {
+	
+	// 메시지 보내기
+	function sendNoti(recipientId) {
+	    const notiData = {
+	        recipient: recipientId,
+	        content: "쪽지 내용",
+	        type: "쪽지"
+	    };
+
+	    fetch('/admin/send', {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify(notiData)
+	    })
+	    .then(response => response.ok ? alert("쪽지가 성공적으로 전송되었습니다.") : alert("쪽지 전송에 실패했습니다."))
+	    .catch(error => console.error('Error:', error));
+	}
+
+	
 	// datatables 라이브러리 설정
     const table = $('#noti-table').DataTable({
         paging: true,

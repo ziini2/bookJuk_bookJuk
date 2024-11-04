@@ -1,18 +1,22 @@
 package com.itwillbs.bookjuk.controller.rent;
 
+import java.util.Map;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.bookjuk.entity.RentEntity;
 import com.itwillbs.bookjuk.service.rent.RentService;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,13 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 public class RentController {
 	
 	private final RentService rentService;
-	
-//	@GetMapping("/rent")
-//	public String rent(HttpSession session, Model model) {
-//		log.info("RentController rent()");
-//		
-//		return "/rent/rent";
-//	}
 	
 	@GetMapping("/rent")
 	public String rent(Model model,
@@ -60,6 +57,20 @@ public class RentController {
 		model.addAttribute("endPage", endPage);
 		
 		return "/rent/rent";
+	}
+	
+	@PostMapping("/updateReturnInfo")
+	public ResponseEntity<?> updateReturnInfo(@RequestBody Map<String, Object> requestData) {
+		Integer rentNum = (Integer) requestData.get("rentNum");
+		String returnInfo = (String) requestData.get("returnInfo");
+
+		try {
+			rentService.updateReturnInfo(rentNum, returnInfo);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			log.error("Failed to update return info", e);
+			return ResponseEntity.status(500).body("Failed to update return info");
+		}
 	}
 	
 	@GetMapping("/membersearch")

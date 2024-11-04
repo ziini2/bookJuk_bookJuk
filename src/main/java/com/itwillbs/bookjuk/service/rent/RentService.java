@@ -1,5 +1,7 @@
 package com.itwillbs.bookjuk.service.rent;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,5 +25,17 @@ public class RentService {
 		return rentRepository.findAll(pageable);
 	}
 	
+	public void updateReturnInfo(Integer rentNum, String returnInfo) {
+		log.info("RentService updateReturnInfo() - rentNum: " + rentNum + ", returnInfo: " + returnInfo);
+		
+		Optional<RentEntity> rentOpt = rentRepository.findById(rentNum);
+		if (rentOpt.isPresent()) {
+			RentEntity rent = rentOpt.get();
+			rent.setReturnInfo(returnInfo);  // RentEntity에 returnInfo 필드가 존재해야 합니다.
+			rentRepository.save(rent);
+		} else {
+			throw new IllegalArgumentException("Invalid rent number: " + rentNum);
+		}
+	}
 	
 }

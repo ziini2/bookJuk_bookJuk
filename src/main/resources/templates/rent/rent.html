@@ -145,7 +145,7 @@
 		            <td th:text="${#dates.format(rent.rentDate, 'yyyy-MM-dd')}"></td>
 		            <td th:text="${#dates.format(rent.returnDate, 'yyyy-MM-dd')}"></td>
 					<td>
-						<select>
+						<select onchange="updateReturnInfo(this, '${rent.rentNum}')">
 							<option value="대여중" th:selected="${rent.returnInfo == '대여중'}">대여중</option>
 							<option value="연체중" th:selected="${rent.returnInfo == '연체중'}">연체중</option>
 							<option value="반납완료" th:selected="${rent.returnInfo == '반납완료'}">반납완료</option>
@@ -161,7 +161,7 @@
 		      <a th:href="@{/rent(page=${currentPage-1})}" 
 			     th:if="${currentPage > 1}" th:text="이전"> </a>
 				 
-		<!--		1~3-->
+		<!--		숫자 부분-->
 				<span th:each="page:${#numbers.sequence(startPage,endPage)}">
 					<span th:if="${page == currentPage}" th:text="${page}"> </span>
 					<span th:unless="${page == currentPage}">
@@ -214,6 +214,36 @@
 			rentalDateInput.value = today;
 		}, 0); // 초기화 후 바로 오늘 날짜로 세팅
 	});
+	</script>
+	
+<!--	드랍박스 선택시 자동 db적용-->
+	<script>
+		function updateReturnInfo(selectElement, rentNum) {
+		    const returnInfo = selectElement.value;
+
+		    fetch(`/updateReturnInfo`, {
+		        method: 'POST',
+		        headers: {
+		            'Content-Type': 'application/json',
+		        },
+		        body: JSON.stringify({
+		            rentNum: rentNum,
+		            returnInfo: returnInfo
+		        }),
+		    })
+		    .then(response => {
+		        if (response.ok) {
+		            alert("반납 상태가 성공적으로 업데이트되었습니다.");
+		        } else {
+		            alert("업데이트 중 오류가 발생했습니다.");
+		        }
+		    })
+		    .catch(error => {
+		        console.error("에러:", error);
+		    });
+		}
+
+		
 	</script>
   
 </body>

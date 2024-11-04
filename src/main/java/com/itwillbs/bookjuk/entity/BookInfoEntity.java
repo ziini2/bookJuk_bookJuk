@@ -21,7 +21,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "bookInfo")
+@Table(name = "book_info")
 public class BookInfoEntity {
 	
 	// 도서번호

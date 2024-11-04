@@ -2,6 +2,8 @@ package com.itwillbs.bookjuk.entity.pay;
 
 import java.time.LocalDateTime;
 
+import com.itwillbs.bookjuk.domain.pay.PaymentStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -39,7 +41,7 @@ public class Payment {
 	//결제상태
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private String paymentStatus;
+	private PaymentStatus paymentStatus;
 	
 	//결제금액
 	@Column(nullable = false)

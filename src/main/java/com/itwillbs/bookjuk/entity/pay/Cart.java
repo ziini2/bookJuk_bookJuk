@@ -30,6 +30,7 @@ public class Cart {
 	//수량
 	@Column(nullable = false)
 	private int itemQuantity;
+
 	
 	//장바구니생성일자
 	@Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")

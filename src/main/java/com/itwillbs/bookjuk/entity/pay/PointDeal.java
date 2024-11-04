@@ -40,7 +40,7 @@ public class PointDeal {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private String pointPayStatus;
-	
+	 
 	//요청일시
 	@Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime reqDate;

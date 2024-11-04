@@ -26,7 +26,7 @@ import lombok.ToString;
 @ToString
 @Table (name = "payment")
 public class Payment {
-
+ 
 	//결제ID
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

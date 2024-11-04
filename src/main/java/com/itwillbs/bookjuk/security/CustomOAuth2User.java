@@ -16,11 +16,12 @@ public class CustomOAuth2User implements OAuth2User {
     private final OAuth2Response oAuth2Response;
     private final UserRole userRole;
     private final Long userNum;
+    private final Map<String, Object> attributes;
 
 
     @Override
     public Map<String, Object> getAttributes() {
-        return null;
+        return attributes;
     }
 
 

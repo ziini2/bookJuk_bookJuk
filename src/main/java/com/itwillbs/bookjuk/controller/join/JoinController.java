@@ -1,7 +1,5 @@
 package com.itwillbs.bookjuk.controller.join;
 
-
-import com.itwillbs.bookjuk.domain.login.UserRole;
 import com.itwillbs.bookjuk.dto.UserDTO;
 import com.itwillbs.bookjuk.service.join.CheckService;
 import com.itwillbs.bookjuk.service.join.JoinService;
@@ -39,8 +37,14 @@ public class JoinController {
     //SMS 코드 보내기 요청
     @PostMapping("/sendSmsCode")
     @ResponseBody
-    public Map<String, String> checkPhone(@RequestBody String userPhone) {
+    public Map<String, String> checkPhone(@RequestBody String userPhone, HttpSession session) {
         String code = smsService.sendSMS(userPhone);
+        if (session.getAttribute("code") != null ) {
+            session.removeAttribute("code");
+        }
+        session.setAttribute("code", code);
+        //세션에 코드 유효시간 처리
+        session.setMaxInactiveInterval(30);
         return Map.of("RESULT", "SUCCESS", "code", code);
     }
 
@@ -86,8 +90,6 @@ public class JoinController {
         else
             return Map.of("RESULT", false);
     }
-
-
 
     //==========================================
 

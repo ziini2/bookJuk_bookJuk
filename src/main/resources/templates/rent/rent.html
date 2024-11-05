@@ -101,22 +101,23 @@
 			          </div>
 			        </div>
 			        <!-- 도서 대여 관리 모달 끝 -->
-						
-				<select>
-					<option value="대여중">회원 이름</option>
-					<option value="연체중">회원 아이디</option>
-					<option value="반납완료">책 이름</option>
-					<option value="반납완료">책 번호</option>
-					<option value="반납완료">지점</option>
-				</select>
-				<input type="text">
-				<button type="submit" class="btn btn-success">검색</button>
-				<button type="reset" class="btn btn-danger">초기화</button>
+					
+					<form id="searchForm">
+					    <select name="criteria" id="criteria">
+					        <option value="userName">회원 이름</option>
+					        <option value="userId">회원 아이디</option>
+					        <option value="bookName">책 이름</option>
+					    </select>
+					    <input type="text" id="keyword" placeholder="검색어 입력">
+					    <button type="button" id="searchButton" class="btn btn-success">검색</button>
+						<button type="reset" class="btn btn-danger" onclick="window.location.href='/admin/rent'">초기화</button>
+						<!-- 도서 대여 관리 모달 열기 버튼 -->
+						<button type="button" class="btn btn-primary my-5" data-bs-toggle="modal" data-bs-target="#rentalModal">
+							도서 대여 등록
+						</button>
+					</form>
 				
-				<!-- 도서 대여 관리 모달 열기 버튼 -->
-						      <button type="button" class="btn btn-primary my-5" data-bs-toggle="modal" data-bs-target="#rentalModal">
-						        도서 대여 등록
-						      </button>
+				
 				
 		<table class="rental-table">
 		    <thead>
@@ -133,7 +134,7 @@
 		            <th>반납 여부</th>
 		        </tr>
 		    </thead>
-		    <tbody>
+		    <tbody id="rentalTableBody">
 		        <tr th:each="rent : ${rentList}">
 		            <td th:text="${rent.rentNum}"></td>
 		            <td th:text="${rent.userNum}"></td>
@@ -248,7 +249,73 @@
 
 
 	</script>
-  
+	
+<!--	검색-->
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+		    function performSearch() {
+		        const criteria = document.getElementById("criteria").value;
+		        const keyword = document.getElementById("keyword").value;
+
+		        fetch(`/rent/search?criteria=${criteria}&keyword=${keyword}`)
+		            .then(response => response.json())
+		            .then(data => {
+		                const tableBody = document.getElementById("rentalTableBody");
+
+		                // rentalTableBody 요소가 있는지 확인
+		                if (!tableBody) {
+		                    console.error("tableBody 요소를 찾을 수 없습니다.");
+		                    return;
+		                }
+
+		                tableBody.innerHTML = ""; // 기존 데이터를 지움
+
+		                data.forEach(rent => {
+		                    const row = document.createElement("tr");
+
+		                    // 반납일이 존재하는 경우에만 표시
+		                    const returnDate = rent.returnDate ? 
+		                        new Date(rent.returnDate).toISOString().split('T')[0] : "";
+
+		                    row.innerHTML = `
+		                        <td>${rent.rentNum}</td>
+		                        <td>${rent.userNum}</td>
+		                        <td>${rent.userId}</td>
+		                        <td>${rent.userName}</td>
+		                        <td>${rent.userPhone}</td>
+		                        <td>${rent.bookNum}</td>
+		                        <td>${rent.bookName}</td>
+		                        <td>${new Date(rent.rentDate).toISOString().split('T')[0]}</td>
+		                        <td>${returnDate}</td>
+		                        <td>
+		                            <select onchange="updateReturnInfo(this, ${rent.rentNum})">
+		                                <option value="대여중" ${rent.returnInfo === '대여중' ? 'selected' : ''}>대여중</option>
+		                                <option value="연체중" ${rent.returnInfo === '연체중' ? 'selected' : ''}>연체중</option>
+		                                <option value="반납완료" ${rent.returnInfo === '반납완료' ? 'selected' : ''}>반납완료</option>
+		                            </select>
+		                        </td>
+		                    `;
+		                    tableBody.appendChild(row);
+		                });
+		            })
+		            .catch(error => console.error("검색 중 오류 발생:", error));
+		    }
+
+		    // 검색 버튼 클릭 시 performSearch 실행
+		    document.getElementById("searchButton").addEventListener("click", performSearch);
+
+		    // 엔터키 입력 시 기본 폼 제출 방지하고 performSearch 실행
+		    document.getElementById("searchForm").addEventListener("submit", function(event) {
+		        event.preventDefault(); // 기본 폼 제출 방지
+		        performSearch();
+		    });
+		});
+
+
+
+	</script>
+	
+	
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 package com.itwillbs.bookjuk.controller.rent;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
@@ -73,6 +74,15 @@ public class RentController {
 	        return ResponseEntity.status(500).body("Failed to update return info");
 	    }
 	}
+	
+	@GetMapping("/rent/search")
+    public ResponseEntity<List<RentEntity>> searchRent(
+        @RequestParam("criteria") String criteria,
+        @RequestParam("keyword") String keyword) {
+        
+        List<RentEntity> rentList = rentService.searchByCriteria(criteria, keyword);
+        return ResponseEntity.ok(rentList); // JSON 형식으로 데이터 반환
+    }
 	
 	@GetMapping("/membersearch")
 	public String membersearch() {

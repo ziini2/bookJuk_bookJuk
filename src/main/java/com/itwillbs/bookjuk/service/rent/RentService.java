@@ -3,6 +3,7 @@ package com.itwillbs.bookjuk.service.rent;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,6 +77,20 @@ public class RentService {
 
 	    log.info("연체 상태 업데이트 완료");
 	}
+	
+	public List<RentEntity> searchByCriteria(String criteria, String keyword) {
+		log.info("searchByCriteria called with criteria: " + criteria + ", keyword: " + keyword);
+        switch (criteria) {
+            case "userName":
+                return rentRepository.findByUserNameContainingOrderByRentNumDesc(keyword);
+            case "userId":
+                return rentRepository.findByUserIdContainingOrderByRentNumDesc(keyword);
+            case "bookName":
+                return rentRepository.findByBookNameContainingOrderByRentNumDesc(keyword);
+            default:
+                return new ArrayList<>(); // 조건에 맞지 않으면 빈 리스트 반환
+        }
+    }
     
    
 	

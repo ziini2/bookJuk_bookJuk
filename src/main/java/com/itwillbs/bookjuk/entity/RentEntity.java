@@ -55,7 +55,7 @@ public class RentEntity {
 	private Timestamp rentDate;
 	
 	//반납일 2024-10-17
-	@UpdateTimestamp
+//	@UpdateTimestamp
 	private Timestamp returnDate;
 	
 	@Column(nullable = false)

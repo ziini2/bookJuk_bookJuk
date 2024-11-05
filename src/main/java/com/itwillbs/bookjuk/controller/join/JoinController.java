@@ -109,7 +109,7 @@ public class JoinController {
     //간편로그인 시 전화번호 저장 페이지
     @PostMapping("/join/phone")
     @ResponseBody
-    public Map<String, String> phoneSave(@RequestBody String userPhone, HttpSession session) {
+    public Map<String, String> phoneSave(@RequestBody String userPhone) {
         log.info("phoneSave");
         log.info("userPhone: {}", userPhone);
         //1. 전화번호 입력페이지로 이동시키고 전화번호 등록후 USER_ROLE값 변경 시켜주면됨!

@@ -2,7 +2,6 @@ package com.itwillbs.bookjuk.dto;
 
 import com.itwillbs.bookjuk.domain.login.LoginType;
 import com.itwillbs.bookjuk.domain.login.UserRole;
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "users")
 public class UserDTO {
     //유저테이블 PK
     @Id

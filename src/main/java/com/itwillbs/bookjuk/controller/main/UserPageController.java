@@ -10,16 +10,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class UserPageController {
     @GetMapping("/")
-    public String userMain(Model model) {
+    public String userMain() {
         log.info("userMain");
         log.info("userRole: {}", SecurityUtil.getUserRoles());
         log.info("userName: {}", SecurityUtil.getUserName());
         log.info("userNum: {}", SecurityUtil.getUserNum());
         //회원의 이름을 가져오기!
-        model.addAttribute("userName", SecurityUtil.getUserName());
 
         if (SecurityUtil.hasRole("ROLE_INACTIVE")){
             return "redirect:/login/phone"; // 권한이 "ROLE_INACTIVE"라면 리다이렉트
+        }
+        if (SecurityUtil.hasRole("ROLE_ADMIN")){
+            return "redirect:/admin/dashboard"; // 권한이 "ROLE_ADMIN"라면 리다이렉트
         }
         return "userMain";
     }

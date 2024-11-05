@@ -27,19 +27,6 @@ public class RentService {
 		return rentRepository.findAll(pageable);
 	}
 	
-//	public void updateReturnInfo(Long rentNum, String returnInfo) {
-//	    log.info("RentService updateReturnInfo() - rentNum: " + rentNum + ", returnInfo: " + returnInfo);
-//	    
-//	    Optional<RentEntity> rentOpt = rentRepository.findById(rentNum);
-//	    if (rentOpt.isPresent()) {
-//	        RentEntity rent = rentOpt.get();
-//	        rent.setReturnInfo(returnInfo);
-//	        rentRepository.save(rent);
-//	    } else {
-//	        throw new IllegalArgumentException("Invalid rent number: " + rentNum);
-//	    }
-//	}
-	
 	public void updateReturnInfo(Long rentNum, String returnInfo) {
         log.info("RentService updateReturnInfo() - rentNum: " + rentNum + ", returnInfo: " + returnInfo);
         

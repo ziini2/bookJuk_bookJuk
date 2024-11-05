@@ -61,16 +61,17 @@ public class RentController {
 	
 	@PostMapping("/updateReturnInfo")
 	public ResponseEntity<?> updateReturnInfo(@RequestBody Map<String, Object> requestData) {
-		Integer rentNum = (Integer) requestData.get("rentNum");
-		String returnInfo = (String) requestData.get("returnInfo");
+	    Number rentNum = (Number) requestData.get("rentNum"); // rentNum을 Number로 받아서 형변환
+	    String returnInfo = (String) requestData.get("returnInfo");
 
-		try {
-			rentService.updateReturnInfo(rentNum, returnInfo);
-			return ResponseEntity.ok().build();
-		} catch (Exception e) {
-			log.error("Failed to update return info", e);
-			return ResponseEntity.status(500).body("Failed to update return info");
-		}
+	    try {
+	        // rentNum을 Long이나 Integer로 변환하여 사용
+	        rentService.updateReturnInfo(rentNum.longValue(), returnInfo);
+	        return ResponseEntity.ok().build();
+	    } catch (Exception e) {
+	        log.error("Failed to update return info", e);
+	        return ResponseEntity.status(500).body("Failed to update return info");
+	    }
 	}
 	
 	@GetMapping("/membersearch")

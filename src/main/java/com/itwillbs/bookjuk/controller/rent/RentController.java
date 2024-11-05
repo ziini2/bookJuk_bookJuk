@@ -27,7 +27,7 @@ public class RentController {
 	
 	private final RentService rentService;
 	
-	@GetMapping("/rent")
+	@GetMapping("/admin/rent")
 	public String rent(Model model,
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 			@RequestParam(value = "size", defaultValue = "10", required = false) int size) {

@@ -2,15 +2,19 @@ package com.itwillbs.bookjuk.service.rent;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.bookjuk.entity.RentEntity;
 import com.itwillbs.bookjuk.repository.RentRepository;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -48,5 +52,31 @@ public class RentService {
             throw new IllegalArgumentException("잘못된 대여 번호입니다: " + rentNum);
         }
     }
+		
+	// 서버 시작 시 실행되는 초기화 메서드
+	@PostConstruct
+	public void updateOverdueRentalsOnStartup() {
+		log.info("서버 시작 시 연체 상태 업데이트 시작");
+		updateOverdueRentals();
+		log.info("서버 시작 시 연체 상태 업데이트 완료");
+	}
+	
+	@Scheduled(cron = "0 0 0 * * ?")
+	public void updateOverdueRentals() {
+	    log.info("연체 상태 업데이트 시작");
+
+	    LocalDate oneWeekAgoDate = LocalDate.now().minusDays(7);
+	    Timestamp oneWeekAgoTimestamp = Timestamp.valueOf(oneWeekAgoDate.atStartOfDay());
+
+	    List<RentEntity> overdueRentals = rentRepository.findByReturnDateIsNullAndRentDateBefore(oneWeekAgoTimestamp);
+	    for (RentEntity rent : overdueRentals) {
+	        rent.setReturnInfo("연체중");
+	        rentRepository.save(rent);
+	    }
+
+	    log.info("연체 상태 업데이트 완료");
+	}
+    
+   
 	
 }

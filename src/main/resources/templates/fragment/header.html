@@ -1,35 +1,46 @@
- <!-- ======= 헤더 ======= -->
+<!-- ======= 헤더 ======= -->
 
- <header id="header" class="header fixed-top d-flex align-items-center" th:fragment="header2"
-		 xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<header id="header" class="header fixed-top d-flex align-items-center" th:fragment="header2"
+        xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="/" class="logo d-flex align-items-center">
-		<!--나중에 로고 이미지 삽입 예정! -->
-<!--         <img src="/common/images/bookjuk1.png" alt=""> -->
-        <span class="d-none d-lg-block">북적북적</span>
-      </a>
-      <i class="ri-menu-line toggle-sidebar-btn"></i>
+        <!-- 스프링 시큐러티의 userRole 값이 ROLE_ADMIN이면 /admin/dashboard로 가고, 그외에 ROLE이면 /로 이동-->
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <a href="/admin/dashboard" class="logo d-flex align-items-center">
+                <!--나중에 로고 이미지 삽입 예정! -->
+                <!-- 				<img src="/common/images/bookjuk1.png" alt=""> -->
+                <span class="d-none d-lg-block">북적북적</span>
+            </a>
+        </div>
+        <div sec:authorize="!hasRole('ROLE_ADMIN')">
+            <a href="/" class="logo d-flex align-items-center">
+                <!--나중에 로고 이미지 삽입 예정! -->
+                <!--         <img src="/common/images/bookjuk1.png" alt=""> -->
+                <span class="d-none d-lg-block">북적북적</span>
+            </a>
+        </div>
+        <i class="ri-menu-line toggle-sidebar-btn"></i>
     </div><!-- End 로고 -->
-	
-	<div class ="container">
-		<div class="row">
-			<div class="col d-flex justify-content-end">
-				<!-- 로그인했을때 -->
-				<div sec:authorize="isAuthenticated()">
-					<span th:text="${userName} + ' 님'"></span>
-					<button type ="button" class="btn btn-outline-success" onclick="location.href='/logout'">로그아웃</button>
-				</div>
-				<!-- 비로그인시 -->
-				<div sec:authorize="isAnonymous()">
-					<button type ="button" class="btn btn-outline-success" onclick="location.href='/login'">로그인</button>
-				</div>
-				
-			</div>
-		</div>
-	</div>
-           
-   <!-- 여기에 로그아웃 버튼 추가하기 -->
-  </header>
 
-  <!-- 헤더끝 -->
+    <div class="container">
+        <div class="row">
+            <div class="col d-flex justify-content-end">
+                <!-- 로그인했을때 -->
+                <div sec:authorize="isAuthenticated()">
+                    <span th:text="${#authentication.principal.name} + ' 님'"></span>
+                    <button type="button" class="btn btn-outline-success" onclick="location.href='/logout'">로그아웃
+                    </button>
+                </div>
+                <!-- 비로그인시 -->
+                <div sec:authorize="isAnonymous()">
+                    <button type="button" class="btn btn-outline-success" onclick="location.href='/login'">로그인</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 여기에 로그아웃 버튼 추가하기 -->
+</header>
+
+<!-- 헤더끝 -->

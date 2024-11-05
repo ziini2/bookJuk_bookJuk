@@ -55,20 +55,12 @@
 					<div class="card">
 						<div class="card-body">
 
-							<div class="col d-flex justify-content-between">
+							<div class="d-flex justify-content-between">
 								<!--검색-->
 								<div class="search-bar">
 									<form class="search-form d-flex align-items-center" method="POST" action="#">
-										<input type="text" name="query" placeholder="Search"
-											title="Enter search keyword">
-										<button type="submit" title="Search">
-											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-												fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-												<path
-													d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-											</svg>
-										</button>
-										<div> 개</div>
+										<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+										        <button class="btn btn-outline-success" type="submit">Search</button>
 									</form>
 								</div>
 								<!--검색 끝-->
@@ -185,14 +177,21 @@
 								</tbody>
 							</table>
 							<!-- End Table with stripped rows -->
-
+										 
 							<nav aria-label="Page navigation example">
 								<ul class="pagination">
-									<li class="page-item"><a class="page-link" href="#">이전</a></li>
+									<li class="page-item"><a class="page-link" th:href="|@{/admin/store/store_list(page=${currentPage})}|" th:text="이전"
+										th:if="${currentPage > 1}"></a></li>
+										
+									<li class="page-item" th:each="page:${#numbers.sequence(startPage, endPage)}">
+										<span class="page-link" th:if="${page == currentPage}"></span>
+										<span th:unless="${page == currentPage}">
+											<a class="page-link" th:href="|@{/admin/store/store_list(page=${page})}|" th:text="${page}"></a>
+										</span>
+									</li>
 
-									<li class="page-item"><a class="page-link" href="#">1</a></li>
-
-									<li class="page-item"><a class="page-link" href="#">다음</a></li>
+									<li class="page-item"><a class="page-link" th:href="|@{/admin/store/store_list(page=${currentPage})}|" th:text="다음"
+										th:if="${cuurentPage < totalPages}"></a></li>
 								</ul>
 							</nav><!-- End Basic Pagination -->
 
@@ -208,7 +207,7 @@
 
 	<!-- 사이드바 열었다 닫았다 하는거 -->
 	<script th:src="@{/js/common/main.js}"></script>
-	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<link th:href="@{/css/customer/customer.css}" rel="stylesheet">
 

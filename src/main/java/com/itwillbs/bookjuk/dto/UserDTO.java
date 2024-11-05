@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "users")
 public class UserDTO {
     //유저테이블 PK
     @Id

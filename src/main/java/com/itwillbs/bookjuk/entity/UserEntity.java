@@ -6,11 +6,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import jakarta.persistence.Id;
 
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "users")
 @Getter
 @Setter
 @ToString

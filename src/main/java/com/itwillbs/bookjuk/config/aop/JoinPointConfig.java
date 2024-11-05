@@ -4,11 +4,12 @@ import org.aspectj.lang.annotation.Pointcut;
 
 public class JoinPointConfig {
 
-    @Pointcut("execution(* com.itwillbs.bookjuk.controller.statistics.*(..))")
+    @Pointcut("execution(* com.itwillbs.bookjuk.controller.statistics..*(..))")
     public void statisticsControllerPointcut() {}
 
-    @Pointcut("execution(* com.itwillbs.bookjuk.service.statistics.*(..))")
+    @Pointcut("execution(* com.itwillbs.bookjuk.service.statistics..*(..))")
     public void statisticsServicePointcut() {}
+
 
 
     //to intercept method calls for both layers:

@@ -5,11 +5,14 @@ import com.itwillbs.bookjuk.domain.login.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 
 import java.sql.Timestamp;
 
 @Entity
+@Table(name = "users")
 @Getter
 @Setter
 @ToString
@@ -17,7 +20,6 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Builder
 public class UserEntity {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,8 +48,8 @@ public class UserEntity {
     private String userPhone;
 
     //유저 Role 값 (enum 클래스의 정의된 것만 사용)
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(255)")
     private UserRole userRole;
 
     //생성일
@@ -60,6 +62,7 @@ public class UserEntity {
 
     //유저 LoginType (enum 클래스의 정의된 것만 사용)
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(255)")
     private LoginType loginType;
 
     //약관 동의 여부

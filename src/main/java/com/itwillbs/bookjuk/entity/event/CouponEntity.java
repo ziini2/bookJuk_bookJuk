@@ -12,23 +12,32 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
-@Table(name = "coupon")
 @Getter
 @Setter
-@ToString
-public class Coupon {
+@Table(name = "coupon")
+public class CouponEntity {
 
 	// 쿠폰 아이디
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "couponId", nullable = false)
 	private Long couponId;
+	
+	// 이벤트 아이디
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "eventId")
+    private EventEntity eventId;
+	
+	// 알림 아이디
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "notiId")
+    private NotificationEntity notiId;
 	
 	// 유저 PK
 	@ManyToOne(fetch = FetchType.LAZY)

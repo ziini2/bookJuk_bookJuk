@@ -1,7 +1,5 @@
 package com.itwillbs.bookjuk.controller.join;
 
-
-import com.itwillbs.bookjuk.domain.login.UserRole;
 import com.itwillbs.bookjuk.dto.UserDTO;
 import com.itwillbs.bookjuk.service.join.CheckService;
 import com.itwillbs.bookjuk.service.join.JoinService;
@@ -39,8 +37,14 @@ public class JoinController {
     //SMS 코드 보내기 요청
     @PostMapping("/sendSmsCode")
     @ResponseBody
-    public Map<String, String> checkPhone(@RequestBody String userPhone) {
+    public Map<String, String> checkPhone(@RequestBody String userPhone, HttpSession session) {
         String code = smsService.sendSMS(userPhone);
+        if (session.getAttribute("code") != null ) {
+            session.removeAttribute("code");
+        }
+        session.setAttribute("code", code);
+        //세션에 코드 유효시간 처리
+        session.setMaxInactiveInterval(30);
         return Map.of("RESULT", "SUCCESS", "code", code);
     }
 
@@ -87,8 +91,6 @@ public class JoinController {
             return Map.of("RESULT", false);
     }
 
-
-
     //==========================================
 
     //회원가입
@@ -107,7 +109,7 @@ public class JoinController {
     //간편로그인 시 전화번호 저장 페이지
     @PostMapping("/join/phone")
     @ResponseBody
-    public Map<String, String> phoneSave(@RequestBody String userPhone, HttpSession session) {
+    public Map<String, String> phoneSave(@RequestBody String userPhone) {
         log.info("phoneSave");
         log.info("userPhone: {}", userPhone);
         //1. 전화번호 입력페이지로 이동시키고 전화번호 등록후 USER_ROLE값 변경 시켜주면됨!

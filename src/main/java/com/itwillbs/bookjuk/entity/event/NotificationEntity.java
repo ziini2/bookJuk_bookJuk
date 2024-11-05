@@ -20,7 +20,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "notification")
-public class Notification {
+public class NotificationEntity {
 
 	// 알림 아이디
 	@Id
@@ -30,12 +30,13 @@ public class Notification {
 	
 	// 알림 수신인(유저 PK)
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recipient")
-    private UserEntity recipient;
+    @JoinColumn(name = "notiRecipient")
+    private UserEntity notiRecipient;
 	
-	// 알림 발신인
-	@Column(name = "notiSender", length = 255, nullable = false)
-	private String notiSender;
+	// 알림 발신인(유저 PK)
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "notiSender")
+    private UserEntity notiSender;
 	
 	// 알림 내용
 	@Column(name = "notiContent", columnDefinition = "TEXT", nullable = false)
@@ -45,7 +46,7 @@ public class Notification {
 	@Column(name = "notiType", length = 10, nullable = false)
 	private String notiType;
 	
-	// 알림 상태(대기, 전송, 실패)
+	// 전송 상태(대기, 전송, 실패)
 	@Column(name = "notiStatus", length = 10, nullable = false)
 	private String notiStatus;
 	

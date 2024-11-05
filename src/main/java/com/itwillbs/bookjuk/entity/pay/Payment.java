@@ -32,7 +32,7 @@ public class Payment {
 	//결제ID
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long paymentID;
+	private Long paymentId;
 	
 	//유저 번호
 	@Column(nullable = false)

@@ -170,6 +170,8 @@ $(document).ready(function () {
 		couponType = '';
 		couponStartDate = '';
 		couponEndDate = '';
+		$('#couponEndDate').attr('min', '');
+		$('#couponStartDate').attr('max', '');
 		$('#couponStartDate').val('');
 		$('#couponEndDate').val('');
     	$('#coupon-filterModal').css('display', 'block');

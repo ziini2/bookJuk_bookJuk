@@ -189,6 +189,8 @@ $(document).ready(function () {
 		transferStatus = '';
 		notiStartDate = '';
 		notiEndDate = '';
+		$('#notiEndDate').attr('min', '');
+		$('#notiStartDate').attr('max', '');
 		$('#notiStartDate').val('');
 		$('#notiEndDate').val('');
     	$('#noti-filterModal').css('display', 'block');

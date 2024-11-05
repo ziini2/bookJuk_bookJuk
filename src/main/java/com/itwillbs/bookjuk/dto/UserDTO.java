@@ -2,9 +2,6 @@ package com.itwillbs.bookjuk.dto;
 
 import com.itwillbs.bookjuk.domain.login.LoginType;
 import com.itwillbs.bookjuk.domain.login.UserRole;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,8 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserDTO {
     //유저테이블 PK
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userNum;
     //유저 id
     private String userId;

@@ -1,9 +1,8 @@
-package com.itwillbs.bookjuk.entity;
+package com.itwillbs.bookjuk.entity.bookInfo;
 
 import java.sql.Timestamp;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +17,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Table(name = "rent")
 @Entity
 @Getter
 @Setter
@@ -26,39 +24,44 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RentEntity {
-	
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long rentNum;
-	
-	@Column(nullable = false)
-	private Long userNum;
-	
-	@Column(nullable = false)
-	private Long bookNum;
-	
-	@Column(nullable = false)
-	private String userId;
+@Table(name = "book_info")
+public class BookInfoEntity {
 
-	@Column(nullable = false)
-	private String userName;
-	
-	@Column(nullable = false)
-	private String userPhone;
-	
+	// 도서번호
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long bookNum;
+
+	// 도서명
 	@Column(nullable = false)
 	private String bookName;
-	
-	//대여일 2024-10-10
-	@CreationTimestamp
-	private Timestamp rentDate;
-	
-	//반납일 2024-10-17
-//	@UpdateTimestamp
-	private Timestamp returnDate;
-	
+
+	// 저자
 	@Column(nullable = false)
-	private String returnInfo;
-	
+	private String author;
+
+	// 줄거리
+	@Column(nullable = false)
+	private String story;
+
+	// 관심설정
+	@Column(nullable = false)
+	private int interest;
+
+	// 출판사
+	@Column(nullable = false)
+	private String publish;
+
+	// 장르ID
+	@Column(nullable = false)
+	private Long genreId;
+
+	// ISBN번호
+	@Column(nullable = false)
+	private Long ISBN;
+
+	// 출판일
+	@Column(nullable = false)
+	private Timestamp publishDate;
+
 }

@@ -43,7 +43,7 @@ public class EventEntity {
 	
 	// 이벤트 상태(시작 전, 진행 중, 종료, 중지)
 	@Column(name = "eventStatus", length = 10, nullable = false)
-	private String eventStatus;
+	private String eventStatus = "시작 전";
 	
 	// 이벤트 유형
 	@Column(name = "eventType", length = 255, nullable = false)

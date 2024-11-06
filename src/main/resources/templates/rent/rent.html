@@ -156,27 +156,43 @@
 		    </tbody>
 		</table>
 		
-		<!--		페이징 처리-->
-				<div>
-		<!--			이전-->
-		      <a th:href="@{/rent(page=${currentPage-1})}" 
-			     th:if="${currentPage > 1}" th:text="이전"> </a>
-				 
-		<!--		숫자 부분-->
-				<span th:each="page:${#numbers.sequence(startPage,endPage)}">
-					<span th:if="${page == currentPage}" th:text="${page}"> </span>
-					<span th:unless="${page == currentPage}">
-						<a th:href="@{/rent(page=${page})}" th:text="${page}"> </a>
-					</span>
-				</span>
-				
-		<!--		다음-->
-				<a th:href="@{/rent(page=${currentPage+1})}" 
-			     th:if="${currentPage < totalPages}" th:text="다음"> </a>
+		<!-- 페이징 처리 -->
+				<div id="serverPagination" class="mt-3 d-flex justify-content-center">
+				    <!-- 이전 버튼 -->
+				    <a th:href="@{/admin/rent(page=${currentPage-1})}" 
+				       th:if="${currentPage > 1}" 
+				       class="btn btn-secondary mx-1" 
+				       th:text="이전">
+				    </a>
+				    
+				    <!-- 페이지 번호 버튼 -->
+				    <span th:each="page : ${#numbers.sequence(startPage, endPage)}">
+				        <span th:if="${page == currentPage}" 
+				              class="btn btn-secondary mx-1 active" 
+				              th:text="${page}">
+				        </span>
+				        <span th:unless="${page == currentPage}">
+				            <a th:href="@{/admin/rent(page=${page})}" 
+				               class="btn btn-secondary mx-1" 
+				               th:text="${page}">
+				            </a>
+				        </span>
+				    </span>
+				    
+				    <!-- 다음 버튼 -->
+				    <a th:href="@{/admin/rent(page=${currentPage+1})}" 
+				       th:if="${currentPage < totalPages}" 
+				       class="btn btn-secondary mx-1" 
+				       th:text="다음">
+				    </a>
 				</div>
-		
+				<!-- 페이지 네비게이션 버튼 추가 -->
+					<div id="pagination" class="mt-3 d-flex justify-content-center"></div>
 		</div>
     </div>
+	
+	
+	
 	</main>
 <!-- 사이드바 열었다 닫았다 하는거 -->
 	<script th:src="@{/js/common/main.js}"></script>

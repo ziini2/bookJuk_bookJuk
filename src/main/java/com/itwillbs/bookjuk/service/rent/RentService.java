@@ -78,19 +78,34 @@ public class RentService {
 	    log.info("연체 상태 업데이트 완료");
 	}
 	
-	public List<RentEntity> searchByCriteria(String criteria, String keyword) {
-		log.info("searchByCriteria called with criteria: " + criteria + ", keyword: " + keyword);
-        switch (criteria) {
-            case "userName":
-                return rentRepository.findByUserNameContainingOrderByRentNumDesc(keyword);
-            case "userId":
-                return rentRepository.findByUserIdContainingOrderByRentNumDesc(keyword);
-            case "bookName":
-                return rentRepository.findByBookNameContainingOrderByRentNumDesc(keyword);
-            default:
-                return new ArrayList<>(); // 조건에 맞지 않으면 빈 리스트 반환
-        }
-    }
+//	public List<RentEntity> searchByCriteria(String criteria, String keyword) {
+//		log.info("searchByCriteria called with criteria: " + criteria + ", keyword: " + keyword);
+//        switch (criteria) {
+//            case "userName":
+//                return rentRepository.findByUserNameContainingOrderByRentNumDesc(keyword);
+//            case "userId":
+//                return rentRepository.findByUserIdContainingOrderByRentNumDesc(keyword);
+//            case "bookName":
+//                return rentRepository.findByBookNameContainingOrderByRentNumDesc(keyword);
+//            default:
+//                return new ArrayList<>(); // 조건에 맞지 않으면 빈 리스트 반환
+//        }
+//    }
+	
+	public Page<RentEntity> searchByCriteria(String criteria, String keyword, Pageable pageable) {
+	    log.info("searchByCriteria 호출됨 - 기준: " + criteria + ", 키워드: " + keyword);
+	    switch (criteria) {
+	        case "userName":
+	            return rentRepository.findByUserNameContaining(keyword, pageable);
+	        case "userId":
+	            return rentRepository.findByUserIdContaining(keyword, pageable);
+	        case "bookName":
+	            return rentRepository.findByBookNameContaining(keyword, pageable);
+	        default:
+	            return Page.empty(pageable); // 조건이 맞지 않으면 빈 페이지 반환
+	    }
+	}
+
     
    
 	

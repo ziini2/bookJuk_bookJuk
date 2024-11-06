@@ -79,14 +79,27 @@ public class RentController {
 	    }
 	}
 	
+//	@GetMapping("/rent/search")
+//    public ResponseEntity<List<RentEntity>> searchRent(
+//        @RequestParam("criteria") String criteria,
+//        @RequestParam("keyword") String keyword) {
+//        
+//        List<RentEntity> rentList = rentService.searchByCriteria(criteria, keyword);
+//        return ResponseEntity.ok(rentList); // JSON 형식으로 데이터 반환
+//    }
+	
 	@GetMapping("/rent/search")
-    public ResponseEntity<List<RentEntity>> searchRent(
-        @RequestParam("criteria") String criteria,
-        @RequestParam("keyword") String keyword) {
-        
-        List<RentEntity> rentList = rentService.searchByCriteria(criteria, keyword);
-        return ResponseEntity.ok(rentList); // JSON 형식으로 데이터 반환
-    }
+	public ResponseEntity<Page<RentEntity>> searchRent(
+	    @RequestParam("criteria") String criteria,
+	    @RequestParam("keyword") String keyword,
+	    @RequestParam(value = "page", defaultValue = "1") int page,
+	    @RequestParam(value = "size", defaultValue = "10") int size) {
+
+	    Pageable pageable = PageRequest.of(page - 1, size, Sort.by("rentNum").descending());
+	    Page<RentEntity> rentList = rentService.searchByCriteria(criteria, keyword, pageable);
+	    return ResponseEntity.ok(rentList); // JSON 형식으로 페이지 데이터 반환
+	}
+
 	
 	@GetMapping("/admin/membersearch")
 	public String membersearch() {

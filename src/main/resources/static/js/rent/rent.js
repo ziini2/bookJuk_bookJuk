@@ -66,64 +66,104 @@
 
 
 //	검색
-	document.addEventListener("DOMContentLoaded", function() {
-		    function performSearch() {
-		        const criteria = document.getElementById("criteria").value;
-		        const keyword = document.getElementById("keyword").value;
+// 검색
+document.addEventListener("DOMContentLoaded", function() {
+    function performSearch(page = 1) {
+        const criteria = document.getElementById("criteria").value;
+        const keyword = document.getElementById("keyword").value;
+        const size = 10; // 페이지당 결과 개수
+	
+		// 서버에서 렌더링된 페이징 부분 제거
+		       const serverPagination = document.getElementById("serverPagination");
+		       if (serverPagination) {
+		           serverPagination.remove(); // DOM에서 완전히 제거
+		       }
+		
+        fetch(`/rent/search?criteria=${criteria}&keyword=${keyword}&page=${page}&size=${size}`)
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById("rentalTableBody");
+                const paginationContainer = document.getElementById("pagination");
 
-		        fetch(`/rent/search?criteria=${criteria}&keyword=${keyword}`)
-		            .then(response => response.json())
-		            .then(data => {
-		                const tableBody = document.getElementById("rentalTableBody");
+                if (!tableBody) {
+                    console.error("tableBody 요소를 찾을 수 없습니다.");
+                    return;
+                }
 
-		                // rentalTableBody 요소가 있는지 확인
-		                if (!tableBody) {
-		                    console.error("tableBody 요소를 찾을 수 없습니다.");
-		                    return;
-		                }
+                tableBody.innerHTML = ""; // 기존 데이터를 지움
+                paginationContainer.innerHTML = ""; // 기존 페이징 버튼 초기화
 
-		                tableBody.innerHTML = ""; // 기존 데이터를 지움
+                data.content.forEach(rent => {
+                    const row = document.createElement("tr");
 
-		                data.forEach(rent => {
-		                    const row = document.createElement("tr");
+                    const returnDate = rent.returnDate ? 
+                        new Date(rent.returnDate).toISOString().split('T')[0] : "";
 
-		                    // 반납일이 존재하는 경우에만 표시
-		                    const returnDate = rent.returnDate ? 
-		                        new Date(rent.returnDate).toISOString().split('T')[0] : "";
+                    row.innerHTML = `
+                        <td>${rent.rentNum}</td>
+                        <td>${rent.userNum}</td>
+                        <td>${rent.userId}</td>
+                        <td>${rent.userName}</td>
+                        <td>${rent.userPhone}</td>
+                        <td>${rent.bookNum}</td>
+                        <td>${rent.bookName}</td>
+                        <td>${new Date(rent.rentDate).toISOString().split('T')[0]}</td>
+                        <td>${returnDate}</td>
+                        <td>
+                            <select onchange="updateReturnInfo(this, ${rent.rentNum})">
+                                <option value="대여중" ${rent.returnInfo === '대여중' ? 'selected' : ''}>대여중</option>
+                                <option value="연체중" ${rent.returnInfo === '연체중' ? 'selected' : ''}>연체중</option>
+                                <option value="반납완료" ${rent.returnInfo === '반납완료' ? 'selected' : ''}>반납완료</option>
+                            </select>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
 
-		                    row.innerHTML = `
-		                        <td>${rent.rentNum}</td>
-		                        <td>${rent.userNum}</td>
-		                        <td>${rent.userId}</td>
-		                        <td>${rent.userName}</td>
-		                        <td>${rent.userPhone}</td>
-		                        <td>${rent.bookNum}</td>
-		                        <td>${rent.bookName}</td>
-		                        <td>${new Date(rent.rentDate).toISOString().split('T')[0]}</td>
-		                        <td>${returnDate}</td>
-		                        <td>
-		                            <select onchange="updateReturnInfo(this, ${rent.rentNum})">
-		                                <option value="대여중" ${rent.returnInfo === '대여중' ? 'selected' : ''}>대여중</option>
-		                                <option value="연체중" ${rent.returnInfo === '연체중' ? 'selected' : ''}>연체중</option>
-		                                <option value="반납완료" ${rent.returnInfo === '반납완료' ? 'selected' : ''}>반납완료</option>
-		                            </select>
-		                        </td>
-		                    `;
-		                    tableBody.appendChild(row);
-		                });
-		            })
-		            .catch(error => console.error("검색 중 오류 발생:", error));
-		    }
+                // 페이지 네비게이션 업데이트
+                if (data.totalPages > 1) { // 총 페이지가 1 이상일 때만 페이징 버튼 생성
+                    updatePagination(data.totalPages, page);
+                }
+            })
+            .catch(error => console.error("검색 중 오류 발생:", error));
+    }
 
-		    // 검색 버튼 클릭 시 performSearch 실행
-		    document.getElementById("searchButton").addEventListener("click", performSearch);
+    function updatePagination(totalPages, currentPage) {
+        const paginationContainer = document.getElementById("pagination");
+        paginationContainer.innerHTML = ""; // 기존 버튼 초기화
 
-		    // 엔터키 입력 시 기본 폼 제출 방지하고 performSearch 실행
-		    document.getElementById("searchForm").addEventListener("submit", function(event) {
-		        event.preventDefault(); // 기본 폼 제출 방지
-		        performSearch();
-		    });
-		});
+        for (let page = 1; page <= totalPages; page++) {
+            const pageButton = document.createElement("button");
+            pageButton.textContent = page;
+            pageButton.classList.add("btn", "btn-secondary", "mx-1");
+            if (page === currentPage) {
+                pageButton.classList.add("active");
+            }
+            pageButton.onclick = () => performSearch(page);
+            paginationContainer.appendChild(pageButton);
+        }
+    }
+
+    // 검색 버튼 클릭 시 performSearch 실행
+    document.getElementById("searchButton").addEventListener("click", function() {
+        performSearch(1); // 첫 페이지부터 검색
+    });
+
+    // 엔터키 입력 시 검색 실행
+    document.getElementById("keyword").addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault(); // 기본 엔터키 동작 방지 (폼 제출 방지)
+            performSearch(1); // 첫 페이지부터 검색
+        }
+    });
+
+    // 폼 제출 방지
+    document.getElementById("searchForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // 기본 폼 제출 방지
+        performSearch(1); // 첫 페이지부터 검색
+    });
+});
+
 
 
 

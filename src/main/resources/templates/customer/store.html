@@ -178,20 +178,20 @@
 							</table>
 							<!-- End Table with stripped rows -->
 										 
-							<nav aria-label="Page navigation example">
+							<nav aria-label="Page navigation example" th:if="${startPage != null}">
 								<ul class="pagination">
-									<li class="page-item"><a class="page-link" th:href="|@{/admin/store/store_list(page=${currentPage})}|" th:text="이전"
+									<li class="page-item"><a class="page-link" th:href="|@{/admin/store/store_list(page=${currentPage}-1)}|" th:text="이전"
 										th:if="${currentPage > 1}"></a></li>
 										
 									<li class="page-item" th:each="page:${#numbers.sequence(startPage, endPage)}">
-										<span class="page-link" th:if="${page == currentPage}"></span>
+										<span class="page-link" th:if="${page == currentPage}" th:text="${page}"></span>
 										<span th:unless="${page == currentPage}">
-											<a class="page-link" th:href="|@{/admin/store/store_list(page=${page})}|" th:text="${page}"></a>
+										<a class="page-link" th:href="|@{/admin/store/store_list(page=${page})}|" th:text="${page}"></a>
 										</span>
 									</li>
-
-									<li class="page-item"><a class="page-link" th:href="|@{/admin/store/store_list(page=${currentPage})}|" th:text="다음"
-										th:if="${cuurentPage < totalPages}"></a></li>
+									
+									<li class="page-item"><a class="page-link" th:href="|@{/admin/store/store_list(page=${currentPage}+1)}|" th:text="다음"
+										th:if="${currentPage < totalPages}"></a></li>
 								</ul>
 							</nav><!-- End Basic Pagination -->
 

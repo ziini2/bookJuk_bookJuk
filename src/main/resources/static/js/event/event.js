@@ -117,6 +117,10 @@ $(document).ready(function () {
 	let eventStartDate = '';
 	let eventEndDate = '';
 	
+	$('#event-createModal-apply').click(function(){
+		
+	});
+	
 	$('#couponPayment').on('click', function() {
 		// 이미 드롭다운이 생성되어 있으면 추가로 생성하지 않음
 		if ($('#couponOptions').length === 0) {
@@ -184,6 +188,13 @@ $(document).ready(function () {
   	});
 	
 	$('#event-createBtn').click(function(){
+		removeCouponOptions();
+		$('#createEndDate').attr('min', '');
+		$('#createStartDate').attr('max', '');
+		$('#createStartDate').val('');
+		$('#createEndDate').val('');
+		$('#event-createModal-title').val('');
+		$('#event-createModal-content textarea').val('');
 		$('#event-createModal').fadeIn();
 	});
 	
@@ -320,6 +331,16 @@ $(document).ready(function () {
 	$('#eventEndDate').change(function () {
 		const eventEndDateVal = $(this).val();
 		$('#eventStartDate').attr('max', eventEndDateVal);
+	});
+	
+	$('#createStartDate').change(function () {
+		const createStartDateVal = $(this).val();
+		$('#createEndDate').attr('min', createStartDateVal);
+	});
+	
+	$('#createEndDate').change(function () {
+		const createEndDateVal = $(this).val();
+		$('#createStartDate').attr('max', createEndDateVal);
 	});
 
 	// 이벤트 검색 필터 모달창 내 선택된 버튼 이름 출력

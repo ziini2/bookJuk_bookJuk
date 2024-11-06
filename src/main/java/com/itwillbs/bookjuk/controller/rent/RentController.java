@@ -84,14 +84,14 @@ public class RentController {
         return ResponseEntity.ok(rentList); // JSON 형식으로 데이터 반환
     }
 	
-	@GetMapping("/membersearch")
+	@GetMapping("/admin/membersearch")
 	public String membersearch() {
 		log.info("RentController membersearch()");
 		
 		return "/rent/membersearch";
 	}
 	
-	@GetMapping("/booksearch")
+	@GetMapping("/admin/booksearch")
 	public String booksearch() {
 		log.info("RentController booksearch()");
 		

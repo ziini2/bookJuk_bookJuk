@@ -25,12 +25,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Main CSS File -->
-
-
     <link th:href="@{/css/common/style.css}" rel="stylesheet">
     <link th:href="@{/css/statistics/common/statistics_common.css}" rel="stylesheet">
     <link th:href="@{/css/statistics/index.css}" rel="stylesheet">
     <link th:href="@{/css/statistics/dashboard.css}" rel="stylesheet">
+
+    <!-- Jquery 추가-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 
@@ -44,7 +45,7 @@
             <div class="banner">
                 <div class="banner-title">금일 신규가입자</div>
                 <div class="banner-content">
-                    <div class="banner-content-number">0</div>
+                    <div class="banner-content-number numbers-of-new-customers">0</div>
                     <div class="banner-content-unit">명</div>
                 </div>
             </div>
@@ -189,6 +190,7 @@
 <script src="/js/statistics/accumulationBar.js"></script>
 <script src="/js/statistics/customerBar.js"></script>
 <script src="/js/statistics/delayBar.js"></script>
+<script src="/js/statistics/dailyStatistics.js"></script>
 </body>
 
 </html>

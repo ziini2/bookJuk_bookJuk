@@ -73,34 +73,23 @@
                },
                function (rsp) {
                    if (rsp.success) {
-					alert(rsp.imp_uid);
-					alert(merchant_uid);
-					alert(amount);
-					alert(userNum);
-					alert(priceName);
+			
                        // 결제 성공 후, 서버로 결제 정보 전송 (POST 방식)
                        $.ajax({
                            url: "/payment/process", // 결제 검증 후 DB에 저장하는 엔드포인트
                            method: "POST",
                            contentType: "application/json",
-                           //data: JSON.stringify({
-                           //    paymentId: rsp.imp_uid,  // 아임포트 결제 고유 ID
-                           //    merchantMid: merchant_uid,  // 주문번호
-                           //    paidAmount: amount,  // 결제 금액
-                          //     status: "SUCCESSFUL",  // 결제 상태
-                          ///     //userNum: userNum,  // 유저 번호
-							//   userNum: 2,
-                          //     priceName: priceName  // 상품명
-                         //  }),
-						 data: {
-							paymentId: rsp.imp_uid,  // 아임포트 결제 고유 ID
+                           data: JSON.stringify({
+                           paymentId: rsp.imp_uid,  // 아임포트 결제 고유 ID
+						   paymentMethod: "card",
                            merchantMid: merchant_uid,  // 주문번호
                              paidAmount: amount,  // 결제 금액
-                             //status: "SUCCESSFUL",  // 결제 상태
+                               status: "SUCCESSFUL",  // 결제 상태
                               //userNum: userNum,  // 유저 번호
-						  	userNum: 2,
-                             priceName: priceName
-						 },
+						   userNum: 2,
+                              priceName: priceName  // 상품명
+                         }),
+					
 						 
                            success: function (data) {
                                alert("결제가 성공적으로 처리되었습니다.");

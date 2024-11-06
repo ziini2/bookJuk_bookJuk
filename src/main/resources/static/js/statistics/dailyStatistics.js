@@ -8,4 +8,15 @@ $(document).ready(function () {
             $('.numbers-of-new-customers').text(response);
         }
     });
+
+    $.ajax({
+        type: 'GET',
+        url: '/daily/event',
+        success: function (response) {
+            $('.numbers-of-events').text(response);
+        }
+    });
+
+
 });
+

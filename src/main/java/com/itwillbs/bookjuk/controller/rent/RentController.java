@@ -33,6 +33,10 @@ public class RentController {
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 			@RequestParam(value = "size", defaultValue = "10", required = false) int size) {
 		log.info("RentController rent()");
+		
+		// 페이지 로드 시 연체 상태 업데이트
+        rentService.updateOverdueRentals();
+		
 		// 페이지번호 page
 		// 한화면에 보여줄 글 개수 size
 		// PageRequest 에서는 page 0부터 시작 => page-1 설정
@@ -75,23 +79,36 @@ public class RentController {
 	    }
 	}
 	
-	@GetMapping("/rent/search")
-    public ResponseEntity<List<RentEntity>> searchRent(
-        @RequestParam("criteria") String criteria,
-        @RequestParam("keyword") String keyword) {
-        
-        List<RentEntity> rentList = rentService.searchByCriteria(criteria, keyword);
-        return ResponseEntity.ok(rentList); // JSON 형식으로 데이터 반환
-    }
+//	@GetMapping("/rent/search")
+//    public ResponseEntity<List<RentEntity>> searchRent(
+//        @RequestParam("criteria") String criteria,
+//        @RequestParam("keyword") String keyword) {
+//        
+//        List<RentEntity> rentList = rentService.searchByCriteria(criteria, keyword);
+//        return ResponseEntity.ok(rentList); // JSON 형식으로 데이터 반환
+//    }
 	
-	@GetMapping("/membersearch")
+	@GetMapping("/rent/search")
+	public ResponseEntity<Page<RentEntity>> searchRent(
+	    @RequestParam("criteria") String criteria,
+	    @RequestParam("keyword") String keyword,
+	    @RequestParam(value = "page", defaultValue = "1") int page,
+	    @RequestParam(value = "size", defaultValue = "10") int size) {
+
+	    Pageable pageable = PageRequest.of(page - 1, size, Sort.by("rentNum").descending());
+	    Page<RentEntity> rentList = rentService.searchByCriteria(criteria, keyword, pageable);
+	    return ResponseEntity.ok(rentList); // JSON 형식으로 페이지 데이터 반환
+	}
+
+	
+	@GetMapping("/admin/membersearch")
 	public String membersearch() {
 		log.info("RentController membersearch()");
 		
 		return "/rent/membersearch";
 	}
 	
-	@GetMapping("/booksearch")
+	@GetMapping("/admin/booksearch")
 	public String booksearch() {
 		log.info("RentController booksearch()");
 		

@@ -32,18 +32,17 @@
 			<div class="coupon-filterModal-content">
 				<span class="coupon-modal-close">&times;</span>		    
 				<h3>필터 설정</h3>		    
-				<label>알림 유형</label>
-				<div id="notiType">
-					<button type="button" class="coupon-filterModal-toggleBtn" data-value="SMS" value="SMS">SMS</button>
-					<button type="button" class="coupon-filterModal-toggleBtn" data-value="쪽지" value="쪽지">쪽지</button>
+				<label>쿠폰 상태</label>
+				<div id="couponStatus">
+					<button type="button" class="coupon-filterModal-toggleBtn" data-value="유효">유효</button>
+					<button type="button" class="coupon-filterModal-toggleBtn" data-value="완료">완료</button>
+					<button type="button" class="coupon-filterModal-toggleBtn" data-value="만료">만료</button>
 				</div>		    
-				<label>전송 상태</label>
-		    	<div id="transferStatus">
-					<button type="button" class="coupon-filterModal-toggleBtn" data-value="대기">대기</button>
-					<button type="button" class="coupon-filterModal-toggleBtn" data-value="성공">성공</button>
-					<button type="button" class="coupon-filterModal-toggleBtn" data-value="실패">실패</button>
+				<label>쿠폰 종류</label>
+		    	<div id="couponType">
+					<button type="button" class="coupon-filterModal-toggleBtn" data-value="포인트">포인트</button>
 				</div>
-				<label>전송 날짜</label>
+				<label>쿠폰 유효기간</label>
 				<div class="coupon-date-container">
 					<input type="date" id="couponStartDate" value="">
 					<span> ~ </span>
@@ -85,12 +84,12 @@
 		<div id="coupon-detailModal">
 		    <div class="coupon-detailModal-content">
 		        <span class="coupon-modal-close">&times;</span>
-		        <h3>알림 상세 정보</h3>
-		        <p><strong>수신 아이디:</strong><span id="coupon-detailReceiver"></span></p>
-		        <p><strong>알림 내용:</strong><span id="coupon-detailContent"></span></p>
-		        <p><strong>알림 유형:</strong><span id="coupon-detailType"></span></p>
-		        <p><strong>전송 상태:</strong><span id="coupon-detailStatus"></span></p>
-		        <p><strong>전송 날짜:</strong><span id="coupon-detailSentDate"></span></p>
+		        <h3>쿠폰 상세 정보</h3>
+		        <p><strong>이벤트 제목 : </strong><span id="coupon-detailTitle"></span></p>
+		        <p><strong>유저 아이디 : </strong><span id="coupon-detailUser"></span></p>
+		        <p><strong>쿠폰 상태 : </strong><span id="coupon-detailStatus"></span></p>
+		        <p><strong>쿠폰 종류 : </strong><span id="coupon-detailType"></span></p>
+		        <p><strong>쿠폰 유효기간 : </strong><span id="coupon-detailDate"></span></p>
 		    </div>
 		</div>
 	</div>

@@ -1,0 +1,375 @@
+body {
+	padding-top: 80px;
+}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+
+
+
+/*--- 이벤트 datatables ↓ CSS ---*/
+#event-table tbody td > span{
+    cursor: pointer !important;
+}
+#event-table th, #event-table td {
+	text-align: center !important;
+	white-space: nowrap !important;
+}
+#event-table th:nth-child(1),
+#event-table td:nth-child(1) {
+	width: 5% !important;
+}
+#event-table th:nth-child(2),
+#event-table td:nth-child(2) {
+	overflow: hidden !important; /* 넘친 텍스트 숨김 */
+	text-overflow: ellipsis !important; /* ... 표시 */
+	max-width: 200px !important; /* 원하는 최대 너비 설정 */
+}
+#event-table th:nth-child(3),
+#event-table td:nth-child(3) {
+	width: 15% !important;
+}
+#event-table th:nth-child(4),
+#event-table td:nth-child(4),
+#event-table th:nth-child(5),
+#event-table td:nth-child(5) {
+	width: 10% !important;
+}
+#event-table th:nth-child(6),
+#event-table td:nth-child(6) {
+	width: 15% !important;
+}
+/*이벤트 검색 조건 드롭 박스*/
+#event-columnSelect {
+    -webkit-appearance: none; /* 크롬, 사파리 */
+    -moz-appearance: none; /* 파이어폭스 */
+    appearance: none; /* 기본 */
+    background: white; /* 화살표 배경 제거 */
+	margin-left: 0 !important;
+	height: 100%;
+    padding: 6px 12px;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+/*--- 이벤트 datatables ↑ CSS ---*/
+
+
+
+
+
+/*--- 이벤트 생성 모달창 ↓ CSS ---*/
+/*이벤트 생성 버튼*/
+#event-createBtn {
+	padding: 7px 16px;
+	font-size: 16px;
+	font-weight: 600;
+	color: #fff;
+	background-color: #007bff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+#event-createBtn:hover {
+	background-color: #0056b3;
+}
+/*이벤트 생성 모달 창*/
+#event-createModal {
+	display: none;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6) !important;
+	z-index: 1000;
+}
+.event-createModal-content {
+	position: absolute;
+	background-color: #fff !important;
+	padding: 30px !important;
+	border-radius: 8px !important;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+	top: 50% !important;
+	left: 50% !important;
+	transform: translate(-50%, -50%) !important;
+	width: 570px;
+	max-width: 90%;	
+}
+/*이벤트 생성 모달창 완료 버튼*/
+#event-createModal-apply {
+	width: 100%;
+	padding: 12px;
+	font-size: 16px;
+	color: #fff;
+	background-color: #007bff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-top: 20px;
+}
+#event-createModal-apply:hover {
+	background-color: #0056b3;
+}
+.event-createModal-content label {
+	display: block;
+	font-weight: 500;
+	margin: 10px 0 5px;
+	color: #555;
+}
+.event-createModal-content h3 {
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: #333;
+	margin-bottom: 20px;
+	text-align: center;
+}
+/*이벤트 생성 모달창 내 날짜 지정*/
+.event-date-container {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 15px 0;
+}
+.event-date-container input[type="date"] {
+	flex: 1;
+	padding: 8px;
+	border: 1px solid #ced4da;
+	border-radius: 4px;
+}
+/*이벤트 검색 필터 모달창 내 버튼 클릭 스타일*/
+.event-filterModal-toggleBtn {
+	padding: 10px 20px;
+	margin: 5px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	cursor: pointer;
+	background-color: #f8f9fa;
+	transition: background-color 0.1s;
+}
+.event-filterModal-toggleBtn.active {
+	background-color: #28a745; /* 활성화된 상태 - 녹색 */
+	color: #fff;
+	border: none;
+}
+.event-filterModal-toggleBtn:hover {
+  background-color: #4CAF50;
+}
+.event-modal-close {
+	position: absolute;
+	right: 15px;
+	top: 15px;
+	float: right !important;
+	font-size: 2rem !important;
+	cursor: pointer !important;
+	color: #555;
+}
+.event-modal-close:hover {
+  color: #000;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content div {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown-content div:hover {
+  background-color: #ddd;
+}
+
+#selectedTypes {
+  margin-top: 10px;
+}
+/*--- 이벤트 생성 모달창 ↑ CSS ---*/
+
+
+
+
+
+/*--- 이벤트 필터 모달창 ↓ CSS ---*/
+/*이벤트 필터 버튼*/
+#event-filterBtn {
+	padding: 7px 16px;
+	font-size: 16px;
+	font-weight: 600;
+	color: #fff;
+	background-color: #007bff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+#event-filterBtn:hover {
+	background-color: #0056b3;
+}
+.dataTables_filter {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+	margin-top: 5px;
+}
+.dataTables_filter input[type="search"] {
+    width: auto;
+    padding: 6px 12px;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+div.dataTables_wrapper div.dataTables_filter input {
+    margin-left: 0 !important;
+}
+/*이벤트 검색 필터 모달 창*/
+#event-filterModal {
+	display: none;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6) !important;
+	z-index: 1000;
+}
+/*이벤트 검색 필터 모달창 완료 버튼*/
+#event-filterModal-apply {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+#event-filterModal-apply:hover {
+  background-color: #0056b3;
+}
+.event-filterModal-content {
+	position: absolute;
+	background-color: #fff !important;
+	padding: 30px !important;
+	border-radius: 8px !important;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+	top: 50% !important;
+	left: 50% !important;
+	transform: translate(-50%, -50%) !important;
+	width: 450px;
+	max-width: 90%;
+}
+.event-filterModal-content label {
+  display: block;
+  font-weight: 500;
+  margin: 10px 0 5px;
+  color: #555;
+}
+.event-filterModal-content h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+/*이벤트 검색 필터 모달창 내 전송 날짜*/
+.event-date-container {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 15px 0;
+}
+.event-date-container input[type="date"] {
+	flex: 1;
+	padding: 8px;
+	border: 1px solid #ced4da;
+	border-radius: 4px;
+}
+/*이벤트 검색 필터 모달창 내 버튼 클릭 스타일*/
+.event-filterModal-toggleBtn {
+	padding: 10px 20px;
+	margin: 5px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	cursor: pointer;
+	background-color: #f8f9fa;
+	transition: background-color 0.1s;
+}
+.event-filterModal-toggleBtn.active {
+	background-color: #28a745; /* 활성화된 상태 - 녹색 */
+	color: #fff;
+	border: none;
+}
+.event-filterModal-toggleBtn:hover {
+  background-color: #4CAF50;
+}
+.event-modal-close {
+	position: absolute;
+	right: 15px;
+	top: 15px;
+	float: right !important;
+	font-size: 2rem !important;
+	cursor: pointer !important;
+	color: #555;
+}
+.event-modal-close:hover {
+  color: #000;
+}
+/*이벤트 검색 필터 칩 스타일 */
+#event-selectedFilter {
+	display: flex;
+	gap: 5px;
+	flex-wrap: wrap;
+	margin-bottom: 5px;
+}
+.event-filterChip {
+    display: inline-block; 
+    background-color: #e9ecef; 
+    border-radius: 5px; 
+    padding: 5px 10px; 
+    position: relative;
+}
+.event-filterChip span {
+    cursor: pointer; 
+    margin-left: 5px; 
+    color: red; 
+}
+/*--- 이벤트 필터 모달창 ↑ CSS ---*/
+
+
+
+
+
+/*--- 이벤트 상세 모달창 ↓ CSS ---*/
+/*이벤트 상세 모달 창*/
+#event-detailModal {
+	display: none;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6) !important;
+	z-index: 1000;
+}
+.event-detailModal-content {
+	position: absolute;
+	background-color: #fff !important;
+	padding: 30px !important;
+	border-radius: 8px !important;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+	top: 50% !important;
+	left: 50% !important;
+	transform: translate(-50%, -50%) !important;
+	width: 420px;
+	max-width: 90%;
+}
+/*--- 이벤트 상세 모달창 ↑ CSS ---*/

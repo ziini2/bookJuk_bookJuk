@@ -1,4 +1,3 @@
-
 (function() {
   "use strict";
 
@@ -35,10 +34,13 @@
   /**
    * Sidebar toggle
    */
+  // 기본적으로 사이드바를 닫은 상태로 시작
+  document.body.classList.add('toggle-sidebar1'); // 초기 상태
+
   if (select('.toggle-sidebar-btn')) {
     on('click', '.toggle-sidebar-btn', function(e) {
-      select('body').classList.toggle('toggle-sidebar1')
-    })
+      select('body').classList.toggle('toggle-sidebar1');
+    });
   }
 
   /**
@@ -62,7 +64,8 @@
   onscroll(document, navbarlinksActive)
 
   /**
-   * Toggle .header-scrolled class to #header when page is scrolled */
+   * Toggle .header-scrolled class to #header when page is scrolled
+   */
   let selectHeader = select('#header')
   if (selectHeader) {
     const headerScrolled = () => {
@@ -75,7 +78,5 @@
     window.addEventListener('load', headerScrolled)
     onscroll(document, headerScrolled)
   }
-
-
 
 })();

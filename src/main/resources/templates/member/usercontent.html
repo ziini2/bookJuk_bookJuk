@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>북적북적</title>
+  
+  <!-- 구글폰트 -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- 사이드바 아이콘 -->
+
+  <link th:href="@{images/common/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{images/common/remixicon/remixicon.css}" rel="stylesheet">
+
+  
+  <!--부트스트랩 외부링크-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Main CSS File -->
+
+
+  <link th:href="@{css/common/style.css}" rel="stylesheet">
+
+  <style>	
+	.content-box {
+		width: 900px;
+		height: 650px; 
+		border: 3px solid rgb(0, 64, 0);
+		border-radius: 5px;
+		margin-top: 165px;
+		margin-left: 700px;
+		background-color: rgb(233, 255, 200);
+	}
+	
+	.grade {
+		background-color: rgb(140, 232, 147);
+		border: 1px solid rgb(140, 232, 147);
+		border-radius: 8px;
+		padding: 15px 22px;
+		margin-left: 180px;
+		font-size: 25px;
+	}
+	
+	.usercthead {
+		margin-top: 50px;
+	}
+	
+	.username {
+		background-color: rgb(181, 240, 185);
+		border: 1px solid rgb(181, 240, 185);
+		border-radius: 2px;
+		padding: 13px 75px;
+		font-size: 20px;
+	}
+	
+	.userday {
+		background-color: rgb(181, 240, 185);
+		border: 1px solid rgb(181, 240, 185);
+		border-radius: 2px;
+		padding: 13px 75px;
+		font-size: 20px;
+	}
+	
+	.content1 {
+		margin-top: 75px;
+		margin-left: 240px;
+		font-size: 18px;
+	}
+	
+	.ct1 {
+		color: rgb(5, 38, 0);
+	}
+	
+	.ct2 {
+		color: rgb(5, 38, 0);
+		margin-top: 10px;
+		margin-left: 380px;
+	}
+	
+	.ct3 {
+		color: rgb(5, 38, 0);
+		margin-left: 220px;
+		font-size: 22px;
+	}
+	
+	.ct4 {
+		color: rgb(5, 38, 0);
+		margin-left: 210px;
+		font-size: 22px;
+	}
+	
+	.userctbottom {
+		margin-top: 50px;
+		margin-left: 900px;
+	}
+	
+	.userblist {
+		background-color: rgb(232, 251, 233);
+		border: 1px solid rgb(232, 251, 233);
+		border-radius: 8px;
+		padding: 13px 20px;		
+		font-size: 22px;
+	}
+	
+	.userctupdate {
+		background-color: rgb(232, 251, 233);
+		border: 1px solid rgb(232, 251, 233);
+		border-radius: 8px;
+		padding: 13px 20px;		
+		font-size: 22px;
+		margin-left: 100px;
+	}
+	
+	
+
+  </style>
+
+</head>
+
+<body>
+	<div th:replace="/member/memberheader :: header2"></div>
+	<div th:replace="/member/membersidebar :: sidebar2"></div>
+
+ 
+
+  <!-- 사이드바 열었다 닫았다 하는거 -->
+  <script th:src="@{/js/common/main.js}"></script>
+  
+  <div class="content-box">
+		
+	<div class="usercthead">
+		<a href="" class="grade text-black">등급</a><b class="username">이름</b><b class="userday">생년월일</b>
+	</div>			
+	
+	<div class="content1">
+	<h4 class="ct1">이메일 : <span></span></h4><br>
+	<h4 class="ct1">전화번호 : <span></span></h4><br>
+	<h4 class="ct1">아이디 : <span></span></h4><br>
+	<h4 class="ct1">비밀번호 : <span></span></h4><br>
+	</div>
+	
+	<h4 class="ct2">포인트 : <span></span>P</h4> <br>
+	
+	<b class="ct3">대여 도서 수</b> 
+	<b class="ct4">관심 도서 수</b> 
+	
+  </div>
+  
+  <div class="userctbottom">
+  <a href="userblist" onclick="submit" class="userblist text-black">나의 도서 목록</a>
+  <a href="userctupdate" onclick="submit" class="userctupdate text-black">나의 정보 수정</a>
+  </div>
+
+</body>
+
+</html>

@@ -1,8 +1,15 @@
-package com.itwillbs.bookjuk.entity;
+package com.itwillbs.bookjuk.entity.books;
 
+import java.sql.Timestamp;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.itwillbs.bookjuk.domain.books.BookStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,43 +28,41 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "book_info")
-public class BookInfoEntity {
+@Table(name = "books")
+public class BooksEntity {
 	
-	// 도서번호
+	// 책번호 자동으로 1씩 증가
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long bookNum;
 	
-	// 도서명
+	// 지점명
 	@Column(nullable = false)
-	private String bookName;
+	private String storeName; 
 	
-	// 저자
+	// 대여금액
 	@Column(nullable = false)
-	private String author; 
-	
-	// 줄거리
-	@Column(nullable = false)
-	private String story;
+	private Long rentMoney;
 
-	// 관심설정
+	// 도서상태
 	@Column(nullable = false)
-	private int interest;
-	
-	// 출판사
+	@Enumerated(EnumType.STRING)
+	private BookStatus bookStatus;
+
+	// 대여현황
 	@Column(nullable = false)
-	private String publish;
-	
-	// 장르ID
-	@Column(nullable = false)
-	private Long genreId;
+	private Boolean rentStatus;
 	
 	// 재고
 	@Column(nullable = false)
 	private Long inventory;
 	
+	// 입고일
+	@CreationTimestamp
+	private Timestamp bookDate;
 	
-	
-	
+	// 수정일
+	@CreationTimestamp
+	private Timestamp bookUpdate;
+		
 }

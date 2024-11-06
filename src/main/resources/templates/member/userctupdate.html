@@ -2,7 +2,8 @@
 
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 
 <head>
   <meta charset="utf-8">
@@ -28,7 +29,19 @@
 
 
   <link th:href="@{css/common/style.css}" rel="stylesheet">
+  
+  <style>	
+  	.contentup-box {
+  		width: 600px;
+  		height: 450px; 
+  		border: 3px solid rgb(0, 64, 0);
+  		border-radius: 5px;
+  		margin-top: 265px;
+  		margin-left: 800px;
+  		background-color: rgb(233, 255, 200);
+  	}
 
+  </style>
 
 </head>
 
@@ -40,6 +53,14 @@
 
   <!-- 사이드바 열었다 닫았다 하는거 -->
   <script th:src="@{/js/common/main.js}"></script>
+  
+  <div class="contentup-box">
+	이메일 : <input type="email"" name="email"><br>
+	전화번호 : <input type="tel"" name="phone"><br>
+	아이디 : <input type="text" name="id"><br>
+	비밀번호 : <input type="password" name="pass"><br>	
+  </div>
+  <input type="submit" value="회원정보수정">
 
 </body>
 

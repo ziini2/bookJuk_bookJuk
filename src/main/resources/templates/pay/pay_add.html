@@ -54,7 +54,9 @@
            var priceName = selectedPrice.getAttribute("price-name"); // 상품명
            var amount = selectedPrice.value; // 결제 금액
            var userEmail = $("#userEmail").val();
-           var userNum = $("#userNum").val(); // 사용자 번호
+           var userNum = $("#userNum").val(); // 유저 번호
+		   var userName = $("#userName").val(); // 유저 이름
+		   
 
            IMP.request_pay(
                {
@@ -81,7 +83,9 @@
                                status: "SUCCESSFUL",  // 결제 상태
                               //userNum: userNum,  // 유저 번호
 						   userNum: 2,
-                              priceName: priceName  // 상품명
+						   userName: "박길동",
+                           priceName: priceName,  // 상품명
+						   reqDate: reqDate
                          }),
 					
 						 

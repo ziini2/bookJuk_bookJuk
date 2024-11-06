@@ -1,5 +1,6 @@
 package com.itwillbs.bookjuk.dto;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import com.itwillbs.bookjuk.domain.pay.PaymentStatus;
@@ -8,13 +9,15 @@ public class PaymentDTO {
 	
 	private String merchantMid; //주문번호
     private String paymentId; //결제ID
-    private String paymentMethod; //결제ID
+    private String paymentMethod; //결제수단
 	private Long paidAmount; //결제금액
     private PaymentStatus status; //결제상태
     private Long userNum; //유저번호
+    private String userName; //유저이름
     private String priceName; //상품이름
-    
-    public PaymentDTO() {
+    private LocalDateTime reqDate; //요청일시
+
+	public PaymentDTO() {
 		// TODO Auto-generated constructor stub
 	}
     
@@ -46,6 +49,14 @@ public class PaymentDTO {
 		this.userNum = userNum;
 	}
 
+    public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
 	public String getPriceName() {
 		return priceName;
 	}
@@ -92,6 +103,14 @@ public class PaymentDTO {
 
 	public void setStatus(PaymentStatus status) {
 		this.status = status;
+	}
+	
+    public LocalDateTime getReqDate() {
+		return reqDate;
+	}
+
+	public void setReq_date(LocalDateTime req_date) {
+		this.reqDate = req_date;
 	}
     
 	  // toString method

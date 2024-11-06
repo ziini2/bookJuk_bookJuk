@@ -38,6 +38,10 @@ public class Payment {
 	@Column(nullable = false)
 	private Long user_num;
 	
+	//유저 이름
+	@Column(nullable = false)
+	private String user_name;
+
 	//결제상태
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)

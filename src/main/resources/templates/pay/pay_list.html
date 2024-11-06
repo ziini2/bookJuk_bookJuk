@@ -142,119 +142,19 @@
 		         </tr>
 		         </thead>
 		                  
-				 <tbody>
+				<tbody>
 					
-		         <tr>
-		         <td>1</td>
-		         <td>김길동</td>
-		         <td>결제 완료</td>
-		         <td>카카오페이</td>
-		         <td>32,000원</td>
-		         <td>30000P</td>
-		         <td>2024-10-22</td>
-		         <td>318564631345</td>
-		         </tr>
-		                   
-				 <tr>
-		         <td>1</td>
-		         <td>김길동</td>
-		         <td>결제 완료</td>
-		         <td>카카오페이</td>
-		         <td>32,000원</td>
-		         <td>30000P</td>
-		         <td>2024-10-22</td>
-		         <td>318564631345</td>
-		         </tr>
-				 
-		         <tr>
-		         <td>1</td>
-		         <td>김길동</td>
-		         <td>결제 완료</td>
-		         <td>카카오페이</td>
-		         <td>32,000원</td>
-		         <td>30000P</td>
-		         <td>2024-10-22</td>
-		         <td>318564631345</td>
-		         </tr>
-				 
-		         <tr>
-		         <td>1</td>
-		         <td>김길동</td>
-		         <td>결제 완료</td>
-	             <td>카카오페이</td>
-		         <td>32,000원</td>
-		         <td>30000P</td>
-		         <td>2024-10-22</td>
-		         <td>318564631345</td>
-		         </tr>
-				 
-		         <tr>
-				 <td>1</td>
-		         <td>김길동</td>
-		         <td>결제 완료</td>
-		         <td>카카오페이</td>
-		         <td>32,000원</td>
-		         <td>30000P</td>
-		         <td>2024-10-22</td>
-		         <td>318564631345</td>
-		         </tr>
-		                   
-				 <tr>
-		         <td>1</td>
-		         <td>김길동</td>
-		         <td>결제 완료</td>
-		         <td>카카오페이</td>
-		         <td>32,000원</td>
-		         <td>30000P</td>
-		         <td>2024-10-22</td>
-		         <td>318564631345</td>
-		         </tr>
-		                   
-				 <tr>
-		         <td>1</td>
-		         <td>김길동</td>
-		         <td>결제 완료</td>
-		         <td>카카오페이</td>
-		         <td>32,000원</td>
-		         <td>30000P</td>
-		         <td>2024-10-22</td>
-		         <td>318564631345</td>
-		         </tr>
-				 
-		         <tr>
-		         <td>1</td>
-		         <td>김길동</td>
-		         <td>결제 완료</td>
-		         <td>카카오페이</td>
-		         <td>32,000원</td>
-		         <td>30000P</td>
-		         <td>2024-10-22</td>
-		         <td>318564631345</td>
-				 </tr>
-		                   
-				 <tr>
-		         <td>1</td>
-		         <td>김길동</td>
-		         <td>결제 완료</td>
-		         <td>카카오페이</td>
-		         <td>32,000원</td>
-		         <td>30000P</td>
-		         <td>2024-10-22</td>
-		         <td>318564631345</td>
-		         </tr>
-				 
-		         <tr>
-		         <td>1</td>
-		         <td>김길동</td>
-		         <td>결제 완료</td>
-		         <td>카카오페이</td>
-		         <td>32,000원</td>
-		         <td>30000P</td>
-		         <td>2024-10-22</td>
-		         <td>318564631345</td>
-		         </tr>
-
-				 </tbody>
+				<tr th:each="payment : ${payments}">
+			        <td th:text="${payment.user_num}"></td>
+					<td th:text="${payment.user_name}"></td>
+					<td th:text="${payment.payment_status}"></td>
+			        <td th:text="${payment.payment_method}"></td>
+			        <td th:text="${payment.payment_price}"></td>
+					<td th:text="${payment.price_name}"></td>
+					<td th:text="${payment.req_date}"></td>
+					<td th:text="${payment.payment_id}"></td>
+			    </tr>
+				</tbody>
 		     </table>
 		     <!-- 테이블 끝 -->
 

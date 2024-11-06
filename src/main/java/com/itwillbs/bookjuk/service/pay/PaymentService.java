@@ -2,6 +2,7 @@ package com.itwillbs.bookjuk.service.pay;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -22,7 +24,12 @@ public class PaymentService {
 
 	 private final IamportClient iamportClient;
 	 private final PaymentRepository paymentRepository;
-
+	 
+	 // 결제 정보를 DB에서 조회하는 메서드
+    public List<Payment> getAllPayments() {
+        return paymentRepository.findAll();  // 모든 결제 정보를 반환
+    }
+	    
 	@Autowired
     public PaymentService(@Value("${iamport.api_key}") String apiKey,
                           @Value("${iamport.api_secret}") String apiSecret,
@@ -66,6 +73,7 @@ public class PaymentService {
 	            .merchant_uid(iamportPayment.getMerchantUid())
 	            .payment_price(iamportPayment.getAmount().longValue())
 	            .user_num(paymentDTO.getUserNum())
+	            .user_name(paymentDTO.getUserName())
 	            .payment_method(iamportPayment.getPayMethod())
 	            .payment_status(paymentDTO.getStatus())
 	            .price_name(paymentDTO.getPriceName())

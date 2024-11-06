@@ -31,8 +31,8 @@ public class Payment {
  
 	//결제ID
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long payment_id;
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private String payment_id;
 	
 	//유저 번호
 	@Column(nullable = false)
@@ -58,6 +58,10 @@ public class Payment {
 	//주문번호
 	@Column(nullable = false)
 	private String merchant_uid;
+	
+	//상품이름
+	@Column(nullable = false)
+	private String price_name;
 }
 
 

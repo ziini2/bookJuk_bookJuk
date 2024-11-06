@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.bookjuk.domain.pay.PaymentStatus;
@@ -19,54 +21,46 @@ import com.siot.IamportRestClient.response.IamportResponse;
 @Service
 public class PaymentService {
 
-    private final IamportClient iamportClient;
+	 private final IamportClient iamportClient;
+	 private final PaymentRepository paymentRepository;
 
-    @Autowired
-    private PaymentRepository paymentRepository;
-
-    @Autowired
+	@Autowired
     public PaymentService(@Value("${iamport.api_key}") String apiKey,
-                          @Value("${iamport.api_secret}") String apiSecret) {
+                          @Value("${iamport.api_secret}") String apiSecret,
+                          PaymentRepository paymentRepository) {
         this.iamportClient = new IamportClient(apiKey, apiSecret);
+        this.paymentRepository = paymentRepository;
     }
 
-    public PaymentDTO validatePayment(String impUid) throws IamportResponseException, IOException {
-        // Iamport API를 통해 imp_uid로 결제 정보 조회
-        IamportResponse<com.siot.IamportRestClient.response.Payment> response = iamportClient.paymentByImpUid(impUid);
+	 // 결제 검증 후 저장
+    public void verifyAndSavePayment(PaymentDTO paymentDTO) throws IamportResponseException, IOException {
+        // 아임포트 서버에 imp_uid로 결제 정보 요청
+        IamportResponse<com.siot.IamportRestClient.response.Payment> response = iamportClient.paymentByImpUid(paymentDTO.getPaymentId());
         com.siot.IamportRestClient.response.Payment iamportPayment = response.getResponse();
 
+        // 결제 검증 실패 시 예외 처리
         if (iamportPayment == null) {
-            throw new IllegalArgumentException("결제 정보를 찾을 수 없습니다.");
+            throw new IllegalArgumentException("유효하지 않은 결제입니다.");
         }
 
-        // 결제 검증 로직 추가 (결제 금액 및 상태 확인)
-        int paidAmount = iamportPayment.getAmount().intValue();
-        String statusString = iamportPayment.getStatus(); // 예: "paid" 또는 "failed"
-        PaymentStatus status = PaymentStatus.valueOf(statusString.toUpperCase());
-        if (status != PaymentStatus.SUCCESSFUL) {
-            throw new IllegalArgumentException("결제 상태가 유효하지 않습니다.");
+        // 검증 조건 예: 금액이 일치하는지, 결제 상태가 "paid"인지 확인
+        if (!iamportPayment.getStatus().equals("paid") || iamportPayment.getAmount().longValue() != paymentDTO.getPaidAmount()) {
+            throw new IllegalArgumentException("결제 정보가 유효하지 않습니다.");
         }
-    
-        // 결제 성공 후 Payment 객체 생성
-        Payment newPayment = Payment.builder()
-//            .user_num(null) // 여기서 user_num에 대한 값 설정 필요
-            .payment_status(status)
-            .payment_price((long) paidAmount)
+
+        // 결제 정보가 유효한 경우, 데이터베이스에 저장
+        Payment payment = Payment.builder()
+            .payment_id(iamportPayment.getImpUid())
+            .merchant_uid(iamportPayment.getMerchantUid())
+            .payment_price(iamportPayment.getAmount().longValue())
+            .user_num(paymentDTO.getUserNum())
             .payment_method(iamportPayment.getPayMethod()) // 결제 수단
-            .merchant_uid(iamportPayment.getMerchantUid()) // 주문 번호
+            .payment_status(PaymentStatus.SUCCESSFUL) // 결제 상태
             .req_date(LocalDateTime.now()) // 요청 일시
             .build();
-
-        // 결제 정보를 데이터베이스에 저장
-        savePayment(newPayment);
-        
-        // 결제 성공으로 PaymentRes 객체 반환
-        return new PaymentDTO(iamportPayment.getMerchantUid(), iamportPayment.getCustomerUid(), paidAmount, status);
-
+        System.out.println("Payment to be saved: " + payment); // 로그 추가
+        paymentRepository.save(payment); // 결제 정보를 데이터베이스에 저장
     }
-    
-    public void savePayment(Payment payment) {
-        paymentRepository.save(payment); // 데이터베이스에 저장
-    }
+
 }
 

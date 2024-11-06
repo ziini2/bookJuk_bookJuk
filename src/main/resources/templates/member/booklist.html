@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>북적북적</title>
+  
+  <!-- 구글폰트 -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- 사이드바 아이콘 -->
+
+  <link th:href="@{images/common/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{images/common/remixicon/remixicon.css}" rel="stylesheet">
+
+  
+  <!--부트스트랩 외부링크-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Main CSS File -->
+
+
+  <link th:href="@{css/common/style.css}" rel="stylesheet">
+
+<style>
+fieldset {
+	padding-left: 800px;	
+	padding-top: 80px;
+	padding-bottom: 20px;
+}	
+
+.tbox {
+	width: 450px;
+	height: 50px;
+	border: 3px solid rgb(82, 202, 79);
+	border-radius: 5px;
+	font-size: 17px;
+	font: bold ;
+	color: rgb(60, 168, 40)
+}
+
+.bl_search {
+	border: 1px solid rgb(94, 213, 81);
+	border-radius: 3px;
+	padding: 10px 14px;
+	background-color: rgb(94, 213, 81);
+	font-size: 20px;
+	font: bold ;
+	color: white;
+}
+
+#booklistnum {
+    text-align: center;
+    padding: 600px 0 0 5px;
+}
+
+.pgnum, .now, .next {
+    width: 70px;
+    padding-right: 5px; 
+    color: rgb(0, 64, 0);
+    font-size: 14px;
+    padding: 5px 10px;
+    margin: 0 2px;
+    background: rgb(168, 238, 153);
+    border:2px solid #fff;
+    text-decoration: none;
+    border-radius: 5px; 
+}
+
+.booklist-header {
+	list-style: none;
+    margin-top: 24px;
+	margin-left: 670px;
+	width: 800px;
+    height: 40px;
+    background: rgb(240, 255, 240);
+    border-radius: 8px;
+}
+
+.booklist-header li {
+    float: left;
+    padding-top: 11px;
+    text-align: center;
+    font-size: 15px;
+    color: rgb(0, 140, 0);
+    font-weight: 600;
+}
+	
+</style>
+
+</head>
+
+<body>
+	<div th:replace="/member/memberheader :: header2"></div>
+	<div th:replace="/member/membersidebar :: sidebar2"></div>
+
+ 
+
+  <!-- 사이드바 열었다 닫았다 하는거 -->
+  <script th:src="@{/js/common/main.js}"></script>
+  
+  <fieldset>
+  			
+  			<input type="text" class="tbox" name="search" title="도서 제목을 입력해주세요" placeholder="도서 제목을 입력해주세요">
+  			<a href="javascript:document.fr.submit();" class="bl_search">검색</a>
+  					
+  </fieldset>
+  
+  <section class="container-fluid d-flex justify-content-between align-items-center"
+  	id="boolist-page" style="width: 700px; padding: 3px 40px; border: 1px solid white; border-radius: 3px;
+	    background-color: rgb(138, 255, 138); font-size: 15px; font: bold;">
+  		<ul class="nav nav-pills nav-fill" id="category-genre">
+  			<li class="nav-item"><a class="nav-link text-black "
+  				aria-current="page" href="${pageContext.request.contextPath}/member/">전체</a></li>
+  			<li class="nav-item"><a class="nav-link text-black" href="${pageContext.request.contextPath}/member/">로맨스</a></li>
+			<li class="nav-item"><a class="nav-link text-black" href="${pageContext.request.contextPath}/member/">판타지</a></li>
+			<li class="nav-item"><a class="nav-link text-black" href="${pageContext.request.contextPath}/member/">코미디</a></li>
+  			<li class="nav-item"><a class="nav-link text-black" href="${pageContext.request.contextPath}/member/">호러</a></li>
+  			<li class="nav-item"><a class="nav-link text-black" href="${pageContext.request.contextPath}/member/">추리</a></li>
+  			<li class="nav-item"><a class="nav-link text-black" href="${pageContext.request.contextPath}/member/">만화</a></li>
+  			<li class="nav-item"><a class="nav-link text-black" href="${pageContext.request.contextPath}/member/">역사</a></li>
+  			<li class="nav-item"><a class="nav-link text-black" href="${pageContext.request.contextPath}/member/">교육</a></li>
+  		</ul>
+  	</section>
+	
+	<ul class="booklist-header">
+		<li style="width:140px;">도서번호</li>
+		<li style="width:100px;">제목</li>
+		<li style="width:100px;">저자</li>
+		<li style="width:400px">지점 별 재고</li>
+	</ul>
+  
+  
+  <div id="booklistnum">
+  <span onclick="location.reload();" style="cursor:pointer"><b class="now">
+  <a href="${pageContext.request.contextPath}/member/booklist?pageNum=${i}"><<</a></b></span><b>..</b>
+  <a href="${pageContext.request.contextPath}/member/booklist?pageNum=${1}" class="pgnum">1</a>
+  <a href="${pageContext.request.contextPath}/member/booklist?pageNum=${2}" class="pgnum">2</a>
+  <a href="${pageContext.request.contextPath}/member/booklist?pageNum=${3}" class="pgnum">3</a>
+  <a href="${pageContext.request.contextPath}/member/booklist?pageNum=${4}" class="pgnum">4</a>
+  <a href="${pageContext.request.contextPath}/member/booklist?pageNum=${5}" class="pgnum">5</a>
+  <b>..</b><a href="${pageContext.request.contextPath}/member/booklist?pageNum=${i}" class="next">>></a></div>
+
+</body>
+
+</html>

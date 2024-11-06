@@ -1,6 +1,12 @@
 body {
 	padding-top: 80px;
 }
+.logo img {
+	max-width: 80%;
+	height: auto;
+}
+
+
 
 
 
@@ -53,6 +59,8 @@ body {
 
 
 
+
+
 /*--- notification 알림 상세 필터 모달창 ↓ CSS ---*/
 /*알림 상세 필터 모달 창*/
 #noti-detailModal {
@@ -78,6 +86,8 @@ body {
 	max-width: 90%;
 }
 /*--- notification 알림 상세 필터 모달창 ↑ CSS ---*/
+
+
 
 
 
@@ -226,6 +236,8 @@ div.dataTables_wrapper div.dataTables_filter input {
     color: red; 
 }
 /*--- notification 필터 모달창 ↑ CSS ---*/
+
+
 
 
 

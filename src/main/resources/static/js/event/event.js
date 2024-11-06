@@ -5,6 +5,7 @@ function removeCouponOptions() {
     $('#newUserPointField').remove();     // "신규 가입자" 포인트 입력 필드 삭제
 	$('#manyTimesPointField').remove();   // "회 이상 대여자" 입력 필드 삭제
 	$('#manyWonsPointField').remove();
+	$('#manyPeoplePointField').remove();
 }
 
 // "신규 가입자" 포인트 입력 필드 삭제
@@ -19,6 +20,10 @@ function manyTimesField() {
 
 function manyWonsField() {
 	$('#manyWonsPointField').remove();
+}
+
+function manyPeopleField() {
+	$('#manyPeoplePointField').remove();
 }
 
 $(document).ready(function() {
@@ -118,6 +123,50 @@ $(document).ready(function () {
 	let eventEndDate = '';
 	
 	$('#event-createModal-apply').click(function(){
+		const title = $('#event-createModal-title').val();
+	    const startDate = $('#createStartDate').val();
+	    const endDate = $('#createEndDate').val();
+	    const content = $('#event-createModal-content textarea').val();
+	    const firstButtonText = $('#couponOptions button:first').text().trim();
+		const newUserPointField = $('#newUserPointField span').text().trim();
+		const manyTimesPointField = $('#manyTimesPointField span').text().trim();
+		const manyWonsPointField = $('#manyWonsPointField span').text().trim();
+		const manyPeoplePointField = $('#manyPeoplePointField span').text().trim();
+
+	    // 입력 검증
+	    if (!title) {
+	        alert('이벤트 제목을 입력해 주세요.');
+	        return;
+	    }
+		
+		if (!startDate) {
+	        alert('이벤트 시작 날짜를 설정해 주세요.');
+	        return;
+	    }
+		
+		if (!endDate) {
+	        alert('이벤트 종료 날짜를 설정해 주세요.');
+	        return;
+	    }
+		
+		if (!content) {
+	        alert('이벤트 내용을 입력해 주세요.');
+	        return;
+	    }
+		
+		if (firstButtonText.length === 0) {
+		    alert('이벤트 유형을 선택해주세요.');
+			return;
+		}
+		
+		if(newUserPointField.length === 0 &&
+		   manyTimesPointField.length === 0 &&
+		   manyWonsPointField.length === 0 &&
+	   	   manyPeoplePointField.length === 0) {
+			alert('쿠폰 지급 조건을 선택해주세요.');
+			return;
+		}
+		
 		
 	});
 	
@@ -128,7 +177,7 @@ $(document).ready(function () {
 		var couponOptions = `
 			<hr class="coupon-divider">
 			<div class="dropdown mt-2" id="couponOptions">
-			<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+			<button id="coupon" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 				쿠폰 지급 조건
 	        </button>
 			<button type="button" class="btn-close ms-2" aria-label="Close" onclick="removeCouponOptions()"></button>
@@ -136,6 +185,7 @@ $(document).ready(function () {
 				<li><button id="newUserButton" class="dropdown-item">신규 가입자</button></li>
 				<li><button id="manyTimesBtn" class="dropdown-item">회 이상 대여한 자</button></li>
 				<li><button id="manyWons" class="dropdown-item">원 이상 대여한 자</button></li>
+				<li><button id="manyPeople" class="dropdown-item">로그인한 사람</button></li>
 	        </ul>
 			</div>
 	    `;
@@ -180,6 +230,19 @@ $(document).ready(function () {
 			</div>
         `;
         $('#couponOptions').after(pointField);
+	});
+	
+	$(document).on('click', '#manyPeople', function() {
+		if ($('#manyPeoplePointField').length === 0) {
+			const pointField = `
+				<div class="d-flex align-items-center mt-2" id="manyPeoplePointField">
+					<span>로그인한 사람에게 지급할 포인트 : </span>
+					<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0"><span class="ms-1">p</span>
+		        	<button type="button" class="btn-close ms-2" aria-label="Close" onclick="manyPeopleField()"></button>
+				</div>
+		    `;
+		    $('#couponOptions').after(pointField);
+		}
 	});
 	  
   	$(document).on('click', '.close-coupon', function() {

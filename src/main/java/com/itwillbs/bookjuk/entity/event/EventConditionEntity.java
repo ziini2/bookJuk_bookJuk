@@ -1,7 +1,5 @@
 package com.itwillbs.bookjuk.entity.event;
 
-import com.itwillbs.bookjuk.entity.UserEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

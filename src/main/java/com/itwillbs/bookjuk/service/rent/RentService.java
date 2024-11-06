@@ -3,7 +3,6 @@ package com.itwillbs.bookjuk.service.rent;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +12,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.bookjuk.entity.RentEntity;
+import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.repository.RentRepository;
+import com.itwillbs.bookjuk.repository.SearchRepository;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import lombok.extern.java.Log;
 public class RentService {
 	
 	private final RentRepository rentRepository;
+	private final SearchRepository searchRepository;
 	
 	public Page<RentEntity> getRentList(Pageable pageable) {
 		log.info("RentService getRentList()");
@@ -105,8 +107,20 @@ public class RentService {
 	            return Page.empty(pageable); // 조건이 맞지 않으면 빈 페이지 반환
 	    }
 	}
-
-    
-   
+	
+	//membersearch 검색
+	public List<UserEntity> searchMembers(String criteria, String keyword) {
+		log.info("RentService searchMembers()");
+		
+        switch (criteria) {
+            case "userName":
+                return searchRepository.findByUserNameContaining(keyword);
+            case "userId":
+                return searchRepository.findByUserIdContaining(keyword);
+            default:
+                return List.of();
+        }
+    }
+	
 	
 }

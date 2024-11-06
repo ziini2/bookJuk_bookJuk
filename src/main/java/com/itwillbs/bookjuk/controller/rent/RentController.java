@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.bookjuk.entity.RentEntity;
+import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.service.rent.RentService;
 
 import lombok.RequiredArgsConstructor;
@@ -107,6 +108,16 @@ public class RentController {
 		
 		return "/rent/membersearch";
 	}
+	
+	//membersearch검색
+//	@GetMapping("/searchMembers")
+//    public List<UserEntity> searchMembers(@RequestParam String criteria, @RequestParam String keyword) {
+//		log.info("RentController searchMembers()");
+//		
+//        return rentService.searchMembers(criteria, keyword);
+//    }
+	
+	
 	
 	@GetMapping("/admin/booksearch")
 	public String booksearch() {

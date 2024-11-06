@@ -1,3 +1,10 @@
+//멤버 검색창에서 받은 정보 자동 입력
+function fillMemberInfo(userNum, userName, userPhone) {
+        document.getElementById("memberId").value = userNum;   // 회원 번호
+        document.getElementById("memberName").value = userName; // 회원 이름
+        document.getElementById("contact").value = userPhone;   // 연락처
+    }
+
 //	멤버 검색 팝업
           function openMemberSearchPopup() {
               window.open(
@@ -65,7 +72,7 @@
 
 
 
-//	검색
+
 // 검색
 document.addEventListener("DOMContentLoaded", function() {
     function performSearch(page = 1) {
@@ -163,7 +170,4 @@ document.addEventListener("DOMContentLoaded", function() {
         performSearch(1); // 첫 페이지부터 검색
     });
 });
-
-
-
 

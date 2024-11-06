@@ -55,9 +55,9 @@ public class Payment {
 	@Column(nullable = false)
 	private String payment_method;
 	
-	//결제수단
+	//주문번호
 	@Column(nullable = false)
-	private String merchant_mid;
+	private String merchant_uid;
 }
 
 

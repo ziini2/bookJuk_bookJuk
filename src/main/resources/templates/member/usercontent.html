@@ -40,10 +40,6 @@
 		background-color: rgb(233, 255, 200);
 	}
 	
-	.usercthead {
-		margin-top: 50px;
-	}
-	
 	.grade {
 		background-color: rgb(140, 232, 147);
 		border: 1px solid rgb(140, 232, 147);
@@ -53,20 +49,30 @@
 		font-size: 25px;
 	}
 	
-	.usercthead_1 {
+	.usercthead {
+		margin-top: 50px;
+	}
+	
+	.username {
 		background-color: rgb(181, 240, 185);
 		border: 1px solid rgb(181, 240, 185);
 		border-radius: 2px;
-		width: 450px;
-		height: 50px;
-		margin-left: 300px;
-		display:inline-block;
+		padding: 13px 75px;
+		font-size: 20px;
+	}
+	
+	.userday {
+		background-color: rgb(181, 240, 185);
+		border: 1px solid rgb(181, 240, 185);
+		border-radius: 2px;
+		padding: 13px 75px;
+		font-size: 20px;
 	}
 	
 	.content1 {
-		margin-top: 80px;
+		margin-top: 75px;
 		margin-left: 240px;
-		font-size: 22px;
+		font-size: 18px;
 	}
 	
 	.ct1 {
@@ -90,6 +96,19 @@
 		margin-left: 210px;
 		font-size: 22px;
 	}
+	
+	.userctbottom {
+		margin-top: 50px;
+		margin-left: 800px;
+	}
+	
+	.userblist {
+		background-color: rgb(232, 251, 233);
+		border: 1px solid rgb(232, 251, 233);
+		border-radius: 8px;
+		padding: 13px 20px;		
+		font-size: 22px;
+	}
 
   </style>
 
@@ -105,14 +124,10 @@
   <script th:src="@{/js/common/main.js}"></script>
   
   <div class="content-box">
-	
+		
 	<div class="usercthead">
-	<a href="" class="grade text-black">등급</a>
-	<div class="usercthead_1">
-		<b class="username">이름</b>
-		<b class="userday">생년월일</b>
+		<a href="" class="grade text-black">등급</a><b class="username">이름</b><b class="userday">생년월일</b>
 	</div>			
-	</div>	
 	
 	<div class="content1">
 	<h4 class="ct1">이메일 : <span></span></h4><br>
@@ -126,6 +141,10 @@
 	<b class="ct3">대여 도서 수</b> 
 	<b class="ct4">관심 도서 수</b> 
 	
+  </div>
+  
+  <div class="userctbottom">
+  <a href="userblist" onclick="submit" class="userblist text-black">나의 도서 목록</a>
   </div>
 
 </body>

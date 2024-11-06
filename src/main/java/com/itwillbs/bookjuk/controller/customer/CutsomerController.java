@@ -24,20 +24,23 @@ public class CutsomerController {
 	private final CustomerService customerService;
 
 	@GetMapping("/admin/store/store_list")
-	public String storeList(Model model, @RequestParam(value = "page", defaultValue = "1", required = false) int page,
-			@RequestParam(value = "size", defaultValue = "3", required = false) int size) {
+	public String storeList(Model model,
+			@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+			@RequestParam(value = "size", defaultValue = "15", required = false) int size,
+			@RequestParam(value = "search", defaultValue = "", required = false) String search) {
 		
 		Pageable pageable = PageRequest.of(page-1, size, Sort.by("storeCode").descending());
 
-		Page<StoreEntity> storeList = customerService.getStoreList(pageable);
-
+//		Page<StoreEntity> storeList = customerService.getStoreList(pageable);
+		Page<StoreEntity> storeList = customerService.findByStoreNameContaining(pageable, search);
+		
 		model.addAttribute("storeList", storeList);
 		model.addAttribute("currentPage", page);
 		model.addAttribute("pageSize", size);
 		// 전체 페이지 개수
 		model.addAttribute("totalPages", storeList.getTotalPages());
 		// 한화면에 보여줄 페이지 개수 설정
-		int pageBlock = 3;
+		int pageBlock = 15;
 		int startPage = (page - 1) / pageBlock * pageBlock + 1;
 		int endPage = startPage + pageBlock - 1;
 		if(endPage > storeList.getTotalPages()) {

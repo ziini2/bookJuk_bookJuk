@@ -35,5 +35,5 @@ public class PayController {
 
 		return "/pay/pay_add";
 	}
-	
 }
+

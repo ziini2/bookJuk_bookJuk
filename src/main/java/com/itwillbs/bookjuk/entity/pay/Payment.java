@@ -31,29 +31,37 @@ public class Payment {
  
 	//결제ID
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long paymentId;
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private String payment_id;
 	
 	//유저 번호
 	@Column(nullable = false)
-	private Long userNum;
+	private Long user_num;
 	
 	//결제상태
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private PaymentStatus paymentStatus;
+	private PaymentStatus payment_status;
 	
 	//결제금액
 	@Column(nullable = false)
-	private Long paymentPrice;
+	private Long payment_price;
 	
 	//요청일시
 	@Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-	private LocalDateTime reqDate;
+	private LocalDateTime req_date;
 	
 	//결제수단
 	@Column(nullable = false)
-	private String paymentMethod;
+	private String payment_method;
+	
+	//주문번호
+	@Column(nullable = false)
+	private String merchant_uid;
+	
+	//상품이름
+	@Column(nullable = false)
+	private String price_name;
 }
 
 

@@ -1,0 +1,224 @@
+.line {
+    fill: none;
+    stroke-width: 2;
+}
+
+.line-steelblue {
+    stroke: steelblue;
+}
+
+.line-red {
+    stroke: red;
+}
+
+.axisSteelBlue .domain, .axisSteelBlue .tick line {
+    stroke: steelblue;
+}
+
+.axisRed .domain, .axisRed .tick line {
+    stroke: red;
+}
+
+[class*="title"] {
+    margin-top: 20px;
+}
+
+.detail-options {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    width: 850px;
+}
+
+.detail-options input {
+    margin-right: -10px;
+    padding: 0;
+}
+
+.total_short_cut_chart {
+    width: 1220px;
+    padding-top: 50px;
+}
+
+.period-select {
+    /* y축 위로 5px 이동 */
+    margin-top: -10px;
+    margin-left: 5px;
+
+}
+
+.detail-options label {
+    margin-right: 30px;
+    margin-left: 0;
+    padding: 0;
+}
+
+.store-select {
+    width: auto;
+}
+
+.store-select {
+    display: flex;
+    align-items: center;
+    gap: 10px;  /* label과 select 사이의 간격을 조정 */
+    width: 200px;
+}
+
+.store-select #store {
+    width: 80px !important;
+}
+
+.store-select-label {
+    font-weight: bold; /* 라벨을 강조 */
+    margin-right: 5px; /* 선택지와 간격 조정 */
+    font-size: 16px; /* 글자 크기 조정 */
+    width: 80px;
+}
+
+.store-select select {
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s ease;
+}
+
+.store-select select:focus {
+    border-color: #007bff; /* 선택지가 포커스 되었을 때 파란색 테두리 */
+}
+
+
+.legend {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.legend-item {
+    display: inline-block;
+    width:auto;
+    margin-right: 10px;
+}
+
+.legend-color-box {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.chart-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* 두 차트가 상단에 맞춰지도록 */
+    width: 1220px;
+    margin-top: 20px;
+}
+
+/* 차트 컨테이너 */
+.revenue-pie-container,
+.accumulation-bar-chart-container,
+.customer-bar-container,
+.delay-bar-container {
+    width: 600px;
+    height: 400px; /* 두 차트의 높이를 동일하게 설정 */
+    margin: 0; /* 양쪽 차트 간 간격 최소화 */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-evenly;
+}
+
+/* .revenue-pie-container 내부의 차트 크기 조정 */
+.revenue-pie {
+    width: 100%;
+    height: 400px; /* 높이를 고정하거나, 부모 높이에 맞게 설정 */
+    margin: 0 auto;
+}
+
+.radio-buttons {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.chart-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* 범례 크기 및 위치 조정 */
+.revenue-pie-container, .accumulation-bar-chart-container, .total_short_cut_chart
+, .customer-bar-container, .delay-bar-container {
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 약간의 그림자 추가로 시각적 분리 */
+}
+
+/* 범례 관련 스타일링 */
+.bar-chart-legend {
+    margin-top: 20px;
+}
+
+.legend-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.bar-chart-legend-item {
+    display: flex;
+    align-items: center;
+}
+
+.bar-chart-legend-color {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    background-color: #ccc; /* 기본 색상, 실제 색상은 JS에서 설정 */
+}
+
+.pie-body {
+    height: auto;
+}
+
+.accumulation-bar-chart {
+    padding-top: 20px;
+    margin-right: 80px;
+}
+
+.customer-bar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.customer-bar, .delay-bar {
+    width: 75%;
+    height: 400px;
+}
+
+#cus-bar-legend, #delay-bar-legend {
+    width: 20%;
+    padding: 10px;
+}
+
+.acc-bar-body {
+    width: 400px;
+}
+
+.form-select option {
+    font-size: 10px;
+}
+
+
+
+
+
+

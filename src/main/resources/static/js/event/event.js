@@ -167,6 +167,28 @@ $(document).ready(function () {
 			return;
 		}
 		
+		$.ajax({
+	        url: '/admin/event',
+	        method: 'POST',
+	        contentType: 'application/json',
+	        data: JSON.stringify({
+	            eventTitle: eventTitle,
+				eventContent: eventContent,
+				eventType: eventType,
+				startEventDate: startEventDate,
+				endEventDate: endEventDate,
+				eventCondition: eventCondition
+	        }),
+	        success: function (response) {
+	            alert("이벤트가 성공적으로 생성되었습니다.");
+	            location.reload(); // 새로 생성된 이벤트를 반영하기 위해 페이지를 새로고침
+	        },
+	        error: function (xhr, status, error) {
+	            console.error("이벤트 생성 실패:", error);
+	            alert("이벤트 생성에 실패했습니다. 다시 시도해주세요.");
+	        }
+	    });
+		
 		
 	});
 	

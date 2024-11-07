@@ -22,7 +22,7 @@ public class EventConditionEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "eventConditionId", nullable = false)
-	private int eventConditionId;
+	private Integer eventConditionId;
 	
 	// 이벤트 아이디
 	@ManyToOne(fetch = FetchType.LAZY)

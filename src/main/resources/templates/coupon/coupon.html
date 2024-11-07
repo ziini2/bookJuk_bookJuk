@@ -24,8 +24,9 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
 </head>
 <body>
-	<div th:replace="/fragment/header :: header2"></div>
-<!--	<div th:replace="/fragment/sidebar :: sidebar2"></div>-->
+	<div th:replace="~{/fragment/header :: header2}"></div>
+	<div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
+	<main id="main" class="main">
 	<div class="coupon container my-4">
 		<h2 style="margin-bottom: 100px;">쿠폰 관리</h2>
 		<div id="coupon-filterModal">
@@ -93,6 +94,7 @@
 		    </div>
 		</div>
 	</div>
+	</main>
 
 	<!-- jQuery and DataTables JS -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

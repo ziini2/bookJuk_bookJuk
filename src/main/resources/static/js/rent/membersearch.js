@@ -12,7 +12,9 @@ async function searchMembers(event) {
     
     users.forEach(user => {
         const row = document.createElement("tr");
-        
+
+        row.addEventListener("click", () => populateModal(user)); // 행 클릭 시 이벤트 추가
+
         const nameCell = document.createElement("td");
         nameCell.textContent = user.userName;
         row.appendChild(nameCell);
@@ -22,9 +24,20 @@ async function searchMembers(event) {
         row.appendChild(idCell);
         
         const phoneCell = document.createElement("td");
-        phoneCell.textContent = user.userPhone; // userPhone 필드 사용
+        phoneCell.textContent = user.userPhone;
         row.appendChild(phoneCell);
         
         resultsTableBody.appendChild(row);
     });
 }
+
+function populateModal(user) {
+    // 모달 창의 입력 필드 ID에 맞게 값을 설정합니다.
+    opener.document.getElementById("userId").value = user.userId;
+    opener.document.getElementById("userName").value = user.userName;
+    opener.document.getElementById("userPhone").value = user.userPhone;
+
+    // 회원 선택 후 팝업 창을 닫습니다.
+    window.close();
+}
+

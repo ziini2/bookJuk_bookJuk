@@ -2,7 +2,6 @@ package com.itwillbs.bookjuk.controller.event;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,15 +14,16 @@ import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.event.NotificationEntity;
 import com.itwillbs.bookjuk.service.event.NotificationService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/admin")
 public class NotificationController {
 
-	@Autowired
-	private NotificationService notiService;
+	private final NotificationService notiService;
 	
 	@GetMapping("/{recipient}")
 	@ResponseBody

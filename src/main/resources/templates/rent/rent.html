@@ -58,7 +58,7 @@
 								            <label for="memberId">회원 아이디</label>
 								            <div class="input-group">
 								                <input type="text" id="memberId" class="form-control" placeholder="회원 아이디 입력">
-								                <button type="button" class="btn btn-secondary">회원검색</button>
+								                <button type="button" class="btn btn-secondary" onclick="openMemberSearchPopup()">회원검색</button>
 								            </div>
 								        </div>
 								        
@@ -66,7 +66,7 @@
 								            <label for="bookName">책 이름</label>
 								            <div class="input-group">
 								                <input type="text" id="bookName" class="form-control" placeholder="책 이름 입력">
-								                <button type="button" class="btn btn-secondary">책 검색</button>
+								                <button type="button" class="btn btn-secondary" onclick="openBookSearchPopup()">책 검색</button>
 								            </div>
 								        </div>
 
@@ -101,22 +101,23 @@
 			          </div>
 			        </div>
 			        <!-- 도서 대여 관리 모달 끝 -->
-						
-				<select>
-					<option value="대여중">회원 이름</option>
-					<option value="연체중">회원 아이디</option>
-					<option value="반납완료">책 이름</option>
-					<option value="반납완료">책 번호</option>
-					<option value="반납완료">지점</option>
-				</select>
-				<input type="text">
-				<button type="submit" class="btn btn-success">검색</button>
-				<button type="reset" class="btn btn-danger">초기화</button>
+					
+					<form id="searchForm">
+					    <select name="criteria" id="criteria">
+					        <option value="userName">회원 이름</option>
+					        <option value="userId">회원 아이디</option>
+					        <option value="bookName">책 이름</option>
+					    </select>
+					    <input type="text" id="keyword" placeholder="검색어 입력">
+					    <button type="button" id="searchButton" class="btn btn-success">검색</button>
+						<button type="reset" class="btn btn-danger" onclick="window.location.href='/admin/rent'">초기화</button>
+						<!-- 도서 대여 관리 모달 열기 버튼 -->
+						<button type="button" class="btn btn-primary my-5" data-bs-toggle="modal" data-bs-target="#rentalModal">
+							도서 대여 등록
+						</button>
+					</form>
 				
-				<!-- 도서 대여 관리 모달 열기 버튼 -->
-						      <button type="button" class="btn btn-primary my-5" data-bs-toggle="modal" data-bs-target="#rentalModal">
-						        도서 대여 등록
-						      </button>
+				
 				
 		<table class="rental-table">
 		    <thead>
@@ -133,7 +134,7 @@
 		            <th>반납 여부</th>
 		        </tr>
 		    </thead>
-		    <tbody>
+		    <tbody id="rentalTableBody">
 		        <tr th:each="rent : ${rentList}">
 		            <td th:text="${rent.rentNum}"></td>
 		            <td th:text="${rent.userNum}"></td>
@@ -145,36 +146,62 @@
 		            <td th:text="${#dates.format(rent.rentDate, 'yyyy-MM-dd')}"></td>
 		            <td th:text="${#dates.format(rent.returnDate, 'yyyy-MM-dd')}"></td>
 					<td>
-						<select>
-							<option value="대여중">대여중</option>
-							<option value="연체중">연체중</option>
-							<option value="반납완료">반납완료</option>
+						<select th:onchange="updateReturnInfo(this, [[${rent.rentNum}]])">
+							<option value="대여중" th:selected="${rent.returnInfo == '대여중'}">대여중</option>
+							<option value="연체중" th:selected="${rent.returnInfo == '연체중'}">연체중</option>
+							<option value="반납완료" th:selected="${rent.returnInfo == '반납완료'}">반납완료</option>
 						</select>
 					</td>
 		        </tr>
 		    </tbody>
 		</table>
 		
+		<!-- 페이징 처리 -->
+				<div id="serverPagination" class="mt-3 d-flex justify-content-center">
+				    <!-- 이전 버튼 -->
+				    <a th:href="@{/admin/rent(page=${currentPage-1})}" 
+				       th:if="${currentPage > 1}" 
+				       class="btn btn-secondary mx-1" 
+				       th:text="이전">
+				    </a>
+				    
+				    <!-- 페이지 번호 버튼 -->
+				    <span th:each="page : ${#numbers.sequence(startPage, endPage)}">
+				        <span th:if="${page == currentPage}" 
+				              class="btn btn-secondary mx-1 active" 
+				              th:text="${page}">
+				        </span>
+				        <span th:unless="${page == currentPage}">
+				            <a th:href="@{/admin/rent(page=${page})}" 
+				               class="btn btn-secondary mx-1" 
+				               th:text="${page}">
+				            </a>
+				        </span>
+				    </span>
+				    
+				    <!-- 다음 버튼 -->
+				    <a th:href="@{/admin/rent(page=${currentPage+1})}" 
+				       th:if="${currentPage < totalPages}" 
+				       class="btn btn-secondary mx-1" 
+				       th:text="다음">
+				    </a>
+				</div>
+				<!-- 페이지 네비게이션 버튼 추가 -->
+					<div id="pagination" class="mt-3 d-flex justify-content-center"></div>
 		</div>
     </div>
+	
+	
+	
 	</main>
-  <!-- 사이드바 열었다 닫았다 하는거 -->
-  <script th:src="@{/js/common/main.js}"></script>
-
-  <script>
-      // 현재 날짜 가져오기 및 초기화 버튼 클릭 시 현재 날짜 설정
-      const today = new Date().toISOString().split('T')[0];
-      const rentalDateInput = document.getElementById('rentalDate');
-      rentalDateInput.value = today;
-
-      // 초기화 버튼 눌렀을 때, 대여일 다시 현재 날짜로 설정
-      document.getElementById('rentalForm').addEventListener('reset', function() {
-        setTimeout(function() {
-          rentalDateInput.value = today;
-        }, 0); // 초기화 후 바로 오늘 날짜로 세팅
-      });
-    </script>
-  
+<!-- 사이드바 열었다 닫았다 하는거 -->
+	<script th:src="@{/js/common/main.js}"></script>
+	
+	
+<!--	rent페이지 관련 js-->
+	<script th:src="@{/js/rent/rent.js}"></script>
+	
+	
 </body>
 
 </html>

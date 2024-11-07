@@ -26,15 +26,15 @@ function fillMemberInfo(userNum, userName, userPhone) {
 			);
 		}
 
-		// 현재 날짜 가져오기 및 초기화 버튼 클릭 시 현재 날짜 설정
-		const today = new Date().toISOString().split('T')[0];
-		const rentalDateInput = document.getElementById('rentalDate');
-		rentalDateInput.value = today;
+// 현재 날짜 가져오기 및 초기화 버튼 클릭 시 현재 날짜 설정
+const today = new Date().toISOString().split('T')[0];
+const rentalDateInput = document.getElementById('rentalDate');
+rentalDateInput.value = today;
 
-		// 초기화 버튼 눌렀을 때, 대여일 다시 현재 날짜로 설정
-		document.getElementById('rentalForm').addEventListener('reset', function() {
-			setTimeout(function() {
-			rentalDateInput.value = today;
+// 초기화 버튼 눌렀을 때, 대여일 다시 현재 날짜로 설정
+document.getElementById('rentalForm').addEventListener('reset', function() {
+	setTimeout(function() {
+		rentalDateInput.value = today;
 		}, 0); // 초기화 후 바로 오늘 날짜로 세팅
 	});
 

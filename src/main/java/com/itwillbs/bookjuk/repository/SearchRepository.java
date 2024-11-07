@@ -9,7 +9,7 @@ import com.itwillbs.bookjuk.entity.UserEntity;
 public interface SearchRepository extends JpaRepository<UserEntity, Long> {
     
     //membersearch 검색
-    List<UserEntity> findByUserNameContaining(String keyword);
-    List<UserEntity> findByUserIdContaining(String keyword);
+	List<UserEntity> findByUserNameContainingIgnoreCase(String userName);
+    List<UserEntity> findByUserIdContainingIgnoreCase(String userId);
 	
 }

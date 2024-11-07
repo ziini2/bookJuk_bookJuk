@@ -46,21 +46,20 @@
 </head>
 
 <body>
-	<div th:replace="/fragment/header :: header2"></div>
-	<div th:replace="/member/membersidebar :: sidebar2"></div>
+	<div th:replace="~{/fragment/header :: header2}"></div>
+		<div th:replace="~{/fragment/userSidebar :: sidebar3}"></div>
 
- 
+	 
 
-  <!-- 사이드바 열었다 닫았다 하는거 -->
-  <script th:src="@{/js/common/main.js}"></script>
+	  <!-- 사이드바 열었다 닫았다 하는거 -->
+	  <script th:src="@{/js/common/userMain.js}"></script>
   
   <div class="contentup-box">
-	이메일 : <input type="email"" name="email"><br>
-	전화번호 : <input type="tel"" name="phone"><br>
 	아이디 : <input type="text" name="id"><br>
-	비밀번호 : <input type="password" name="pass"><br>	
+	이메일 : <input type="email"" name="email"><br>
+	전화번호 : <input type="tel"" name="phone"><br>	
   </div>
-  <input type="submit" value="회원정보수정">
+  <input type="submit" value="나의 정보 수정">
 
 </body>
 

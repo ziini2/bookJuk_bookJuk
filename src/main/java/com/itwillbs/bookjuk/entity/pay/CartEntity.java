@@ -50,6 +50,6 @@ public class CartEntity {
 	
 	//유저번호(users 테이블 참조)
 	@ManyToOne
-	@JoinColumn(name = "userId", nullable = false)
+	@JoinColumn(name = "userNum", nullable = false)
 	private UserEntity userEntity;  // Users 테이블 참조
 }

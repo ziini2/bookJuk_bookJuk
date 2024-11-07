@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.bookjuk.dto.PaymentDTO;
+import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.pay.PaymentEntity;
 import com.itwillbs.bookjuk.repository.PaymentRepository;
 import com.siot.IamportRestClient.IamportClient;
@@ -37,6 +38,14 @@ public class PaymentService {
         this.paymentRepository = paymentRepository;
     }
 
+//	public Long getUserNumFromPayment(String paymentId) {
+//        // paymentId를 통해 PaymentEntity를 조회
+//        PaymentEntity paymentEntity = paymentRepository.findById(paymentId).orElseThrow(() -> new RuntimeException("Payment not found"));
+//        
+//        return paymentEntity.getUserEntity().getUserNum();
+//    }
+//	
+	
 	//결제 검증 후 저장(클라이언트가 조작 가격 조작 못하게)
     public void verifyAndSavePayment(PaymentDTO paymentDTO) throws IamportResponseException, IOException {
     
@@ -66,17 +75,17 @@ public class PaymentService {
     	        }
     	        System.out.println("결제 검증 성공");
 
+    	        
     	        //결제 정보 DB에 저장
     	        PaymentEntity paymentEntity = PaymentEntity.builder()
-	            .payment_id(iamportPayment.getImpUid())
-	            .merchant_uid(iamportPayment.getMerchantUid())
-	            .payment_price(iamportPayment.getAmount().longValue())
-	           // .user_num(paymentDTO.getUserNum())
-	           // .user_name(paymentDTO.getUserName())
-	            .payment_method(iamportPayment.getPayMethod())
-	            .payment_status(paymentDTO.getStatus())
-	            .price_name(paymentDTO.getPriceName())
-	            .req_date(LocalDateTime.now())
+	            .paymentId(iamportPayment.getImpUid())
+	            .merchantUid(iamportPayment.getMerchantUid())
+	            .paymentPrice(iamportPayment.getAmount().longValue())
+//	            .user_name(paymentDTO.getUserName())
+	            .paymentMethod(iamportPayment.getPayMethod())
+	            .paymentStatus(paymentDTO.getStatus())
+	            .priceName(paymentDTO.getPriceName())
+	            .reqDate(LocalDateTime.now())
 	            .build();
     	        
     	        paymentRepository.save(paymentEntity);

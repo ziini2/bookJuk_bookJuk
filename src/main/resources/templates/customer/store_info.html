@@ -45,10 +45,10 @@
 			<div class="pagetitle">
 				<h1 class="d-flex align-items-center justify-content-between">
 					<div>
-						<span class="me-2" style="font-size: 25px;">지점명(코드)</span>
+						<span class="me-2" style="font-size: 25px;" th:text="${storeInfo.storeName}"></span>
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-							onclick="deleteStore()"
-							class="bi bi-trash me-2" viewBox="0 0 16 16" style="cursor: pointer;">
+							onclick="deleteStore()" class="bi bi-trash me-2" viewBox="0 0 16 16"
+							style="cursor: pointer;">
 							<path
 								d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
 							<path
@@ -63,78 +63,105 @@
 
 			<div class="row g-2">
 				<div class="col-3">
-					<div class="p-3 border bg-light">지점명</div>
+					<div class="p-3 border bg-light">
+						지점명<br><span th:text="${storeInfo.storeName}"></span>
+					</div>
 				</div>
 				<div class="col-3">
-					<div class="p-3 border bg-light">전화번호</div>
+					<div class="p-3 border bg-light">
+						전화번호<br><span th:text="${storeInfo.storeTel}"></span>
+					</div>
 				</div>
 				<div class="col-3">
-					<div class="p-3 border bg-light">지역</div>
+					<div class="p-3 border bg-light">
+						지역<br><span th:text="${storeInfo.storeLocation}"></span>
+					</div>
 				</div>
 				<div class="col-3">
-					<div class="p-3 border bg-light">지역상세</div>
+					<div class="p-3 border bg-light">
+						지역상세<br><span th:text="${storeInfo.storeLocation2}"></span>
+					</div>
 				</div>
 				<div class="col-3">
-					<div class="p-3 border bg-light">대표자</div>
+					<div class="p-3 border bg-light">
+						대표자<br><span th:text="${storeInfo.storeRepresent}"></span>
+					</div>
 				</div>
 				<div class="col-3">
-					<div class="p-3 border bg-light">이메일</div>
+					<div class="p-3 border bg-light">
+						이메일<br><span th:text="${storeInfo.storeEmail}"></span>
+					</div>
 				</div>
 				<div class="col-3">
-					<div class="p-3 border bg-light">등록일자</div>
+					<div class="p-3 border bg-light">
+						등록일자<br><span th:text="${storeInfo.storeRegiDate}"></span>
+					</div>
 				</div>
 				<div class="col-3">
-					<div class="p-3 border bg-light">수정일</div>
+					<div class="p-3 border bg-light">
+						수정일<br><span th:text="${storeInfo.storeUpdateDate}"></span>
+					</div>
 				</div>
 				<div class="col-3">
-					<div class="p-3 border bg-light">사업자등록번호</div>
+					<div class="p-3 border bg-light">
+						사업자등록번호<br><span th:text="${storeInfo.storeRegiNum}"></span>
+					</div>
 				</div>
 			</div>
 			<br>
+
 			<div id="map" style="width:500px;height:400px;"></div>
+
 		</div>
 
 		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">지점등록</h5>
+						<h5 class="modal-title" id="exampleModalLabel">지점수정</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<form>
+						<form id="storeUpdate" method="post" action="/admin/store/store_update">
+
+							<!--						히든으로 지점코드, 등록일를 넘겨야 업데이트가 됨-->
+							<input name="storeCode" type="hidden" th:value="${storeInfo.storeCode}">
+							<input name="storeRegiDate" type="hidden" th:value="${storeInfo.storeRegiDate}">
+
 							<div class="mb-3">
 								<label for="store-name" class="col-form-label">지점명</label>
-								<input name="storeName" type="text" class="form-control" id="store-name" value="">
+								<input name="storeName" type="text" class="form-control" id="store-name"
+									th:value="${storeInfo.storeName}">
 							</div>
 
 							<div class="mb-3">
 								<label for="store-tel" class="col-form-label">전화번호</label>
-								<input name="storeTel" type="text" class="form-control" id="store-tel" value=""></input>
+								<input name="storeTel" type="text" class="form-control" id="store-tel"
+									th:value="${storeInfo.storeTel}">
 							</div>
 
 							<div class="mb-3">
 								<label for="store-represent" class="col-form-label">대표자명</label>
 								<input name="storeRepresent" type="text" class="form-control" id="store-represent"
-									value=""></input>
+									th:value="${storeInfo.storeRepresent}"></input>
 							</div>
 
 							<div class="mb-3">
 								<label for="store-email" class="col-form-label">이메일</label>
 								<input name="storeEmail" type="text" class="form-control" id="store-email"
-									value=""></input>
+									th:value="${storeInfo.storeEmail}"></input>
 							</div>
 
 							<div class="mb-3">
 								<label for="store-regiNum" class="col-form-label">사업자등록번호</label>
 								<input name="storeRegiNum" type="text" class="form-control" id="store-regiNum"
-									value=""></input>
+									th:value="${storeInfo.storeRegiNum}"></input>
 							</div>
 
 							<div class="mb-3 position-relative">
 								<label for="store-location" class="col-form-label">위치</label>
 								<input name="storeLocation" type="text" class="form-control pr-5" id="store-location"
-									value="">
+									th:value="${storeInfo.storeLocation}">
 
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
 									class="bi bi-map position-absolute" onclick="storeLocationUpdate()"
@@ -143,12 +170,18 @@
 										d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z" />
 								</svg>
 							</div>
+
+							<div class="mb-3">
+								<label for="store-location2" class="col-form-label">위치 참고 항목</label>
+								<input name="storeLocation2" type="text" class="form-control pr-5" id="store-location2"
+									th:value="${storeInfo.storeLocation2}"></input>
+							</div>
 						</form>
 
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary">수정</button>
+						<button type="button" class="btn btn-primary" onclick="storeUpadate()">수정</button>
 					</div>
 				</div>
 			</div>
@@ -160,7 +193,7 @@
 	<!-- 사이드바 열었다 닫았다 하는거 -->
 	<script th:src="@{/js/common/main.js}"></script>
 	<link th:href="@{/css/customer/customer.css}" rel="stylesheet">
-	
+
 	<script type="text/javascript"
 		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=f6430a7993b55e483c7bd0e3602ce298"></script>
 	<script>
@@ -171,19 +204,30 @@
 		};
 
 		var map = new kakao.maps.Map(container, options);
+		var geocoder = new daum.maps.services.Geocoder();
+
+		var marker = new daum.maps.Marker({
+			position: new daum.maps.LatLng(37.537187, 127.005476),
+			map: map
+		});
 	</script>
-	
+
 	<script>
-		function deleteStore(){
+		function deleteStore() {
 			alert("클릭");
 		}
-		
+
 		function storeLocationUpdate() {
 			alert("지도 업데이트");
 		}
 	</script>
 
-
+	<script>
+		function storeUpadate() {
+			const storeUpdate = document.getElementById("storeUpdate");
+			storeUpdate.submit();
+		}		
+	</script>
 
 
 </body>

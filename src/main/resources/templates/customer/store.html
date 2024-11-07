@@ -180,7 +180,7 @@
 								</tbody>
 							</table>
 							<!-- End Table with stripped rows -->
-
+							
 							<nav aria-label="Page navigation example" th:if="${storeList != null}">
 								<ul class="pagination">
 									<li class="page-item"><a class="page-link"
@@ -272,8 +272,12 @@
 		});
 
 		function addStore() {
-			const addstore = document.getElementById('addStoreForm');
-			addstore.submit();
+			let check = true;
+			const inputs = document.querySelector('#addStoreForm');
+			
+			//inputs.forEach
+			
+			inputs.submit();
 		}
 	</script>
 

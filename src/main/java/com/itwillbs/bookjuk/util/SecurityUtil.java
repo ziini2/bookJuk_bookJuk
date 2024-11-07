@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class SecurityUtil {
-    private final UserRepository userRepository;
 
     //현재 사용자의 권한(Role) 중 특정 권한을 가지고 있는지?
     public static boolean hasRole(String role) {
@@ -53,6 +52,21 @@ public class SecurityUtil {
             return ((CustomUserDetails) principal).getUserNum();
         } else if (principal instanceof OAuth2User) {
             return ((CustomOAuth2User) principal).getUserNum();
+        }
+        return null;
+    }
+
+    //현재 사용자의 userID 값 조회
+    public static String getUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            return null;
+        }
+        Object principal = authentication.getPrincipal();
+        if(principal instanceof CustomUserDetails) {
+            return ((CustomUserDetails) principal).getName();
+        } else if (principal instanceof OAuth2User) {
+            return ((CustomOAuth2User) principal).getName();
         }
         return null;
     }

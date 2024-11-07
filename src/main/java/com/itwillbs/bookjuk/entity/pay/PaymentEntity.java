@@ -9,8 +9,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -30,38 +28,37 @@ public class PaymentEntity {
  
 	//결제ID
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String payment_id;
+	private String paymentId;
 	
 	//유저번호(users 테이블 참조)
 	@ManyToOne
-	@JoinColumn(name = "user_id", nullable = false)
+	@JoinColumn(name = "userNum", nullable = false)
 	private UserEntity userEntity;  // Users 테이블 참조
 	
 	//결제상태
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private PaymentStatus payment_status;
+	private PaymentStatus paymentStatus;
 	
 	//결제금액
 	@Column(nullable = false)
-	private Long payment_price;
+	private Long paymentPrice;
 	
 	//요청일시
 	@Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-	private LocalDateTime req_date;
+	private LocalDateTime reqDate;
 	
 	//결제수단
 	@Column(nullable = false)
-	private String payment_method;
+	private String paymentMethod;
 	
 	//주문번호
 	@Column(nullable = false)
-	private String merchant_uid;
+	private String merchantUid;
 	
 	//결제품목
 	@Column(nullable = false)
-	private String price_name;
+	private String priceName;
 }
 
 

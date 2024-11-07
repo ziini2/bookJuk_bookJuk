@@ -12,32 +12,25 @@ public class PaymentDTO {
     private String paymentMethod; //결제수단
 	private Long paidAmount; //결제금액
     private PaymentStatus status; //결제상태
+    
     private Long userNum; //유저번호
     private String userName; //유저이름
-    private String priceName; //상품이름
+    
+    private String priceName; //결제품목
     private LocalDateTime reqDate; //요청일시
 
 	public PaymentDTO() {
 		// TODO Auto-generated constructor stub
 	}
     
- // Constructor
-//    public PaymentDTO(String merchantMid, String paymentId, int paidAmount, PaymentStatus status, long userNum, String priceName) {
-//        this.merchantMid = merchantMid;
-//        this.paymentId = paymentId;
-//        this.paidAmount = paidAmount;
-//        this.status = status;
-//        this.userNum = userNum;
-//        this.priceName = priceName;
-//    }
-    
-    public PaymentDTO(String merchantMid, String paymentId, Long paidAmount, String paymentMethod, PaymentStatus status, Long userNum, String priceName) {
+    public PaymentDTO(String merchantMid, String paymentId, Long paidAmount, String paymentMethod, PaymentStatus status, Long userNum, String userName, String priceName) {
         this.merchantMid = merchantMid;
         this.paymentId = paymentId;
         this.paymentMethod = paymentMethod;
         this.paidAmount = paidAmount;
         this.status = status;
         this.userNum = userNum;
+        this.userName = userName;
         this.priceName = priceName;
     }
 

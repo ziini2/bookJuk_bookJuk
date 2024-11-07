@@ -2,13 +2,9 @@ package com.itwillbs.bookjuk.controller.pay;
 
 import com.itwillbs.bookjuk.dto.PaymentDTO;
 import com.itwillbs.bookjuk.service.pay.PaymentService;
-import com.siot.IamportRestClient.exception.IamportResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/payment")

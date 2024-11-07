@@ -26,7 +26,7 @@ public class PointDealEntity {
 	//포인트거래ID
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "point_pay_id")
+	@Column(name = "pointPayId")
 	private Long pointPayID;
 	
 	//포인트거래금액
@@ -34,7 +34,7 @@ public class PointDealEntity {
 	private Long pointPrice;
 	
 	//포인트거래상태
-	@Column(nullable = false, name = "point_pay_status")
+	@Column(nullable = false, name = "pointPayStatus")
 	@Enumerated(EnumType.STRING)
 	private PointPayStatus pointPayStatus;
 	 

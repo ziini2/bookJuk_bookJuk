@@ -98,29 +98,29 @@
         <div class="col align-items-center flex-col sign-in">
             <div class="form-wrapper align-items-center">
                 <div class="form sign-in">
+                    <form>
+                        <!-- 아이디 입력란 -->
+                        <div class="input-group">
+                            <i class="bx bxs-user"></i>
+                            <input id="userId" type="text" placeholder="아이디" />
+                        </div>
 
-                    <!-- 아이디 입력란 -->
-                    <div class="input-group">
-                        <i class="bx bxs-user"></i>
-                        <input id="userId" type="text" placeholder="아이디" />
-                    </div>
+                        <!-- 비밀번호 입력란 -->
+                        <div class="input-group">
+                            <i class="bx bxs-lock-alt"></i>
+                            <input id="userPassword" type="password" placeholder="비밀번호" />
+                        </div>
+                        <div id="login-error-message"></div>
 
-                    <!-- 비밀번호 입력란 -->
-                    <div class="input-group">
-                        <i class="bx bxs-lock-alt"></i>
-                        <input id="userPassword" type="password" placeholder="비밀번호" />
-                    </div>
-                    <div id="login-error-message"></div>
+                        <!-- 자동로그인 설정 체크박스 -->
+                        <div class="checkBox">
+                            <input type="checkbox" id="auto-login" name="rememberMe" value="true"/>
+                            <label for="auto-login">자동 로그인</label>
+                        </div>
 
-                    <!-- 자동로그인 설정 체크박스 -->
-                    <div class="checkBox">
-                        <input type="checkbox" id="auto-login" name="rememberMe" value="true"/>
-                        <label for="auto-login">자동 로그인</label>
-                    </div>
-
-                    <!-- 로그인 버튼 -->
-                    <button id="loginButton">Sign in</button>
-
+                        <!-- 로그인 버튼 -->
+                        <button id="loginButton">Sign in</button>
+                    </form>
                     <p>
                         <a th:href="@{/login/find}"> 아이디 찾기 |  비밀번호 찾기 </a>
                     </p>

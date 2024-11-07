@@ -37,6 +37,7 @@ public class EventController {
 	@ResponseBody
 	public Map<String, String> createEvent(@RequestBody EventDTO eventDTO) {
 		Map<String, String> response = new HashMap<>();
+		
 		return response;
 	}
 	

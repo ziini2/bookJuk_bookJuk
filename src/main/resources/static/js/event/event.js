@@ -167,16 +167,23 @@ $(document).ready(function () {
 			return;
 		}
 		
+		if(newUserPointField.length !== 0){
+			if($('#newUserPointField input').val() === "0"){
+				alert('포인트를 입력해주세요.');
+				return;
+			}
+		}
+		
 		$.ajax({
 	        url: '/admin/event',
 	        method: 'POST',
 	        contentType: 'application/json',
 	        data: JSON.stringify({
-	            eventTitle: eventTitle,
-				eventContent: eventContent,
-				eventType: eventType,
-				startEventDate: startEventDate,
-				endEventDate: endEventDate,
+	            eventTitle: title,
+				eventContent: content,
+				eventType: firstButtonText.replace(" 조건", ""),
+				startEventDate: startDate,
+				endEventDate: endDate,
 				eventCondition: eventCondition
 	        }),
 	        success: function (response) {

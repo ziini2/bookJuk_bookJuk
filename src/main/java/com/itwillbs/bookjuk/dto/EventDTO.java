@@ -3,8 +3,6 @@ package com.itwillbs.bookjuk.dto;
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.itwillbs.bookjuk.util.SecurityUtil;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,8 +17,8 @@ public class EventDTO {
 	// 이벤트 아이디
 	private Integer eventId;
 	
-	// 담당자
-	private Long userNum = SecurityUtil.getUserNum();
+	// 담당자 아이디
+	private Long userNum;
 	
 	// 이벤트 제목
 	private String eventTitle;
@@ -43,6 +41,10 @@ public class EventDTO {
 	// 이벤트 생성 날짜
 	private Timestamp eventCreationDate;
 	
+	// 이벤트 조건
 	private List<EventConditionDTO> eventCondition;
+	
+	// 담당자 이름
+	private String managerName;
 
 }

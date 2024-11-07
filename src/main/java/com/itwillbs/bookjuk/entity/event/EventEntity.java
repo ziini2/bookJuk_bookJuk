@@ -2,6 +2,8 @@ package com.itwillbs.bookjuk.entity.event;
 
 import java.sql.Timestamp;
 
+import com.itwillbs.bookjuk.domain.login.LoginType;
+import com.itwillbs.bookjuk.domain.login.UserRole;
 import com.itwillbs.bookjuk.entity.UserEntity;
 
 import jakarta.persistence.Column;
@@ -13,13 +15,21 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "event")
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class EventEntity {
 
 	// 이벤트 아이디

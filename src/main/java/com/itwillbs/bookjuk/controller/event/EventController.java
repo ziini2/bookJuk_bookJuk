@@ -36,9 +36,8 @@ public class EventController {
 	@PostMapping
 	@ResponseBody
 	public Map<String, String> createEvent(@RequestBody EventDTO eventDTO) {
-		Map<String, String> response = new HashMap<>();
-		
-		return response;
+		eventService.createEvent(eventDTO);
+		return Map.of("1","2");
 	}
 	
 	

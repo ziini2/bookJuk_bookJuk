@@ -132,6 +132,13 @@ $(document).ready(function () {
 		const manyTimesPointField = $('#manyTimesPointField span').text().trim();
 		const manyWonsPointField = $('#manyWonsPointField span').text().trim();
 		const manyPeoplePointField = $('#manyPeoplePointField span').text().trim();
+		const newUserPoint = $('#newUserPointField input').val();
+		const manyTimesCount = $('#manyTimesPointField input').val();
+		const manyTimesPoint = $('#manyTimesPointField input:eq(1)').val();
+		const manyWonsPoint = $('#manyWonsPointField input').val();
+		const manyWonsAmount = $('#manyWonsPointField input:eq(1)').val();
+		const manyPeoplePoint = $('#manyPeoplePointField input').val();
+		let eventConditions = [];
 
 	    // 입력 검증
 	    if (!title) {
@@ -168,9 +175,58 @@ $(document).ready(function () {
 		}
 		
 		if(newUserPointField.length !== 0){
-			if($('#newUserPointField input').val() === "0"){
+			if(newUserPoint <= 0){
 				alert('포인트를 입력해주세요.');
 				return;
+			}else{
+				eventConditions.push({
+					eventConditionType: "신규 가입자",
+					eventClearReward: newUserPoint
+				});
+			}
+		}
+		
+		if(manyTimesPointField.length !== 0){
+			if(manyTimesCount <= 0){
+				alert('대여 횟수를 입력해주세요.');
+				return;
+			}
+			if(manyTimesPoint <= 0){
+				alert('포인트를 입력해주세요.');
+				return;
+			}else{
+				eventConditions.push({
+					eventConditionType: manyTimesCount + "회 이상 대여한 회원",
+					eventClearReward: manyTimesPoint
+				});
+			}
+		}
+	
+		if(manyWonsPointField.length !== 0){
+			if(manyWonsAmount <= 0){
+				alert('금액을 입력해주세요.');
+				return;
+			}
+			if(manyWonsPoint <= 0){
+				alert('포인트를 입력해주세요.');
+				return;
+			}else{
+				eventConditions.push({
+					eventConditionType: manyWonsAmount + "원 이상 대여한 회원",
+					eventClearReward: manyWonsPoint
+				});
+			}
+		}
+		
+		if(manyPeoplePointField.length !== 0){
+			if(manyPeoplePoint <= 0){
+				alert('포인트를 입력해주세요.');
+				return;
+			}else{
+				eventConditions.push({
+					eventConditionType: "로그인한 회원",
+					eventClearReward: manyPeoplePoint
+				});
 			}
 		}
 		
@@ -184,15 +240,16 @@ $(document).ready(function () {
 				eventType: firstButtonText.replace(" 조건", ""),
 				startEventDate: startDate,
 				endEventDate: endDate,
-				eventCondition: eventCondition
+				eventCondition: eventConditions
 	        }),
 	        success: function (response) {
 	            alert("이벤트가 성공적으로 생성되었습니다.");
-	            location.reload(); // 새로 생성된 이벤트를 반영하기 위해 페이지를 새로고침
+	            table.draw();
+				$('#event-createModal').fadeOut();
 	        },
-	        error: function (xhr, status, error) {
+	        error: function (error) {
+				alert("오류: " + error.responseText);
 	            console.error("이벤트 생성 실패:", error);
-	            alert("이벤트 생성에 실패했습니다. 다시 시도해주세요.");
 	        }
 	    });
 		
@@ -214,7 +271,7 @@ $(document).ready(function () {
 				<li><button id="newUserButton" class="dropdown-item">신규 가입자</button></li>
 				<li><button id="manyTimesBtn" class="dropdown-item">회 이상 대여한 자</button></li>
 				<li><button id="manyWons" class="dropdown-item">원 이상 대여한 자</button></li>
-				<li><button id="manyPeople" class="dropdown-item">로그인한 사람</button></li>
+				<li><button id="manyPeople" class="dropdown-item">로그인한 회원</button></li>
 	        </ul>
 			</div>
 	    `;
@@ -238,34 +295,38 @@ $(document).ready(function () {
 	});
 	
 	$(document).on('click', '#manyTimesBtn', function() {
-		const pointField = `
-			<div class="d-flex align-items-center mt-2" id="manyTimesPointField">
-				<input type="number" class="form-control ms-2" style="width: 40px;" placeholder="0">
-				<span>회 이상 대여한 사람에게 지급할 포인트 : </span>
-            	<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0"><span class="ms-1">p</span>
-            	<button type="button" class="btn-close ms-2" aria-label="Close" onclick="manyTimesField()"></button>
-			</div>
-        `;
-        $('#couponOptions').after(pointField);
+		if ($('#manyTimesPointField').length === 0) {
+			const pointField = `
+				<div class="d-flex align-items-center mt-2" id="manyTimesPointField">
+					<input type="number" class="form-control ms-2" style="width: 40px;" placeholder="0">
+					<span>회 이상 대여한 회원에게 지급할 포인트 : </span>
+		        	<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0"><span class="ms-1">p</span>
+		        	<button type="button" class="btn-close ms-2" aria-label="Close" onclick="manyTimesField()"></button>
+				</div>
+		    `;
+		    $('#couponOptions').after(pointField);
+		}
 	});
 	
 	$(document).on('click', '#manyWons', function() {
-		const pointField = `
-			<div class="d-flex align-items-center mt-2" id="manyWonsPointField">
-				<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0">
-				<span>원 이상 대여한 사람에게 지급할 포인트 : </span>
-            	<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0"><span class="ms-1">p</span>
-            	<button type="button" class="btn-close ms-2" aria-label="Close" onclick="manyWonsField()"></button>
-			</div>
-        `;
-        $('#couponOptions').after(pointField);
+		if ($('#manyWonsPointField').length === 0) {
+			const pointField = `
+				<div class="d-flex align-items-center mt-2" id="manyWonsPointField">
+					<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0">
+					<span>원 이상 대여한 회원에게 지급할 포인트 : </span>
+		        	<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0"><span class="ms-1">p</span>
+		        	<button type="button" class="btn-close ms-2" aria-label="Close" onclick="manyWonsField()"></button>
+				</div>
+		    `;
+		    $('#couponOptions').after(pointField);
+		}
 	});
 	
 	$(document).on('click', '#manyPeople', function() {
 		if ($('#manyPeoplePointField').length === 0) {
 			const pointField = `
 				<div class="d-flex align-items-center mt-2" id="manyPeoplePointField">
-					<span>로그인한 사람에게 지급할 포인트 : </span>
+					<span>로그인한 회원에게 지급할 포인트 : </span>
 					<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0"><span class="ms-1">p</span>
 		        	<button type="button" class="btn-close ms-2" aria-label="Close" onclick="manyPeopleField()"></button>
 				</div>

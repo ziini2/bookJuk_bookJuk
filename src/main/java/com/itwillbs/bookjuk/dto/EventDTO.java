@@ -45,6 +45,6 @@ public class EventDTO {
 	private List<EventConditionDTO> eventCondition;
 	
 	// 담당자 이름
-	private String managerName;
+	private String eventManager;
 
 }

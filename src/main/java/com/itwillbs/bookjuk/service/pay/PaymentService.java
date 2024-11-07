@@ -9,13 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.bookjuk.dto.PaymentDTO;
-import com.itwillbs.bookjuk.entity.pay.Payment;
+import com.itwillbs.bookjuk.entity.pay.PaymentEntity;
 import com.itwillbs.bookjuk.repository.PaymentRepository;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -26,7 +25,7 @@ public class PaymentService {
 	 private final PaymentRepository paymentRepository;
 	 
 	 // 결제 정보를 DB에서 조회하는 메서드
-    public List<Payment> getAllPayments() {
+    public List<PaymentEntity> getAllPayments() {
         return paymentRepository.findAll();  // 모든 결제 정보를 반환
     }
 	    
@@ -68,20 +67,19 @@ public class PaymentService {
     	        System.out.println("결제 검증 성공");
 
     	        //결제 정보 DB에 저장
-    	        Payment payment = Payment.builder()
+    	        PaymentEntity paymentEntity = PaymentEntity.builder()
 	            .payment_id(iamportPayment.getImpUid())
 	            .merchant_uid(iamportPayment.getMerchantUid())
 	            .payment_price(iamportPayment.getAmount().longValue())
-	            .user_num(paymentDTO.getUserNum())
-	            .user_name(paymentDTO.getUserName())
+	           // .user_num(paymentDTO.getUserNum())
+	           // .user_name(paymentDTO.getUserName())
 	            .payment_method(iamportPayment.getPayMethod())
 	            .payment_status(paymentDTO.getStatus())
 	            .price_name(paymentDTO.getPriceName())
 	            .req_date(LocalDateTime.now())
 	            .build();
     	        
-    	        System.out.println("Payment to be saved: " + payment);
-    	        paymentRepository.save(payment);
+    	        paymentRepository.save(paymentEntity);
 
     	    } catch (IamportResponseException e) {
     	        System.out.println("아임포트 API 호출 실패: " + e.getMessage());

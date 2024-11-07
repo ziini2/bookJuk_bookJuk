@@ -3,6 +3,7 @@ package com.itwillbs.bookjuk.entity.pay;
 import java.time.LocalDateTime;
 
 import com.itwillbs.bookjuk.domain.pay.PaymentStatus;
+import com.itwillbs.bookjuk.entity.UserEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,37 +12,32 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@ToString
-@Table (name = "payment")
-public class Payment {
+@Table(name = "payment")
+public class PaymentEntity {
  
 	//결제ID
 	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String payment_id;
 	
-	//유저 번호
-	@Column(nullable = false)
-	private Long user_num;
+	//유저번호(users 테이블 참조)
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	private UserEntity userEntity;  // Users 테이블 참조
 	
-	//유저 이름
-	@Column(nullable = false)
-	private String user_name;
-
 	//결제상태
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -63,7 +59,7 @@ public class Payment {
 	@Column(nullable = false)
 	private String merchant_uid;
 	
-	//상품이름
+	//결제품목
 	@Column(nullable = false)
 	private String price_name;
 }

@@ -4,9 +4,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.itwillbs.bookjuk.entity.pay.Payment;
+import com.itwillbs.bookjuk.entity.pay.PaymentEntity;
 
-
-public interface PaymentRepository extends JpaRepository<Payment, String> {
-	List<Payment> findAll();  //결제 정보 조회
+public interface PaymentRepository extends JpaRepository<PaymentEntity, String> {
+	List<PaymentEntity> findAll();  //결제 정보 조회
 }

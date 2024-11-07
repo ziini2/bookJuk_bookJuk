@@ -1,7 +1,5 @@
 package com.itwillbs.bookjuk.controller.pay;
 
-
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.itwillbs.bookjuk.entity.pay.Payment;
+import com.itwillbs.bookjuk.entity.pay.PaymentEntity;
 import com.itwillbs.bookjuk.service.pay.PaymentService;
-
 
 @Controller
 public class PayController {
@@ -26,7 +23,7 @@ public class PayController {
     //결제 정보 조회
     @GetMapping("/admin/pay_list")
     public String payList(Model model) {
-        List<Payment> payments = paymentService.getAllPayments();
+        List<PaymentEntity> payments = paymentService.getAllPayments();
         model.addAttribute("payments", payments);
         return "/pay/pay_list";
     }

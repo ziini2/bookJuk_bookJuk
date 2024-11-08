@@ -46,9 +46,10 @@
 
 <body>
 	<div th:replace="/fragment/header :: header2"></div>
-	<div th:replace="/fragment/sidebar :: sidebar2"></div>
+	
 
 	<main id="main" class="main">
+	<div th:replace="/fragment/sidebar :: sidebar2"></div>
 		<div class="container text-center">
 			<div class="row justify-content-center">
 				<!-- 중앙 정렬을 위한 행 -->
@@ -81,12 +82,15 @@
 							<span class="input-group-text">ISBN</span> <input type="text"
 								class="form-control" name="isbn" placeholder="ISBN번호를 입력하세요"
 								style="max-width: 300px;">
-							<button type="button" class="btn btn-secondary">조회</button>
+							<button type="button" 
+									class="btn btn-secondary"
+									onclick="isbnSearch()">조회</button>
 						</div>
 
 						<!-- 도서명 입력 -->
 						<div class="input-group mb-3">
-							<span class="input-group-text">도서명</span> <input type="text"
+							<span class="input-group-text">도서명</span> 4
+							<input type="text"
 								class="form-control" name="bookName" placeholder="도서명을 입력하세요"
 								style="max-width: 300px;">
 						</div>
@@ -115,20 +119,27 @@
 								<option value="2">해운대점</option>
 								<option value="3">양정점</option>
 								<option value="4">강남점</option>
+								<!-- 지점이 등록되면 여기도 자동으로 추가가 되어야 할텐데..... -->
 							</select>
 						</div>
 
 						<!-- 대여현황 및 대여금액 입력 -->
 						<div class="input-group mb-3">
-							<span class="input-group-text">대여현황</span> <select
+							<span class="input-group-text">대여현황</span> 
+							<select
 								class="form-select" name="rentStatus"
 								style="max-width: 250px;">
 								<option selected>대여 상태를 선택하세요</option>
 								<option value="available">대여가능</option>
 								<option value="unavailable">대여불가</option>
-							</select> <span class="input-group-text">대여금액</span> <input type="text"
-								class="form-control" name="rentalPrice" id="rentPrice"
-								placeholder="금액입력" style="max-width: 150px;">
+							</select> 
+							<span class="input-group-text">대여금액</span> 
+							<input type="text"
+								   class="form-control" 
+								   name="rentalPrice" 
+								   id="rentPrice"
+								   placeholder="금액입력" 
+								   style="max-width: 150px;">
 						</div>
 
 						<!-- 도서상태 및 수량 선택 -->
@@ -162,12 +173,13 @@
 						<!-- 출판일 -->
 						<input type="hidden" name="pubDate">
 
-						<!-- 비고 입력 -->
+						<!-- 줄거리 입력 -->
 						<div class="input-group mb-3">
-							<span class="input-group-text">줄거리</span>
-							<textarea class="form-control" name="remarks" rows="4" cols="50"
-								style="resize: none; width: 300px; height: 150px;">
-    					</textarea>
+							<span class="input-group-text">책소개</span>
+							<textarea class="form-control" name="story" rows="4" cols="50"
+								 style="resize: none; width: 300px; height: 150px; 
+								 padding: 10px; line-height: 1.5;">
+    						</textarea>
 						</div>
 
 						<!-- 버튼 섹션 -->
@@ -264,10 +276,11 @@
 		       myModal.show(); // 모달 표시
 		   });
 
-		   // 모달이 열리면 입력 필드에 포커스
-		   myModalElement.addEventListener('shown.bs.modal', () => {
-		       myInput.focus();
-		   });
+		// 모달 닫기 후 books 페이지로 이동
+		    document.getElementById('closeModal').addEventListener('click', () => {
+		        myModal.hide(); // 모달 닫기
+		        window.location.href = '/admin/books'; // books 페이지로 리다이렉트
+		    });
 	</script>
 
 	<!--대여금액 숫자3자리 , 찍는 js-->
@@ -283,6 +296,44 @@
 		    input.value = formatValue;
 		  }
 		})
+	</script>
+	<!-- isbn API불러오는 js-->
+	<script>
+	function isbnSearch(){
+		//querySelector로 input 을 선택할 수 있고 value 로 값을 가져올수 있다.
+		const isbn = document.querySelector("input[name='isbn']").value;
+		//문자열을 합칠땐 템플릿 리터럴(``)로 감싸야한다. 그래야 isbn 변수가 들어간다.
+		let url = `https://www.nl.go.kr/seoji/SearchApi.do?cert_key=6e3c1f31ab8b477b3346a6d485a280dcebfbdd9f97fe34c373133551f4fc8616&result_style=json&page_no=1&page_size=1&isbn=${isbn}`
+	
+	
+	//fetch 를 사용하여 JSON 데이터를 요청하고, 응답을 처리
+	fetch(url)
+		.then(response => {
+			if(!response.ok){
+				throw new Error(response.statusText);
+			}
+			return response.json();
+			
+		})
+		// 여기서 응답을 받는다. -> 원하는 데이터 추출
+		.then(data => {
+			console.log(data);
+			// 콘솔 확인시 docs 에 정보가 들어있다.
+			
+			//dosc[0] 은 배열의 첫 번째 객체를 가르킨다. 콘솔에 "0:"
+			//const {AUTHOR, TITLE} 는 필요한 필드를 구조 분해 할당으로 한 번에 가져오는 방법
+			const {AUTHOR, TITLE} = data.docs[0];
+			
+			//'value = ' 형태로 값을 넣을 수도 있다.
+			document.querySelector("input[name= 'author']").value = AUTHOR;
+			
+		})
+		.catch(error =>{
+			console.error(error);
+		})
+		
+	}
+
 	</script>
 	<script th:src="@{/js/common/main.js}"></script>
 </body>

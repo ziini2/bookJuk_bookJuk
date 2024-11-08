@@ -6,7 +6,7 @@ import java.util.Objects;
 import com.itwillbs.bookjuk.domain.pay.PaymentStatus;
 
 public class PaymentDTO {
-	
+	 
 	private String merchantMid; //주문번호
     private String paymentId; //결제ID
     private String paymentMethod; //결제수단

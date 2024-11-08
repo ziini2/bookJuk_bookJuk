@@ -20,7 +20,7 @@ public class PaymentController {
     //결제 처리 및 검증 엔드포인트
     @PostMapping("/process")
     public ResponseEntity<?> validatePayment(@RequestBody PaymentDTO paymentDTO) {
-    	System.out.println("/payment/process--------------------");
+    	System.out.println("/payment/process-----------------------------");
     	System.out.println(paymentDTO);
         try {
         	// 결제 정보 검증 및 저장

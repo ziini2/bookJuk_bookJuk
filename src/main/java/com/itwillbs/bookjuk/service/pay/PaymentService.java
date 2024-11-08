@@ -117,7 +117,7 @@ public class PaymentService {
 	        // 결제 금액에 따른 포인트 업데이트
 	        int amount = iamportPayment.getAmount().intValue(); //결제 금액 정수형으로 변환
 	        updateUserPoint(user, amount); //결제 금액에 따라 포인트 업데이트
-	        
+	         
 	    } catch (IamportResponseException e) {
 	        System.out.println("아임포트 API 호출 실패: " + e.getMessage());
 	        e.printStackTrace();

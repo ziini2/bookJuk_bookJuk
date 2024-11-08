@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.pay.PaymentEntity;
 import com.itwillbs.bookjuk.service.pay.PaymentService;
 import com.itwillbs.bookjuk.util.SecurityUtil;
@@ -49,9 +51,15 @@ public class PayController {
 	
 	@GetMapping("/pay_add")
 	public String payAdd(Model model) {
-		
-		model.addAttribute("userNum", SecurityUtil.getUserNum());
-		return "/pay/pay_add";
+
+	Long userPoint = paymentService.getUserPoint(SecurityUtil.getUserNum()); // 서비스에서 포인트 조회
+	String userEmail = paymentService.getUserEmail(SecurityUtil.getUserNum());
+
+	model.addAttribute("userNum", SecurityUtil.getUserNum());
+	model.addAttribute("userPoint", userPoint);
+	model.addAttribute("userEmail", userEmail);
+	return "/pay/pay_add";
 	}
+	
 }
 

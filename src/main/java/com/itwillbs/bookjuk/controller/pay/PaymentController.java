@@ -43,4 +43,14 @@ public class PaymentController {
             return ResponseEntity.status(500).body("결제 취소 중 오류가 발생했습니다: " + e.getMessage());
         }
     }
+//    
+//	 // 결제가 완료되었을 때 호출되는 메서드
+//    @PostMapping("/payment/complete")
+//    public String paymentComplete(@RequestParam Long userNum, @RequestParam int amount) {
+//    	System.out.println("/payment/complete--------------------");
+//        // 결제 금액에 따라 포인트 업데이트
+//        paymentService.updateUserPoint(userNum, amount);
+//
+//        return "결제가 완료되었습니다. 포인트가 업데이트되었습니다.";
+//    }
 }

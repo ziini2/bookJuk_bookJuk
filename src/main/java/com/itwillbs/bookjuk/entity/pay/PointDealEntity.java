@@ -1,8 +1,12 @@
 package com.itwillbs.bookjuk.entity.pay;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import com.itwillbs.bookjuk.domain.books.BookStatus;
 import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
+import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
+import com.itwillbs.bookjuk.entity.books.BooksEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,11 +17,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "point_deal")

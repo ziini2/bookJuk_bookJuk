@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
 import com.itwillbs.bookjuk.entity.RentEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
-import com.itwillbs.bookjuk.entity.pay.PointDeal;
+import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
 import com.itwillbs.bookjuk.repository.BooksRepository;
 import com.itwillbs.bookjuk.repository.PointDealRepository;
 import com.itwillbs.bookjuk.repository.RentRepository;
@@ -130,7 +130,7 @@ public class RentService {
 	    Long rentMoney = bookOpt.get().getRentMoney();
 
 	    // PointDeal 생성 및 저장
-	    PointDeal pointDeal = PointDeal.builder()
+	    PointDealEntity pointDeal = PointDealEntity.builder()
 	            .pointPrice(rentMoney)
 	            .pointPayStatus(PointPayStatus.SUCCESSFUL)
 	            .reqDate(LocalDateTime.now())

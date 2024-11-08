@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,31 @@
 <body>
     <div class="container my-3">
         <h4>회원 검색</h4>
-        <form>
-            <div class="form-group">
-                <label for="popupMemberId">회원 아이디</label>
-                <input type="text" id="popupMemberId" class="form-control" placeholder="회원 아이디 입력">
-            </div>
-            <button type="button" class="btn btn-primary mt-3">검색</button>
+        <form id="searchForm" onsubmit="searchMembers(event)">
+            <select id="searchCriteria" class="form-select d-inline w-auto">
+                <option value="userName">회원 이름</option>
+                <option value="userId">회원 아이디</option>
+            </select>
+            <input type="text" id="searchKeyword" class="form-control d-inline w-auto" placeholder="검색어 입력">
+            <button type="submit" class="btn btn-primary">검색</button>
         </form>
+
+        <div id="searchResults" class="mt-3" style="max-height: 400px; overflow-y: auto;">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>회원 이름</th>
+                        <th>회원 아이디</th>
+                        <th>회원 전화번호</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsTableBody">
+                    <!-- 검색 결과가 여기에 추가됩니다. -->
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <script src="/js/rent/membersearch.js"></script>
 </body>
 </html>

@@ -19,10 +19,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "user_content")
 public class UserContentEntity {
 	
+	//유저번호
 	@Id
     private Long userNum;  // UserEntity의 기본 키와 공유하는 기본 키
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId  // UserEntity의 ID를 그대로 사용
     @JoinColumn(name = "userNum")
     private UserEntity userEntity;

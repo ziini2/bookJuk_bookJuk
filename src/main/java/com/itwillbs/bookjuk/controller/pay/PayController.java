@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.itwillbs.bookjuk.entity.UserContentEntity;
 import com.itwillbs.bookjuk.entity.pay.PaymentEntity;
 import com.itwillbs.bookjuk.service.pay.PaymentService;
 import com.itwillbs.bookjuk.util.SecurityUtil;
@@ -27,7 +26,7 @@ public class PayController {
     public String payList(Model model) {
         List<PaymentEntity> payments = paymentService.getAllPayments();
         model.addAttribute("payments", payments);
-        return "/pay/pay_list";
+        return "pay/pay_list";
     }
 	
 	@GetMapping("/admin/refund")

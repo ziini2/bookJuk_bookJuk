@@ -71,7 +71,6 @@ public class SecurityConfig {
                 .successHandler((request, response, authentication) -> {
                     // 로그인 성공 시 AJAX 요청에 대한 응답 처리
                     log.info("userNum : {}", ((CustomUserDetails) authentication.getPrincipal()).getUserNum()); // 사용자 PK
-                    // 사용자 롤을 세션에 저장
                     String role = authentication.getAuthorities().stream()
                             .map(GrantedAuthority::getAuthority)
                             .findFirst() // 첫 번째 롤만 가져옵니다. (여러 롤이 있을 수 있음)

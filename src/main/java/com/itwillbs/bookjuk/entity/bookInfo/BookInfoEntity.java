@@ -1,5 +1,8 @@
-package com.itwillbs.bookjuk.entity;
+package com.itwillbs.bookjuk.entity.bookInfo;
 
+import java.sql.Timestamp;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,20 +26,20 @@ import lombok.ToString;
 @Builder
 @Table(name = "book_info")
 public class BookInfoEntity {
-	
+
 	// 도서번호
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long bookNum;
-	
+
 	// 도서명
 	@Column(nullable = false)
 	private String bookName;
-	
+
 	// 저자
 	@Column(nullable = false)
-	private String author; 
-	
+	private String author;
+
 	// 줄거리
 	@Column(nullable = false)
 	private String story;
@@ -44,20 +47,21 @@ public class BookInfoEntity {
 	// 관심설정
 	@Column(nullable = false)
 	private int interest;
-	
+
 	// 출판사
 	@Column(nullable = false)
 	private String publish;
-	
+
 	// 장르ID
 	@Column(nullable = false)
 	private Long genreId;
-	
-	// 재고
+
+	// ISBN번호
 	@Column(nullable = false)
-	private Long inventory;
-	
-	
-	
-	
+	private Long ISBN;
+
+	// 출판일
+	@Column(nullable = false)
+	private Timestamp publishDate;
+
 }

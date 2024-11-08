@@ -1,42 +1,40 @@
+
 package com.itwillbs.bookjuk.entity.pay;
 
 import java.time.LocalDateTime;
 
 import com.itwillbs.bookjuk.domain.pay.PaymentStatus;
+import com.itwillbs.bookjuk.entity.UserContentEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@ToString
-@Table (name = "payment")
-public class Payment {
+@Table(name = "payment")
+public class PaymentEntity {
  
 	//결제ID
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long paymentId;
+	private String paymentId;
 	
-	//유저 번호
-	@Column(nullable = false)
-	private Long userNum;
+	//유저번호(users 테이블 참조)
+	@ManyToOne
+	@JoinColumn(name = "user_num")
+	private UserContentEntity userContentEntity;  // UserContent 테이블 참조
 	
 	//결제상태
 	@Column(nullable = false)
@@ -54,6 +52,19 @@ public class Payment {
 	//결제수단
 	@Column(nullable = false)
 	private String paymentMethod;
+	
+	//주문번호
+	@Column(nullable = false)
+	private String merchantUid;
+	
+	//결제품목
+	@Column(nullable = false)
+	private String priceName;
+	
+	// userPoint를 가져오는 메서드
+    public int getUserPoint() {
+    return this.userContentEntity.getUserPoint();  // UserContentEntity를 통해 userPoint 접근
+    }
 }
 
 

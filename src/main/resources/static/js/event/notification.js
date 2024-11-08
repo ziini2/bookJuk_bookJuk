@@ -1,4 +1,25 @@
 $(document).ready(function() {
+	
+	// 메시지 보내기
+	function sendNoti(recipientId) {
+	    const notiData = {
+	        recipient: recipientId,
+	        content: "쪽지 내용",
+	        type: "쪽지"
+	    };
+
+	    fetch('/admin/send', {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify(notiData)
+	    })
+	    .then(response => response.ok ? alert("쪽지가 성공적으로 전송되었습니다.") : alert("쪽지 전송에 실패했습니다."))
+	    .catch(error => console.error('Error:', error));
+	}
+
+	
 	// datatables 라이브러리 설정
     const table = $('#noti-table').DataTable({
         paging: true,
@@ -95,8 +116,8 @@ $(document).ready(function () {
 	let notiEndDate = '';
 	
 	// DataTables의 'draw' 이벤트에 이벤트 리스너 등록
-    $('#noti-table tbody').on('click', 'td span', function () {
-        const cells = $(this).closest('tr').find('td');
+    $('#noti-table tbody').on('click', 'tr', function () {
+        const cells = $(this).find('td');
 
         // 알림 상세 데이터 추출
         $('#noti-detailReceiver').text(cells.eq(1).text());
@@ -168,6 +189,8 @@ $(document).ready(function () {
 		transferStatus = '';
 		notiStartDate = '';
 		notiEndDate = '';
+		$('#notiEndDate').attr('min', '');
+		$('#notiStartDate').attr('max', '');
 		$('#notiStartDate').val('');
 		$('#notiEndDate').val('');
     	$('#noti-filterModal').css('display', 'block');

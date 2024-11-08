@@ -34,6 +34,11 @@ public class CouponEntity {
     @JoinColumn(name = "eventId")
     private EventEntity eventId;
 	
+	// 이벤트 조건 아이디
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "eventConditionId")
+	private EventConditionEntity eventConditionId;
+	
 	// 알림 아이디
 	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notiId")
@@ -57,7 +62,7 @@ public class CouponEntity {
 	private String couponStatus;
 	
 	// 쿠폰 종류(1000p, 2000p 등등)
-	@Column(name = "couponType", length = 30, nullable = false)
+	@Column(name = "couponType", nullable = false)
 	private String couponType;
 	
 	

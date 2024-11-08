@@ -1,5 +1,7 @@
 package com.itwillbs.bookjuk.controller.customer;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -60,9 +62,23 @@ public class CutsomerController {
 	}
 
 	@GetMapping("/admin/store/store_info")
-	public String storeInfo(@RequestParam(value = "storeCode") Long storeCode) {
+	public String storeInfo(@RequestParam(value = "storeCode") Long storeCode, Model model) {
 		log.info(storeCode.toString());
+		
+		Optional<StoreEntity> storeInfo = customerService.findById(storeCode);
+		
+		model.addAttribute("storeInfo", storeInfo.get());
+		
 		return "customer/store_info";
+	}
+	
+	@PostMapping("/admin/store/store_update")
+	public String storeUpdate(StoreEntity storeEntity) {
+		log.info("store_update" + storeEntity.getStoreCode());
+		
+		customerService.storeUpdate(storeEntity);
+		
+		return "redirect:/admin/store/store_info?storeCode=" + storeEntity.getStoreCode();
 	}
 
 	@GetMapping("/admin/user/user_list")

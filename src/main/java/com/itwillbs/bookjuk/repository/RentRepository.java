@@ -15,9 +15,6 @@ public interface RentRepository extends JpaRepository<RentEntity, Long> {
 	List<RentEntity> findByReturnDateIsNullAndRentDateBefore(Timestamp date);
 	
 	//검색
-//	List<RentEntity> findByUserNameContainingOrderByRentNumDesc(String keyword);
-//    List<RentEntity> findByUserIdContainingOrderByRentNumDesc(String keyword);
-//    List<RentEntity> findByBookNameContainingOrderByRentNumDesc(String keyword);
 	Page<RentEntity> findByUserNameContaining(String keyword, Pageable pageable);
     Page<RentEntity> findByUserIdContaining(String keyword, Pageable pageable);
     Page<RentEntity> findByBookNameContaining(String keyword, Pageable pageable);

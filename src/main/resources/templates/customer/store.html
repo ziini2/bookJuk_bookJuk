@@ -61,7 +61,7 @@
 									<form class="search-form d-flex align-items-center" method="get"
 										action="/admin/store/store_list">
 										<input name="search" class="form-control me-2" type="search"
-											placeholder="입력해 주세요" aria-label="Search">
+											placeholder="지점명을 입력하세요" aria-label="Search">
 										<button class="btn btn-outline-success" type="submit">Search</button>
 									</form>
 								</div>
@@ -149,38 +149,34 @@
 							</div>
 
 
-
-
-							<!-- Table with stripped rows -->
-							<table class="table datatable">
+							<!-- 지점 목록 -->
+							<table class="table datatable table-hover">
 								<thead>
 
 									<tr>
-										<th>
-											<b>지점명</b>
-										</th>
+										<th>지점명</th>
 										<th>전화번호</th>
 										<th>지역</th>
 										<th>지역상세</th>
-										<th data-type="date" data-format="YYYY/DD/MM">등록일자</th>
-										<th>수정일</th>
+										<th>사업자등록번호</th>
+										<th>등록일자</th>
 									</tr>
 
 								</thead>
 								<tbody>
 									<tr th:each="store, status:${storeList}"
 										th:onclick="|location.href='@{/admin/store/store_info(storeCode=${store.storeCode})}'|">
-										<td th:text="${store.storeName}"></td>
-										<td th:text="${store.storeTel}"></td>
-										<td th:text="${store.storeLocation}"></td>
-										<td th:text="${store.storeLocation2}"></td>
-										<td th:text="${store.storeRegiDate}"></td>
-										<td th:text="${store.storeUpdateDate}"></td>
+										<td th:text="${store.storeName}"></td> <!--지점명-->
+										<td th:text="${store.storeTel}"></td> <!--지점전화번호-->
+										<td th:text="${store.storeLocation}"></td> <!--위치-->
+										<td th:text="${store.storeLocation2}"></td> <!--위치상세-->
+										<td th:text="${store.storeRegiNum}"></td> <!--사업자등록번호-->
+										<td th:text="${#strings.substring(store.storeRegiDate, 0, 16)}"></td> <!--등록일-->
 									</tr>
 								</tbody>
 							</table>
-							<!-- End Table with stripped rows -->
-
+							
+							<!--페이지네이션 버튼-->
 							<nav aria-label="Page navigation example" th:if="${storeList != null}">
 								<ul class="pagination">
 									<li class="page-item"><a class="page-link"
@@ -199,7 +195,7 @@
 											th:href="|@{/admin/store/store_list(page=${currentPage}+1, search=${search})}|" th:text="다음"
 											th:if="${currentPage < totalPages}"></a></li>
 								</ul>
-							</nav><!-- End Basic Pagination -->
+							</nav>
 
 						</div>
 					</div>
@@ -218,6 +214,7 @@
 	<link th:href="@{/css/customer/customer.css}" rel="stylesheet">
 
 	<script>
+		// 주소검색 api
 		function addressUpdate() {
 			new daum.Postcode({
 				oncomplete: function (data) {
@@ -266,14 +263,20 @@
 			}).open();
 		}
 
+		// 모달을 닫으면
 		$('#storeModal').on('hidden.bs.modal', function () {
 			// 모든 입력 필드 초기화
 			$(this).find('form')[0].reset();
 		});
-
+		
+		// 유효성 검사와 폼전송
 		function addStore() {
-			const addstore = document.getElementById('addStoreForm');
-			addstore.submit();
+			let check = true;
+			const inputs = document.querySelector('#addStoreForm');
+			
+			//inputs.forEach
+			
+			inputs.submit();
 		}
 	</script>
 

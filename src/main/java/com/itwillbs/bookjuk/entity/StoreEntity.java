@@ -26,7 +26,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class StoreEntity {
 
-	// 지점번호
+	// 지점번호 pk
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "storeCode", nullable = false)
@@ -69,4 +69,8 @@ public class StoreEntity {
 	@UpdateTimestamp
 	@Column(name = "storeUpdateDate", nullable = false)
 	private Timestamp storeUpdateDate;
+	
+	// 지점상태(폐점, 운영)
+	@Column(nullable = true)
+	private String storeStatus;
 }

@@ -116,8 +116,8 @@ $(document).ready(function () {
 	let notiEndDate = '';
 	
 	// DataTables의 'draw' 이벤트에 이벤트 리스너 등록
-    $('#noti-table tbody').on('click', 'td span', function () {
-        const cells = $(this).closest('tr').find('td');
+    $('#noti-table tbody').on('click', 'tr', function () {
+        const cells = $(this).find('td');
 
         // 알림 상세 데이터 추출
         $('#noti-detailReceiver').text(cells.eq(1).text());

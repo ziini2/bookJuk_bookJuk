@@ -34,3 +34,23 @@
     margin-left: auto; /* 자동 마진으로 오른쪽으로 이동 */
     margin-right: 0; /* 오른쪽 마진 제거 */
 }
+
+/* 2 */
+.btn-2 {
+  background: #3c955a;;
+  background: linear-gradient(315deg, #63c082 5%, #3c955a 64%);
+  border: none;
+  width: 85px;
+  
+}
+.btn-2:before {
+  height: 0%;
+  width: 2px;
+}
+.btn-2:hover {
+  box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
+              -4px -4px 6px 0 rgba(116, 125, 136, .5), 
+    inset -4px -4px 6px 0 rgba(255,255,255,.2),
+    inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
+}
+

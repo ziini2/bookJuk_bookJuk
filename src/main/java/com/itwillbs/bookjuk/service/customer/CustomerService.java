@@ -1,5 +1,7 @@
 package com.itwillbs.bookjuk.service.customer;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,14 @@ public class CustomerService {
 
 	public Page<StoreEntity> findByStoreNameContaining(Pageable pageable, String search) {
 		return storeRepository.findByStoreNameContaining(pageable, search);
+	}
+
+	public Optional<StoreEntity> findById(Long storeCode) {
+		return storeRepository.findById(storeCode);
+	}
+
+	public void storeUpdate(StoreEntity storeEntity) {
+		storeRepository.save(storeEntity);
 	}
 	
 	

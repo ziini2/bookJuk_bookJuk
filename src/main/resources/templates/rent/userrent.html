@@ -21,7 +21,7 @@
 <body>
   
   <header th:replace="~{/fragment/header :: header2}"></header>
-  <aside th:replace="~{/fragment/sidebar :: sidebar2}"></aside>
+  <div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
   
   <main id="main" class="main">
     <div class="container my-5">
@@ -78,6 +78,10 @@
   </main>
   
   <!-- 공통 스크립트 -->
-  <script th:src="@{/js/common/main.js}"></script>
+	<script th:src="@{/js/common/main.js}"></script>
+  
+<!--  userrent 스크립트-->
+	<script th:src="@{/js/rent/userrent.js}"></script>
+  
 </body>
 </html>

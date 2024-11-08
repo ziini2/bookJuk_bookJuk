@@ -7,8 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.itwillbs.bookjuk.entity.UserContentEntity;
 import com.itwillbs.bookjuk.entity.pay.PaymentEntity;
 import com.itwillbs.bookjuk.service.pay.PaymentService;
+import com.itwillbs.bookjuk.util.SecurityUtil;
 
 @Controller
 public class PayController {
@@ -47,8 +49,9 @@ public class PayController {
 	}
 	
 	@GetMapping("/pay_add")
-	public String payAdd() {
-
+	public String payAdd(Model model) {
+		
+		model.addAttribute("userNum", SecurityUtil.getUserNum());
 		return "/pay/pay_add";
 	}
 }

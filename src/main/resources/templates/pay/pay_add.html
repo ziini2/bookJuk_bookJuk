@@ -50,14 +50,11 @@
                alert("결제 금액을 선택해 주세요.");
                return;
            }
-
-           var priceName = selectedPrice.getAttribute("price-name"); // 상품명
-           var amount = selectedPrice.value; // 결제 금액
-           var userEmail = $("#userEmail").val();
-           var userNum = $("#userNum").val(); // 유저 번호
-		   var userName = $("#userName").val(); // 유저 이름
 		   
-
+           var priceName = selectedPrice.getAttribute("price-name"); // 상품명
+           var amount = selectedPrice.value; // 결제 금액	   
+		   var reqDate = new Date().toISOString(); //날짜
+		   
            IMP.request_pay(
                {
                    pg: "html5_inicis",
@@ -65,11 +62,11 @@
                    merchant_uid: merchant_uid,
                    name: priceName,
                    amount: amount,
-                   buyer_email: userEmail
                },
+			   
                function (rsp) {
                    if (rsp.success) {
-			
+				  console.log("출력완");
                        // 결제 성공 후, 서버로 결제 정보 전송 (POST 방식)
                        $.ajax({
                            url: "/payment/process", // 결제 검증 후 DB에 저장하는 엔드포인트
@@ -79,11 +76,8 @@
                            paymentId: rsp.imp_uid,  // 아임포트 결제 고유 ID
 						   paymentMethod: "card",
                            merchantMid: merchant_uid,  // 주문번호
-                             paidAmount: amount,  // 결제 금액
-                               status: "SUCCESSFUL",  // 결제 상태
-                              //userNum: userNum,  // 유저 번호
-						   userNum: 2,
-						   userName: "박길동",
+                           paidAmount: amount,  // 결제 금액
+                           status: "SUCCESSFUL",  // 결제 상태
                            priceName: priceName,  // 상품명
 						   reqDate: reqDate
                          }),

@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const width = 400;
         const height = Math.min(500, width / 2);
         const outerRadius = height / 2 - 10;
-        const innerRadius = outerRadius * 0.75;
+        const innerRadius = outerRadius * 0.5;
         const color = d3.scaleOrdinal(d3.schemeCategory10);
 
         // SVG 요소 생성

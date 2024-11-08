@@ -67,6 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
 
 
+
     data.forEach(d => {
         d.date = parseTime(d.date);
         d.revenue = +d.revenue;
@@ -123,7 +124,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateGraph('revenue', 'all');
 
     // 이벤트 리스너를 순수 JavaScript로 변경
-    const periodSelect = document.querySelector('select#period');
     const detailOptions = document.querySelectorAll('input[name="detail-option"]');
     const storeSelect = document.querySelector('select#store');
 
@@ -133,7 +133,6 @@ document.addEventListener('DOMContentLoaded', function() {
         updateGraph(selectedYValue, selectedStore);
     }
 
-    periodSelect.addEventListener('change', onInputChange);
     storeSelect.addEventListener('change', onInputChange);
     detailOptions.forEach(option => {
         option.addEventListener('change', onInputChange);

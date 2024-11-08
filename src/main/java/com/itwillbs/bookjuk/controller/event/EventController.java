@@ -3,6 +3,9 @@ package com.itwillbs.bookjuk.controller.event;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,6 +52,13 @@ public class EventController {
 			@RequestParam(required = false) List<String> filter,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "25") int size){
+		Pageable pageable = PageRequest.of(page, size);
+		Page<EventDTO> eventPage;
+		if (searchCriteria.isEmpty() && searchKeyword.isEmpty()) {
+			eventPage = eventService.getAllEvent(pageable);
+	    } else {
+	    	eventPage = eventService.getFilteredEvent(searchCriteria, searchKeyword, filter, pageable);
+	    }
 		return Map.of("1", "2");
 	}
 	

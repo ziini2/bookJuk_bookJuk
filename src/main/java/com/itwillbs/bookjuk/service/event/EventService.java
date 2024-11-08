@@ -2,7 +2,10 @@ package com.itwillbs.bookjuk.service.event;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,6 +76,28 @@ public class EventService {
 					.build();
 			eventConditionRepository.save(eventConditionEntity);
 		}
+	}
+
+	public Page<EventDTO> getFilteredEvent(String searchCriteria, String searchKeyword, List<String> filter,
+			Pageable pageable) {
+		return eventRepository.findByCriteriaAndFilter(searchCriteria, searchKeyword, filter, pageable)
+                .map(this::convertToDto);
+	}
+	
+	private EventDTO convertToDto(EventEntity eventEntity) {
+        return EventDTO.builder()
+        		.userNum(eventEntity.getEventManager().getUserNum())
+        		.eventTitle(eventEntity.getEventTitle())
+        		.eventContent(eventEntity.getEventContent())
+        		.eventStatus(eventEntity.getEventStatus())
+        		.eventType(eventEntity.getEventType())
+        		.startEventDate(eventEntity.getStartEventDate())
+        		.endEventDate(eventEntity.getEndEventDate())
+        		.build();
+    }
+
+	public Page<EventDTO> getAllEvent(Pageable pageable) {
+		return eventRepository.findAll(pageable).map(this::convertToDto);
 	}
 	
 	

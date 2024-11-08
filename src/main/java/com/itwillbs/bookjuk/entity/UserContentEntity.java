@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor 
 @Table(name = "user_content")
 public class UserContentEntity {
-	
+	 
 	//유저번호
 	@Id
     private Long userNum;  // UserEntity의 기본 키와 공유하는 기본 키

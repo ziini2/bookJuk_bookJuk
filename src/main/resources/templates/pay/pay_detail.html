@@ -38,13 +38,13 @@
 </head>
 
 <body>
-	<div th:replace="/fragment/header :: header2"></div>
-	<div th:replace="/fragment/userSidebar :: sidebar3"></div>
+	<div th:replace="~{/fragment/header :: header2}"></div>
+	<div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
 
  
 
   <!-- 사이드바 열었다 닫았다 하는거 -->
-  <script th:src="@{/js/common/userMain.js}"></script>
+  <script th:src="@{/js/common/main.js}"></script>
   <script th:src="@{/js/pay/rentCalender.js}"></script>
 
   <main id="main" class="main">
@@ -252,7 +252,7 @@
 	  }else {
 	    selectAll.checked = false;
 	  }
-
+ 
 	}
 
 	function selectAll(selectAll)  {

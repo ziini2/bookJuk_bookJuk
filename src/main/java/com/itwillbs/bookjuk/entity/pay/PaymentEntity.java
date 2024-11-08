@@ -48,7 +48,7 @@ public class PaymentEntity {
 	//요청일시
 	@Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime reqDate;
-	
+	 
 	//결제수단
 	@Column(nullable = false)
 	private String paymentMethod;

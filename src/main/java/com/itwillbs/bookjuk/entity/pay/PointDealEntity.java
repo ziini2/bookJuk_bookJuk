@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "point_deal")
 public class PointDealEntity {
-	
+	 
 	//포인트거래ID
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

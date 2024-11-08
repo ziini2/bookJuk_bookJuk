@@ -54,10 +54,13 @@ public class PayController {
 
 	Long userPoint = paymentService.getUserPoint(SecurityUtil.getUserNum()); // 서비스에서 포인트 조회
 	String userEmail = paymentService.getUserEmail(SecurityUtil.getUserNum());
-
+	List<PaymentEntity> userPayments = paymentService.getPaymentsByUserNum(SecurityUtil.getUserNum());
+	
 	model.addAttribute("userNum", SecurityUtil.getUserNum());
 	model.addAttribute("userPoint", userPoint);
 	model.addAttribute("userEmail", userEmail);
+	model.addAttribute("userPayments", userPayments); 
+
 	return "/pay/pay_add";
 	}
 	

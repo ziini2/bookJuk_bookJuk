@@ -143,17 +143,16 @@
 		         </thead>
 		                  
 				<tbody>
-					
-				<tr th:each="payment : ${payments}">
-			        <td th:text="${payment.userContentEntity.userNum}"></td>
-					<td th:text="${payment.userContentEntity.userEntity.userName}"></td>
-					<td th:text="${payment.paymentStatus}"></td>
-			        <td th:text="${payment.paymentMethod}"></td>
-			        <td th:text="${payment.paymentPrice}"></td>
-					<td th:text="${payment.priceName}"></td>
-					<td th:text="${payment.reqDate}"></td>
-					<td th:text="${payment.paymentId}"></td>
-			    </tr>
+					<tr th:each="payment : ${payments}">
+				        <td th:text="${payment.userContentEntity.userNum}"></td>
+						<td th:text="${payment.userContentEntity.userEntity.userName}"></td>
+						<td th:text="${payment.paymentStatus}"></td>
+				        <td th:text="${payment.paymentMethod}"></td>
+				        <td th:text="${payment.paymentPrice}"></td>
+						<td th:text="${payment.priceName}"></td>
+						<td th:text="${payment.reqDate}"></td>
+						<td th:text="${payment.paymentId}"></td>
+				    </tr>
 				</tbody>
 		     </table>
 		     <!-- 테이블 끝 -->

@@ -35,9 +35,15 @@ public class PaymentService {
 	 private final PaymentRepository paymentRepository;
 	 private final UserContentRepository userContentRepository;
 	 private final UserRepository userRepository;
-	 // 결제 정보를 DB에서 조회하는 메서드
+	 
+	//모든 결제 정보를 DB에서 조회하는 메서드
     public List<PaymentEntity> getAllPayments() {
         return paymentRepository.findAllByOrderByReqDateDesc();  //모든 결제 정보를 최신순으로 반환
+    }
+    
+    public List<PaymentEntity> getPaymentsByUserNum(Long userNum) {
+    //로그인한 유저의 결제 내역만 가져오기(유저번호 기준으로)
+    return paymentRepository.findByUserContentEntity_UserNumOrderByReqDateDesc(userNum);
     }
     
 	@Autowired

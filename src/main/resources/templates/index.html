@@ -36,10 +36,10 @@
 </head>
 
 <body>
-<div th:replace="~{/fragment/header :: header2}"></div>
+<div th:replace="~{fragment/header :: header2}"></div>
 
 <main class="main-container">
-    <div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
+    <div th:replace="~{fragment/sidebar :: sidebar2}"></div>
     <section class="dashboard-container">
         <div class="banners">
             <div class="banner">
@@ -115,10 +115,10 @@
                             매출항목별 지점 매출
                         </div>
                         <div class="radio-buttons">
-                            <input type="radio" name="sale-option" id="rental" value="대여료" checked>
-                            <label for="rental">대여료</label>
-                            <input type="radio" name="sale-option" id="lateFee" value="연체료">
-                            <label for="lateFee">연체료</label>
+                            <input type="radio" name="sale-option" id="rentalBranch" value="대여료" checked>
+                            <label for="rentalBranch">대여료</label>
+                            <input type="radio" name="sale-option" id="lateFeeBranch" value="연체료">
+                            <label for="lateFeeBranch">연체료</label>
                         </div>
                         <div class="revenue-pie"></div>
                     </div>

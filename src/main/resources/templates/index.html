@@ -36,10 +36,10 @@
 </head>
 
 <body>
-<div th:replace="~{/fragment/header :: header2}"></div>
+<div th:replace="~{fragment/header :: header2}"></div>
 
 <main class="main-container">
-    <div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
+    <div th:replace="~{fragment/sidebar :: sidebar2}"></div>
     <section class="dashboard-container">
         <div class="banners">
             <div class="banner">
@@ -91,9 +91,9 @@
                         <label for="revenue">매출</label>
                         <input type="radio" name="detail-option" id="rental" value="rental">
                         <label for="rental">대여건수</label>
-                        <input type="radio" name="detail-option" id="new-user" value="new-user">
+                        <input type="radio" name="detail-option" id="new-user" value="newUser">
                         <label for="new-user">신규 가입자</label>
-                        <input type="radio" name="detail-option" id="total-user" value="total-user">
+                        <input type="radio" name="detail-option" id="total-user" value="totalUser">
                         <label for="total-user">누적 가입자</label>
                     </div>
                     <!-- 지점 선택 -->
@@ -115,10 +115,10 @@
                             매출항목별 지점 매출
                         </div>
                         <div class="radio-buttons">
-                            <input type="radio" name="sale-option" id="rental" value="대여료" checked>
-                            <label for="rental">대여료</label>
-                            <input type="radio" name="sale-option" id="lateFee" value="연체료">
-                            <label for="lateFee">연체료</label>
+                            <input type="radio" name="sale-option" id="rentalBranch" value="대여료" checked>
+                            <label for="rentalBranch">대여료</label>
+                            <input type="radio" name="sale-option" id="lateFeeBranch" value="연체료">
+                            <label for="lateFeeBranch">연체료</label>
                         </div>
                         <div class="revenue-pie"></div>
                     </div>
@@ -185,12 +185,12 @@
 
 <!-- 챠트 모음 -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
-<script src="/js/statistics/totalGraph.js"></script>
-<script src="/js/statistics/revenuePie.js"></script>
-<script src="/js/statistics/accumulationBar.js"></script>
-<script src="/js/statistics/customerBar.js"></script>
-<script src="/js/statistics/delayBar.js"></script>
-<script src="/js/statistics/dailyStatistics.js"></script>
+<script th:src="@{/js/statistics/totalGraph.js}"></script>
+<script th:src="@{/js/statistics/revenuePie.js}"></script>
+<script th:src="@{/js/statistics/accumulationBar.js}"></script>
+<script th:src="@{/js/statistics/customerBar.js}"></script>
+<script th:src="@{/js/statistics/delayBar.js}"></script>
+<script th:src="@{/js/statistics/dailyStatistics.js}"></script>
 </body>
 
 </html>

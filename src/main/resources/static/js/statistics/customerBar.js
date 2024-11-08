@@ -72,21 +72,27 @@ document.addEventListener('DOMContentLoaded', function () {
             .data(dataset, d => d.category);
 
         // 기존 막대 업데이트
-        bars
+        bars.transition()
+            .duration(1000)
             .attr("x", d => x(d.category))
             .attr("y", d => y(d.count))
             .attr("height", d => y(0) - y(d.count))
             .attr("width", x.bandwidth());
+
 
         // 새로운 막대 추가
         bars.enter()
             .append("rect")
             .attr("class", "bar")
             .attr("x", d => x(d.category))
-            .attr("y", d => y(d.count))
-            .attr("height", d => y(0) - y(d.count))
+            .attr("y", y(0)) // 초기 y 위치를 차트의 맨 아래로 설정
+            .attr("height", 0) // 초기 높이를 0으로 설정
             .attr("width", x.bandwidth())
-            .attr("fill", (d, i) => color(i));
+            .attr("fill", (d, i) => color(i))
+            .transition() // 추가된 막대에 애니메이션 적용
+            .duration(1000)
+            .attr("y", d => y(d.count)) // 목표 y 위치로 이동
+            .attr("height", d => y(0) - y(d.count)); // 최종 높이로 설정
 
         // 제거된 막대
         bars.exit().remove();

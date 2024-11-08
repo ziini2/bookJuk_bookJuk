@@ -51,7 +51,7 @@ public class SearchService {
 
         if ("bookName".equals(criteria)) {
             // bookName을 기준으로 BooksEntity에서 검색
-            books = booksRepository.findByStoreNameContainingIgnoreCase(keyword);
+            books = booksRepository.findByStoreCode(null);
         } else if ("bookNum".equals(criteria)) {
             try {
                 Long bookNum = Long.parseLong(keyword);
@@ -67,7 +67,7 @@ public class SearchService {
         return books.stream()
                 .map(book -> {
                     BookInfoEntity bookInfo = bookInfoRepository.findById(book.getBookNum()).orElse(null);
-                    StoreEntity store = storeRepository.findByStoreName(book.getStoreName());
+                    StoreEntity store = storeRepository.findById(book.getStoreCode()).orElse(null);
                     String bookName = (bookInfo != null) ? bookInfo.getBookName() : "책 정보 없음";
                     String storeName = (store != null) ? store.getStoreName() : "지점 정보 없음";
 

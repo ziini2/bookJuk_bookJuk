@@ -1,3 +1,4 @@
+
 package com.itwillbs.bookjuk.dto;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,6 @@ public class PaymentDTO {
     private PaymentStatus status; //결제상태
     
     private Long userNum; //유저번호
-    private String userName; //유저이름
     
     private String priceName; //결제품목
     private LocalDateTime reqDate; //요청일시
@@ -23,15 +23,14 @@ public class PaymentDTO {
 		// TODO Auto-generated constructor stub
 	}
     
-    public PaymentDTO(String merchantMid, String paymentId, Long paidAmount, String paymentMethod, PaymentStatus status, Long userNum, String userName, String priceName) {
+    public PaymentDTO(String merchantMid, String paymentId, Long paidAmount, String paymentMethod, PaymentStatus status, Long userNum, String priceName) {
         this.merchantMid = merchantMid;
         this.paymentId = paymentId;
         this.paymentMethod = paymentMethod;
         this.paidAmount = paidAmount;
         this.status = status;
-        this.userNum = userNum;
-        this.userName = userName;
         this.priceName = priceName;
+        this.userNum = userNum;
     }
 
 	public Long getUserNum() {
@@ -42,14 +41,6 @@ public class PaymentDTO {
 		this.userNum = userNum;
 	}
 
-    public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	
 	public String getPriceName() {
 		return priceName;
 	}
@@ -102,8 +93,8 @@ public class PaymentDTO {
 		return reqDate;
 	}
 
-	public void setReq_date(LocalDateTime req_date) {
-		this.reqDate = req_date;
+	public void setReqDate(LocalDateTime reqDate) {
+		this.reqDate = reqDate;
 	}
     
 	  // toString method
@@ -119,25 +110,5 @@ public class PaymentDTO {
 				", priceName='" + priceName + '\'' +
 				'}';
 	}
-//
-// // equals and hashCode methods
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        PaymentDTO that = (PaymentDTO) o;
-//        return paidAmount == that.paidAmount &&
-//                Objects.equals(merchantMid, that.merchantMid) &&
-//                Objects.equals(paymentId, that.paymentId) &&
-//              //  status == that.status &&
-//                Objects.equals(priceName, that.priceName) &&
-//                Objects.equals(userNum, that.userNum);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//    	return Objects.hash(merchantMid, paymentId, paidAmount, priceName, userNum);
-//    	// return Objects.hash(merchantMid, paymentId, paidAmount, status, priceName, userNum);
-//    }
 
 }

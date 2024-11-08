@@ -50,6 +50,10 @@ public class RentEntity {
 	@Column(nullable = false)
 	private String bookName;
 	
+	// 지점이름
+	@Column(name = "storeName", nullable = false)
+	private String storeName;
+	
 	//대여일 2024-10-10
 	@CreationTimestamp
 	private Timestamp rentDate;

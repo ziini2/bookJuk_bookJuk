@@ -75,7 +75,17 @@ document.getElementById('rentalForm').addEventListener('reset', function() {
 
 // 검색
 document.addEventListener("DOMContentLoaded", function() {
-    function performSearch(page = 1) {
+    
+	// 모달이 닫힐 때 입력 필드 초기화
+	    const rentalModal = document.getElementById("rentalModal");
+	    rentalModal.addEventListener("hidden.bs.modal", function () {
+	        const rentalForm = document.getElementById("rentalForm");
+	        rentalForm.reset(); // 폼 초기화
+	        rentalDateInput.value = today; // 대여일을 현재 날짜로 다시 설정
+	    });
+	
+	//페이징처리
+	function performSearch(page = 1) {
         const criteria = document.getElementById("criteria").value;
         const keyword = document.getElementById("keyword").value;
         const size = 10; // 페이지당 결과 개수
@@ -169,5 +179,40 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault(); // 기본 폼 제출 방지
         performSearch(1); // 첫 페이지부터 검색
     });
+});
+
+
+//대여등록
+document.getElementById("rentalForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // 기본 제출 방지
+
+    const rentData = {
+        userNum: document.getElementById("bookNum").value,
+        bookNum: document.getElementById("bookNum").value,
+        userId: document.getElementById("userId").value,
+        userName: document.getElementById("userName").value,
+        userPhone: document.getElementById("userPhone").value,
+        bookName: document.getElementById("bookName").value,
+        storeName: document.getElementById("storeName").value,
+        rentDate: document.getElementById("rentalDate").value,
+        returnInfo: "대여중"
+    };
+
+    fetch("/admin/rent/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(rentData)
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("대여 등록 성공");
+            location.reload(); // 페이지 새로고침
+        } else {
+            alert("대여 등록 실패");
+        }
+    })
+    .catch(error => console.error("대여 등록 중 오류 발생:", error));
 });
 

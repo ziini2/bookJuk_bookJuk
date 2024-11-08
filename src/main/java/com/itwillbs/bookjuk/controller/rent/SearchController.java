@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.itwillbs.bookjuk.domain.rent.SearchResultDTO;
 import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.service.rent.SearchService;
 
@@ -27,4 +28,12 @@ public class SearchController {
             @RequestParam("keyword") String keyword) {
         return searchService.searchUsers(criteria, keyword);
     }
+    
+    @GetMapping("/admin/searchbook")
+    public List<SearchResultDTO> searchBooks(
+            @RequestParam("criteria") String criteria,
+            @RequestParam("keyword") String keyword) {
+        return searchService.searchBooks(criteria, keyword);
+    }
+    
 }

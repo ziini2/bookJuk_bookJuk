@@ -3,6 +3,7 @@ package com.itwillbs.bookjuk.service.rent;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,8 +12,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
 import com.itwillbs.bookjuk.entity.RentEntity;
-import com.itwillbs.bookjuk.entity.UserEntity;
+import com.itwillbs.bookjuk.entity.books.BooksEntity;
+import com.itwillbs.bookjuk.entity.pay.PointDeal;
+import com.itwillbs.bookjuk.repository.BooksRepository;
+import com.itwillbs.bookjuk.repository.PointDealRepository;
 import com.itwillbs.bookjuk.repository.RentRepository;
 
 import jakarta.annotation.PostConstruct;
@@ -25,6 +30,10 @@ import lombok.extern.java.Log;
 public class RentService {
 	
 	private final RentRepository rentRepository;
+	
+	private final PointDealRepository pointDealRepository;
+	
+	private final BooksRepository booksRepository;
 	
 	public Page<RentEntity> getRentList(Pageable pageable) {
 		log.info("RentService getRentList()");
@@ -105,6 +114,32 @@ public class RentService {
 	            return Page.empty(pageable); // 조건이 맞지 않으면 빈 페이지 반환
 	    }
 	}
+	
+	//대여등록
+	public void registerRent(RentEntity rentEntity) {
+	    log.info("대여 등록 시작");
+
+	    // RentEntity 저장
+	    rentRepository.save(rentEntity);
+
+	    // BooksEntity에서 rentMoney 가져오기
+	    Optional<BooksEntity> bookOpt = booksRepository.findById(rentEntity.getBookNum());
+	    if (bookOpt.isEmpty()) {
+	        throw new IllegalArgumentException("존재하지 않는 책 번호입니다: " + rentEntity.getBookNum());
+	    }
+	    Long rentMoney = bookOpt.get().getRentMoney();
+
+	    // PointDeal 생성 및 저장
+	    PointDeal pointDeal = PointDeal.builder()
+	            .pointPrice(rentMoney)
+	            .pointPayStatus(PointPayStatus.SUCCESSFUL)
+	            .reqDate(LocalDateTime.now())
+	            .build();
+	    pointDealRepository.save(pointDeal);
+
+	    log.info("대여 등록 완료");
+	}
+
 	
 	
 }

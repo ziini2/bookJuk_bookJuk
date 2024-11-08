@@ -126,5 +126,17 @@ public class RentController {
 		return "/rent/booksearch";
 	}
 	
+	//대여등록
+	@PostMapping("/admin/rent/register")
+	public ResponseEntity<String> registerRent(@RequestBody RentEntity rentEntity) {
+		log.info("RentController 대여등록()");
+	    try {
+	        rentService.registerRent(rentEntity);
+	        return ResponseEntity.ok("대여 등록 성공");
+	    } catch (Exception e) {
+	        log.error("대여 등록 실패", e);
+	        return ResponseEntity.status(500).body("대여 등록 실패");
+	    }
+	}
 	
 }

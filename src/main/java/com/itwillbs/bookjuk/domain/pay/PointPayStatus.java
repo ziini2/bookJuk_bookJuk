@@ -1,5 +1,5 @@
 package com.itwillbs.bookjuk.domain.pay;
 
 public enum PointPayStatus {
-	SUCCESSFUL, FAIL, CANCEL
+	 SUCCESSFUL, FAIL, CANCEL
 }

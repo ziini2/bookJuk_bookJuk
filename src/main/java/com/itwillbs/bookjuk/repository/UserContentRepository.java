@@ -11,5 +11,5 @@ import java.util.List;
 public interface UserContentRepository extends JpaRepository<UserContentEntity, Long> {
     //UserEntity의 userNum을 기준으로 UserContentEntity를 찾는 메서드
 	UserContentEntity findByUserNum(Long userNum);
-	
+	 
 }

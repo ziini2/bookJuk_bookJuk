@@ -95,8 +95,8 @@ $(document).ready(function () {
 	let couponEndDate = '';
 	
 	// DataTables의 'draw' 이벤트에 이벤트 리스너 등록
-    $('#coupon-table tbody').on('click', 'td span', function () {
-        const cells = $(this).closest('tr').find('td');
+    $('#coupon-table tbody').on('click', 'tr', function () {
+        const cells = $(this).find('td');
 
         // 쿠폰 상세 데이터 추출
         $('#coupon-detailTitle').text(cells.eq(1).text());

@@ -53,8 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // y축 추가
     svg.append("g")
         .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y).ticks(null, "s"))
-        .call(g => g.select(".domain").remove());
+        .call(d3.axisLeft(y).ticks(null, "s"));
 
     // 누적 막대 그래프 추가
     svg.append("g")
@@ -66,10 +65,14 @@ document.addEventListener('DOMContentLoaded', function () {
         .data(d => d)
         .join("rect")
         .attr("x", d => x(d.data.year))
-        .attr("y", d => y(d[1]))
-        .attr("height", d => y(d[0]) - y(d[1]))
+        .attr("y", height - margin.bottom) // 초기 y 위치를 차트의 맨 아래로 설정
+        .attr("height", 0) // 초기 높이를 0으로 설정
         .attr("width", x.bandwidth())
-        .append("title")
+        .transition() // 애니메이션 추가
+        .duration(1000) // 1초 동안 애니메이션 실행
+        .attr("y", d => y(d[1])) // 목표 y 위치로 설정
+        .attr("height", d => y(d[0]) - y(d[1])) // 최종 높이로 설정
+        .select("title")
         .text(d => `${d.data.year}: ${d3.format(",")(d[1] - d[0])}`);
 
     // 범례 추가

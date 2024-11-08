@@ -1,54 +1,50 @@
 :root {
-  scroll-behavior: smooth;
+	scroll-behavior: smooth;
 }
 
 body {
-  font-family: "Open Sans", sans-serif;
-  background:#fcfef8;
-  color: #444444;
+	font-family: "Open Sans", sans-serif;
+	background: #fcfef8;
+	color: #444444;
 }
 
 a {
-  color: #3c955a;
-  text-decoration: none;
+	color: #3c955a;
+	text-decoration: none;
 }
 
 a:hover {
-  color: #c5e774;
-  text-decoration: none;
+	color: #c5e774;
+	text-decoration: none;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Nunito", sans-serif;
-}
-
-body.toggle-sidebar1 .sidebar {
-    display: none; /* 사이드바가 닫힐 때 */
-}
-
-/* 사이드바가 열릴 때의 스타일을 추가하세요 */
-body:not(.toggle-sidebar1) .sidebar {
-    display: block; /* 사이드바가 열릴 때 */
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Nunito", sans-serif;
 }
 
 /*--------------------------------------------------------------
 # Main
 --------------------------------------------------------------*/
 #main {
-  margin-top: 60px;
-  padding: 20px 30px;
-  transition: all 0.3s;
+	margin-top: 60px;
+	padding: 20px 30px;
+	transition: all 0.3s;
 }
 
-@media (max-width: 1199px) {
-  #main {
-    padding: 20px;
-  }
+@media ( max-width : 1199px) {
+	#main {
+		padding: 20px;
+	}
+}
+
+
+body.toggle-sidebar .sidebar {
+    display: none; /* 사이드바가 닫힐 때 */
+}
+
+/* 사이드바가 열릴 때의 스타일을 추가하세요 */
+body:not(.toggle-sidebar) .sidebar {
+    display: block; /* 사이드바가 열릴 때 */
 }
 
 /*--------------------------------------------------------------
@@ -56,238 +52,305 @@ body:not(.toggle-sidebar1) .sidebar {
 --------------------------------------------------------------*/
 /* 기본 로고 스타일 */
 .logo {
-  line-height: 1; /* 텍스트의 세로 정렬을 위한 설정 (이미지에 영향을 줄 수 있음) */
-  display: flex;  /* Flexbox를 사용하여 세로 정렬을 더 명확하게 */
-  align-items: center; /* 이미지가 세로로 중앙에 정렬되도록 설정 */
-}
-
-/* 큰 화면에서 로고 크기 조정 */
-@media (min-width: 1200px) {
-  .logo {
-    width: 180px;  /* 화면 크기에 맞게 고정된 크기 조정 */
-  }
-}
-
-/* 작은 화면에서는 로고 크기를 줄이도록 설정 */
-@media (max-width: 991px) {
-  .logo {
-    width: 100px;  /* 작은 화면에서는 로고 크기 축소 */
-  }
+	line-height: 1; /* 텍스트의 세로 정렬을 위한 설정 (이미지에 영향을 줄 수 있음) */
+	display: flex; /* Flexbox를 사용하여 세로 정렬을 더 명확하게 */
+	align-items: center; /* 이미지가 세로로 중앙에 정렬되도록 설정 */
 }
 
 /* 로고 이미지 크기 조정 */
 .logo img {
-  max-width: 80%; /* 부모 요소의 너비에 맞춰 크기 조정 */
-  height: auto;    /* 비율 유지하면서 자동으로 높이 조정 */
+	width: 144px; /* 부모 요소의 너비에 맞춰 크기 조정 */
+	height: 43px; /* 비율 유지하면서 자동으로 높이 조정 */
 }
 
 .header {
-  transition: all 0.5s;
-  z-index: 997;
-  height: 60px;
-  box-shadow: 0px 2px 20px rgb(242, 250, 226);
-  background-color: #fff;
-  padding-left: 20px;
-
+	transition: all 0.5s;
+	z-index: 997;
+	height: 60px;
+	box-shadow: 0px 2px 20px rgb(242, 250, 226);
+	background-color: #fff;
+	padding-left: 20px;
 }
 
 .header .toggle-sidebar-btn {
-  font-size: 32px;
-  padding-left: 10px;
-  cursor: pointer;
-  color: rgb(99, 192, 130);
+	font-size: 32px;
+	padding-left: 10px;
+	cursor: pointer;
+	color: rgb(99, 192, 130);
 }
 
 .header .toggle-sidebar-btn:hover {
-  font-size: 32px;
-  padding-left: 10px;
-  cursor: pointer;
-  color: #c5e774;;
+	font-size: 32px;
+	padding-left: 10px;
+	cursor: pointer;
+	color: #c5e774;;
+}
+
+/* 버튼 */
+.frame {
+	width: 90%;
+	margin: 40px auto;
+	text-align: center;
+}
+
+button {
+	margin: 10px;
+}
+
+.custom-btn {
+	width: 130px;
+	height: 40px;
+	color: #fff;
+	border-radius: 5px;
+	padding: 10px 25px;
+	font-family: 'Lato', sans-serif;
+	font-weight: 500;
+	background: transparent;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	position: relative;
+	display: inline-block;
+	box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5), 7px 7px 20px
+		0px rgba(0, 0, 0, .1), 4px 4px 5px 0px rgba(0, 0, 0, .1);
+	outline: none;
+}
+
+/* 13 */
+.btn-13 {
+	background-color: #3c955a;
+	background-image: linear-gradient(315deg, #63c082 5%, #3c955a 64%);
+	border: none;
+	z-index: 1;
+}
+
+.btn-13:after {
+	position: absolute;
+	content: "";
+	width: 100%;
+	height: 0;
+	bottom: 0;
+	left: 0;
+	z-index: -1;
+	border-radius: 5px;
+	background-color: #63c082;
+	background-image: linear-gradient(315deg, #4dccc6 0%, #c5e774 74%);
+	box-shadow: -7px -7px 20px 0px #fff9, -4px -4px 5px 0px #fff9, 7px 7px
+		20px 0px #0002, 4px 4px 5px 0px #0001;
+	transition: all 0.3s ease;
+}
+
+.btn-13:hover {
+	color: #fff;
+}
+
+.btn-13:hover:after {
+	top: 0;
+	height: 100%;
+}
+
+.btn-13:active {
+	top: 2px;
+}
+
+/* 16 */
+.btn-16 {
+	border: none;
+	color: #000;
+	margin : 5px;
+}
+
+.btn-16:after {
+	position: absolute;
+	content: "";
+	width: 0;
+	height: 100%;
+	top: 0;
+	left: 0;
+	direction: rtl;
+	z-index: -1;
+	box-shadow: -7px -7px 20px 0px #fff9, -4px -4px 5px 0px #fff9, 7px 7px
+		20px 0px #0002, 4px 4px 5px 0px #0001;
+	transition: all 0.3s ease;
+}
+
+.btn-16:hover {
+	color: #000;
+}
+
+.btn-16:hover:after {
+	left: auto;
+	right: 0;
+	width: 100%;
+}
+
+.btn-16:active {
+	top: 2px;
 }
 
 /*--------------------------------------------------------------
 # Sidebar
 --------------------------------------------------------------*/
-.sidebar1 {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  bottom: 0;
-  width: 300px;
-  z-index: 996;
-  transition: all 0.3s;
-  padding: 20px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgb(167, 219, 45) transparent;
-  background-color: #fff;
+.sidebar {
+	position: fixed;
+	top: 60px;
+	left: 0;
+	bottom: 0;
+	width: 300px;
+	z-index: 996;
+	transition: all 0.3s;
+	padding: 20px;
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: rgb(167, 219, 45) transparent;
+	background-color: #fff;
 }
 
-@media (max-width: 1199px) {
-  .sidebar1 {
-    left: -300px;
-  }
+@media ( max-width : 1199px) {
+	.sidebar {
+		left: -300px;
+	}
 }
 
-.sidebar1::-webkit-scrollbar {
-  width: 5px;
-  height: 8px;
-  background-color: #fff;
+.sidebar::-webkit-scrollbar {
+	width: 5px;
+	height: 8px;
+	background-color: #fff;
 }
 
-.sidebar1::-webkit-scrollbar-thumb {
-  background-color: rgb(152, 226, 61);
+.sidebar::-webkit-scrollbar-thumb {
+	background-color: rgb(152, 226, 61);
 }
 
-@media (min-width: 1200px) {
-  #main {
-    margin-left: 300px;
-  }
+@media ( min-width : 1200px) {
+	#main {
+		margin-left: 300px;
+	}
 }
 
-@media (max-width: 1199px) {
-  .toggle-sidebar1 .sidebar1 {
-    left: 0;
-  }
+@media ( max-width : 1199px) {
+	.toggle-sidebar .sidebar {
+		left: 0;
+	}
 }
 
-@media (min-width: 1200px) {
-  .toggle-sidebar1 #main {
-    margin-left: 0;
-  }
-
-  .toggle-sidebar1 .sidebar1 {
-    left: -300px;
-  }
+@media ( min-width : 1200px) {
+	.toggle-sidebar #main {
+		margin-left: 0;
+	}
+	.toggle-sidebar .sidebar {
+		left: -300px;
+	}
 }
 
-.sidebar1-nav {
-  padding: 0;
-  margin: 0;
-  list-style: none;
+.sidebar-nav {
+	padding: 0;
+	margin: 0;
+	list-style: none;
 }
 
-.sidebar1-nav li {
-  padding: 0;
-  margin: 0;
-  list-style: none;
+.sidebar-nav li {
+	padding: 0;
+	margin: 0;
+	list-style: none;
 }
 
-.sidebar1-nav .nav-item1 {
-  margin-bottom: 5px;
+.sidebar-nav .nav-item {
+	margin-bottom: 5px;
 }
 
-.sidebar1-nav .nav-heading {
-  font-size: 11px;
-  text-transform: uppercase;
-  color: rgb(60, 149, 90);
-  font-weight: 600;
-  margin: 10px 0 5px 15px;
+.sidebar-nav .nav-heading {
+	font-size: 11px;
+	text-transform: uppercase;
+	color: rgb #3c955a;
+	font-weight: 600;
+	margin: 10px 0 5px 15px;
 }
 
-.sidebar1-nav .nav-link1 {
-  display: flex;
-  align-items: center;
-  font-size: 15px;
-  font-weight: 600;
-  color: #3c955a;
-  background: #fff;
-  padding: 10px 15px;
-  border-radius: 4px;
+.sidebar-nav .nav-link {
+	display: flex;
+	align-items: center;
+	font-size: 15px;
+	font-weight: 600;
+	color: #3c955a;
+	background: #fff;
+	padding: 10px 15px;
+	border-radius: 4px;
 }
 
-.sidebar1-nav .nav-link1 i {
-  font-size: 16px;
-  margin-right: 10px;
-  color: #63c082;
+.sidebar-nav .nav-link i {
+	font-size: 16px;
+	margin-right: 10px;
+	color: #63c082;
 }
 
-.sidebar1-nav .nav-link1.collapsed {
-  color: #3c955a;
-  background: #fff;
+.sidebar-nav .nav-link.collapsed {
+	color: #3c955a;
+	background: #fff;
 }
 
-.sidebar1-nav .nav-link1.collapsed i {
-  color: #c5e774;
-}
-
-.sidebar1-nav .nav-link1:hover {
-  color: #c5e774;
-  background: #fff;
-}
-
-.sidebar1-nav .nav-link1:hover i {
-  color: #c5e774;
-}
-
-.sidebar-nav1 .nav-link1 .ri-arrow-down-s-fill {
-  margin-right: 0;
-  transition: transform 0.2s ease-in-out;
-}
-
-.sidebar-nav1 .nav-link1:not(.collapsed) .ri-arrow-down-s-fill {
-  transform: rotate(180deg);
-}
-
-.sidebar-nav1 .nav-content1 {
-  padding: 5px 0 0 0;
-  margin: 0;
-  list-style: none;
-}
-
-.sidebar-nav1 .nav-content1 a {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  font-weight: 600;
-  color: #3c955a;
-  padding: 10px 0 10px 40px;
-  transition: 0.3s;
-}
-
-.sidebar-nav1 .nav-content1 a i {
-  font-size: 6px;
-  margin-right: 8px;
-  line-height: 0;
-  border-radius: 50%;
-}
-
-.sidebar-nav1 .nav-content1 a:hover,
-.sidebar-nav1 .nav-content1 a.active {
+.sidebar-nav .nav-link.collapsed i {
 	color: #c5e774;
 }
 
-.sidebar-nav1 .nav-content1 a.active i {
-  background-color: #e8f1a5;
+.sidebar-nav .nav-link:hover {
+	color: #c5e774;
+	background: #fff;
+}
+
+.sidebar-nav .nav-link:hover i {
+	color: #c5e774;
+}
+
+.sidebar-nav .nav-link .ri-arrow-down-s-fill {
+	margin-right: 0;
+	transition: transform 0.2s ease-in-out;
+}
+
+.sidebar-nav .nav-link:not(.collapsed) .ri-arrow-down-s-fill {
+	transform: rotate(180deg);
+}
+
+.sidebar-nav .nav-content {
+	padding: 5px 0 0 0;
+	margin: 0;
+	list-style: none;
+}
+
+.sidebar-nav .nav-content a {
+	display: flex;
+	align-items: center;
+	font-size: 14px;
+	font-weight: 600;
+	color: #3c955a;
+	padding: 10px 0 10px 40px;
+	transition: 0.3s;
+}
+
+.sidebar-nav .nav-content a i {
+	font-size: 6px;
+	margin-right: 8px;
+	line-height: 0;
+	border-radius: 50%;
+}
+
+.sidebar-nav .nav-content a:hover, .sidebar-nav .nav-content a.active {
+	color: #c5e774;
+}
+
+.sidebar-nav .nav-content a.active i {
+	background-color: #e8f1a5;
 }
 
 /* 사이드바 메뉴 클릭 시 포커스 및 활성 상태에서 배경과 테두리를 제거 */
-.sidebar-nav1 .nav-link1:hover,
-.sidebar-nav1 .nav-link1:focus, 
-.sidebar-nav1 .nav-link1:active, 
-.sidebar-nav1 .nav-link1:visited {
-  outline: none; /* 포커스 outline 제거 */
-  background-color: transparent; /* 배경색 투명 */
-  box-shadow: none; /* 박스 그림자 제거 */
+.sidebar-nav .nav-link:hover, .sidebar-nav .nav-link:focus, .sidebar-nav .nav-link:active,
+	.sidebar-nav .nav-link:visited {
+	outline: none; /* 포커스 outline 제거 */
+	background-color: transparent; /* 배경색 투명 */
+	box-shadow: none; /* 박스 그림자 제거 */
 }
 
 /* 메인페이지 css 배너 슬라이드 */
 #recommendCarousel {
 max-width: 600px; /* 원하는 너비로 설정 */
 margin: 0 auto; /* 중앙 정렬 */
-}
-
-/* hover 효과 */
-.btn-outline-success1:hover {
-background-color: #c5e774;
-color: #fff;
-border-color: #c5e774;
-transition: background-color 0.3s ease;
-}
-
-/* active (클릭) 효과 */
-.btn-outline-success1:active {
-background-color: #c5e774;
-transform: scale(0.98); /* 살짝 눌린 느낌 */
-transition: background-color 0.1s ease, transform 0.1s ease;
 }

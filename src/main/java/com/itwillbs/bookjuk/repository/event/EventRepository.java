@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.itwillbs.bookjuk.entity.event.EventEntity;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 
 public interface EventRepository extends JpaRepository<EventEntity, Integer> {
 

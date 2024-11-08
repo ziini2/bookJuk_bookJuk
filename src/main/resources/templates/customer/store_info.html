@@ -74,7 +74,7 @@
 				</div>
 				<div class="col-3">
 					<div class="p-3 border bg-light">
-						지역<br><span th:text="${storeInfo.storeLocation}"></span>
+						지역<br><span th:text="${storeInfo.storeLocation}" id="storelocal"></span>
 					</div>
 				</div>
 				<div class="col-3">
@@ -194,22 +194,51 @@
 	<script th:src="@{/js/common/main.js}"></script>
 	<link th:href="@{/css/customer/customer.css}" rel="stylesheet">
 
+	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<!--	<script type="text/javascript"-->
+	<!--		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f6430a7993b55e483c7bd0e3602ce298"></script>-->
 	<script type="text/javascript"
-		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=f6430a7993b55e483c7bd0e3602ce298"></script>
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f6430a7993b55e483c7bd0e3602ce298&libraries=services"></script>
+
 	<script>
-		var container = document.getElementById('map');
-		var options = {
-			center: new kakao.maps.LatLng(33.450701, 126.570667),
-			level: 3
-		};
 
-		var map = new kakao.maps.Map(container, options);
-		var geocoder = new daum.maps.services.Geocoder();
+		// 주소를 가져와서
+		var data = document.getElementById('store-location').value;
+		//console.log(data);
 
-		var marker = new daum.maps.Marker({
-			position: new daum.maps.LatLng(37.537187, 127.005476),
-			map: map
+		//주소-좌표 변환 객체
+		var geocoder = new kakao.maps.services.Geocoder();
+		//console.log(geocoder);
+
+		// 주소 검색해서 좌표가져옴
+		geocoder.addressSearch(data, function (results, status) {
+			// 정상적으로 검색이 완료됐으면
+			if (status === daum.maps.services.Status.OK) {
+
+				var result = results[0]; //첫번째 결과의 값을 활용
+
+				// 해당 주소에 대한 좌표를 받아서
+				var coords = new kakao.maps.LatLng(result.y, result.x);
+				
+				// 지도에 넣어줌
+				var mapContainer = document.getElementById('map'), // 지도 div id
+					mapOption = {
+						center: coords, // 받아온 좌표
+						level: 2 // 지도의 확대 레벨
+					};
+				// 지도 생성
+				var map = new kakao.maps.Map(mapContainer, mapOption);
+
+				// 좌표에 마커 생성
+				var marker = new kakao.maps.Marker({
+					position: coords
+				});
+
+				// 마커가 지도 위에 표시되도록 설정
+				marker.setMap(map);
+			}
 		});
+
 	</script>
 
 	<script>

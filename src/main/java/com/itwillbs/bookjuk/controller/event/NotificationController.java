@@ -1,7 +1,5 @@
 package com.itwillbs.bookjuk.controller.event;
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,18 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 public class NotificationController {
 
 	private final NotificationService notiService;
-	
-	@GetMapping("/{recipient}")
-	@ResponseBody
-	public List<NotificationEntity> getNoti(@PathVariable UserEntity recipient) {
-		return notiService.getNoti(recipient);
-	}
-	
-	@PostMapping("/send")
-	@ResponseBody
-	public void sendNoti(@RequestBody NotificationEntity noti) {
-		notiService.sendNoti(noti);
-	}
 	
 	@GetMapping("/noti")
 	public String notification() {

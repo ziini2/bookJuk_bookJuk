@@ -13,13 +13,21 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "event")
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class EventEntity {
 
 	// 이벤트 아이디
@@ -43,7 +51,7 @@ public class EventEntity {
 	
 	// 이벤트 상태(시작 전, 진행 중, 종료, 중지)
 	@Column(name = "eventStatus", length = 10, nullable = false)
-	private String eventStatus = "시작 전";
+	private String eventStatus;
 	
 	// 이벤트 유형
 	@Column(name = "eventType", length = 255, nullable = false)
@@ -58,8 +66,8 @@ public class EventEntity {
 	private Timestamp endEventDate;
 	
 	// 이벤트 생성 날짜
-	@Column(name = "endCreationDate", nullable = false)
-	private Timestamp endCreationDate;
+	@Column(name = "eventCreationDate", nullable = false)
+	private Timestamp eventCreationDate;
 	
 	
 	

@@ -33,7 +33,7 @@ public class PaymentService {
 	 
 	 // 결제 정보를 DB에서 조회하는 메서드
     public List<PaymentEntity> getAllPayments() {
-        return paymentRepository.findAll();  // 모든 결제 정보를 반환
+        return paymentRepository.findAllByOrderByReqDateDesc();  //모든 결제 정보를 최신순으로 반환
     }
     
 //    //유저의 포인트 값을 가져오는 메서드

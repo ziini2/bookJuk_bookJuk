@@ -8,4 +8,5 @@ import com.itwillbs.bookjuk.entity.pay.PaymentEntity;
 
 public interface PaymentRepository extends JpaRepository<PaymentEntity, String> {
 	PaymentEntity findByPaymentId(String paymentId);
+	List<PaymentEntity> findAllByOrderByReqDateDesc();
 }

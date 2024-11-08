@@ -2,8 +2,6 @@ package com.itwillbs.bookjuk.entity.event;
 
 import java.sql.Timestamp;
 
-import com.itwillbs.bookjuk.domain.login.LoginType;
-import com.itwillbs.bookjuk.domain.login.UserRole;
 import com.itwillbs.bookjuk.entity.UserEntity;
 
 import jakarta.persistence.Column;
@@ -53,7 +51,7 @@ public class EventEntity {
 	
 	// 이벤트 상태(시작 전, 진행 중, 종료, 중지)
 	@Column(name = "eventStatus", length = 10, nullable = false)
-	private String eventStatus = "시작 전";
+	private String eventStatus;
 	
 	// 이벤트 유형
 	@Column(name = "eventType", length = 255, nullable = false)
@@ -68,8 +66,8 @@ public class EventEntity {
 	private Timestamp endEventDate;
 	
 	// 이벤트 생성 날짜
-	@Column(name = "endCreationDate", nullable = false)
-	private Timestamp endCreationDate;
+	@Column(name = "eventCreationDate", nullable = false)
+	private Timestamp eventCreationDate;
 	
 	
 	

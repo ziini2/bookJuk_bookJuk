@@ -9,13 +9,21 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "event_condition")
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class EventConditionEntity {
 
 	// 이벤트 조건 아이디
@@ -39,7 +47,7 @@ public class EventConditionEntity {
 	
 	// 이벤트 활성 유무(기본값 false)
 	@Column(name = "eventIsActive", nullable = false)
-	private boolean eventIsActive = false;
+	private boolean eventIsActive;
 	
 	
 	

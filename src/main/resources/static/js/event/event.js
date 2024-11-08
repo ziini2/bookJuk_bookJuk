@@ -27,12 +27,15 @@ function manyPeopleField() {
 }
 
 $(document).ready(function() {
+	let page = 0;
 	// datatables 라이브러리 설정
     const table = $('#event-table').DataTable({
         paging: true,
         searching: true,
         info: true,
+		serverSide: true,
 		pageLength: 25,
+		lengthMenu: [25, 50, 100, 200],
         language: {
             search: "",
 			info: "",
@@ -52,14 +55,45 @@ $(document).ready(function() {
             }
         },
 		dom: '<"d-flex justify-content-between align-items-end"<"d-flex align-items-end dataTables_filter_wrapper"f><"dataTables_length_wrapper"l>>rt<"d-flex justify-content-center"p>',
+		
+		ajax: {
+	        url: '/admin/getEvent',
+	        dataSrc: 'data',
+	        data: function(d) {
+				d.searchCriteria = $('#event-columnSelect').val();		 // 검색 조건 (이름/내용)
+	            d.searchKeyword = $('#event-table_filter input').val();   // 검색 키워드
+	            d.page = page;                // 현재 페이지 번호
+	            d.size = $('.event-select').val();
+				const filters = [];
+		        $('#event-selectedFilter .event-filterChip').each(function() {
+		            const type = $(this).data('type');
+		            const value = $(this).data('value');
+		            filters.push({ type, value });
+		        });
+				d.filters = filters;
+	        }
+	    },
+		columns: [
+	        { data: 'eventId', title: 'No.' },
+	        { data: 'eventTitle', title: '이벤트 제목' },
+	        { data: 'eventType', title: '이벤트 유형' },
+	        { data: 'eventStatus', title: '이벤트 상태' },
+	        { data: 'eventManager', title: '담당자' },
+	        { data: 'eventDate', title: '이벤트 기간' }
+	    ]
     });
 	
+	$(document).on('change', '.event-select', function() {
+	    table.page.len($(this).val()).draw(); // 페이지 길이 업데이트 및 테이블 새로고침
+	});
+		
 	// 이벤트 검색 결과 수 상단에 표시
     $('.dataTables_length').before('<div id="event-searchResults" style="text-align: right;">&nbsp;</div>');
 
     // 이벤트 검색 결과 수 업데이트
     table.on('draw', function() {
         const info = table.page.info();
+		page = table.page.info().page;
         $('#event-searchResults').text(`검색 결과 : ${info.recordsDisplay}개`);
     });
 
@@ -181,7 +215,7 @@ $(document).ready(function () {
 			}else{
 				eventConditions.push({
 					eventConditionType: "신규 가입자",
-					eventClearReward: newUserPoint
+					eventClearReward: newUserPoint + "p"
 				});
 			}
 		}
@@ -197,7 +231,7 @@ $(document).ready(function () {
 			}else{
 				eventConditions.push({
 					eventConditionType: manyTimesCount + "회 이상 대여한 회원",
-					eventClearReward: manyTimesPoint
+					eventClearReward: manyTimesPoint + "p"
 				});
 			}
 		}
@@ -213,7 +247,7 @@ $(document).ready(function () {
 			}else{
 				eventConditions.push({
 					eventConditionType: manyWonsAmount + "원 이상 대여한 회원",
-					eventClearReward: manyWonsPoint
+					eventClearReward: manyWonsPoint + "p"
 				});
 			}
 		}
@@ -225,35 +259,44 @@ $(document).ready(function () {
 			}else{
 				eventConditions.push({
 					eventConditionType: "로그인한 회원",
-					eventClearReward: manyPeoplePoint
+					eventClearReward: manyPeoplePoint + "p"
 				});
 			}
 		}
 		
-		$.ajax({
-	        url: '/admin/event',
-	        method: 'POST',
-	        contentType: 'application/json',
-	        data: JSON.stringify({
-	            eventTitle: title,
-				eventContent: content,
-				eventType: firstButtonText.replace(" 조건", ""),
-				startEventDate: startDate,
-				endEventDate: endDate,
-				eventCondition: eventConditions
-	        }),
-	        success: function (response) {
-	            alert("이벤트가 성공적으로 생성되었습니다.");
-	            table.draw();
-				$('#event-createModal').fadeOut();
-	        },
-	        error: function (error) {
-				alert("오류: " + error.responseText);
-	            console.error("이벤트 생성 실패:", error);
-	        }
-	    });
+		const conditionsText = eventConditions.map(condition => {
+	        return `${condition.eventConditionType}에게 ${condition.eventClearReward} 쿠폰 지급`;
+	    }).join("\n");
 		
-		
+		const confirmMessage = `이벤트를 생성하시겠습니까?\n\n이벤트 제목 : ${title}\n이벤트 기간 : ${startDate} ~ ${endDate}\n이벤트 조건 : ${conditionsText}\n이벤트 내용 : \n${content}`;
+		if(confirm(confirmMessage)){
+			$.ajax({
+		        url: '/admin/eventCreate',
+		        method: 'POST',
+		        contentType: 'application/json',
+		        data: JSON.stringify({
+		            eventTitle: title,
+					eventContent: content,
+					eventType: firstButtonText.replace(" 조건", ""),
+					startEventDate: startDate,
+					endEventDate: endDate,
+					eventCondition: eventConditions
+		        }),
+		        success: function (response) {
+					if(response.result === "success"){
+			            alert("이벤트가 성공적으로 생성되었습니다.");
+			            table.draw();
+						$('#event-createModal').fadeOut();
+					}else{
+						alert("이벤트가 생성에 실패하였습니다.")
+					}
+		        },
+		        error: function (error) {
+					alert("오류: " + error.responseText);
+		            console.error("이벤트 생성 실패:", error);
+		        }
+		    });
+		}
 	});
 	
 	$('#couponPayment').on('click', function() {
@@ -370,8 +413,8 @@ $(document).ready(function () {
 	});
 	
 	// DataTables의 'draw' 이벤트에 이벤트 리스너 등록
-    $('#event-table tbody').on('click', 'td span', function () {
-        const cells = $(this).closest('tr').find('td');
+    $('#event-table tbody').on('click', 'tr', function () {
+        const cells = $(this).find('td');
 
         // 이벤트 상세 데이터 추출
         $('#event-detailTitle').text(cells.eq(1).text());
@@ -506,7 +549,10 @@ $(document).ready(function () {
 
 	// 이벤트 검색 필터 모달창 내 선택된 버튼 출력
 	function addFilterChip(text, type) {
-    	const chip = $('<div class="event-filterChip"></div>').text(text);
+    	const chip = $('<div class="event-filterChip"></div>')
+			.text(text)
+			.attr('data-type', type)
+	        .attr('data-value', text);
     	const closeBtn = $('<span>x</span>').click(() => removeFilter(type, text));
     	chip.append(closeBtn);
     	$('#event-selectedFilter').append(chip);
@@ -517,6 +563,7 @@ $(document).ready(function () {
 		if (type === 'eventStatus') eventStatus = '';
     	if (type === 'eventType') eventType = '';
     	if (type === 'date') { eventStartDate = ''; eventEndDate = ''; }
+		$(`.event-filterChip[data-type="${type}"][data-value="${text}"]`).remove();
     	displayAppliedFilters();
     	table.draw();
 	}

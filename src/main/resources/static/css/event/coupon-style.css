@@ -11,7 +11,10 @@ body {
 
 
 /*--- 쿠폰 관리 페이지 datatables ↓ CSS ---*/
-#coupon-table tbody td > span{
+#coupon-table tbody tr:hover td {
+    background-color: #e0e0e0;
+}
+#coupon-table tbody tr{
     cursor: pointer !important;
 }
 #coupon-table th, #coupon-table td {

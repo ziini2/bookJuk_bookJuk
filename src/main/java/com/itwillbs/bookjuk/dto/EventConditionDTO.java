@@ -24,7 +24,7 @@ public class EventConditionDTO {
 	private String eventClearReward;
 	
 	// 이벤트 활성 유무
-	private boolean eventIsActive = false;
+	private boolean eventIsActive;
 	
 	
 	

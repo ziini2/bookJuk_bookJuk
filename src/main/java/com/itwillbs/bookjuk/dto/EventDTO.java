@@ -27,7 +27,7 @@ public class EventDTO {
 	private String eventContent;
 	
 	// 이벤트 상태
-	private String eventStatus = "시작 전";
+	private String eventStatus;
 	
 	// 이벤트 유형
 	private String eventType;

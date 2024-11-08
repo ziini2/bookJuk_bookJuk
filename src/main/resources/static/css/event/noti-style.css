@@ -11,7 +11,10 @@ body {
 
 
 /*--- 알림 관리 페이지 datatables ↓ CSS ---*/
-#noti-table tbody td > span{
+#noti-table tbody tr:hover td {
+    background-color: #e0e0e0;
+}
+#noti-table tbody tr{
     cursor: pointer !important;
 }
 #noti-table th, #noti-table td {

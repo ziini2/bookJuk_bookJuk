@@ -1,6 +1,10 @@
 body {
 	padding-top: 80px;
 }
+.logo img {
+	max-width: 80%;
+	height: auto;
+}
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -11,8 +15,12 @@ input[type=number]::-webkit-inner-spin-button {
 
 
 
+
 /*--- 이벤트 datatables ↓ CSS ---*/
-#event-table tbody td > span{
+#event-table tbody tr:hover td {
+    background-color: #e0e0e0;
+}
+#event-table tbody tr{
     cursor: pointer !important;
 }
 #event-table th, #event-table td {

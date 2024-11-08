@@ -1,9 +1,10 @@
+
 package com.itwillbs.bookjuk.entity.pay;
 
 import java.time.LocalDateTime;
 
 import com.itwillbs.bookjuk.domain.pay.PaymentStatus;
-import com.itwillbs.bookjuk.entity.UserEntity;
+import com.itwillbs.bookjuk.entity.UserContentEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,8 +33,8 @@ public class PaymentEntity {
 	
 	//유저번호(users 테이블 참조)
 	@ManyToOne
-	@JoinColumn(name = "userNum", nullable = false)
-	private UserEntity userEntity;  // Users 테이블 참조
+	@JoinColumn(name = "user_num")
+	private UserContentEntity userContentEntity;  // UserContent 테이블 참조
 	
 	//결제상태
 	@Column(nullable = false)
@@ -59,6 +60,11 @@ public class PaymentEntity {
 	//결제품목
 	@Column(nullable = false)
 	private String priceName;
+	
+	// userPoint를 가져오는 메서드
+    public int getUserPoint() {
+    return this.userContentEntity.getUserPoint();  // UserContentEntity를 통해 userPoint 접근
+    }
 }
 
 

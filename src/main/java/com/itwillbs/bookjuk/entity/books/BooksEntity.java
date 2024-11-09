@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.itwillbs.bookjuk.domain.books.BookStatus;
+import com.itwillbs.bookjuk.entity.StoreEntity;
 import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
 
 import jakarta.persistence.Column;
@@ -17,6 +18,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -42,9 +44,12 @@ public class BooksEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long bookNum;
 	
-	// 지점ID
+	
+	// 지점 code
+	@JoinColumn(name = "storeCode", referencedColumnName = "storeCode")
+	@ManyToOne
 	@Column(nullable = false)
-	private Long storeCode; 
+	private StoreEntity storeCode; 
 	
 	// 대여금액
 	@Column(nullable = false)

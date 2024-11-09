@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
@@ -32,8 +32,8 @@ public class BooksController {
 
     // 도서 등록 처리
     @PostMapping("/admin/addBook")
-    public String addBookPost(@ModelAttribute BooksEntity booksEntity, 
-                              @ModelAttribute BookInfoEntity bookInfoEntity) {
+    public String addBookPost(@RequestBody BooksEntity booksEntity, 
+    						  @RequestBody BookInfoEntity bookInfoEntity) {
         log.info("BooksController addBookPost() - Book Info: {}", bookInfoEntity);
         log.info("BooksController addBookPost() - Books Entity: {}", booksEntity);
         

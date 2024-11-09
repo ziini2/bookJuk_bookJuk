@@ -177,53 +177,86 @@ public class PaymentService {
     
     
  // 결제 취소 메서드
-    public void cancelPayment(PaymentDTO paymentDTO) throws IamportResponseException, IOException {
+//    public void cancelPayment(String paymentId) throws IamportResponseException, IOException {
+//        try {
+//            // 결제 정보 데이터베이스에서 조회
+//            PaymentEntity paymentEntity = paymentRepository.findByPaymentId(paymentId);
+//            if (paymentEntity == null) {
+//                throw new IllegalArgumentException("유효하지 않은 결제 ID입니다.");
+//            }
+//
+//            // 결제 취소 데이터 생성
+//            CancelData cancelData = new CancelData(paymentId, true);
+//
+//            // 아임포트 API를 통해 결제 취소 요청
+//            IamportResponse<com.siot.IamportRestClient.response.Payment> cancelResponse = iamportClient.cancelPaymentByImpUid(cancelData);
+//
+//            // 결제 취소 상태가 'cancelled'인지 확인
+//            if (cancelResponse.getResponse() == null || !"cancelled".equals(cancelResponse.getResponse().getStatus())) {
+//                throw new IllegalArgumentException("결제 취소가 실패했습니다.");
+//            }
+//
+//            // 취소가 성공했을 경우 DB 업데이트
+//            paymentEntity.setPaymentStatus(PaymentStatus.CANCEL);  // 취소 상태로 변경
+//            paymentEntity.setReqDate(LocalDateTime.now());  // 취소 일시 기록 (현재 시간)
+//            paymentRepository.save(paymentEntity);  // DB에 저장
+//
+//            // 결제 취소 성공 로그
+//            System.out.println("결제 취소 성공: 결제 ID = " + paymentId);
+//
+//        } catch (IamportResponseException e) {
+//            // 아임포트 API 호출 실패 시 처리
+//            System.out.println("아임포트 API 호출 실패 (HTTP 코드: " + e.getHttpStatusCode() + "): " + e.getMessage());
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            // 네트워크 오류 처리
+//            System.out.println("네트워크 오류: " + e.getMessage());
+//            e.printStackTrace();
+//        } catch (Exception e) {
+//            // 예기치 못한 오류 처리
+//            System.out.println("예기치 못한 오류 (" + e.getClass().getName() + "): " + e.getMessage());
+//            e.printStackTrace();
+//        }
+//    }
+    
+    public void cancelPayment(String paymentId) throws IamportResponseException, IOException {
         try {
-            // PaymentDTO에서 값 추출
-            String paymentId = paymentDTO.getPaymentId();
-            Long cancelPrice = paymentDTO.getPaidAmount();
-            LocalDateTime reqDate = paymentDTO.getReqDate();
-
-            // 결제 정보 데이터베이스에서 조회
-            PaymentEntity paymentEntity = paymentRepository.findByPaymentId(paymentId);
-            if (paymentEntity == null) {
-                throw new IllegalArgumentException("유효하지 않은 결제 ID입니다.");
-            }
-
-            // 결제 취소 데이터 생성 (취소 사유 추가)
+            // 결제 취소 요청 처리
+        	PaymentEntity paymentEntity = paymentRepository.findByPaymentId(paymentId);
             CancelData cancelData = new CancelData(paymentId, true);
-
-            // 아임포트 API를 통해 결제 취소 요청
             IamportResponse<com.siot.IamportRestClient.response.Payment> cancelResponse = iamportClient.cancelPaymentByImpUid(cancelData);
 
-            // 결제 취소 상태가 'cancelled'인지 확인
-            if (cancelResponse.getResponse() == null || !"cancelled".equals(cancelResponse.getResponse().getStatus())) {
-                throw new IllegalArgumentException("결제 취소가 실패했습니다.");
+            // 응답 로그 출력
+            if (cancelResponse.getResponse() == null) {
+                System.out.println("결제 취소 실패 - 응답 없음");
+                System.out.println("에러 메시지: " + cancelResponse.getMessage());  // 오류 메시지 출력
+            } else {
+                System.out.println("결제 취소 응답 상태: " + cancelResponse.getResponse().getStatus());  // 예: cancelled
+                System.out.println("결제 취소된 금액: " + cancelResponse.getResponse().getAmount());  // 취소된 금액
             }
 
-            // 취소가 성공했을 경우 DB 업데이트
-            paymentEntity.setPaymentStatus(PaymentStatus.CANCEL);  // 취소 상태로 변경
-            paymentEntity.setPaymentPrice(cancelPrice);;  // 취소 금액 설정
-            paymentEntity.setReqDate(reqDate);  // 취소 일시 기록 (LocalDateTime 형식)
-            paymentRepository.save(paymentEntity);  // DB에 저장
-
-            // 결제 취소 성공 로그
-            System.out.println("결제 취소 성공: 결제 ID = " + paymentId);
-
+            // 취소가 성공한 경우, 결제 상태 업데이트
+            if (cancelResponse.getResponse() != null && "cancelled".equals(cancelResponse.getResponse().getStatus())) {
+                // 결제 취소 성공 시 DB 업데이트
+                paymentEntity.setPaymentStatus(PaymentStatus.CANCEL);
+                paymentEntity.setReqDate(LocalDateTime.now());
+                paymentRepository.save(paymentEntity);
+                System.out.println("결제 취소 성공");
+            } else {
+                throw new IllegalArgumentException("결제 취소가 실패했습니다.");
+            }
         } catch (IamportResponseException e) {
-            // 아임포트 API 호출 실패 시 처리
+            // 아임포트 API 호출 실패 시
             System.out.println("아임포트 API 호출 실패 (HTTP 코드: " + e.getHttpStatusCode() + "): " + e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
-            // 네트워크 오류 처리
+            // 네트워크 오류
             System.out.println("네트워크 오류: " + e.getMessage());
             e.printStackTrace();
         } catch (Exception e) {
-            // 예기치 못한 오류 처리
+            // 예기치 않은 오류
             System.out.println("예기치 못한 오류 (" + e.getClass().getName() + "): " + e.getMessage());
             e.printStackTrace();
         }
     }
-
 }
-

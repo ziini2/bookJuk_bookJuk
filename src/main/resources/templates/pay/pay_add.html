@@ -156,140 +156,104 @@
 <!--   </script>-->
 
 <script>
-// 전역 변수로 선언하여 여러 함수에서 접근 가능하게 합니다.
-var paymentId = null;
-var paymentAmount = null;
+    // 전역 변수로 선언하여 여러 함수에서 접근 가능하게 합니다.
+    var paymentId = null;  // 결제 고유 ID 저장
+    var paymentAmount = null;  // 결제 금액 저장
 
-var IMP = window.IMP;
-IMP.init("imp68866867");  // 아임포트(IMP) API 초기화 (가맹점 코드)
+    var IMP = window.IMP;
+    IMP.init("imp68866867");  // 아임포트(IMP) API 초기화 (가맹점 코드)
 
-// 결제 요청 함수
-function requestPay() {
-    var merchant_uid = "ORDER_" + new Date().getTime(); // 주문번호 생성
-    var selectedPrice = document.querySelector("input[name='pointAddPrice']:checked");
-    
-    if (!selectedPrice) {
-        alert("결제 금액을 선택해 주세요.");
-        return;
-    }
-    
-    var priceName = selectedPrice.getAttribute("price-name"); // 상품명
-    var amount = selectedPrice.value; // 결제 금액
-    var reqDate = new Date().toISOString(); // 날짜
-    
-    IMP.request_pay(
-        {
-            pg: "html5_inicis",
-            pay_method: "card",
-            merchant_uid: merchant_uid,
-            name: priceName,
-            amount: amount,
-        },
-        function (rsp) {
-            if (rsp.success) {
-                console.log("결제 완료");
-                // 결제 성공 후, 서버로 결제 정보 전송 (POST 방식)
-                $.ajax({
-                    url: "/payment/process", // 결제 검증 후 DB에 저장하는 엔드포인트
-                    method: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify({
-                        paymentId: rsp.imp_uid,  // 아임포트 결제 고유 ID
-                        paymentMethod: "card",
-                        merchantMid: merchant_uid,  // 주문번호
-                        paidAmount: amount,  // 결제 금액
-                        status: "SUCCESSFUL",  // 결제 상태
-                        priceName: priceName,  // 상품명
-                        reqDate: reqDate
-                    }),
-                    success: function (data) {
-                        alert("결제가 성공적으로 처리되었습니다.");
-                    },
-                    error: function (xhr) {
-                        alert("결제 검증에 실패하였습니다.");
-                    }
-                });
-                
-                // 결제 성공 후, imp_uid와 amount 값을 글로벌 변수에 저장
-                paymentId = rsp.imp_uid;
-                paidAmount = amount;
-				alert(paymentId);
-
-            } else {
-                alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
-            }
+    // 결제 요청 함수
+    function requestPay() {
+        var merchant_uid = "ORDER_" + new Date().getTime(); // 주문번호 생성
+        var selectedPrice = document.querySelector("input[name='pointAddPrice']:checked");
+        
+        // 결제 금액을 선택하지 않았을 경우
+        if (!selectedPrice) {
+            alert("결제 금액을 선택해 주세요.");
+            return;
         }
-    );
-}
+        
+        var priceName = selectedPrice.getAttribute("price-name"); // 상품명
+        var amount = selectedPrice.value; // 결제 금액
+        var reqDate = new Date().toISOString(); // 요청 날짜
+        
+        IMP.request_pay(
+            {
+                pg: "html5_inicis",
+                pay_method: "card",
+                merchant_uid: merchant_uid,
+                name: priceName,
+                amount: amount,
+            },
+            function (rsp) {
+                if (rsp.success) {
+                    console.log("결제 완료");
+                    // 결제 성공 후, 서버로 결제 정보 전송 (POST 방식)
+                    $.ajax({
+                        url: "/payment/process", // 결제 검증 후 DB에 저장하는 엔드포인트
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            paymentId: rsp.imp_uid,  // 아임포트 결제 고유 ID
+                            paymentMethod: "card",
+                            merchantMid: merchant_uid,  // 주문번호
+                            paidAmount: amount,  // 결제 금액
+                            status: "SUCCESSFUL",  // 결제 상태
+                            priceName: priceName,  // 상품명
+                            reqDate: reqDate
+                        }),
+                        success: function (data) {
+                            alert("결제가 성공적으로 처리되었습니다.");
+                        },
+                        error: function (xhr) {
+                            alert("결제 검증에 실패하였습니다.");
+                        }
+                    });
+                    
+                    // 결제 성공 후, imp_uid와 amount 값을 글로벌 변수에 저장
+                    paymentId = rsp.imp_uid;
+                    paymentAmount = amount;
+                    alert(paymentId);  // 확인용
 
-// 결제 취소 함수
-function cancelPay(paymentId, paidAmount) {
-	
-    if (!paymentId) {
-        alert("결제 정보를 찾을 수 없습니다.");
-        return;
-    }
-
-	// paidAmount가 숫자인지 확인하고 변환
-	   paidAmount = Number(paidAmount);
-	   if (isNaN(paidAmount)) {
-	       alert("유효하지 않은 금액입니다.");
-	       return;
-	   }
-    console.log("결제 취소 요청", { paymentId, paidAmount });
-
-    // 결제 취소 API 호출
-    IMP.cancel({
-	
-        imp_uid: paymentId,  // 결제 고유 ID
-        amount: paidAmount,  // 취소할 금액 (실제 결제된 금액)
-    }, function (rsp) {
-        if (rsp.success) {
-            console.log("결제 취소 성공");
-
-            // 결제 취소 후, 서버로 취소 정보 전송 (POST 방식)
-            $.ajax({
-                url: "/payment/cancel",  // 결제 취소 처리 후 DB에 상태 업데이트하는 엔드포인트
-                method: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({
-                    paymentId: paymentId, // 취소할 결제의 고유 ID
-                    cancelAmount: paidAmount, // 취소할 금액 (결제된 금액)
-                    status: "CANCEL", // 취소 상태
-                    reqDate: new Date().toISOString() // 요청 일자
-                }),
-                success: function (data) {
-                    alert("결제가 성공적으로 취소되었습니다.");
-                },
-                error: function (xhr) {
-                    alert("결제 취소에 실패하였습니다.");
+                } else {
+                    alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
                 }
-            });
-        } else {
-            console.error("결제 취소 실패: " + rsp.error_msg);
-            alert("결제 취소에 실패하였습니다. 에러 내용: " + rsp.error_msg);
-        }
+            }
+        );
+    }
+
+    // 결제 취소 함수
+	function cancelPay(paymentId) {
+	    // 서버에 결제 취소 요청 보내기
+	    $.ajax({
+	        url: "/payment/cancel",  // 결제 취소를 처리할 서버 엔드포인트
+	        method: "POST",
+	        data: JSON.stringify({ paymentId: paymentId }),
+	        contentType: "application/json",
+	        success: function(response) {
+	            alert("결제가 취소되었습니다.");
+	        },
+	        error: function(xhr, status, error) {
+	            alert("결제 취소에 실패하였습니다.");
+	        }
+	    });
+	}
+
+    // 테이블 내 결제 취소 버튼 클릭 이벤트 처리
+    $(document).ready(function () {
+        // 각 '결제 취소' 버튼에 클릭 이벤트 추가
+        $(".cancel-btn").on("click", function () {
+            var row = $(this).closest("tr"); // 클릭한 버튼이 있는 행(tr)을 찾음
+            var paymentId = row.find("td:nth-child(7)").text().trim(); // 결제 ID는 7번째 <td>
+            console.log("paymentId:", paymentId);  // 콘솔에서 확인
+
+            // 결제 취소 요청 함수 호출
+            cancelPay(paymentId);
+        });
     });
-}
-
-// 테이블 내 결제 취소 버튼 클릭 이벤트 처리
-$(document).ready(function() {
-    // 각 '결제 취소' 버튼에 클릭 이벤트 추가
-    $(".cancel-btn").on("click", function() {
-        var row = $(this).closest("tr"); // 클릭한 버튼이 있는 행(tr)을 찾음
-        var paymentId = row.find("td:nth-child(7)").text().trim(); // 결제 ID는 7번째 <td>
-        var paidAmount = row.find("td:nth-child(4)").text().trim(); // 결제 금액은 4번째 <td>
-
-			console.log("paymentId:", paymentId, "paidAmount:", paidAmount);  // 콘솔에서 확인
-			
-			
-        // 결제 취소 요청 함수 호출
-        cancelPay(paymentId, paidAmount);
-    });
-});
-
-
 </script>
+
 
 
 
@@ -547,40 +511,5 @@ $(document).ready(function() {
 
 
 </body>
-<!--// 결제 취소 함수-->
-<!--  function cancelPayment(paymentId, amount) {-->
-<!--      console.log("결제 취소 요청", { paymentId, amount });-->
-<!--   amount = parseFloat(amount);-->
-<!--      // 결제 취소 API 호출-->
-<!--      IMP.cancel({-->
-<!--          imp_uid: paymentId,  // 결제 고유 ID-->
-<!--          amount: amount,  // 취소할 금액-->
-<!--      }, function (rsp) {-->
-<!--          if (rsp.success) {-->
-<!--              console.log("결제 취소 성공");-->
 
-<!--              // 결제 취소 후, 서버로 취소 정보 전송 (POST 방식)-->
-<!--              $.ajax({-->
-<!--                  url: "/payment/cancel", // 결제 취소 처리 후 DB에 상태 업데이트하는 엔드포인트-->
-<!--                  method: "POST",-->
-<!--                  contentType: "application/json",-->
-<!--                  data: JSON.stringify({-->
-<!--                      paymentId: paymentId, // 취소할 결제의 고유 ID-->
-<!--                      cancelAmount: amount, // 취소할 금액-->
-<!--                      status: "CANCEL", // 취소 상태-->
-<!--                      reqDate: new Date().toISOString() // 요청 일자-->
-<!--                  }),-->
-<!--                  success: function (data) {-->
-<!--                      alert("결제가 성공적으로 취소되었습니다.");-->
-<!--                  },-->
-<!--                  error: function (xhr) {-->
-<!--                      alert("결제 취소에 실패하였습니다.");-->
-<!--                  }-->
-<!--              });-->
-<!--          } else {-->
-<!--              console.error("결제 취소 실패: " + rsp.error_msg);-->
-<!--              alert("결제 취소에 실패하였습니다. 에러 내용: " + rsp.error_msg);-->
-<!--          }-->
-<!--      });-->
-<!--  }-->
 </html>

@@ -3,6 +3,7 @@ package com.itwillbs.bookjuk.entity.books;
 import java.sql.Timestamp;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.itwillbs.bookjuk.domain.books.BookStatus;
 import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
@@ -67,12 +68,11 @@ public class BooksEntity {
 	private Timestamp bookDate;
 	
 	// 수정일
-	@CreationTimestamp
+	@UpdateTimestamp
 	private Timestamp bookUpdate;
 		
-	// BookInfo와의 연결 설정
-    @OneToOne
-    @JoinColumn(name = "bookNum", referencedColumnName = "bookNum", insertable = false, updatable = false)
-    private BookInfoEntity bookInfo;
-
+	@OneToOne
+	@JoinColumn(name = "bookNum", referencedColumnName = "bookNum")
+	private BookInfoEntity bookInfo;
+	
 }

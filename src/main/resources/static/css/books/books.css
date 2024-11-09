@@ -1,56 +1,19 @@
-.form-control, .form-select {
-        width: 50%; /* 너비를 50%로 설정 */
-    }
-
-/*달력*/
-.datepicker {
-    z-index: 1000; /* 다른 요소 위에 표시되도록 z-index 설정 */
-	
+/* 모든 입력 필드의 높이와 패딩을 통일하여 균일한 크기 설정 */
+.form-control {
+    height: calc(2.25rem + 2px); /* 높이 설정 */
+    padding: 0.375rem 0.75rem; /* 패딩 통일 */
+    margin: 0; /* 마진 초기화 */
+    width: 100%; /* 입력 필드 너비를 부모 요소에 맞춤 */
+    box-sizing: border-box; /* 너비에 패딩과 테두리 포함 */
 }
 
-.datepicker-dropdown {
-	top: 280px !important; 
-	left: 642.333px; 
-	z-index: 10; 
-	display: block;
+.table-responsive {
+    width: 100%; /* 부모 크기에 맞춰서 테이블 너비 설정 */
+    overflow-x: auto; /* 스크롤을 자동으로 추가 */
+    margin-top: 20px; /* 필요에 따라 여백 조정 */
 }
 
-.input-group .form-control {
-    height: calc(2.25rem + 2px); /* 다른 입력 필드와 높이를 맞춥니다 */
-    padding: 0.375rem 0.75rem; /* 패딩을 통일합니다 */
-    margin: 0; /* 마진을 초기화합니다 */
+table {
+    width: 100%; /* 테이블 너비를 100%로 설정하여 부모 요소에 맞게 확장 */
+    table-layout: auto; /* 내용에 따라 자동으로 열 크기 조정 */
 }
-
-.custom-date-picker .input-group {
-    align-items: center; /* 수직 정렬을 맞춥니다 */
-}
-
-.custom-select {
-    width: 120px; /* 원하는 너비로 조정 */
-}
-
-.card {
-    margin-bottom: 1rem; /* 카드 아래 여백 */
-    margin-left: auto; /* 자동 마진으로 오른쪽으로 이동 */
-    margin-right: 0; /* 오른쪽 마진 제거 */
-}
-
-/* 2 */
-.btn-2 {
-  background: #3c955a;;
-  background: linear-gradient(315deg, #63c082 5%, #3c955a 64%);
-  border: none;
-  width: 85px;
-  
-}
-.btn-2:before {
-  height: 0%;
-  width: 2px;
-}
-.btn-2:hover {
-  box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
-              -4px -4px 6px 0 rgba(116, 125, 136, .5), 
-    inset -4px -4px 6px 0 rgba(255,255,255,.2),
-    inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
-}
-

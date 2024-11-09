@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.bookjuk.dto.BookDTO;
 import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
 import com.itwillbs.bookjuk.repository.BookInfoRepository;
@@ -32,4 +33,5 @@ public class BooksService {
 	public List<BooksEntity> getAllBooks() {
 		return booksRepository.findAll(); // BooksRepository에서 제공하는 findAll 메서드 사용
 	}
+
 }

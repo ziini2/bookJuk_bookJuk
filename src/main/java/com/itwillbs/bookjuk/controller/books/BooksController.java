@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.itwillbs.bookjuk.dto.BookDTO;
 import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
 import com.itwillbs.bookjuk.service.books.BooksService;
@@ -32,12 +33,14 @@ public class BooksController {
 
     // 도서 등록 처리
     @PostMapping("/admin/addBook")
-    public String addBookPost(@RequestBody BooksEntity booksEntity, 
-    						  @RequestBody BookInfoEntity bookInfoEntity) {
-        log.info("BooksController addBookPost() - Book Info: {}", bookInfoEntity);
-        log.info("BooksController addBookPost() - Books Entity: {}", booksEntity);
+    public String addBookPost(@RequestBody BookDTO bookDTO) {
+        log.info("BooksController addBookPost() - Books Entity: {}",bookDTO);
+       BooksEntity booksEntity = new BooksEntity();
+       BookInfoEntity bookInfoEntity = new BookInfoEntity();
+       bookDTO.
+       
         
-        booksService.insertBooks(booksEntity, bookInfoEntity);  // 도서 등록 서비스 호출
+        booksService.insertBooks(bookDTO);  // 도서 등록 서비스 호출
         return "redirect:/admin/books";  // 도서 등록 후 목록 페이지로 리다이렉트
     }
 

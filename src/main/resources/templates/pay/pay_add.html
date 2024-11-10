@@ -51,7 +51,7 @@
     var paymentAmount = null;  //결제 금액 저장
 
     var IMP = window.IMP;
-    IMP.init("imp68866867");  //아임포트( API 초기화
+    IMP.init("imp68866867");  //아임포트(API 초기화)
 
     // 결제 요청 함수
     function requestPay() {
@@ -135,7 +135,7 @@
         //각 '결제 취소' 버튼에 클릭 이벤트 추가
         $(".cancel-btn").on("click", function () {
             var row = $(this).closest("tr"); // 클릭한 버튼이 있는 행(tr)을 찾음
-            var paymentId = row.find("td:nth-child(7)").text().trim(); // 결제 ID는 7번째 <td>
+            var paymentId = row.find("td:nth-child(6)").text().trim(); // 결제 ID는 6번째 <td>
             console.log("paymentId:", paymentId);  // 콘솔에서 확인
 
             //결제 취소 요청 함수 호출
@@ -360,13 +360,12 @@
 				        <th>
 				        <b>고객명</b>
 				        </th>
-				            <th>결제 상태</th>
 				            <th>결제 수단</th>
 				            <th>결제 금액</th>
 				            <th>포인트 충전 금액</th>
 				            <th>요청일자</th>
 				            <th>결제 번호</th>
-							<th>결제 취소</th>
+							<th>결제 상태</th>
 				         </tr>
 				         </thead>
 				                  
@@ -374,7 +373,6 @@
 							 
 						<tr th:each="payment : ${userPayments}">
 							<td th:text="${payment.userContentEntity.userEntity.userName}"></td>
-							<td th:text="${payment.paymentStatus}"></td>
 					        <td th:text="${payment.paymentMethod}"></td>
 					        <td th:text="${payment.paymentPrice}"></td>
 							<td th:text="${payment.priceName}"></td>
@@ -382,7 +380,7 @@
 							<td th:text="${payment.paymentId}"></td>
 							<td>
 								<button th:if="${payment.paymentStatus.name() == 'SUCCESSFUL'}" class="cancel-btn btn btn-danger" type="button">결제 취소</button>
-								<span th:if="${payment.paymentStatus.name() == 'CANCEL'}">결제 완료</span>
+								<span  style="color: rgb(255, 0, 0);" th:if="${payment.paymentStatus.name() == 'CANCEL'}">환불 완료</span>
 							</td>
 					    </tr>
 						</tbody>

@@ -37,10 +37,10 @@ public class PayController {
 
     }
 	    
-	@GetMapping("/admin/refund")
+	@GetMapping("/admin/point_deal_list")
 	public String refund() {
 
-		return "/pay/refund";
+		return "/pay/point_deal_list";
 	}
 	 
 	@GetMapping("/cart")

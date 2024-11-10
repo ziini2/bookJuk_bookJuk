@@ -1,5 +1,6 @@
 package com.itwillbs.bookjuk.controller.customer;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.bookjuk.entity.StoreEntity;
 import com.itwillbs.bookjuk.service.customer.CustomerService;
@@ -79,6 +82,14 @@ public class CutsomerController {
 		customerService.storeUpdate(storeEntity);
 		
 		return "redirect:/admin/store/store_info?storeCode=" + storeEntity.getStoreCode();
+	}
+	
+	@ResponseBody
+	@PostMapping("/admin/store/store_delete")
+	public void storeDelete(@RequestBody Map<String, Long> requestBody) {
+		log.info("storeDelete : " + requestBody.get("storeCode"));
+		
+		customerService.deleteStore(requestBody.get("storeCode"));
 	}
 
 	@GetMapping("/admin/user/user_list")

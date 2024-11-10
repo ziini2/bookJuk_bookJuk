@@ -39,5 +39,9 @@ public class CustomerService {
 		storeRepository.save(storeEntity);
 	}
 	
+	public void deleteStore(Long storeCode) {
+		storeRepository.deleteStore(storeCode);
+	}
+	
 	
 }

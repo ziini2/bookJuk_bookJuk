@@ -175,25 +175,26 @@
 									</tr>
 								</tbody>
 							</table>
-							
+
 							<!--페이지네이션 버튼-->
 							<nav aria-label="Page navigation example" th:if="${storeList != null}">
 								<ul class="pagination">
 									<li class="page-item"><a class="page-link"
-											th:href="|@{/admin/store/store_list(page=${currentPage}-1, search=${search})}|" th:text="이전"
-											th:if="${currentPage > 1}"></a></li>
+											th:href="|@{/admin/store/store_list(page=${currentPage}-1, search=${search})}|"
+											th:text="이전" th:if="${currentPage > 1}"></a></li>
 
 									<li class="page-item" th:each="page:${#numbers.sequence(startPage, endPage)}">
 										<span class="page-link" th:if="${page == currentPage}" th:text="${page}"></span>
 										<span th:unless="${page == currentPage}">
-											<a class="page-link" th:href="|@{/admin/store/store_list(page=${page}, search=${search})}|"
+											<a class="page-link"
+												th:href="|@{/admin/store/store_list(page=${page}, search=${search})}|"
 												th:text="${page}"></a>
 										</span>
 									</li>
 
 									<li class="page-item"><a class="page-link"
-											th:href="|@{/admin/store/store_list(page=${currentPage}+1, search=${search})}|" th:text="다음"
-											th:if="${currentPage < totalPages}"></a></li>
+											th:href="|@{/admin/store/store_list(page=${currentPage}+1, search=${search})}|"
+											th:text="다음" th:if="${currentPage < totalPages}"></a></li>
 								</ul>
 							</nav>
 
@@ -212,6 +213,13 @@
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<link th:href="@{/css/customer/customer.css}" rel="stylesheet">
+
+	<script>
+		// 모달을 닫으면 input초기화
+		document.getElementById('storeModal').addEventListener('hidden.bs.modal', function () {
+			this.querySelector('form').reset();
+		});
+	</script>
 
 	<script>
 		// 주소검색 api
@@ -263,20 +271,40 @@
 			}).open();
 		}
 
-		// 모달을 닫으면
-		$('#storeModal').on('hidden.bs.modal', function () {
-			// 모든 입력 필드 초기화
-			$(this).find('form')[0].reset();
+		// 유효성 검사 함수
+		function validateInput(input) {
+			if (input.value.trim() === '') {
+				input.style.border = '2px solid red';
+				return false;
+			} else {
+				input.style.border = '1px solid #dee2e6';
+				return true;
+			}
+		}
+
+		// 입력 필드를 벗어날 때마다 검사
+		document.querySelectorAll('#addStoreForm input').forEach(input => {
+			input.addEventListener('blur', () => validateInput(input));
 		});
-		
+
 		// 유효성 검사와 폼전송
 		function addStore() {
 			let check = true;
-			const inputs = document.querySelector('#addStoreForm');
-			
-			//inputs.forEach
-			
-			inputs.submit();
+			const form = document.querySelector('#addStoreForm');
+			const inputs = document.querySelectorAll('#addStoreForm input');
+
+			inputs.forEach(input => {
+				if (input.value.trim() === '') {
+					check = false;
+					input.style.border = '2px solid red';
+				}
+			});
+
+			if (!check) {
+				alert("모든 정보를 입력해주세요.");
+			} else {
+				form.submit();
+			}
 		}
 	</script>
 

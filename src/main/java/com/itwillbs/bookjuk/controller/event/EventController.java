@@ -6,12 +6,12 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.bookjuk.dto.EventDTO;
@@ -46,20 +46,31 @@ public class EventController {
 	
 	@PostMapping("/getEvent")
 	@ResponseBody
-	public Map<String, String> getEvent(
-			@RequestParam(required = false) String searchCriteria,
-			@RequestParam(required = false) String searchKeyword,
-			@RequestParam(required = false) List<String> filter,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "25") int size){
-		Pageable pageable = PageRequest.of(page, size);
+	public Map<String, Object> getEvent(@RequestBody Map<String, Object> payload){
+		String searchCriteria = (String) payload.get("searchCriteria");
+	    String searchKeyword = (String) payload.get("searchKeyword");
+	    @SuppressWarnings("unchecked")
+		List<Map<String, String>> filter = (List<Map<String, String>>) payload.get("filter");
+	    Integer start = (Integer) payload.get("start");
+	    Integer length = (Integer) payload.get("length");
+	    String sortColumn = (String) payload.get("sortColumn");
+	    String sortDirection = (String) payload.get("sortDirection");
+		int page = start / length;
+		Pageable pageable = PageRequest.of(page, length);
+		long totalRecords = eventService.getAllEvent(Pageable.unpaged()).getTotalElements();
 		Page<EventDTO> eventPage;
-		if (searchCriteria.isEmpty() && searchKeyword.isEmpty()) {
+		if ((searchCriteria == null || searchCriteria.isEmpty()) && 
+			(searchKeyword == null ||searchKeyword.isEmpty())) {
 			eventPage = eventService.getAllEvent(pageable);
 	    } else {
-	    	eventPage = eventService.getFilteredEvent(searchCriteria, searchKeyword, filter, pageable);
+	    	eventPage = eventService.getFilteredEvent(searchCriteria, searchKeyword, 
+	    			filter, pageable, sortColumn, sortDirection);
 	    }
-		return Map.of("1", "2");
+		return Map.of(
+	        "data", eventPage.getContent(),
+	        "recordsTotal", totalRecords,
+	        "recordsFiltered", eventPage.getTotalElements()
+	    );
 	}
 	
 	

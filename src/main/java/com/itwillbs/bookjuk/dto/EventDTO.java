@@ -46,5 +46,8 @@ public class EventDTO {
 	
 	// 담당자 이름
 	private String eventManager;
+	
+	// 이벤트 기간
+	private String eventDate;
 
 }

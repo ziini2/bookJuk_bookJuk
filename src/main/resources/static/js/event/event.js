@@ -27,8 +27,6 @@ function manyPeopleField() {
 }
 
 $(document).ready(function() {
-	let page = 0;
-	// datatables 라이브러리 설정
     const table = $('#event-table').DataTable({
         paging: true,
         searching: true,
@@ -58,19 +56,25 @@ $(document).ready(function() {
 		
 		ajax: {
 	        url: '/admin/getEvent',
+			type: 'POST',
+			contentType: 'application/json',
 	        dataSrc: 'data',
-	        data: function(d) {
-				d.searchCriteria = $('#event-columnSelect').val();		 // 검색 조건 (이름/내용)
-	            d.searchKeyword = $('#event-table_filter input').val();   // 검색 키워드
-	            d.page = page;                // 현재 페이지 번호
-	            d.size = $('.event-select').val();
-				const filters = [];
-		        $('#event-selectedFilter .event-filterChip').each(function() {
-		            const type = $(this).data('type');
-		            const value = $(this).data('value');
-		            filters.push({ type, value });
-		        });
-				d.filters = filters;
+			data: function(d) {
+	            const order = d.order[0];
+	            const columnIdx = order.column;
+	            const sortDirection = order.dir;
+	            const sortColumn = d.columns[columnIdx].data;
+	            return JSON.stringify({
+	                searchCriteria: $('#event-columnSelect').val(),
+	                searchKeyword: $('#event-table_filter input').val(),
+	                filter: $('#event-selectedFilter .event-filterChip').map(function() {
+	                    return { type: $(this).data('type'), value: $(this).data('value') };
+	                }).get(),
+	                start: d.start,          // DataTables에서 자동으로 설정하는 페이지 시작 위치
+	                length: d.length,        // 한 페이지에 보여줄 데이터 개수
+	                sortColumn: sortColumn,  // 동적으로 설정된 정렬할 컬럼 이름
+	                sortDirection: sortDirection // 동적으로 설정된 정렬 방향 (asc/desc)
+	            });
 	        }
 	    },
 		columns: [
@@ -451,7 +455,7 @@ $(document).ready(function () {
 		}
 	});
 
-	// 이벤트 검색 필터 모달창 내 전송 상태 버튼
+	// 이벤트 검색 필터 모달창 내 이벤트 상태 버튼
 	eventTypeButtons.click(function () {
 		if ($(this).hasClass('active')) {
 			$(this).removeClass('active');
@@ -464,7 +468,7 @@ $(document).ready(function () {
 	});
   
 	// 이벤트 검색 필터 모달창 내 전송 날짜 설정
-	$.fn.dataTable.ext.search.push(function (settings, data) {
+	$.fn.dataTable.ext.search.push(function (data) {
 		const rowEventType = data[2];
 		const rowEventStatus = data[3];
 		const rowDateRange = data[5].split(" ~ ");

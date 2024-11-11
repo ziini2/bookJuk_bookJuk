@@ -43,11 +43,11 @@ public class PayController {
 		return "/pay/point_deal_list";
 	}
 	 
-	@GetMapping("/cart")
-	public String cart() {
-
-		return "/pay/cart";
-	}
+//	@GetMapping("/cart")
+//	public String cart() {
+//
+//		return "/pay/cart";
+//	}
 	
 	@GetMapping("/pay_detail")
 	public String payDetail() {

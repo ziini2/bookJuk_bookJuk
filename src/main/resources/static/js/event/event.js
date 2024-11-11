@@ -102,10 +102,10 @@ $(document).ready(function() {
 	});
 
 	//두번 연속 부르는걸 생각못함! 주석처리	
-//	$(document).on('change', '.event-select', function() {
-//		const pageSize = $(this).val();
+	$(document).on('change', '.event-select', function() {
+		const pageSize = $(this).val();
 //		table.page.len(pageSize).draw();
-//	});
+	});
 		
 	// 이벤트 검색 결과 수 상단에 표시
     $('.dataTables_length').before('<div id="event-searchResults" style="text-align: right;">&nbsp;</div>');
@@ -177,7 +177,7 @@ $(document).ready(function() {
 	}
 });
 $(document).ready(function () {
-//	const table = $('#event-table').DataTable();
+	const table = $('#event-table').DataTable();
 	const eventTypeButtons = $('#eventType .event-filterModal-toggleBtn');
 	const eventStatusButtons = $('#eventStatus .event-filterModal-toggleBtn');
 	const eventDetailModal = $('#event-detailModal');
@@ -571,7 +571,7 @@ $(document).ready(function () {
 
 	// 이벤트 검색 필터 모달창 내 선택된 버튼 이름 출력
 	function displayAppliedFilters() {
-//		$('#event-selectedFilter').empty();
+		$('#event-selectedFilter').empty();
     	if (eventStatus) addFilterChip(eventStatus, 'eventStatus');
     	if (eventType) addFilterChip(eventType, 'eventType');
     	if (eventStartDate && eventEndDate) addFilterChip(`${eventStartDate} ~ ${eventEndDate}`, 'date');

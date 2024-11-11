@@ -1,18 +1,27 @@
 package com.itwillbs.bookjuk.controller.member;
 
+import java.util.Optional;
+
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.itwillbs.bookjuk.domain.member.PageDTO;
+import com.itwillbs.bookjuk.entity.UserEntity;
+import com.itwillbs.bookjuk.service.member.MemberpageService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
 @Controller
 @RequiredArgsConstructor
 @Log
-public class BooklistController {
+public class MemberpageController {
+	
+	private final MemberpageService memberpageService;
 	
 	@GetMapping("/booklist")
 	public String booklist(HttpServletRequest request) {
@@ -39,8 +48,17 @@ public class BooklistController {
 	}
 	
 	@GetMapping("/usercontent")
-	public String usercontent() {
+	public String usercontent(HttpSession session, Model model) {
 		log.info("MemberController usercontent()");
+		
+		String userId = SecurityContextHolder
+				.getContext().getAuthentication().getName();
+		
+		
+		Optional<UserEntity> userEntity = memberpageService.findByuserId(userId);
+		
+		model.addAttribute("userEntity", userEntity.get());
+		
 		return "/member/usercontent";
 	}
 	

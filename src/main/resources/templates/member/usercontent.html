@@ -33,7 +33,7 @@
 	.content-box {
 		width: 900px;
 		height: 650px; 
-		border: 3px solid rgb(0, 64, 0);
+		border: 3px solid rgb(233, 255, 200);
 		border-radius: 5px;
 		margin-top: 165px;
 		margin-left: 700px;
@@ -57,16 +57,10 @@
 		background-color: rgb(181, 240, 185);
 		border: 1px solid rgb(181, 240, 185);
 		border-radius: 2px;
-		padding: 13px 75px;
-		font-size: 20px;
-	}
-	
-	.userday {
-		background-color: rgb(181, 240, 185);
-		border: 1px solid rgb(181, 240, 185);
-		border-radius: 2px;
-		padding: 13px 75px;
-		font-size: 20px;
+		border-top-right-radius: 50px;
+		border-bottom-right-radius: 50px;
+		padding: 13px 150px;
+		font-size: 22px;
 	}
 	
 	.content1 {
@@ -126,8 +120,8 @@
 </head>
 
 <body>
-	<div th:replace="/member/memberheader :: header2"></div>
-	<div th:replace="/member/membersidebar :: sidebar2"></div>
+	<div th:replace="/fragment/header :: header2"></div>
+	<div th:replace="/fragment/sidebar :: sidebar2"></div>
 
  
 
@@ -137,14 +131,14 @@
   <div class="content-box">
 		
 	<div class="usercthead">
-		<a href="" class="grade text-black">등급</a><b class="username">이름</b><b class="userday">생년월일</b>
+		<a href="" class="grade text-black">등급</a><b class="username"><span th:text="${userEntity.userName}"></span></b>
 	</div>			
 	
 	<div class="content1">
-	<h4 class="ct1">이메일 : <span></span></h4><br>
-	<h4 class="ct1">전화번호 : <span></span></h4><br>
-	<h4 class="ct1">아이디 : <span></span></h4><br>
-	<h4 class="ct1">비밀번호 : <span></span></h4><br>
+	<h4 class="ct1">아이디 : <span th:text="${userEntity.userId}"></span></h4><br>
+	<h4 class="ct1">생년월일 : <span th:text="${userEntity.userBirthday}"></span></h4><br>
+	<h4 class="ct1">이메일 : <span th:text="${userEntity.userEmail}"></span></h4><br>
+	<h4 class="ct1">전화번호 : <span th:text="${userEntity.userPhone}"></span></h4><br>	
 	</div>
 	
 	<h4 class="ct2">포인트 : <span></span>P</h4> <br>

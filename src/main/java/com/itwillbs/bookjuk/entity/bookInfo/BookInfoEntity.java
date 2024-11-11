@@ -1,8 +1,8 @@
 package com.itwillbs.bookjuk.entity.bookInfo;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
-import org.hibernate.annotations.CreationTimestamp;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,15 +12,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+
 
 @Entity
-@Getter
-@Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -56,12 +51,54 @@ public class BookInfoEntity {
 	@Column(nullable = false)
 	private Long genreId;
 
-	// ISBN번호
+	// ISBN번호 => String 으로 변경
+	// ISBN이 0으로 시작하거나 특정 패턴을 가진 경우,
+	// 문자열로 처리하는 것이 좋을것같다.
 	@Column(nullable = false)
-	private Long ISBN;
+	private String isbn;
 
 	// 출판일
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(nullable = false)
-	private Timestamp publishDate;
+	private LocalDate publishDate;
+	
+	// 대여금액
+	@Column(nullable = false)
+	private Long rentMoney;
 
+
+	
+	 // 책 정보 엔티티 생성 메소드
+    public static BookInfoEntity createBookInfoEntity(String bookName, String author, String story, int interest, 
+                                                      String publish, Long genreId, String isbn, LocalDate publishDate) {
+        return BookInfoEntity.builder()
+                .bookName(bookName)
+                .author(author)
+                .story(story)
+                .interest(interest)
+                .publish(publish)
+                .genreId(genreId)
+                .isbn(isbn)
+                .publishDate(publishDate)
+                .build();
+    }
+
+	public Long getBookNum() {
+		return bookNum;
+	}
+
+	public void setBookNum(Long bookNum) {
+		this.bookNum = bookNum;
+	}
+
+	public LocalDate getPublishDate() {
+		return publishDate;
+	}
+
+	public void setPublishDate(LocalDate publishDate) {
+		this.publishDate = publishDate;
+	}
+
+   
+    
 }

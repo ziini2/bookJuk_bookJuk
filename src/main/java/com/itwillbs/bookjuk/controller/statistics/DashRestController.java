@@ -23,5 +23,25 @@ public class DashRestController {
         return dashRestService.getNumbersOfEvents();
     }
 
+    @GetMapping("/revenue")
+    public Long getDailyRevenue() {
+        return dashRestService.getDailyRevenue();
+    }
+
+    @GetMapping("/point")
+    public Long getDailyPoint() {
+        return dashRestService.getDailyPoint();
+    }
+
+    @GetMapping("/rental")
+    public long getDailyRental() {
+        return dashRestService.getDailyRental();
+    }
+
+    @GetMapping("/delay")
+    public long getDailyDelay() {
+        return dashRestService.getDailyDelay();
+    }
+
 
 }

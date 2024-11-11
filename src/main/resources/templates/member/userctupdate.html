@@ -32,14 +32,49 @@
   
   <style>	
   	.contentup-box {
-  		width: 600px;
-  		height: 450px; 
-  		border: 3px solid rgb(0, 64, 0);
-  		border-radius: 5px;
-  		margin-top: 265px;
-  		margin-left: 800px;
+  		width: 650px;
+  		height: 550px; 
+  		border: 3px solid rgb(233, 255, 200);
+  		border-radius: 8px;
+  		margin-top: 220px;
+  		margin-left: 750px;
   		background-color: rgb(233, 255, 200);
   	}
+	
+	.content1 {
+		margin-top: 70px;
+		margin-left: 170px;
+		font-size: 18px;
+	}
+	
+	.ct1{
+		color: rgb(5, 38, 0);
+	}
+	
+	.update-group {
+	    position: relative;
+	    width: 60%;
+	    margin: 1rem 0;
+	}
+
+	.update-group input {
+	    flex: 1;
+	    width: 100%;
+	    padding: 5px 5px;
+	    background-color: white;
+	    border-radius: 0.5rem;
+	    border: 1px solid black;
+	}
+	
+	.userctupdate {
+		background-color: rgb(232, 251, 233);
+		border: 1px solid rgb(232, 251, 233);
+		border-radius: 8px;
+		padding: 13px 20px;		
+		font-size: 22px;
+		margin-top: 30PX;
+		margin-left: 950px;
+	}
 
   </style>
 
@@ -47,7 +82,7 @@
 
 <body>
 	<div th:replace="/fragment/header :: header2"></div>
-	<div th:replace="/member/membersidebar :: sidebar2"></div>
+	<div th:replace="/fragment/sidebar :: sidebar2"></div>
 
  
 
@@ -55,12 +90,25 @@
   <script th:src="@{/js/common/main.js}"></script>
   
   <div class="contentup-box">
-	이메일 : <input type="email"" name="email"><br>
-	전화번호 : <input type="tel"" name="phone"><br>
-	아이디 : <input type="text" name="id"><br>
-	비밀번호 : <input type="password" name="pass"><br>	
+	<form th:action="@{/userctupdate}" class="content1" method="post">
+		<div class="update-group">
+			이름 : <input type="text" class="ct1" name="name"><br>
+		</div>
+		<div class="update-group">
+			이메일 : <input type="email" class="ct1" name="email"><br>
+		</div>
+		<div class="update-group">
+			전화번호 : <input type="tel" class="ct1" name="tel"><br>
+		</div>
+		<div class="update-group">
+			아이디 : <input type="text" class="ct1" name="id"><br>
+		</div>
+		<div class="update-group">
+			비밀번호 : <input type="password" name="pass"><br>	
+		</div>
+	</form>
   </div>
-  <input type="submit" value="회원정보수정">
+  <input type="submit" class="userctupdate" value="정보 수정하기">
 
 </body>
 

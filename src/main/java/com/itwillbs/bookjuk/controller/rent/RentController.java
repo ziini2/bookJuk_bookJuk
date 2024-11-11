@@ -8,12 +8,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.bookjuk.entity.RentEntity;
 import com.itwillbs.bookjuk.entity.UserEntity;
@@ -138,5 +141,13 @@ public class RentController {
 	        return ResponseEntity.status(500).body("대여 등록 실패");
 	    }
 	}
+	
+	@GetMapping("/rent")
+	public String userrent() {
+		log.info("RentController userrent()");
+		
+		return "/rent/userrent";
+	}
+	
 	
 }

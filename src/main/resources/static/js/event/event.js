@@ -27,53 +27,71 @@ function manyPeopleField() {
 }
 
 $(document).ready(function() {
-	let page = 0;
-	// datatables 라이브러리 설정
-    const table = $('#event-table').DataTable({
-        paging: true,
-        searching: true,
-        info: true,
-		serverSide: true,
-		pageLength: 25,
-		lengthMenu: [25, 50, 100, 200],
-        language: {
-            search: "",
-			info: "",
-			infoEmpty: "",
-			infoFiltered: "",
-			infoPostFix: "",
-			lengthMenu: 
-               `<select class="event-select">
-			   		<option value="25">25개씩 보기</option>
-                    <option value="50">50개씩 보기</option>
-                    <option value="100">100개씩 보기</option>
-                    <option value="200">200개씩 보기</option>
-                </select>`,
-            paginate: {
-                previous: "이전",
-                next: "다음"
-            }
-        },
-		dom: '<"d-flex justify-content-between align-items-end"<"d-flex align-items-end dataTables_filter_wrapper"f><"dataTables_length_wrapper"l>>rt<"d-flex justify-content-center"p>',
-		
-		ajax: {
-	        url: '/admin/getEvent',
-	        dataSrc: 'data',
-	        data: function(d) {
-				d.searchCriteria = $('#event-columnSelect').val();		 // 검색 조건 (이름/내용)
-	            d.searchKeyword = $('#event-table_filter input').val();   // 검색 키워드
-	            d.page = page;                // 현재 페이지 번호
-	            d.size = $('.event-select').val();
-				const filters = [];
-		        $('#event-selectedFilter .event-filterChip').each(function() {
-		            const type = $(this).data('type');
-		            const value = $(this).data('value');
-		            filters.push({ type, value });
-		        });
-				d.filters = filters;
+	const table = $('#event-table').DataTable({
+	    paging: true,
+	    searching: true,
+	    pagingType: "full_numbers",
+	    info: true,
+	    serverSide: true,
+	    pageLength: 25,
+	    lengthMenu: [25, 50, 100, 200],
+	    language: {
+	        // 표기 언어 설정
+	        search: "",
+	        info: "",
+	        infoEmpty: "",
+	        infoFiltered: "",
+	        lengthMenu: 
+	           `<select class="event-select">
+	                <option value="25">25개씩 보기</option>
+	                <option value="50">50개씩 보기</option>
+	                <option value="100">100개씩 보기</option>
+	                <option value="200">200개씩 보기</option>
+	            </select>`,
+	        paginate: {
+	            previous: "이전",
+	            next: "다음"
 	        }
 	    },
-		columns: [
+	    dom: '<"d-flex justify-content-between align-items-end"<"d-flex align-items-end dataTables_filter_wrapper"f><"dataTables_length_wrapper"l>>rt<"d-flex justify-content-center"p>',
+	    
+	    ajax: {
+	        url: '/admin/getEvent',                   // 데이터 요청 URL
+	        type: 'POST',                             // HTTP 메서드 설정
+	        contentType: 'application/json; charset=UTF-8',  // 요청 Content-Type 설정
+	        dataSrc: 'data',                          // 데이터 소스 경로 설정
+	        data: function(d) {
+	            console.log(d);
+
+	            // 요청 중단 조건: 데이터 길이가 0인 경우
+	            if (d.length === 0) {
+	                console.log("No more data to send.");
+	                return false;
+	            }
+
+	            // 정렬 및 필터링 조건 설정
+	            const order = d.order[0];
+	            const columnIdx = order.column;
+	            const sortDirection = order.dir;
+	            const sortColumn = d.columns[columnIdx].data;
+
+	            // 서버로 전송할 데이터 객체
+	            return JSON.stringify({
+	                searchCriteria: $('#event-columnSelect').val(),
+	                searchKeyword: $('#event-table_filter input').val(),
+	                filter: $('#event-selectedFilter .event-filterChip').map(function() {
+	                    return { type: $(this).data('type'), value: $(this).data('value') };
+	                }).get(),
+	                start: d.start || 0,
+	                length: d.length || 25,
+	                draw: d.draw,
+	                sortColumn: sortColumn,
+	                sortDirection: sortDirection
+	            });
+	        },
+	    },
+	    
+	    columns: [
 	        { data: 'eventId', title: 'No.' },
 	        { data: 'eventTitle', title: '이벤트 제목' },
 	        { data: 'eventType', title: '이벤트 유형' },
@@ -81,11 +99,13 @@ $(document).ready(function() {
 	        { data: 'eventManager', title: '담당자' },
 	        { data: 'eventDate', title: '이벤트 기간' }
 	    ]
-    });
-	
-	$(document).on('change', '.event-select', function() {
-	    table.page.len($(this).val()).draw(); // 페이지 길이 업데이트 및 테이블 새로고침
 	});
+
+	//두번 연속 부르는걸 생각못함! 주석처리	
+//	$(document).on('change', '.event-select', function() {
+//		const pageSize = $(this).val();
+//		table.page.len(pageSize).draw();
+//	});
 		
 	// 이벤트 검색 결과 수 상단에 표시
     $('.dataTables_length').before('<div id="event-searchResults" style="text-align: right;">&nbsp;</div>');
@@ -103,12 +123,12 @@ $(document).ready(function() {
 	$(".dataTables_filter").prepend(`
 	    <select id="event-columnSelect" class="event-select ms-2" style="width: auto; display: inline;">
 	        <option value="">전체</option>
-	        <option value="0">NO</option>
-	        <option value="1">이벤트 제목</option>
-	        <option value="2">이벤트 유형</option>
-	        <option value="3">이벤트 상태</option>
-	        <option value="4">담당자</option>
-	        <option value="5">이벤트 기간</option>
+	        <option value="eventId">NO</option>
+	        <option value="eventTitle">이벤트 제목</option>
+	        <option value="eventType">이벤트 유형</option>
+	        <option value="eventStatus">이벤트 상태</option>
+	        <option value="eventManager">담당자</option>
+	        <option value="eventDate">이벤트 기간</option>
 	    </select>
 	`);
 	
@@ -137,17 +157,27 @@ $(document).ready(function() {
 
 	// 이벤트 검색 함수
 	function triggerSearch() {
+		const columnMap = {
+		    "": null,
+		    "eventId": 0,
+		    "eventTitle": 1,
+		    "eventType": 2,
+		    "eventStatus": 3,
+		    "eventManager": 4,
+		    "eventDate": 5
+		};
 		const column = $('#event-columnSelect').val();
+		const columnIndex = columnMap[column];
 		const searchValue = $('#event-table_filter input').val();
-		if (column) {
-			table.column(column).search(searchValue).draw();
+		if (columnIndex !== null) {
+		    table.column(columnIndex).search(searchValue).draw();
 		} else {
-			table.search(searchValue).draw();
+		    table.search(searchValue).draw();
 		}
 	}
 });
 $(document).ready(function () {
-	const table = $('#event-table').DataTable();
+//	const table = $('#event-table').DataTable();
 	const eventTypeButtons = $('#eventType .event-filterModal-toggleBtn');
 	const eventStatusButtons = $('#eventStatus .event-filterModal-toggleBtn');
 	const eventDetailModal = $('#event-detailModal');
@@ -451,7 +481,7 @@ $(document).ready(function () {
 		}
 	});
 
-	// 이벤트 검색 필터 모달창 내 전송 상태 버튼
+	// 이벤트 검색 필터 모달창 내 이벤트 상태 버튼
 	eventTypeButtons.click(function () {
 		if ($(this).hasClass('active')) {
 			$(this).removeClass('active');
@@ -464,7 +494,7 @@ $(document).ready(function () {
 	});
   
 	// 이벤트 검색 필터 모달창 내 전송 날짜 설정
-	$.fn.dataTable.ext.search.push(function (settings, data) {
+	$.fn.dataTable.ext.search.push(function (data) {
 		const rowEventType = data[2];
 		const rowEventStatus = data[3];
 		const rowDateRange = data[5].split(" ~ ");
@@ -541,7 +571,7 @@ $(document).ready(function () {
 
 	// 이벤트 검색 필터 모달창 내 선택된 버튼 이름 출력
 	function displayAppliedFilters() {
-		$('#event-selectedFilter').empty();
+//		$('#event-selectedFilter').empty();
     	if (eventStatus) addFilterChip(eventStatus, 'eventStatus');
     	if (eventType) addFilterChip(eventType, 'eventType');
     	if (eventStartDate && eventEndDate) addFilterChip(`${eventStartDate} ~ ${eventEndDate}`, 'date');

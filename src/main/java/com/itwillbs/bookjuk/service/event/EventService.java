@@ -2,7 +2,11 @@ package com.itwillbs.bookjuk.service.event;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,6 +77,42 @@ public class EventService {
 					.build();
 			eventConditionRepository.save(eventConditionEntity);
 		}
+	}
+
+	public Page<EventDTO> getFilteredEvent(String searchCriteria, String searchKeyword, List<Map<String, String>> filter,
+			Pageable pageable) {
+		try {
+	        return eventRepository.findByCriteriaAndFilter(searchCriteria, searchKeyword, 
+	        		filter, pageable).map(this::convertToDto);
+	    } catch (Exception e) {
+	        // 로그 출력 및 예외 처리
+	        log.error("Error fetching filtered events: ", e);
+	        return Page.empty(pageable); // 예외 발생 시 빈 페이지 반환
+	    }
+	}
+	
+	private EventDTO convertToDto(EventEntity eventEntity) {
+		String eventDate = eventEntity.getStartEventDate().toLocalDateTime().toLocalDate() 
+                + " ~ " 
+                + eventEntity.getEndEventDate().toLocalDateTime().toLocalDate();
+        return EventDTO.builder()
+        		.eventId(eventEntity.getEventId())
+        		.eventTitle(eventEntity.getEventTitle())
+        		.eventType(eventEntity.getEventType())
+        		.eventStatus(eventEntity.getEventStatus())
+        		.eventManager(eventEntity.getEventManager().getUserName())
+        		.eventDate(eventDate)
+        		.build();
+    }
+
+	public Page<EventDTO> getAllEvent(Pageable pageable) {
+		try {
+	        return eventRepository.findAll(pageable).map(this::convertToDto);
+	    } catch (Exception e) {
+	        // 로그 출력 및 예외 처리
+	        log.error("Error fetching all events: ", e);
+	        return Page.empty(pageable);
+	    }
 	}
 	
 	

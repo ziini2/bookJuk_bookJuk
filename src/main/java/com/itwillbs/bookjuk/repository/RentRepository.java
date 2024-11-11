@@ -1,6 +1,7 @@
 package com.itwillbs.bookjuk.repository;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -18,5 +19,8 @@ public interface RentRepository extends JpaRepository<RentEntity, Long> {
 	Page<RentEntity> findByUserNameContaining(String keyword, Pageable pageable);
     Page<RentEntity> findByUserIdContaining(String keyword, Pageable pageable);
     Page<RentEntity> findByBookNameContaining(String keyword, Pageable pageable);
-	
+
+    long countByRentDateBeforeAndReturnDateAfterAndReturnInfo(Timestamp now, Timestamp now1, String info);
+
+	long countByReturnDateBeforeAndReturnInfo(Timestamp returnDay, String info);
 }

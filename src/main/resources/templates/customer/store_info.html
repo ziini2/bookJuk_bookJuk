@@ -47,8 +47,8 @@
 					<div>
 						<span class="me-2" style="font-size: 25px;" th:text="${storeInfo.storeName}"></span>
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-						 	th:onclick="|deleteStore('${storeInfo.storeCode}')| 	" class="bi bi-trash me-2" viewBox="0 0 16 16"
-							style="cursor: pointer;">
+							th:onclick="|deleteStore('${storeInfo.storeCode}')| 	" class="bi bi-trash me-2"
+							viewBox="0 0 16 16" style="cursor: pointer;">
 							<!-- deleteStore('${storeInfo.storeCode}') 이런식으로 데이터전달 가능 -->
 							<path
 								d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
@@ -106,6 +106,11 @@
 				<div class="col-3">
 					<div class="p-3 border bg-light">
 						사업자등록번호<br><span th:text="${storeInfo.storeRegiNum}"></span>
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="p-3 border bg-light">
+						지점상태<br><span th:text="${storeInfo.storeStatus == 'open' ? '운영중' : '폐점'}"></span>
 					</div>
 				</div>
 			</div>
@@ -243,24 +248,24 @@
 	</script>
 
 	<script>
-		// 지점상태변경
+		// 지점상태변경(삭제)
 		function deleteStore(storeCode) {
 			// 확인은 true, 취소는 false 반환
 			const deleteCheck = confirm("폐점 상태로 변경됩니다.");
-			
+
 			if (deleteCheck) {
 				fetch('/admin/store/store_delete', {
-					method: 'POST', 
+					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json'
 					},
-					body: JSON.stringify({storeCode: storeCode })
+					body: JSON.stringify({storeCode: storeCode})
 				})
-					.then(response => response.json())
+					.then(response => response.text())
 					.then(data => {
-						if (data.success) {
+						if (parseInt(data) == 1) {
+							console.log(data);
 							alert("변경됐습니다.");
-							// 추가로 UI 업데이트 로직을 포함할 수 있습니다.
 						} else {
 							alert("변경에 실패했습니다.");
 						}

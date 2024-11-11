@@ -44,29 +44,35 @@ public class EventController {
 		}
 	}
 	
-	@PostMapping("/getEvent")
+	@PostMapping(value = "/getEvent", produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public Map<String, Object> getEvent(@RequestBody Map<String, Object> payload){
+		log.info("payload: {}", payload);
+		
 		String searchCriteria = (String) payload.get("searchCriteria");
 	    String searchKeyword = (String) payload.get("searchKeyword");
 	    @SuppressWarnings("unchecked")
 		List<Map<String, String>> filter = (List<Map<String, String>>) payload.get("filter");
 	    Integer start = (Integer) payload.get("start");
 	    Integer length = (Integer) payload.get("length");
+	    Integer draw = (Integer) payload.get("draw");
 	    String sortColumn = (String) payload.get("sortColumn");
 	    String sortDirection = (String) payload.get("sortDirection");
 		int page = start / length;
-		Pageable pageable = PageRequest.of(page, length);
+		Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortColumn);
+		Pageable pageable = PageRequest.of(page, length, sort);
 		long totalRecords = eventService.getAllEvent(Pageable.unpaged()).getTotalElements();
 		Page<EventDTO> eventPage;
-		if ((searchCriteria == null || searchCriteria.isEmpty()) && 
-			(searchKeyword == null ||searchKeyword.isEmpty())) {
+		
+		if (searchKeyword.isEmpty()) {
 			eventPage = eventService.getAllEvent(pageable);
 	    } else {
 	    	eventPage = eventService.getFilteredEvent(searchCriteria, searchKeyword, 
-	    			filter, pageable, sortColumn, sortDirection);
+	    			filter, pageable);
 	    }
 		return Map.of(
+			"result", "SUCCESS",
+			"draw", draw,
 	        "data", eventPage.getContent(),
 	        "recordsTotal", totalRecords,
 	        "recordsFiltered", eventPage.getTotalElements()

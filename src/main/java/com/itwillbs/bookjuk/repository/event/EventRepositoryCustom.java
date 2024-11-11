@@ -12,7 +12,5 @@ public interface EventRepositoryCustom {
 	Page<EventEntity> findByCriteriaAndFilter(String searchCriteria, 
 										  String searchKeyword, 
 										  List<Map<String, String>> filter, 
-										  Pageable pageable, 
-										  String sortColumn, 
-										  String sortDirection);
+										  Pageable pageable);
 }

@@ -80,10 +80,10 @@ public class EventService {
 	}
 
 	public Page<EventDTO> getFilteredEvent(String searchCriteria, String searchKeyword, List<Map<String, String>> filter,
-			Pageable pageable, String sortColumn, String sortDirection) {
+			Pageable pageable) {
 		try {
 	        return eventRepository.findByCriteriaAndFilter(searchCriteria, searchKeyword, 
-	        		filter, pageable, sortColumn, sortDirection).map(this::convertToDto);
+	        		filter, pageable).map(this::convertToDto);
 	    } catch (Exception e) {
 	        // 로그 출력 및 예외 처리
 	        log.error("Error fetching filtered events: ", e);
@@ -111,7 +111,7 @@ public class EventService {
 	    } catch (Exception e) {
 	        // 로그 출력 및 예외 처리
 	        log.error("Error fetching all events: ", e);
-	        return Page.empty(pageable); // 예외 발생 시 빈 페이지 반환
+	        return Page.empty(pageable);
 	    }
 	}
 	

@@ -19,7 +19,5 @@ public interface EventRepository extends JpaRepository<EventEntity, Integer>, Ev
 	Page<EventEntity> findByCriteriaAndFilter(String searchCriteria, 
 											  String searchKeyword, 
 											  List<Map<String, String>> filter, 
-											  Pageable pageable, 
-											  String sortColumn, 
-											  String sortDirection);
+											  Pageable pageable);
 }

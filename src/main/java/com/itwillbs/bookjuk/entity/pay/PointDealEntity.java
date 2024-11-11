@@ -7,14 +7,20 @@ import com.itwillbs.bookjuk.domain.books.BookStatus;
 import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
 import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
+import com.itwillbs.bookjuk.entity.event.CouponEntity;
+import com.itwillbs.bookjuk.entity.event.EventEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,4 +53,9 @@ public class PointDealEntity {
 	//요청일시
 	@Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime reqDate;
+	
+	//쿠폰 아이디
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "couponId")
+    private CouponEntity couponId;
 }

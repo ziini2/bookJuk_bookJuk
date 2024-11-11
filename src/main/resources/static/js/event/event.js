@@ -90,6 +90,7 @@ $(document).ready(function() {
 	            });
 	        },
 	    },
+		order: [[0, 'desc']], // 여기서 기본 정렬 조건 설정 (0번째 컬럼을 내림차순으로 정렬)
 	    
 	    columns: [
 	        { data: 'eventId', title: 'No.' },
@@ -97,7 +98,11 @@ $(document).ready(function() {
 	        { data: 'eventType', title: '이벤트 유형' },
 	        { data: 'eventStatus', title: '이벤트 상태' },
 	        { data: 'eventManager', title: '담당자' },
-	        { data: 'eventDate', title: '이벤트 기간' }
+	        { data: 'eventDate', title: '이벤트 기간' },
+			{ data: 'eventContent', title: '이벤트 내용', visible: false },
+		    { data: 'startEventDate', title: '이벤트 시작일', visible: false },
+		    { data: 'endEventDate', title: '이벤트 종료일', visible: false },
+		    { data: 'eventCreationDate', title: '이벤트 생성일', visible: false }
 	    ]
 	});
 

@@ -92,6 +92,7 @@ public class EventService {
 	}
 	
 	private EventDTO convertToDto(EventEntity eventEntity) {
+		
 		String eventDate = eventEntity.getStartEventDate().toLocalDateTime().toLocalDate() 
                 + " ~ " 
                 + eventEntity.getEndEventDate().toLocalDateTime().toLocalDate();
@@ -102,6 +103,10 @@ public class EventService {
         		.eventStatus(eventEntity.getEventStatus())
         		.eventManager(eventEntity.getEventManager().getUserName())
         		.eventDate(eventDate)
+        		.eventContent(eventEntity.getEventContent())
+        		.startEventDate(eventEntity.getStartEventDate())
+        		.endEventDate(eventEntity.getEndEventDate())
+        		.eventCreationDate(eventEntity.getEventCreationDate())
         		.build();
     }
 

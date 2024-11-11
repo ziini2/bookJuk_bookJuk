@@ -1,8 +1,7 @@
 package com.itwillbs.bookjuk.dto;
 
-
-
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 import com.itwillbs.bookjuk.domain.books.BookStatus;
 
@@ -11,50 +10,27 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookDTO {
-	
-	//책번호
-	private Long bookNum;
-	
-	//isbn
-	private Long ISBN;
-	
-	//책이름
-	private String bookName;
-	
-	//저자
-	private String author;
-	
-	//출판사
-	private String publish;
-	
-	//출판일
-	private Timestamp publishDate;
-	
-	//입고일
-	private Timestamp bookDate;
-	
-	//재고
-	private Long inventory;
-	
-	//줄거리
-	private String story;
-	
-	//도서상태(enum 클래스의 정의된 것만 사용)
-	private BookStatus bookStatus;
-	
-	//대여금액
-	private Long rentMoney;
-	
-	//지점ID
-	private Long storeCode; 
-	
-	//장르ID
-	private Long genreId;
 
+	private String isbn; // ISBN 번호
+	//isbn 으로 불러온 값들
+	private String bookName; // 도서 이름
+	private String author; // 저자
+	private String publish; // 출판사
+	private LocalDate publishDate; // 출판일
+	private String story; // 책 소개
+	private Long genreId; //장르ID
+	
+	//직접 입력해서 저장할 값들
+	private Long storeCode; //지점코드
+	private BookStatus bookStatus; // 도서상태
+	private Timestamp bookDate; //입고일
+	
+	private Long inventory; //재고
+	
+	
 }

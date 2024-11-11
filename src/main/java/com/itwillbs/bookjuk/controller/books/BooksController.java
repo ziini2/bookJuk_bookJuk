@@ -1,52 +1,70 @@
 package com.itwillbs.bookjuk.controller.books;
 
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import com.itwillbs.bookjuk.dto.BookDTO;
-import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
+import com.itwillbs.bookjuk.entity.GenreEntity;
+import com.itwillbs.bookjuk.entity.StoreEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
+
 import com.itwillbs.bookjuk.service.books.BooksService;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@RequiredArgsConstructor
+import com.itwillbs.bookjuk.repository.StoreRepository;
+
 @Slf4j
+@AllArgsConstructor
 @Controller
+@RequestMapping("/admin")
 public class BooksController {
 
     private final BooksService booksService;
+   
 
-    // 도서 리스트 불러오기 (HTML로 반환)
-    @GetMapping("/admin/books")
+
+    @GetMapping("/books")
     public String books(Model model) {
-        List<BooksEntity> booksList = booksService.getAllBooks();  // BooksService에서 모든 도서 목록을 가져옴
-        model.addAttribute("booksList", booksList);
-        return "books/books";  // 도서 목록을 books/books.html로 전달
-    }
 
-    // 도서 등록 처리
-    @PostMapping("/admin/addBook")
-    public String addBookPost(@RequestBody BookDTO bookDTO) {
-        log.info("BooksController addBookPost() - Books Entity: {}",bookDTO);
-       BooksEntity booksEntity = new BooksEntity();
-       BookInfoEntity bookInfoEntity = new BookInfoEntity();
-       bookDTO.
-       
-        
-        booksService.insertBooks(bookDTO);  // 도서 등록 서비스 호출
-        return "redirect:/admin/books";  // 도서 등록 후 목록 페이지로 리다이렉트
-    }
+    	// 지점 리스트 가져오기
+    	 List<StoreEntity> storeList = booksService.getStroeList();
+    	
+    	// 장르ID 가져오기
+    	 List<GenreEntity> genreList = booksService.getGenreList();
+    	 
+    	model.addAttribute("storeList", storeList);
+    	model.addAttribute("genreList", genreList);
+    	
+        return "books/books";
 
-    // 책 목록을 JSON 형식으로 반환 (API 용)
-    @GetMapping("/api/bookList")
-    public List<BooksEntity> getBookList() {
-        return booksService.getAllBooks();  // 책 목록을 JSON 형식으로 반환
     }
+    
+    
+   
+    @PostMapping("/addBook")
+    @ResponseBody
+    public int addBook(@RequestBody BookDTO bookDTO) {
+    	
+    	log.info("bookDTO : {}",bookDTO);
+    
+    	//storeCode=null, 
+    	//bookStatus=null, bookDate=null, genreId=null, inventory=null)
+    	
+    	
+    	return 1;
+    	
+    }
+    
+
+   
 }

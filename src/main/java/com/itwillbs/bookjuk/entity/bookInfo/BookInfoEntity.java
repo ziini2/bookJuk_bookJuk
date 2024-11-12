@@ -1,12 +1,12 @@
 package com.itwillbs.bookjuk.entity.bookInfo;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.itwillbs.bookjuk.entity.GenreEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,19 +14,22 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-@ToString
+import lombok.*;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
+@Setter 
 @Table(name = "book_info")
 public class BookInfoEntity {
 
@@ -51,14 +54,19 @@ public class BookInfoEntity {
 	@Column(nullable = false)
 	private String story;
 
-//	// 관심설정
-//	@Column(nullable = false)
-//	private int interest;
-
+////	// 관심설정
+////	@Column(nullable = false)
+////	private int interest;
+// h
+	
+	//책 이미지(표지)
+	@Column(nullable = true)  
+	private String bookImage;
+	
 	// 장르ID (GenreEntity와 연결)
-	@OneToMany
-	@JoinColumn(name = "genreID", referencedColumnName = "genreID", nullable = false) // 외래 키 설정
-	private Long genreId;
+	@ManyToOne
+	@JoinColumn(name = "genreId", referencedColumnName = "genreId", nullable = false)
+	private GenreEntity genre;
 
 	// ISBN번호 => String 으로 변경
 	// ISBN이 0으로 시작하거나 특정 패턴을 가진 경우,
@@ -74,7 +82,7 @@ public class BookInfoEntity {
 	// 대여금액
 	@Column(nullable = false)
 	private Long rentMoney;
-
+ 
 	// 입고일
 	@CreationTimestamp
 	@Column(name = "book_date", nullable = true, updatable = false)
@@ -89,20 +97,4 @@ public class BookInfoEntity {
 	        }
 	    }
 	
-	public Long getBookNum() {
-		return bookNum;
-	}
-
-	public void setBookNum(Long bookNum) {
-		this.bookNum = bookNum;
-	}
-
-	public LocalDate getPublishDate() {
-		return publishDate;
-	}
-
-	public void setPublishDate(LocalDate publishDate) {
-		this.publishDate = publishDate;
-	}
-
 }

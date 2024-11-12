@@ -52,7 +52,7 @@ public class BooksEntity {
 	@ManyToOne
 	@JoinColumn(name = "bookNum", referencedColumnName = "bookNum", nullable = false) // 외래 키 설정
 	private BookInfoEntity bookInfoEntity;
-
+ 
 	// 지점 ID (StoreEntity와 연결)
 	@ManyToOne
 	@JoinColumn(name = "storeCode", referencedColumnName = "storeCode", nullable = false) // 외래 키 설정

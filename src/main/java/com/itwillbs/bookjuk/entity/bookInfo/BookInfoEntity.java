@@ -1,6 +1,10 @@
 package com.itwillbs.bookjuk.entity.bookInfo;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -9,12 +13,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-
+@ToString
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,21 +42,22 @@ public class BookInfoEntity {
 	// 저자
 	@Column(nullable = false)
 	private String author;
-
-	// 줄거리
-	@Column(nullable = false)
-	private String story;
-
-	// 관심설정
-	@Column(nullable = false)
-	private int interest;
-
+	
 	// 출판사
 	@Column(nullable = false)
 	private String publish;
-
-	// 장르ID
+	
+	// 책소개
 	@Column(nullable = false)
+	private String story;
+
+//	// 관심설정
+//	@Column(nullable = false)
+//	private int interest;
+
+	// 장르ID (GenreEntity와 연결)
+	@OneToMany
+	@JoinColumn(name = "genreID", referencedColumnName = "genreID", nullable = false) // 외래 키 설정
 	private Long genreId;
 
 	// ISBN번호 => String 으로 변경
@@ -61,28 +70,25 @@ public class BookInfoEntity {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(nullable = false)
 	private LocalDate publishDate;
-	
+
 	// 대여금액
 	@Column(nullable = false)
 	private Long rentMoney;
 
+	// 입고일
+	@CreationTimestamp
+	@Column(name = "book_date", nullable = true, updatable = false)
+	private LocalDateTime bookDate;
 
+	//엔티티가 처음 저장되기 전에 bookDate가 null일 경우 ,
+	//현재 시간으로 설정할 수 있도록 한다.
+	  @PrePersist
+	    public void prePersist() {
+	        if (this.bookDate == null) {
+	            this.bookDate = LocalDateTime.now();
+	        }
+	    }
 	
-	 // 책 정보 엔티티 생성 메소드
-    public static BookInfoEntity createBookInfoEntity(String bookName, String author, String story, int interest, 
-                                                      String publish, Long genreId, String isbn, LocalDate publishDate) {
-        return BookInfoEntity.builder()
-                .bookName(bookName)
-                .author(author)
-                .story(story)
-                .interest(interest)
-                .publish(publish)
-                .genreId(genreId)
-                .isbn(isbn)
-                .publishDate(publishDate)
-                .build();
-    }
-
 	public Long getBookNum() {
 		return bookNum;
 	}
@@ -99,6 +105,4 @@ public class BookInfoEntity {
 		this.publishDate = publishDate;
 	}
 
-   
-    
 }

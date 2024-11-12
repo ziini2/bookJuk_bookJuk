@@ -56,14 +56,14 @@ public class BooksController {
     public int addBook(@RequestBody BookDTO bookDTO) {
     	
     	log.info("bookDTO : {}",bookDTO);
-    
-    	//storeCode=null, 
-    	//bookStatus=null, bookDate=null, genreId=null, inventory=null)
     	
+    	booksService.insertBooks(bookDTO);
     	
     	return 1;
     	
     }
+    
+    
     
 
    

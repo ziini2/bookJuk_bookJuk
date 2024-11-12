@@ -58,7 +58,8 @@ async function registerBook() {
 
     // "20201110" 형식의 날짜를 "2020-11-10" 형식으로 변환
     const formattedPublishDate = formatPublishDate(publishDate);
-
+	const formattedBookDate = formatPublishDate(formData.get("bookDate"));
+	
     const data = {
         isbn: formData.get("isbn"),
         bookName: formData.get("bookName"),
@@ -66,12 +67,12 @@ async function registerBook() {
         publish: formData.get("publish"),
         publishDate: formattedPublishDate, // 변환된 날짜 사용
         story: formData.get("story"),
-		//storeCode=null, bookStatus=null, bookDate=null, genreId=null, inventory=null
 		storeCode: formData.get("storeCode"),
-		bookStatus:formData.get("bookStatus"),
-		bookDate : formData.get("bookDate"),
-		genreId : formData.get("genreId")
-		
+		bookStatus: formData.get("bookStatus"),
+		bookDate : formattedBookDate,
+		genreId : formData.get("genreId"),
+		rentMoney : formData.get("rentMoney"),
+		inventory : formData.get("inventory")
 		
     };
     console.log(JSON.stringify(data));
@@ -92,6 +93,7 @@ async function registerBook() {
             modal.hide();
             form.reset();
             isBookDataValid = false;  // 등록 후 다시 초기화
+			alert("도서가 성공적으로 등록되었습니다!");
         } else {
             alert(responseData.message);  // 실패 메시지 표시
         }

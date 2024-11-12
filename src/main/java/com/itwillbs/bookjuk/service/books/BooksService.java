@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.bookjuk.domain.books.BookStatus;
+import com.itwillbs.bookjuk.dto.BookDTO;
 import com.itwillbs.bookjuk.entity.GenreEntity;
 import com.itwillbs.bookjuk.entity.StoreEntity;
 import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
@@ -43,13 +45,46 @@ public class BooksService {
 	}
 
 	//도서 등록하기
-	public void insertBooks(BooksEntity booksEntity, 
-							BookInfoEntity bookInfoEntity) {
-		//입고일
-		//booksEntity.setBookDate(new Timestamp(System.currentTimeMillis()));
+	public void insertBooks(BookDTO bookDTO) {
 		
+		// StoreEntity 객체
+		StoreEntity storeEntity = storeRepository.findById(bookDTO.getStoreCode())
+		    .orElseThrow(() -> new IllegalArgumentException("Invalid storeCode"));
+		
+		// BookInfoEntity 생성 먼저하고 저장 후 bookNum 을 얻는다.
+		BookInfoEntity bookInfoEntity = BookInfoEntity.builder()
+				.bookName(bookDTO.getBookName())
+				.author(bookDTO.getAuthor())
+				.publish(bookDTO.getPublish())
+				.story(bookDTO.getStory())
+				.genreId(bookDTO.getGenreId())
+				.isbn(bookDTO.getIsbn())
+				.publishDate(bookDTO.getPublishDate())
+				.rentMoney(bookDTO.getRentMoney())
+				.build();
+		log.info("bookInfoEntity : {}", bookInfoEntity.toString());
+		
+		//BookInfoEntity 먼저 저장하고 bookNum이 생성되도록 함
+		BookInfoEntity savedBookInfo = bookInfoRepository.save(bookInfoEntity);
+	    log.info("bookInfoEntity : {}", savedBookInfo.toString());
+	    
+	    
+		//BooksEntity 에 저장된 bookInfoEntity 생성
+		BooksEntity booksEntity = BooksEntity.builder()
+	        	    .bookStatus(bookDTO.getBookStatus())
+	        	    .rentStatus(true)
+	        	    .storeEntity(storeEntity)
+	        	    .inventory(bookDTO.getInventory())
+	        	    .bookInfoEntity(savedBookInfo) // 저장된 bookInfoEntity 사용함
+	        	    .build();
+
+
+	    log.info("booksEntity : {}", booksEntity.toString());
+	    log.info("savedBookInfo : {}", savedBookInfo.toString());
+	    
+	    // BooksEntity 저장
 		booksRepository.save(booksEntity);
-		bookInfoRepository.save(bookInfoEntity);
+		
 	}
 
 	// 지점 List 조회
@@ -67,4 +102,9 @@ public class BooksService {
 		return genreRepository.findAll();
 	}
 
+	
+    
+    
+    
+    
 }

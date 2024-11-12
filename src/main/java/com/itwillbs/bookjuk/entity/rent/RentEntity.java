@@ -14,6 +14,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,14 +41,9 @@ public class RentEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "book_num", nullable = false)
-	private BookInfoEntity book;
+	private BooksEntity book;
 
-	@ColumnDefault("CURRENT_TIMESTAMP")
-	@Column(name = "rent_start", nullable = false)
-	private Instant rentStart;
 
-	@Column(name = "rent_end", nullable = false)
-	private Instant rentEnd;
 
 	@Column(name = "rent_price", nullable = false)
 	private Integer rentPrice;
@@ -73,5 +69,11 @@ public class RentEntity {
 
 	@OneToOne(mappedBy = "rent")
 	private PointDealEntity pointDeal;
+
+	@Column(name = "rent_start", nullable = false)
+	private LocalDate rentStart;
+
+	@Column(name = "rent_end", nullable = false)
+	private LocalDate rentEnd;
 
 }

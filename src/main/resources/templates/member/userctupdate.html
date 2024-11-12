@@ -35,7 +35,7 @@
   		width: 650px;
   		height: 550px; 
   		border: 3px solid rgb(233, 255, 200);
-  		border-radius: 8px;
+  		border-radius: 15px;
   		margin-top: 220px;
   		margin-left: 750px;
   		background-color: rgb(233, 255, 200);
@@ -89,26 +89,27 @@
   <!-- 사이드바 열었다 닫았다 하는거 -->
   <script th:src="@{/js/common/main.js}"></script>
   
-  <div class="contentup-box">
 	<form th:action="@{/userctupdate}" class="content1" method="post">
+		<div class="contentup-box">
 		<div class="update-group">
-			이름 : <input type="text" class="ct1" name="name"><br>
+			이름 : <input type="text" class="ct1" name="name" th:value="${userEntity.userName}"><br>
 		</div>
 		<div class="update-group">
-			이메일 : <input type="email" class="ct1" name="email"><br>
+			이메일 : <input type="email" class="ct1" name="email" th:value="${userEntity.userEmail}"><br>
 		</div>
 		<div class="update-group">
-			전화번호 : <input type="tel" class="ct1" name="tel"><br>
+			전화번호 : <input type="tel" class="ct1" name="tel" th:value="${userEntity.userPhone}"><br>
 		</div>
 		<div class="update-group">
-			아이디 : <input type="text" class="ct1" name="id"><br>
+			아이디 : <input type="text" class="ct1" name="id" th:value="${userEntity.userId}"><br>
 		</div>
 		<div class="update-group">
 			비밀번호 : <input type="password" name="pass"><br>	
 		</div>
+		</div>
+	  <input type="submit" class="userctupdate" value="정보 수정하기">
 	</form>
-  </div>
-  <input type="submit" class="userctupdate" value="정보 수정하기">
+  
 
 </body>
 

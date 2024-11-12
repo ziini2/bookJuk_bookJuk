@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.itwillbs.bookjuk.domain.member.PageDTO;
 import com.itwillbs.bookjuk.entity.UserEntity;
@@ -63,9 +64,40 @@ public class MemberpageController {
 	}
 	
 	@GetMapping("/userctupdate")
-	public String userctupdate() {
+	public String userctupdate(HttpSession session, Model model) {
 		log.info("MemberController userctupdate()");
+		
+		String userId = SecurityContextHolder
+				.getContext().getAuthentication().getName();
+		
+		
+		Optional<UserEntity> userEntity = memberpageService.findByuserId(userId);
+		
+		model.addAttribute("userEntity", userEntity.get());
+		
 		return "/member/userctupdate";
+	}
+	
+	@PostMapping("/userctupdate")
+	public String userctupdatePost(UserEntity userEntity, HttpSession session) throws Exception{
+		log.info("MemberController userctupdatePost()");
+		log.info(userEntity.toString());
+		
+		UserEntity userEntity2 = memberpageService.findByIdAndPass(userEntity);
+				
+		if(userEntity2 == null) {
+			return "redirect:/userctupdate";
+		}else {
+			
+			userEntity.setUpdateDate(userEntity2.getUpdateDate());
+			userEntity.setUserPassword(userEntity2.getUserPassword());
+			userEntity.setUserRole(userEntity2.getUserRole());
+			
+			memberpageService.userctupdateMember(userEntity);
+			
+			return "redirect:/usercontent";
+		}
+		
 	}
 
 }

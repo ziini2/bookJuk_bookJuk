@@ -80,7 +80,6 @@ public class BookInfoEntity {
                 .build();
     }
 
-	@OneToMany(mappedBy = "book")
-	private List<RentEntity> rent;
+
 
 }

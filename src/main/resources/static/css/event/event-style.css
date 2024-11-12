@@ -15,6 +15,9 @@ button {
 div.dataTables_processing {
 	top: 30% !important;
 }
+#manyPeople {
+    display: none;
+}
 
 
 

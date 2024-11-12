@@ -1,6 +1,7 @@
 package com.itwillbs.bookjuk.service.event;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import com.itwillbs.bookjuk.entity.event.EventEntity;
 import com.itwillbs.bookjuk.repository.UserRepository;
 import com.itwillbs.bookjuk.repository.event.EventConditionRepository;
 import com.itwillbs.bookjuk.repository.event.EventRepository;
+import com.itwillbs.bookjuk.util.EventConditionParser;
 import com.itwillbs.bookjuk.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -73,9 +75,10 @@ public class EventService {
 		for(EventConditionDTO conditionDTO : eventDTO.getEventCondition()) {
 			EventConditionEntity eventConditionEntity = EventConditionEntity.builder()
 					.eventId(eventEntity)
-					.eventConditionType(conditionDTO.getEventConditionType())
+					.eventConditionType(EventConditionParser.parseConditionType(conditionDTO.getEventConditionType()))
 					.eventClearReward(conditionDTO.getEventClearReward())
 					.eventIsActive(false)
+					.eventRequiredValue(EventConditionParser.parseRequiredValue(conditionDTO.getEventConditionType()))
 					.build();
 			eventConditionRepository.save(eventConditionEntity);
 		}
@@ -123,16 +126,9 @@ public class EventService {
 	@Scheduled(cron = "1 0 0 * * ?")// 매일 자정하고도 1초가 지났을때 동작(하루에 1번)
 	@Transactional
 	public void updateEventStatus() {
-		Calendar calendar = Calendar.getInstance();
-	    calendar.set(Calendar.HOUR_OF_DAY, 0);
-	    calendar.set(Calendar.MINUTE, 0);
-	    calendar.set(Calendar.SECOND, 0);
-	    calendar.set(Calendar.MILLISECOND, 0);
-	    Timestamp today = new Timestamp(calendar.getTimeInMillis());
-
+		LocalDate today = LocalDate.now();
         // 시작 날짜가 오늘이고 상태가 "시작 전"인 이벤트 목록을 "진행 중"으로 변경
         List<EventEntity> eventsToStart = eventRepository.findByStartEventDateAndEventStatus(today, "시작 전");
-//        log.info("Events to Start: {}", eventsToStart);
         eventsToStart.forEach(event -> event.setEventStatus("진행 중"));
         eventRepository.saveAll(eventsToStart);
 

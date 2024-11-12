@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.bookjuk.domain.pay.PaymentStatus;
 import com.itwillbs.bookjuk.dto.PaymentDTO;
-import com.itwillbs.bookjuk.dto.UserDTO;
 import com.itwillbs.bookjuk.entity.UserContentEntity;
 import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.pay.PaymentEntity;
@@ -148,15 +147,17 @@ public class PaymentService {
     public void updateUserPoint(Long userNum, int amount) {
     UserContentEntity updatePoint = userContentRepository.findByUserNum(userNum);
 
-	 int plusPoint = updatePoint.getUserPoint(); // 현재 포인트 가져오기
+	 int nowPoint = updatePoint.getUserPoint(); // 현재 포인트 가져오기
 	 
 	 //결제 금액에 따라 추가할 포인트 계산
      int pointsToAdd = calculatePoints(amount); // 금액에 따른 포인트 계산 메서드 호출
-     updatePoint.setUserPoint(plusPoint + pointsToAdd); // 계산된 포인트를 추가
+     updatePoint.setUserPoint(nowPoint + pointsToAdd); // 계산된 포인트를 추가
      
      userContentRepository.save(updatePoint); // 업데이트된 포인트 저장
     	
     }    
+    
+   
     
     private int calculatePoints(int amount) {
         //포인트 조정
@@ -176,44 +177,84 @@ public class PaymentService {
         return amount;
     }
     
-    
- // 결제 취소 메서드
-    public void cancelPayment(String paymentId) throws IamportResponseException, IOException {
-        try {
-            //결제 정보 데이터베이스에서 조회
-            PaymentEntity paymentEntity = paymentRepository.findByPaymentId(paymentId);
-            if (paymentEntity == null) {
-                throw new IllegalArgumentException("유효하지 않은 결제 ID입니다.");
+ // 결제 취소 후 포인트 차감 메서드
+    public void payCancelPoint(String paymentId, int amount) {
+        // 결제 ID를 통해 결제 정보를 가져옵니다.
+        PaymentEntity paymentEntity = paymentRepository.findByPaymentId(paymentId);
+
+        if (paymentEntity != null) {
+            Long user = SecurityUtil.getUserNum();
+            UserContentEntity updateCancelPoint = userContentRepository.findByUserNum(user);
+
+            if (updateCancelPoint != null) {
+                int currentPoints = updateCancelPoint.getUserPoint();  // 현재 포인트 가져오기
+                
+                // 결제 취소된 금액에 해당하는 포인트 차감
+                int pointsToCancel = calculatePoints(amount);  // amount에 맞는 포인트 계산
+                int updatedPoints = currentPoints - pointsToCancel;
+
+
+                // 업데이트된 포인트 저장
+                updateCancelPoint.setUserPoint(updatedPoints);
+                userContentRepository.save(updateCancelPoint);
+                System.out.println("포인트 차감 완료: " + pointsToCancel + "포인트");
+            } else {
+                System.out.println("사용자 정보가 없습니다.");
             }
-
-            // 결제 취소 데이터 생성
-            CancelData cancelData = new CancelData(paymentId, true);
-
-            // 아임포트 API를 통해 결제 취소 요청
-            IamportResponse<com.siot.IamportRestClient.response.Payment> cancelResponse = iamportClient.cancelPaymentByImpUid(cancelData);
-
-            if (cancelResponse.getResponse() == null || !"cancelled".equals(cancelResponse.getResponse().getStatus())) {
-                throw new IllegalArgumentException("결제 취소가 실패했습니다.");
-            }
-
-            // 취소가 성공했을 경우 DB 업데이트
-            paymentEntity.setPaymentStatus(PaymentStatus.CANCEL);
-            paymentEntity.setReqDate(LocalDateTime.now());
-            paymentRepository.save(paymentEntity);
-
-            System.out.println("결제 취소 성공");
-
-        } catch (IamportResponseException e) {
-            System.out.println("아임포트 API 호출 실패: " + e.getMessage());
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("네트워크 오류: " + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("예기치 못한 오류: " + e.getMessage());
-            e.printStackTrace();
+        } else {
+            System.out.println("결제 정보가 없습니다.");
         }
     }
 
-}
+   
+ 
+    
+    public void cancelPayment(String paymentId) throws IamportResponseException, IOException {
+        try {
+            // 결제 취소 요청 처리
+        	PaymentEntity paymentEntity = paymentRepository.findByPaymentId(paymentId);
+            CancelData cancelData = new CancelData(paymentId, true);
+            IamportResponse<com.siot.IamportRestClient.response.Payment> cancelResponse = iamportClient.cancelPaymentByImpUid(cancelData);
 
+            // 응답 로그 출력
+            if (cancelResponse.getResponse() == null) {
+                System.out.println("결제 취소 실패 - 응답 없음");
+                System.out.println("에러 메시지: " + cancelResponse.getMessage());  // 오류 메시지 출력
+            } else {
+                System.out.println("결제 취소 응답 상태: " + cancelResponse.getResponse().getStatus());  // 예: cancelled
+                System.out.println("결제 취소된 금액: " + cancelResponse.getResponse().getAmount());  // 취소된 금액
+            }
+
+            // 취소가 성공한 경우, 결제 상태 업데이트
+            if (cancelResponse.getResponse() != null && "cancelled".equals(cancelResponse.getResponse().getStatus())) {
+            	
+            	
+                // 결제 취소 성공 시 DB 업데이트
+                paymentEntity.setPaymentStatus(PaymentStatus.CANCEL);
+                paymentEntity.setReqDate(LocalDateTime.now());
+                paymentRepository.save(paymentEntity);
+                System.out.println("결제 취소 성공");
+                
+          
+             // 결제 금액에 맞춰 포인트 차감
+                int amount = cancelResponse.getResponse().getAmount().intValue();;  // 취소된 금액
+                payCancelPoint(paymentId, amount);  // 결제 금액을 전달하여 포인트 차감
+    	        
+            } else {
+                throw new IllegalArgumentException("결제 취소가 실패했습니다.");
+            }
+        } catch (IamportResponseException e) {
+            // 아임포트 API 호출 실패 시
+            System.out.println("아임포트 API 호출 실패 (HTTP 코드: " + e.getHttpStatusCode() + "): " + e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            // 네트워크 오류
+            System.out.println("네트워크 오류: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            // 예기치 않은 오류
+            System.out.println("예기치 못한 오류 (" + e.getClass().getName() + "): " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}

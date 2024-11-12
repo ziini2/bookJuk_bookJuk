@@ -2,7 +2,11 @@ package com.itwillbs.bookjuk.controller.pay;
 
 import com.itwillbs.bookjuk.dto.PaymentDTO;
 import com.itwillbs.bookjuk.service.pay.PaymentService;
+
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,18 +35,22 @@ public class PaymentController {
         }
     }
     
-    //결제 취소 엔드포인트
     @PostMapping("/cancel")
-    public ResponseEntity<String> cancelPayment(@RequestParam("paymentId") String paymentId) {
+    public ResponseEntity<String> cancelPayment(@RequestBody Map<String, String> request) {
+        String paymentId = request.get("paymentId");
+        System.out.println("/payment/cancel-----------------------------");
+    	System.out.println(paymentId);
         try {
-            // 결제 취소 메서드 호출
-            paymentService.cancelPayment(paymentId);
-            return ResponseEntity.ok("결제가 취소되었습니다.");
+            paymentService.cancelPayment(paymentId);  // 결제 취소 로직
+            return ResponseEntity.ok("취소 성공");
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("결제 취소 중 오류가 발생했습니다: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("취소 실패");
         }
     }
+
+
+
+
 //    
 //	 // 결제가 완료되었을 때 호출되는 메서드
 //    @PostMapping("/payment/complete")

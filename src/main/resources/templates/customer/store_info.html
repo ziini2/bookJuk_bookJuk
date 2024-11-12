@@ -47,8 +47,9 @@
 					<div>
 						<span class="me-2" style="font-size: 25px;" th:text="${storeInfo.storeName}"></span>
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-							onclick="deleteStore()" class="bi bi-trash me-2" viewBox="0 0 16 16"
-							style="cursor: pointer;">
+							th:onclick="|deleteStore('${storeInfo.storeCode}')| 	" class="bi bi-trash me-2"
+							viewBox="0 0 16 16" style="cursor: pointer;">
+							<!-- deleteStore('${storeInfo.storeCode}') 이런식으로 데이터전달 가능 -->
 							<path
 								d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
 							<path
@@ -105,6 +106,11 @@
 				<div class="col-3">
 					<div class="p-3 border bg-light">
 						사업자등록번호<br><span th:text="${storeInfo.storeRegiNum}"></span>
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="p-3 border bg-light">
+						지점상태<br><span th:text="${storeInfo.storeStatus == 'open' ? '운영중' : '폐점'}"></span>
 					</div>
 				</div>
 			</div>
@@ -219,7 +225,7 @@
 
 				// 해당 주소에 대한 좌표를 받아서
 				var coords = new kakao.maps.LatLng(result.y, result.x);
-				
+
 				// 지도에 넣어줌
 				var mapContainer = document.getElementById('map'), // 지도 div id
 					mapOption = {
@@ -242,8 +248,36 @@
 	</script>
 
 	<script>
-		function deleteStore() {
-			alert("클릭");
+		// 지점상태변경(삭제)
+		function deleteStore(storeCode) {
+			// 확인은 true, 취소는 false 반환
+			const deleteCheck = confirm("폐점 상태로 변경됩니다.");
+
+			if (deleteCheck) {
+				fetch('/admin/store/store_delete', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({storeCode: storeCode})
+				})
+					.then(response => response.text())
+					.then(data => {
+						if (parseInt(data) == 1) {
+							console.log(data);
+							alert("변경됐습니다.");
+						} else {
+							alert("변경에 실패했습니다.");
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						alert("에러가 발생했습니다.");
+					});
+			} else {
+				// 취소를 클릭한 경우
+				return;
+			}
 		}
 
 		function storeLocationUpdate() {
@@ -252,10 +286,42 @@
 	</script>
 
 	<script>
+		// 유효성 검사 함수
+		function validateInput(input) {
+			if (input.value.trim() === '') {
+				input.style.border = '2px solid red';
+				return false;
+			} else {
+				input.style.border = '1px solid #dee2e6';
+				return true;
+			}
+		}
+
+		// 입력 필드를 벗어날 때마다 검사
+		document.querySelectorAll('#storeUpdate input').forEach(input => {
+			input.addEventListener('blur', () => validateInput(input));
+		});
+
+		// 유효성 검사와 폼전송
 		function storeUpadate() {
-			const storeUpdate = document.getElementById("storeUpdate");
-			storeUpdate.submit();
-		}		
+			let check = true;
+			const form = document.querySelector('#storeUpdate');
+			const inputs = document.querySelectorAll('#storeUpdate input');
+
+			inputs.forEach(input => {
+				if (input.value.trim() === '') {
+					check = false;
+					input.style.border = '2px solid red';
+				}
+			});
+
+			if (!check) {
+				alert("모든 정보를 입력해주세요.");
+			} else {
+				form.submit();
+			}
+		}
+
 	</script>
 
 

@@ -40,6 +40,17 @@
 
 <main class="main-container">
     <div th:replace="~{fragment/sidebar :: sidebar2}"></div>
+
+    <!-- 기간 선택 메뉴를 고정된 위치로 변경 -->
+    <div class="fixed-period-select text-center">
+        <label for="period">기간 선택</label>
+        <select class="form-select w-auto mt-2" name="period" id="period" style="width: 100px !important; height: 34px">
+            <option value="week">주</option>
+            <option value="month">월</option>
+            <option value="quarter">분기</option>
+        </select>
+    </div>
+
     <section class="dashboard-container">
         <div class="banners">
             <div class="banner">
@@ -52,59 +63,60 @@
             <div class="banner">
                 <div class="banner-title">금일 매출</div>
                 <div class="banner-content">
-                    <div class="banner-content-number">0</div>
+                    <div class="banner-content-number daily-revenue">0</div>
                     <div class="banner-content-unit">원</div>
+                </div>
+            </div>
+            <div class="banner">
+                <div class="banner-title">금일 사용 포인트</div>
+                <div class="banner-content">
+                    <div class="banner-content-number daily-point">0</div>
+                    <div class="banner-content-unit">P</div>
+                </div>
+            </div>
+            <div class="banner">
+                <div class="banner-title">대여 현황</div>
+                <div class="banner-content">
+                    <div class="banner-content-number daily-rental">0</div>
+                    <div class="banner-content-unit">건</div>
                 </div>
             </div>
             <div class="banner">
                 <div class="banner-title">반납지연 현황</div>
                 <div class="banner-content">
-                    <div class="banner-content-number">0</div>
+                    <div class="banner-content-number daily-delay">0</div>
                     <div class="banner-content-unit">건</div>
                 </div>
             </div>
             <div class="banner">
                 <div class="banner-title">진행 중인 이벤트</div>
                 <div class="banner-content">
-                    <div class="banner-content-number numbers-of-events"></div>
+                    <div class="banner-content-number numbers-of-events">0</div>
                     <div class="banner-content-unit">개</div>
                 </div>
             </div>
         </div>
+
         <div class="statistics-charts mt-5">
             <div class="total_short_cut_chart">
-                <div class="d-flex align-items-center total-title">
+                <div class="d-flex align-items-center justify-content-center total-title">
                     <h3 class="mr-3">전체 요약 통계</h3> <!-- 적절한 간격을 위해 margin-right 추가 -->
-                    <!-- 기간 선택 메뉴 드롭다운 형식으로 항목 주, 월, 분기 -->
-                    <div class="period-select">
-                        <select class="form-select w-auto" name="period" id="period" style="width: auto; height: 34px">
-                            <option value="week">주</option>
-                            <option value="month">월</option>
-                            <option value="quarter">분기</option>
-                        </select>
-                    </div>
                 </div>
                 <div class="total-chart-sub-options d-flex col">
-                    <div class="detail-options">
+                    <div class="detail-options d-flex justify-content-center">
                         <!-- 라디오버튼으로 매출, 대여건수, 신규 가입자, 누적 가입자 만들기 -->
-                        <input type="radio" name="detail-option" id="revenue" value="revenue" checked>
+                        <input type="radio" name="detail-option" id="revenue" value="point" checked>
                         <label for="revenue">매출</label>
+                        <input type="radio" name="detail-option" id="point" value="point" checked>
+                        <label for="point">포인트</label>
                         <input type="radio" name="detail-option" id="rental" value="rental">
                         <label for="rental">대여건수</label>
+                        <input type="radio" name="detail-option" id="delay" value="delay">
+                        <label for="delay">연체건수</label>
                         <input type="radio" name="detail-option" id="new-user" value="newUser">
                         <label for="new-user">신규 가입자</label>
                         <input type="radio" name="detail-option" id="total-user" value="totalUser">
                         <label for="total-user">누적 가입자</label>
-                    </div>
-                    <!-- 지점 선택 -->
-                    <div class="store-select d-flex align-items-center">
-                        <label for="store" class="store-select-label">지점 선택:</label>
-                        <select class="form-select" name="store" id="store" style="width: auto; height: 34px">
-                            <option value="all">전체</option>
-                            <option value="store1">지점1</option>
-                            <option value="store2">지점2</option>
-                            <option value="store3">지점3</option>
-                        </select>
                     </div>
                 </div>
             </div>
@@ -112,11 +124,13 @@
                 <div class="revenue-pie-container">
                     <div class="pie-body">
                         <div class="chart-title">
-                            매출항목별 지점 매출
+                            지점별 포인트 사용 내역
                         </div>
                         <div class="radio-buttons">
                             <input type="radio" name="sale-option" id="rentalBranch" value="대여료" checked>
                             <label for="rentalBranch">대여료</label>
+                            <input type="radio" name="sale-option" id="overdueBranch" value="연장료">
+                            <label for="overdueBranch">연장료</label>
                             <input type="radio" name="sale-option" id="lateFeeBranch" value="연체료">
                             <label for="lateFeeBranch">연체료</label>
                         </div>
@@ -127,7 +141,7 @@
                 <div class="accumulation-bar-chart-container">
                     <div class="acc-bar-body">
                         <div class="chart-title">
-                            지점별 매출 상세
+                            지점별 포인트 사용내역 상세
                         </div>
                         <div class="accumulation-bar-chart">
                         </div>
@@ -141,7 +155,7 @@
                 <div class="customer-bar-container">
                     <div class="cus-bar-body">
                         <div class="chart-title">
-                            신규가입고객 상세
+                            신규가입자 상세
                         </div>
                         <div class="radio-buttons">
                             <input type="radio" name="customer-option" id="gender" value="gender" checked>

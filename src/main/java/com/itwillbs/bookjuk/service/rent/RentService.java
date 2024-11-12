@@ -1,5 +1,20 @@
 package com.itwillbs.bookjuk.service.rent;
 
+import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
+import com.itwillbs.bookjuk.entity.RentEntity;
+import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
+import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
+import com.itwillbs.bookjuk.repository.BookInfoRepository;
+import com.itwillbs.bookjuk.repository.PointDealRepository;
+import com.itwillbs.bookjuk.repository.RentRepository;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -7,34 +22,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
-
-import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
-import com.itwillbs.bookjuk.entity.RentEntity;
-import com.itwillbs.bookjuk.entity.books.BooksEntity;
-import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
-import com.itwillbs.bookjuk.repository.BooksRepository;
-import com.itwillbs.bookjuk.repository.PointDealRepository;
-import com.itwillbs.bookjuk.repository.RentRepository;
-
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
-
 @Service
 @RequiredArgsConstructor
-@Log
+@Slf4j
 public class RentService {
 	
 	private final RentRepository rentRepository;
-	
 	private final PointDealRepository pointDealRepository;
-	
-	private final BooksRepository booksRepository;
-	
+	private final BookInfoRepository bookInfoRepository;
+
 	public Page<RentEntity> getRentList(Pageable pageable) {
 		log.info("RentService getRentList()");
 		
@@ -42,7 +38,7 @@ public class RentService {
 	}
 	
 	public void updateReturnInfo(Long rentNum, String returnInfo) {
-        log.info("RentService updateReturnInfo() - rentNum: " + rentNum + ", returnInfo: " + returnInfo);
+        log.info("RentService updateReturnInfo() - rentNum: {}, returnInfo: {}", rentNum, returnInfo);
         
         Optional<RentEntity> rentOpt = rentRepository.findById(rentNum);
         if (rentOpt.isPresent()) {
@@ -102,17 +98,13 @@ public class RentService {
 //    }
 	
 	public Page<RentEntity> searchByCriteria(String criteria, String keyword, Pageable pageable) {
-	    log.info("searchByCriteria 호출됨 - 기준: " + criteria + ", 키워드: " + keyword);
-	    switch (criteria) {
-	        case "userName":
-	            return rentRepository.findByUserNameContaining(keyword, pageable);
-	        case "userId":
-	            return rentRepository.findByUserIdContaining(keyword, pageable);
-	        case "bookName":
-	            return rentRepository.findByBookNameContaining(keyword, pageable);
-	        default:
-	            return Page.empty(pageable); // 조건이 맞지 않으면 빈 페이지 반환
-	    }
+        log.info("searchByCriteria 호출됨 - 기준: {}, 키워드: {}", criteria, keyword);
+        return switch (criteria) {
+            case "userName" -> rentRepository.findByUserNameContaining(keyword, pageable);
+            case "userId" -> rentRepository.findByUserIdContaining(keyword, pageable);
+            case "bookName" -> rentRepository.findByBookNameContaining(keyword, pageable);
+            default -> Page.empty(pageable); // 조건이 맞지 않으면 빈 페이지 반환
+        };
 	}
 	
 	//대여등록
@@ -123,7 +115,7 @@ public class RentService {
 	    rentRepository.save(rentEntity);
 
 	    // BooksEntity에서 rentMoney 가져오기
-	    Optional<BooksEntity> bookOpt = booksRepository.findById(rentEntity.getBookNum());
+	    Optional<BookInfoEntity> bookOpt = bookInfoRepository.findById(rentEntity.getBookNum());
 	    if (bookOpt.isEmpty()) {
 	        throw new IllegalArgumentException("존재하지 않는 책 번호입니다: " + rentEntity.getBookNum());
 	    }

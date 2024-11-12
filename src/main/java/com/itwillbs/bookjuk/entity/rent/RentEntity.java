@@ -40,7 +40,7 @@ public class RentEntity {
 	private StoreEntity storeCode;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "book_id", nullable = false)
+	@JoinColumn(name = "books_id", nullable = false)
 	private BooksEntity book;
 
 	@Column(name = "rent_price", nullable = false)

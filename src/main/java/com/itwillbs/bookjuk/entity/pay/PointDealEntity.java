@@ -65,12 +65,12 @@ public class PointDealEntity {
     @JoinColumn(name = "coupon_id")
     private CouponEntity couponId;
 
-	
+	//연체번호
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "over_num")
     private Overdue overdue;
 
- 
+    //대여번호
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "rent_num")
 	private RentEntity rent;

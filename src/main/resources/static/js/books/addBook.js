@@ -21,8 +21,9 @@ async function isbnSearch() {
 	        document.getElementById("author").value = book.AUTHOR || "";
 	        document.getElementById("publish").value = book.PUBLISHER || "";
 	        document.getElementById("publishDate").value = book.PUBLISH_PREDATE || "";
-			document.getElementById("genreId").value = book.SUBJECT || "";
+			document.getElementById("genreId").value = book.SUBJECT || ""; 
 
+			
 	        // 줄거리 대신 책 소개나 다른 필드 사용
 	        const bookDescription = book.DESCRIPTION || book.INTRO || "책 소개 없음";
 	        document.getElementById("story").value = bookDescription;
@@ -70,11 +71,11 @@ async function registerBook() {
 		storeCode: formData.get("storeCode"),
 		bookStatus: formData.get("bookStatus"),
 		bookDate : formattedBookDate,
-		genreId : genreId,
+		genreId: formData.get("genreId"),
 		rentMoney : formData.get("rentMoney"),
 		inventory : formData.get("inventory")
 		
-    };
+    };9788958287650
     console.log(JSON.stringify(data));
 
     try {
@@ -88,7 +89,7 @@ async function registerBook() {
 
         const responseData = await response.json();  // JSON 응답 받기
         if (response.ok) {
-            alert(responseData.message);  // 서버에서 전달한 메시지 표시
+           // alert(responseData.message);  // 서버에서 전달한 메시지 표시
             const modal = bootstrap.Modal.getInstance(document.getElementById('exampleModal'));
             modal.hide();
             form.reset();

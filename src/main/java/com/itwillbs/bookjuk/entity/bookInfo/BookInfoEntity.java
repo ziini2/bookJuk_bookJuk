@@ -15,7 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -53,11 +52,6 @@ public class BookInfoEntity {
 	// 책소개
 	@Column(nullable = false)
 	private String story;
-
-////	// 관심설정
-////	@Column(nullable = false)
-////	private int interest;
-// h
 	
 	//책 이미지(표지)
 	@Column(nullable = true)  

@@ -10,15 +10,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
+@Setter
 @Table(name = "book_info")
 public class BookInfoEntity {
 
@@ -82,23 +82,5 @@ public class BookInfoEntity {
                 .publishDate(publishDate)
                 .build();
     }
-
-	public Long getBookNum() {
-		return bookNum;
-	}
-
-	public void setBookNum(Long bookNum) {
-		this.bookNum = bookNum;
-	}
-
-	public LocalDate getPublishDate() {
-		return publishDate;
-	}
-
-	public void setPublishDate(LocalDate publishDate) {
-		this.publishDate = publishDate;
-	}
-
-   
     
 }

@@ -1,15 +1,12 @@
 package com.itwillbs.bookjuk.entity.pay;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-import com.itwillbs.bookjuk.domain.books.BookStatus;
+import com.itwillbs.bookjuk.entity.rent.Overdue;
 import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
-import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
-import com.itwillbs.bookjuk.entity.books.BooksEntity;
 import com.itwillbs.bookjuk.entity.event.CouponEntity;
-import com.itwillbs.bookjuk.entity.event.EventEntity;
 
+import com.itwillbs.bookjuk.entity.rent.RentEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -38,7 +35,7 @@ public class PointDealEntity {
 	//포인트거래ID
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "pointPayId")
+	@Column(name = "point_pay_id")
 	private Long pointPayID;
 	
 	//포인트거래금액
@@ -46,7 +43,7 @@ public class PointDealEntity {
 	private Long pointPrice;
 	
 	//포인트거래상태
-	@Column(nullable = false, name = "pointPayStatus")
+	@Column(nullable = false, name = "point_pay_status")
 	@Enumerated(EnumType.STRING)
 	private PointPayStatus pointPayStatus;
 	 
@@ -56,6 +53,15 @@ public class PointDealEntity {
 	
 	//쿠폰 아이디
 	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "couponId")
+    @JoinColumn(name = "coupon_id")
     private CouponEntity couponId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "over_num")
+    private Overdue overdue;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "rent_num")
+	private RentEntity rent;
+
 }

@@ -1,15 +1,12 @@
 package com.itwillbs.bookjuk.entity.bookInfo;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.itwillbs.bookjuk.entity.rent.RentEntity;
+import jakarta.persistence.*;
 import lombok.*;
 
 
@@ -82,5 +79,8 @@ public class BookInfoEntity {
                 .publishDate(publishDate)
                 .build();
     }
-    
+
+	@OneToMany(mappedBy = "book")
+	private List<RentEntity> rent;
+
 }

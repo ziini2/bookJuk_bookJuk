@@ -12,7 +12,9 @@ import org.springframework.context.annotation.Configuration;
 public class AccessCheckAspect {
 
     @Before("com.itwillbs.bookjuk.config.aop.JoinPointConfig.statisticsControllerPointcut()" +
-            "|| com.itwillbs.bookjuk.config.aop.JoinPointConfig.statisticsServicePointcut()")
+            "|| com.itwillbs.bookjuk.config.aop.JoinPointConfig.statisticsServicePointcut()" +
+            "|| com.itwillbs.bookjuk.config.aop.JoinPointConfig.rentControllerPointcut()" +
+            "|| com.itwillbs.bookjuk.config.aop.JoinPointConfig.rentServicePointcut()")
     public void beforeBoardController(JoinPoint joinPoint) {
         log.info("before {}", joinPoint);
     }

@@ -13,7 +13,10 @@ import org.springframework.stereotype.Component;
 @Component  // 스프링 빈으로 등록
 public class LoggingAspect {
 
-    final String STATISTICSPOINTCUT = "com.itwillbs.bookjuk.config.aop.JoinPointConfig.statisticsControllerPointcut() || com.itwillbs.bookjuk.config.aop.JoinPointConfig.statisticsServicePointcut()";
+    final String STATISTICSPOINTCUT = "com.itwillbs.bookjuk.config.aop.JoinPointConfig.statisticsControllerPointcut() " +
+            "|| com.itwillbs.bookjuk.config.aop.JoinPointConfig.statisticsServicePointcut()" +
+            "|| com.itwillbs.bookjuk.config.aop.JoinPointConfig.rentControllerPointcut()" +
+            "|| com.itwillbs.bookjuk.config.aop.JoinPointConfig.rentServicePointcut()";
 
     @AfterReturning(value = STATISTICSPOINTCUT,
             returning = "result")

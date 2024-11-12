@@ -29,42 +29,30 @@ import com.itwillbs.bookjuk.repository.StoreRepository;
 @RequestMapping("/admin")
 public class BooksController {
 
-    private final BooksService booksService;
-   
+	private final BooksService booksService;
 
+	@GetMapping("/books")
+	public String books(Model model) {
 
-    @GetMapping("/books")
-    public String books(Model model) {
+		// 지점 리스트 가져오기
+		List<StoreEntity> storeList = booksService.getStroeList();
 
-    	// 지점 리스트 가져오기
-    	 List<StoreEntity> storeList = booksService.getStroeList();
-    	
-    	// 장르ID 가져오기
-    	 List<GenreEntity> genreList = booksService.getGenreList();
-    	 
-    	model.addAttribute("storeList", storeList);
-    	model.addAttribute("genreList", genreList);
-    	
-        return "books/books";
+		// 장르ID 가져오기
+		List<GenreEntity> genreList = booksService.getGenreList();
 
-    }
-    
-    
-   
-    @PostMapping("/addBook")
-    @ResponseBody
-    public int addBook(@RequestBody BookDTO bookDTO) {
-    	
-    	log.info("bookDTO : {}",bookDTO);
-    
-    	//storeCode=null, 
-    	//bookStatus=null, bookDate=null, genreId=null, inventory=null)
-    	
-    	
-    	return 1;
-    	
-    }
-    
+		model.addAttribute("storeList", storeList);
+		model.addAttribute("genreList", genreList);
 
-   
+		return "books/books";
+
+	}
+
+	@PostMapping("/addBook")
+	@ResponseBody
+	public int addBook(@RequestBody BookDTO bookDTO) {
+		log.info("Received bookDTO: genreId={}", bookDTO.getGenreId());
+		booksService.insertBooks(bookDTO);
+		return 1;
+	}
+
 }

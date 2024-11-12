@@ -1,5 +1,6 @@
 package com.itwillbs.bookjuk.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,5 +12,8 @@ public interface BookInfoRepository extends JpaRepository<BookInfoEntity, Long> 
 	
 	//대여등록 책검색
 	Optional<BookInfoEntity> findByIsbn(String isbn);
+	
+	//장바구니 추가
+	//List<BookInfoEntity> fin
 	
 }

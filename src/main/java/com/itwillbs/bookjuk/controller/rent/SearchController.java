@@ -19,20 +19,21 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class SearchController {
 
+	@Autowired
     private SearchService searchService;
 
-//    @GetMapping("/admin/search")
-//    public List<UserEntity> searchUsers(
-//            @RequestParam("criteria") String criteria,
-//            @RequestParam("keyword") String keyword) {
-//        return searchService.searchUsers(criteria, keyword);
-//    }
-//
-//    @GetMapping("/admin/searchbook")
-//    public List<SearchResultDTO> searchBooks(
-//            @RequestParam("criteria") String criteria,
-//            @RequestParam("keyword") String keyword) {
-//        return searchService.searchBooks(criteria, keyword);
-//    }
+    @GetMapping("/admin/search")
+    public List<UserEntity> searchUsers(
+            @RequestParam("criteria") String criteria,
+            @RequestParam("keyword") String keyword) {
+        return searchService.searchUsers(criteria, keyword);
+    }
+    
+    @GetMapping("/admin/searchbook")
+    public List<SearchResultDTO> searchBooks(
+            @RequestParam("criteria") String criteria,
+            @RequestParam("keyword") String keyword) {
+        return searchService.searchBooks(criteria, keyword);
+    }
     
 }

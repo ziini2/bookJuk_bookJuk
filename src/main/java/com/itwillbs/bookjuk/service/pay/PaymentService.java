@@ -41,6 +41,12 @@ public class PaymentService {
         return paymentRepository.findAllByOrderByReqDateDesc();  //모든 결제 정보를 최신순으로 반환
     }
     
+    // 검색어를 기준으로 결제 목록 조회 (검색 기능)
+    public List<PaymentEntity> searchPayments(String searchValue) {
+        
+    	return paymentRepository.findAllByOrderByReqDateDesc();
+    }
+    
     public List<PaymentEntity> getPaymentsByUserNum(Long userNum) {
     //로그인한 유저의 결제 내역만 가져오기(유저번호 기준으로)
     return paymentRepository.findByUserContentEntity_UserNumOrderByReqDateDesc(userNum);
@@ -99,37 +105,46 @@ public class PaymentService {
 	        
 	        System.out.println("유저엔티티 " + userContentEntity.toString());
 	        
-	        
-	        // System.out.println(userEntity);
+	        boolean pointUsed = paymentDTO.getPaidAmount() != iamportPayment.getAmount().intValue();
+
 	        //결제 정보 DB에 저장
 	         PaymentEntity paymentEntity = PaymentEntity.builder()
             .paymentId(iamportPayment.getImpUid())
             .merchantUid(iamportPayment.getMerchantUid())
-            .paymentPrice(iamportPayment.getAmount().longValue())
+            .paymentPrice(iamportPayment.getAmount().intValue())
             .userContentEntity(userContentEntity)
             .paymentMethod(iamportPayment.getPayMethod())
             .paymentStatus(paymentDTO.getStatus())
             .priceName(paymentDTO.getPriceName())
             .reqDate(LocalDateTime.now())
+            .pointUsed(pointUsed)
             .build();
 	        
 	        paymentRepository.save(paymentEntity);
 	        // 결제 금액에 따른 포인트 업데이트
 	        int amount = iamportPayment.getAmount().intValue(); //결제 금액 정수형으로 변환
-	        updateUserPoint(user, amount); //결제 금액에 따라 포인트 업데이트
-	         
+	        updateUserPoint(user, amount); // 결제 금액을 기반으로 포인트 업데이트
+	        
+
 	    } catch (IamportResponseException e) {
+	        // 아임포트 API 호출 실패 시
 	        System.out.println("아임포트 API 호출 실패: " + e.getMessage());
 	        e.printStackTrace();
+	        throw new RuntimeException("아임포트 API 호출 실패", e);  // 예외를 던져서 상위 로직에서 처리할 수 있도록 합니다.
+
 	    } catch (IOException e) {
+	        // 네트워크 오류
 	        System.out.println("네트워크 오류: " + e.getMessage());
 	        e.printStackTrace();
+	        throw new RuntimeException("네트워크 오류", e);  // 예외를 던져서 상위 로직에서 처리할 수 있도록 합니다.
+
 	    } catch (Exception e) {
+	        // 기타 예기치 않은 오류 처리
 	        System.out.println("예기치 못한 오류: " + e.getMessage());
 	        e.printStackTrace();
+	        throw new RuntimeException("예기치 못한 오류 발생", e);  // 예외를 던져서 상위 로직에서 처리할 수 있도록 합니다.
 	    }
-
-    }
+	}
     
     //유저 이메일 가져오기(결제 정보)
     public String getUserEmail(Long userNum) {
@@ -157,8 +172,6 @@ public class PaymentService {
     	
     }    
     
-   
-    
     private int calculatePoints(int amount) {
         //포인트 조정
     	if (amount == 100) {
@@ -173,28 +186,25 @@ public class PaymentService {
             return 100000;
         }
     	
-    	
         return amount;
     }
     
- // 결제 취소 후 포인트 차감 메서드
     public void payCancelPoint(String paymentId, int amount) {
         // 결제 ID를 통해 결제 정보를 가져옵니다.
         PaymentEntity paymentEntity = paymentRepository.findByPaymentId(paymentId);
 
         if (paymentEntity != null) {
-            Long user = SecurityUtil.getUserNum();
+            Long user = SecurityUtil.getUserNum();  // 로그인한 사용자 정보
             UserContentEntity updateCancelPoint = userContentRepository.findByUserNum(user);
 
             if (updateCancelPoint != null) {
                 int currentPoints = updateCancelPoint.getUserPoint();  // 현재 포인트 가져오기
-                
+
                 // 결제 취소된 금액에 해당하는 포인트 차감
-                int pointsToCancel = calculatePoints(amount);  // amount에 맞는 포인트 계산
+                int pointsToCancel = calculatePoints(amount);  // 결제 금액을 포인트로 변환하여 차감
                 int updatedPoints = currentPoints - pointsToCancel;
 
-
-                // 업데이트된 포인트 저장
+                // 포인트 차감 후 저장
                 updateCancelPoint.setUserPoint(updatedPoints);
                 userContentRepository.save(updateCancelPoint);
                 System.out.println("포인트 차감 완료: " + pointsToCancel + "포인트");
@@ -206,13 +216,25 @@ public class PaymentService {
         }
     }
 
+
+
    
  
-    
     public void cancelPayment(String paymentId) throws IamportResponseException, IOException {
         try {
+            PaymentEntity paymentEntity = paymentRepository.findByPaymentId(paymentId);
+
+            if (paymentEntity == null) {
+                throw new IllegalArgumentException("결제 정보가 없습니다.");
+            }
+
+            // 포인트 사용 이력 있을 경우 취소 불가
+            if (paymentEntity.isPointUsed()) {
+                System.out.println("이 결제는 포인트가 사용되었으므로 취소할 수 없습니다.");
+                throw new IllegalArgumentException("포인트가 사용된 결제는 취소할 수 없습니다.");
+            }
+
             // 결제 취소 요청 처리
-        	PaymentEntity paymentEntity = paymentRepository.findByPaymentId(paymentId);
             CancelData cancelData = new CancelData(paymentId, true);
             IamportResponse<com.siot.IamportRestClient.response.Payment> cancelResponse = iamportClient.cancelPaymentByImpUid(cancelData);
 
@@ -225,21 +247,27 @@ public class PaymentService {
                 System.out.println("결제 취소된 금액: " + cancelResponse.getResponse().getAmount());  // 취소된 금액
             }
 
-            // 취소가 성공한 경우, 결제 상태 업데이트
+            // 결제 취소 성공 시 DB 업데이트
             if (cancelResponse.getResponse() != null && "cancelled".equals(cancelResponse.getResponse().getStatus())) {
-            	
-            	
+
                 // 결제 취소 성공 시 DB 업데이트
                 paymentEntity.setPaymentStatus(PaymentStatus.CANCEL);
                 paymentEntity.setReqDate(LocalDateTime.now());
+
+                int amount = cancelResponse.getResponse().getAmount().intValue(); // 취소된 금액
+
+                // 결제 금액을 음수로 설정 (취소된 금액)
+                paymentEntity.setPaymentPrice(-amount);  // 결제 금액을 음수로 설정
+
+                // **포인트 차감은 한 번만 실행**
+                if (!paymentEntity.isPointUsed()) {
+                    payCancelPoint(paymentId, amount);  // 결제 금액에 맞춰 포인트 차감
+                }
+
+                // DB 저장
                 paymentRepository.save(paymentEntity);
                 System.out.println("결제 취소 성공");
-                
-          
-             // 결제 금액에 맞춰 포인트 차감
-                int amount = cancelResponse.getResponse().getAmount().intValue();;  // 취소된 금액
-                payCancelPoint(paymentId, amount);  // 결제 금액을 전달하여 포인트 차감
-    	        
+
             } else {
                 throw new IllegalArgumentException("결제 취소가 실패했습니다.");
             }
@@ -257,4 +285,5 @@ public class PaymentService {
             e.printStackTrace();
         }
     }
+
 }

@@ -21,11 +21,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
-@ToString
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -65,21 +66,4 @@ public class BooksEntity {
 	@Column(nullable = false)
 	private Long inventory;
 
-	//setter, getter
-	
-	public Long getBooksId() {
-		return booksId;
-	}
-
-	public void setBooksId(Long booksId) {
-		this.booksId = booksId;
-	}
-
-	public StoreEntity getStoreEntity() {
-		return storeEntity;
-	}
-
-	public void setStoreEntity(StoreEntity storeEntity) {
-		this.storeEntity = storeEntity;
-	}
 }

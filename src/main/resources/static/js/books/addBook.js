@@ -17,13 +17,14 @@ async function isbnSearch() {
 
 	    if (data.docs && data.docs.length > 0) {
 	        const book = data.docs[0];
-	        document.getElementById("bookName").value = book.TITLE || "";
-	        document.getElementById("author").value = book.AUTHOR || "";
-	        document.getElementById("publish").value = book.PUBLISHER || "";
-	        document.getElementById("publishDate").value = book.PUBLISH_PREDATE || "";
-			//document.getElementById("genreID").value = book.SUBJECT || "";
+	        document.getElementById("bookName").value = book.TITLE;
+	        document.getElementById("author").value = book.AUTHOR; 
+	        document.getElementById("publish").value = book.PUBLISHER; 
+	        document.getElementById("publishDate").value = book.PUBLISH_PREDATE; 
+			document.getElementById("genreID").value = book.SUBJECT || ""; //주제정보
+			document.getElementById("bookImage").src = book.TITLE_URL || "";
 
-	        // 줄거리 대신 책 소개나 다른 필드 사용
+	        // 책소개
 	        const bookDescription = book.DESCRIPTION || book.INTRO || "책 소개 없음";
 	        document.getElementById("story").value = bookDescription;
 
@@ -39,6 +40,7 @@ async function isbnSearch() {
 	}
 }
 
+// 도서등록
 async function registerBook() {
     const form = document.getElementById("addBook");
 
@@ -107,7 +109,7 @@ async function registerBook() {
 function formatPublishDate(publishDate) {
     if (publishDate && publishDate.length === 8) {
         // "20201110"을 "2020-11-10"으로 변환
-        return `${publishDate.slice(0, 4)}-${publishDate.slice(4, 6)}-${publishDate.slice(6, 8)}`;
+        return ${publishDate.slice(0, 4)}-${publishDate.slice(4, 6)}-${publishDate.slice(6, 8)};
     }
     return publishDate; // 잘못된 형식인 경우 그대로 반환
 }

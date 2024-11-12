@@ -51,13 +51,20 @@ public class BooksService {
 		StoreEntity storeEntity = storeRepository.findById(bookDTO.getStoreCode())
 		    .orElseThrow(() -> new IllegalArgumentException("Invalid storeCode"));
 		
+		// GenreEntity 객체를 bookDTO의 genreId로 조회
+	    GenreEntity genreEntity = genreRepository.findById(bookDTO.getGenreId())
+	        .orElseThrow(() -> new IllegalArgumentException("Invalid genreId"));
+		
+		
+		
+		
 		// BookInfoEntity 생성 먼저하고 저장 후 bookNum 을 얻는다.
 		BookInfoEntity bookInfoEntity = BookInfoEntity.builder()
 				.bookName(bookDTO.getBookName())
 				.author(bookDTO.getAuthor())
 				.publish(bookDTO.getPublish())
 				.story(bookDTO.getStory())
-				.genreId(bookDTO.getGenreId())
+				.genre(genreEntity)
 				.isbn(bookDTO.getIsbn())
 				.publishDate(bookDTO.getPublishDate())
 				.rentMoney(bookDTO.getRentMoney())

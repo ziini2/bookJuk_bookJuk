@@ -33,7 +33,7 @@ public class EventConditionEntity {
 	private Integer eventConditionId;
 	
 	// 이벤트 아이디
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "event_id")
     private EventEntity eventId;
 	

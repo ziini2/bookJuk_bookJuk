@@ -4,9 +4,11 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -96,6 +98,7 @@ public class EventService {
 		String eventDate = eventEntity.getStartEventDate().toLocalDateTime().toLocalDate() 
                 + " ~ " 
                 + eventEntity.getEndEventDate().toLocalDateTime().toLocalDate();
+		
         return EventDTO.builder()
         		.eventId(eventEntity.getEventId())
         		.eventTitle(eventEntity.getEventTitle())
@@ -104,9 +107,6 @@ public class EventService {
         		.eventManager(eventEntity.getEventManager().getUserName())
         		.eventDate(eventDate)
         		.eventContent(eventEntity.getEventContent())
-        		.startEventDate(eventEntity.getStartEventDate())
-        		.endEventDate(eventEntity.getEndEventDate())
-        		.eventCreationDate(eventEntity.getEventCreationDate())
         		.build();
     }
 
@@ -118,6 +118,60 @@ public class EventService {
 	        log.error("Error fetching all events: ", e);
 	        return Page.empty(pageable);
 	    }
+	}
+	
+	@Scheduled(cron = "1 0 0 * * ?")// 매일 자정하고도 1초가 지났을때 동작(하루에 1번)
+	@Transactional
+	public void updateEventStatus() {
+		Calendar calendar = Calendar.getInstance();
+	    calendar.set(Calendar.HOUR_OF_DAY, 0);
+	    calendar.set(Calendar.MINUTE, 0);
+	    calendar.set(Calendar.SECOND, 0);
+	    calendar.set(Calendar.MILLISECOND, 0);
+	    Timestamp today = new Timestamp(calendar.getTimeInMillis());
+
+        // 시작 날짜가 오늘이고 상태가 "시작 전"인 이벤트 목록을 "진행 중"으로 변경
+        List<EventEntity> eventsToStart = eventRepository.findByStartEventDateAndEventStatus(today, "시작 전");
+//        log.info("Events to Start: {}", eventsToStart);
+        eventsToStart.forEach(event -> event.setEventStatus("진행 중"));
+        eventRepository.saveAll(eventsToStart);
+
+        // 종료 날짜가 오늘 이전이고 상태가 "진행 중"인 이벤트 목록을 "종료"로 변경
+        List<EventEntity> eventsToEnd = eventRepository.findByEndEventDateBeforeAndEventStatus(today, "진행 중");
+        eventsToEnd.forEach(event -> event.setEventStatus("종료"));
+        eventRepository.saveAll(eventsToEnd);
+	}
+
+	public EventDTO getEventDetail(Integer eventId) {
+		EventEntity eventEntity = eventRepository.findById(eventId).orElse(null);
+		String eventDate = eventEntity.getStartEventDate().toLocalDateTime().toLocalDate() 
+                + " ~ " 
+                + eventEntity.getEndEventDate().toLocalDateTime().toLocalDate();
+
+        // 이벤트 조건 정보 조회
+        List<EventConditionEntity> conditions = eventConditionRepository.findByEventId(eventEntity);
+        List<EventConditionDTO> conditionDTOs = conditions.stream()
+                .map(condition -> EventConditionDTO.builder()
+                        .eventConditionType(condition.getEventConditionType())
+                        .eventClearReward(condition.getEventClearReward())
+                        .eventIsActive(condition.isEventIsActive())
+                        .build())
+                .collect(Collectors.toList());
+
+        // EventEntity를 EventDTO로 변환
+        return EventDTO.builder()
+                .eventId(eventEntity.getEventId())
+                .eventTitle(eventEntity.getEventTitle())
+                .eventType(eventEntity.getEventType())
+                .eventStatus(eventEntity.getEventStatus())
+                .eventManager(eventEntity.getEventManager().getUserName())
+                .eventDate(eventDate)
+                .eventContent(eventEntity.getEventContent())
+                .startEventDate(eventEntity.getStartEventDate())
+                .endEventDate(eventEntity.getEndEventDate())
+                .eventCreationDate(eventEntity.getEventCreationDate())
+                .eventCondition(conditionDTOs) // 이벤트 조건 목록 추가
+                .build();        
 	}
 	
 	

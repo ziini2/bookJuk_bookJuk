@@ -30,6 +30,7 @@ $(document).ready(function() {
 	const table = $('#event-table').DataTable({
 	    paging: true,
 	    searching: true,
+		processing: true,
 	    pagingType: "full_numbers",
 	    info: true,
 	    serverSide: true,
@@ -89,7 +90,14 @@ $(document).ready(function() {
 	                sortDirection: sortDirection
 	            });
 	        },
+			error: function(error, thrown) {
+	            // AJAX 오류 처리
+	            alert("서버 요청 중 오류가 발생했습니다.");
+	            console.error("Error: ", error);
+	            console.error("Thrown Error: ", thrown);
+	        }
 	    },
+		
 		order: [[0, 'desc']], // 여기서 기본 정렬 조건 설정 (0번째 컬럼을 내림차순으로 정렬)
 	    
 	    columns: [
@@ -99,10 +107,7 @@ $(document).ready(function() {
 	        { data: 'eventStatus', title: '이벤트 상태' },
 	        { data: 'eventManager', title: '담당자' },
 	        { data: 'eventDate', title: '이벤트 기간' },
-			{ data: 'eventContent', title: '이벤트 내용', visible: false },
-		    { data: 'startEventDate', title: '이벤트 시작일', visible: false },
-		    { data: 'endEventDate', title: '이벤트 종료일', visible: false },
-		    { data: 'eventCreationDate', title: '이벤트 생성일', visible: false }
+			{ data: 'eventContent', title: '이벤트 내용', visible: false }
 	    ]
 	});
 
@@ -419,9 +424,19 @@ $(document).ready(function () {
   	});
 	
 	$('#event-createBtn').click(function(){
+		const today = new Date();
+		const tomorrow = new Date(today);
+		tomorrow.setDate(today.getDate() + 1);
+
+		// yyyy-mm-dd 형식으로 변환
+		const year = tomorrow.getFullYear();
+		const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
+		const day = String(tomorrow.getDate()).padStart(2, '0');
+		const tomorrowDate = `${year}-${month}-${day}`;
 		removeCouponOptions();
 		$('#createEndDate').attr('min', '');
 		$('#createStartDate').attr('max', '');
+		$('#createStartDate').attr('min', tomorrowDate);
 		$('#createStartDate').val('');
 		$('#createEndDate').val('');
 		$('#event-createModal-title').val('');
@@ -447,26 +462,46 @@ $(document).ready(function () {
 	    $("#typeDropdown").hide();
 	});
 	
-	// DataTables의 'draw' 이벤트에 이벤트 리스너 등록
-    $('#event-table tbody').on('click', 'tr', function () {
-        const cells = $(this).find('td');
+	$('#event-table tbody').on('click', 'tr', function () {
+	    const rowData = table.row(this).data();  // 클릭된 행의 기본 데이터 가져오기
+	    const eventId = rowData.eventId;  // 이벤트 ID 추출
+	    // Ajax 요청으로 상세 정보 가져오기
+	    $.ajax({
+	        url: `/admin/event/${eventId}`,  // RESTful 경로로 이벤트 ID 사용
+	        method: 'GET',
+	        success: function(data) {
+	            // 가져온 데이터를 모달 창에 표시
+	            $('#event-detailTitle').text(data.eventTitle);
+	            $('#event-detailType').text(data.eventType);
+	            $('#event-detailStatus').text(data.eventStatus);
+	            $('#event-detailManager').text(data.eventManager);
+	            $('#event-detailDate').text(data.eventDate);
+	            $('#event-detailContent').text(data.eventContent);
 
-        // 이벤트 상세 데이터 추출
-        $('#event-detailTitle').text(cells.eq(1).text());
-        $('#event-detailType').text(cells.eq(2).text());
-        $('#event-detailStatus').text(cells.eq(3).text());
-        $('#event-detailManager').text(cells.eq(4).text());
-        $('#event-detailDate').text(cells.eq(5).text());
-        eventDetailModal.show();
-		
-        // 이벤트 상세 모달 외부 클릭 시 닫기 이벤트 추가
-        $(window).on('click.modalClose', function (event) {
-            if ($(event.target).is(eventDetailModal)) {
-                eventDetailModal.hide();
-                $(window).off('click.modalClose');
-            }
-        });
-    });
+	            // 조건 목록 출력
+	            $('#event-detailCondition').html(data.eventCondition
+	                .map(condition => `${condition.eventConditionType}에게 ${condition.eventClearReward}`)
+	                .join('<br>'));
+
+	            $('#event-detailCreationDate').text(data.eventCreationDate.split('T')[0]);
+
+	            // 모달 창 표시
+	            $('#event-detailModal').show();
+	        },
+	        error: function(error) {
+	            console.error("Error fetching event details:", error);
+	            alert("이벤트 세부 정보를 불러오는 데 오류가 발생했습니다.");
+	        }
+	    });
+
+	    // 모달 외부 클릭 시 닫기 이벤트 추가
+	    $(window).on('click.modalClose', function (event) {
+	        if ($(event.target).is($('#event-detailModal'))) {
+	            $('#event-detailModal').hide();
+	            $(window).off('click.modalClose');
+	        }
+	    });
+	});
 	
 	// 이벤트 상세 모달창 닫기
 	$('.close').on('click', function () {
@@ -532,6 +567,7 @@ $(document).ready(function () {
 		eventEndDate = '';
 		$('#eventEndDate').attr('min', '');
 		$('#eventStartDate').attr('max', '');
+		$('#eventStartDate').attr('min', '');
 		$('#eventStartDate').val('');
 		$('#eventEndDate').val('');
     	$('#event-filterModal').css('display', 'block');
@@ -599,7 +635,7 @@ $(document).ready(function () {
     	if (type === 'eventType') eventType = '';
     	if (type === 'date') { eventStartDate = ''; eventEndDate = ''; }
 		$(`.event-filterChip[data-type="${type}"][data-value="${text}"]`).remove();
-    	displayAppliedFilters();
+//    	displayAppliedFilters();
     	table.draw();
 	}
 });

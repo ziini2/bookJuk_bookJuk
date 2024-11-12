@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.event.EventEntity;
 import com.itwillbs.bookjuk.repository.UserRepository;
 import com.itwillbs.bookjuk.repository.event.EventRepository;

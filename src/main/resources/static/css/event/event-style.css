@@ -1,14 +1,19 @@
 body {
 	padding-top: 80px;
 }
-.logo img {
-	max-width: 80%;
-	height: auto;
-}
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+li, button, th, td {
+	font-size: 16px !important;
+}
+button {
+	margin: 0 !important;
+}
+div.dataTables_processing {
+	top: 30% !important;
 }
 
 
@@ -105,7 +110,7 @@ input[type=number]::-webkit-inner-spin-button {
 	top: 50% !important;
 	left: 50% !important;
 	transform: translate(-50%, -50%) !important;
-	width: 570px;
+	width: 580px;
 	max-width: 90%;	
 }
 /*이벤트 생성 모달창 완료 버튼*/

@@ -56,27 +56,25 @@ public class BooksService {
 	        .orElseThrow(() -> new IllegalArgumentException("Invalid genreId"));
 		
 		
-		
-		
-		// BookInfoEntity 생성 먼저하고 저장 후 bookNum 을 얻는다.
+		// BookInfoEntity 생성 먼저하고 저장 => bookNum 을 얻는다.
 		BookInfoEntity bookInfoEntity = BookInfoEntity.builder()
 				.bookName(bookDTO.getBookName())
 				.author(bookDTO.getAuthor())
 				.publish(bookDTO.getPublish())
 				.story(bookDTO.getStory())
-				.genre(genreEntity)
+				.genre(genreEntity) //장르연결 
 				.isbn(bookDTO.getIsbn())
 				.publishDate(bookDTO.getPublishDate())
 				.rentMoney(bookDTO.getRentMoney())
 				.build();
 		log.info("bookInfoEntity : {}", bookInfoEntity.toString());
 		
-		//BookInfoEntity 먼저 저장하고 bookNum이 생성되도록 함
+		//BookInfoEntity 먼저 저장하고 bookNum 생성
 		BookInfoEntity savedBookInfo = bookInfoRepository.save(bookInfoEntity);
 	    log.info("bookInfoEntity : {}", savedBookInfo.toString());
 	    
 	    
-		//BooksEntity 에 저장된 bookInfoEntity 생성
+		//BooksEntity 에 저장된 bookInfoEntity 사용
 		BooksEntity booksEntity = BooksEntity.builder()
 	        	    .bookStatus(bookDTO.getBookStatus())
 	        	    .rentStatus(true)
@@ -102,6 +100,7 @@ public class BooksService {
 	
 	}
 
+	
 	// 장르ID 조회
 	public List<GenreEntity> getGenreList() {
 		

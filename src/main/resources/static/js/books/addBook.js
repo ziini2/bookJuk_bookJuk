@@ -17,14 +17,13 @@ async function isbnSearch() {
 
 	    if (data.docs && data.docs.length > 0) {
 	        const book = data.docs[0];
-	        document.getElementById("bookName").value = book.TITLE;
-	        document.getElementById("author").value = book.AUTHOR; 
-	        document.getElementById("publish").value = book.PUBLISHER; 
-	        document.getElementById("publishDate").value = book.PUBLISH_PREDATE; 
-			document.getElementById("genreID").value = book.SUBJECT || ""; //주제정보
-			document.getElementById("bookImage").src = book.TITLE_URL || "";
+	        document.getElementById("bookName").value = book.TITLE || "";
+	        document.getElementById("author").value = book.AUTHOR || "";
+	        document.getElementById("publish").value = book.PUBLISHER || "";
+	        document.getElementById("publishDate").value = book.PUBLISH_PREDATE || "";
+			document.getElementById("genreId").value = book.SUBJECT || "";
 
-	        // 책소개
+	        // 줄거리 대신 책 소개나 다른 필드 사용
 	        const bookDescription = book.DESCRIPTION || book.INTRO || "책 소개 없음";
 	        document.getElementById("story").value = bookDescription;
 
@@ -39,7 +38,6 @@ async function isbnSearch() {
 	    isBookDataValid = false;
 	}
 }
-
 // 도서등록
 async function registerBook() {
     const form = document.getElementById("addBook");
@@ -72,7 +70,7 @@ async function registerBook() {
 		storeCode: formData.get("storeCode"),
 		bookStatus: formData.get("bookStatus"),
 		bookDate : formattedBookDate,
-		genreId : formData.get("genreId"),
+		genreId : genreId,
 		rentMoney : formData.get("rentMoney"),
 		inventory : formData.get("inventory")
 		
@@ -109,7 +107,7 @@ async function registerBook() {
 function formatPublishDate(publishDate) {
     if (publishDate && publishDate.length === 8) {
         // "20201110"을 "2020-11-10"으로 변환
-        return ${publishDate.slice(0, 4)}-${publishDate.slice(4, 6)}-${publishDate.slice(6, 8)};
+        return `${publishDate.slice(0, 4)}-${publishDate.slice(4, 6)}-${publishDate.slice(6, 8)}`;
     }
     return publishDate; // 잘못된 형식인 경우 그대로 반환
 }

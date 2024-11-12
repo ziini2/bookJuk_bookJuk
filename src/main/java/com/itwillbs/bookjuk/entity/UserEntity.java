@@ -2,6 +2,7 @@ package com.itwillbs.bookjuk.entity;
 
 import com.itwillbs.bookjuk.domain.login.LoginType;
 import com.itwillbs.bookjuk.domain.login.UserRole;
+import com.itwillbs.bookjuk.entity.rent.RentEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,12 +11,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -70,4 +71,8 @@ public class UserEntity {
 
     //유저 활성상태(탈퇴회원 여부 판단)
     private boolean activate;
+
+    // rent 테이블과 양방향 관게 설정
+    @OneToMany(mappedBy = "user")
+    private List<RentEntity> rent;
 }

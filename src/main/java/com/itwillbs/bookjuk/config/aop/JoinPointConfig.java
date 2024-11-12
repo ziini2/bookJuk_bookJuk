@@ -10,6 +10,12 @@ public class JoinPointConfig {
     @Pointcut("execution(* com.itwillbs.bookjuk.service.statistics..*(..))")
     public void statisticsServicePointcut() {}
 
+    @Pointcut("execution(* com.itwillbs.bookjuk.controller.rent..*(..))")
+    public void rentControllerPointcut() {}
+
+    @Pointcut("execution(* com.itwillbs.bookjuk.service.rent..*(..))")
+    public void rentServicePointcut() {}
+
 
 
 

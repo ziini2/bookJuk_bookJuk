@@ -26,12 +26,12 @@ public interface EventRepository extends JpaRepository<EventEntity, Integer>, Ev
 											  Pageable pageable);
 	
 	// 이벤트 시작 날짜가 오늘이고 상태가 "시작 전"인 이벤트 조회
-	@Query("SELECT e FROM EventEntity e WHERE DATE(e.startEventDate) = :today AND e.eventStatus = :status")
-	List<EventEntity> findByStartEventDateAndEventStatus(@Param("today") LocalDate today, @Param("status") String status);
+//	@Query("SELECT e FROM EventEntity e WHERE DATE(e.startEventDate) = :today AND e.eventStatus = :status")
+//	List<EventEntity> findByStartEventDateAndEventStatus(@Param("today") LocalDate today, @Param("status") String status);
 	
     // 종료 날짜가 오늘 이전이고 상태가 "진행 중"인 이벤트 조회
-	@Query("SELECT e FROM EventEntity e WHERE DATE(e.endEventDate) < :today AND e.eventStatus = :status")
-    List<EventEntity> findByEndEventDateBeforeAndEventStatus(@Param("today") LocalDate today, @Param("status") String status);
+//	@Query("SELECT e FROM EventEntity e WHERE DATE(e.endEventDate) < :today AND e.eventStatus = :status")
+//    List<EventEntity> findByEndEventDateBeforeAndEventStatus(@Param("today") LocalDate today, @Param("status") String status);
 
     
 //	@Query("SELECT e FROM EventEntity e LEFT JOIN FETCH e.eventConditions WHERE e.id = :eventId")

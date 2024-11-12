@@ -51,7 +51,7 @@ public class EventConditionEntity {
 	
 	// 이벤트 조건 값(3회, 5000원)
 	@Column(name = "event_required_value")
-	private int eventRequiredValue;
+	private Integer eventRequiredValue;
 	
 	
 	

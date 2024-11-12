@@ -26,6 +26,9 @@ public class EventConditionDTO {
 	// 이벤트 활성 유무
 	private boolean eventIsActive;
 	
+	// 이벤트 조건 값
+	private Integer eventRequiredValue;
+	
 	
 	
 	

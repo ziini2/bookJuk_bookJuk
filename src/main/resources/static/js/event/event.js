@@ -480,7 +480,7 @@ $(document).ready(function () {
 
 	            // 조건 목록 출력
 	            $('#event-detailCondition').html(data.eventCondition
-	                .map(condition => `${condition.eventConditionType}에게 ${condition.eventClearReward}`)
+	                .map(condition => `[${condition.eventConditionType} : ${condition.eventRequiredValue}] [${condition.eventClearReward} 지급]`)
 	                .join('<br>'));
 
 	            $('#event-detailCreationDate').text(data.eventCreationDate.split('T')[0]);

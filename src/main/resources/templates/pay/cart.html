@@ -94,56 +94,95 @@
 		
 		<div class="d-flex">			
 		<div class="col-8">
-		
-			<!--장바구니 항목-->
-			<div class="card card-item-body rounded-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
-				<div class="d-flex gap-3">
-					<input class="form-check-input" type="checkbox" name="book" value="item" onclick="checkSelectAll()">
-					<div class="card card-item-image rounded-3">
-					<img src="/resources/static/css/pay/book.jpg" class="rounded" alt="...">
-					</div>
-		
-					<div class="row" style="padding-left: 10px;">
-						<p class="item-title-text">소년이 온다</p>
-						<p class="item-author-text">저자| 한강</p>
-					</div>
-					
-					<div class="row" style="padding-left: 235px;">
-						<div class="x-button">
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-						  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-						</svg>
-						</div>
-						<p class="item-price-text"><b>1000</b>P</p>
-						<p class="item-inventory-text">현재 <span style="color: blue;">서면점</span> 대여 가능 재고: 8</p>
-					</div>
-				</div> 
+			<!-- 장바구니 항목 시작 -->
+			<div class="card card-item-body rounded-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded" th:each="bookInfo : ${bookInfoList}">
+			  <form method="post" action="/cart/add">
+			    <div class="d-flex gap-3">
+			      <!-- 상품 체크박스 -->
+			      <input class="form-check-input" type="checkbox" name="book" value="item" onclick="checkSelectAll()">
+			      
+			      <div class="card card-item-image rounded-3">
+			        <img src="/resources/static/css/pay/book.jpg" class="rounded" alt="...">
+			      </div>
+			  
+			      <div class="row" style="padding-left: 10px;">
+			        <!-- 동적으로 책 제목과 저자 정보 출력 -->
+			        <p class="item-title-text" th:text="${bookInfo.bookName}"></p>  <!-- 실제 책 이름 -->
+			        <p class="item-author-text" th:text="'저자| ' + ${bookInfo.author}"></p> <!-- 저자 정보 -->
+			      </div>
+			      
+			      <div class="row" style="padding-left: 235px;">
+			        <!-- 제거 버튼 -->
+			        <div class="x-button">
+			          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+			            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+			          </svg>
+			        </div>
+			        <!-- 가격 및 재고 -->
+			        <p class="item-price-text"><b>1000</b>P</p>
+			        <p class="item-inventory-text">현재 <span style="color: blue;">서면점</span> 대여 가능 재고: 8</p>
+			      </div>
+			  
+			      <!-- 상품 추가할 때 필요한 input 필드 (bookNum, quantity) -->
+			      <input type="hidden" name="bookNum" th:value="${bookInfo.bookNum}"> <!-- 실제 bookNum -->
+			      <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 60px;">
+			  
+			      <!-- 장바구니에 추가하기 버튼 -->
+			      <button type="submit" class="btn btn-primary">장바구니에 추가</button>
+			    </div> 
+			  </form>
 			</div>
+			<!-- 장바구니 항목 끝 -->
+
+			<!--장바구니 항목-->
+<!--			<div class="card card-item-body rounded-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded">-->
+<!--				<div class="d-flex gap-3">-->
+<!--					<input class="form-check-input" type="checkbox" name="book" value="item" onclick="checkSelectAll()">-->
+<!--					<div class="card card-item-image rounded-3">-->
+<!--					<img src="/resources/static/css/pay/book.jpg" class="rounded" alt="...">-->
+<!--					</div>-->
+		
+<!--					<div class="row" style="padding-left: 10px;">-->
+<!--						<p class="item-title-text">소년이 온다</p>-->
+<!--						<p class="item-author-text">저자| 한강</p>-->
+<!--					</div>-->
+					
+<!--					<div class="row" style="padding-left: 235px;">-->
+<!--						<div class="x-button">-->
+<!--						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">-->
+<!--						  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>-->
+<!--						</svg>-->
+<!--						</div>-->
+<!--						<p class="item-price-text"><b>1000</b>P</p>-->
+<!--						<p class="item-inventory-text">현재 <span style="color: blue;">서면점</span> 대여 가능 재고: 8</p>-->
+<!--					</div>-->
+<!--				</div> -->
+<!--			</div>-->
 			
 			<!--장바구니 항목-->
-			<div class="card card-item-body rounded-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
-				<div class="d-flex gap-3">
-					<input class="form-check-input" type="checkbox" name="book" value="item" onclick="checkSelectAll()">
-					<div class="card card-item-image rounded-3">
-					<img src="/resources/static/css/pay/book.jpg" class="rounded" alt="...">
-					</div>
+<!--			<div class="card card-item-body rounded-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded">-->
+<!--				<div class="d-flex gap-3">-->
+<!--					<input class="form-check-input" type="checkbox" name="book" value="item" onclick="checkSelectAll()">-->
+<!--					<div class="card card-item-image rounded-3">-->
+<!--					<img src="/resources/static/css/pay/book.jpg" class="rounded" alt="...">-->
+<!--					</div>-->
 		
-					<div class="row" style="padding-left: 10px;">
-						<p class="item-title-text">소년이 온다</p>
-						<p class="item-author-text">저자| 한강</p>
-					</div>
+<!--					<div class="row" style="padding-left: 10px;">-->
+<!--						<p class="item-title-text">소년이 온다</p>-->
+<!--						<p class="item-author-text">저자| 한강</p>-->
+<!--					</div>-->
 					
-					<div class="row" style="padding-left: 235px;">
-						<div class="x-button">
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-						  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-						</svg>
-						</div>
-						<p class="item-price-text"><b>1000</b>P</p>
-						<p class="item-inventory-text">현재 <span style="color: blue;">서면점</span> 대여 가능 재고: 8</p>
-					</div>
-				</div> 
-			</div>
+<!--					<div class="row" style="padding-left: 235px;">-->
+<!--						<div class="x-button">-->
+<!--						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">-->
+<!--						  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>-->
+<!--						</svg>-->
+<!--						</div>-->
+<!--						<p class="item-price-text"><b>1000</b>P</p>-->
+<!--						<p class="item-inventory-text">현재 <span style="color: blue;">서면점</span> 대여 가능 재고: 8</p>-->
+<!--					</div>-->
+<!--				</div> -->
+<!--			</div>-->
 			<button type="button" class="btn btn-secondary">도서 추가하기</button>	
 			
 			

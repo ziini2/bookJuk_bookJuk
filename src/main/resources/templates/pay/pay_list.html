@@ -98,13 +98,15 @@
 			      </div>
 
 			  <li class="breadcrumb-item active" style="padding-left: 10%; padding-top: 2%;">검색: </li>
-		                               
+		      
+			  <form action="/search/pay_list" method="GET">                         
 		      <div class="search-bar">
 		          <form class="d-flex">
-		          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+		          <input onkeyup="enterkey()" name="searchValue" class="form-control me-2" type="search" aria-label="Search">
 		          <button class="btn btn-outline-success" type="submit">Search</button>
 		          </form>
 		      </div>
+			  </form>
 		      <!-- End Search Bar -->
 		                               
 <!--		      <li class="breadcrumb-item active" style="padding-left: 2%; padding-top: 1%;">고객명: </li>-->
@@ -179,6 +181,13 @@
       document.querySelector('.dropdown-toggle').textContent = this.textContent;
     });
   });
+  
+<!--엔터 누르면 바로 검색되게-->
+  function enterkey() {
+          if (window.event.keyCode == 13) {
+               document.getElementById("폼 ID").submit();
+          }
+  }
 </script>
 
   

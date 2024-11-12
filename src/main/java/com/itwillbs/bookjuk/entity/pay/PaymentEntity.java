@@ -43,7 +43,7 @@ public class PaymentEntity {
 	
 	//결제금액
 	@Column(nullable = false)
-	private Long paymentPrice;
+	private int paymentPrice;
 	
 	//요청일시
 	@Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
@@ -61,10 +61,23 @@ public class PaymentEntity {
 	@Column(nullable = false)
 	private String priceName;
 	
+	//포인트 사용 여부
+	@Column(nullable = false)
+    private boolean pointUsed;
+	
 	// userPoint를 가져오는 메서드
     public int getUserPoint() {
     return this.userContentEntity.getUserPoint();  // UserContentEntity를 통해 userPoint 접근
     }
+    
+    public void setPaymentPrice(int paymentPrice) {
+        this.paymentPrice = paymentPrice;
+    }
+
+    public int getPaymentPrice() {
+        return paymentPrice;
+    }
+    
 }
 
 

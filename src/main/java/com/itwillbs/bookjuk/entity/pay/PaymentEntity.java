@@ -31,9 +31,9 @@ public class PaymentEntity {
 	@Id
 	private String paymentId;
 	
-	//유저번호(users 테이블 참조)
+	//회원번호(user_content 테이블 참조)
 	@ManyToOne
-	@JoinColumn(name = "user_num")
+	@JoinColumn(name = "memberNum")
 	private UserContentEntity userContentEntity;  // UserContent 테이블 참조
 	
 	//결제상태

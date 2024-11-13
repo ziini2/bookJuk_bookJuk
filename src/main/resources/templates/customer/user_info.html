@@ -45,7 +45,8 @@
 			<div class="pagetitle">
 				<h1 class="d-flex align-items-center justify-content-between">
 					<div>
-						<span class="me-2" style="font-size: 25px;">Dhanbad 사용자</span>
+						<span class="me-2" style="font-size: 25px;"
+							  th:text="|${userInfo.userName} (${userInfo.userId})|"></span>
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
 							onclick="deleteUser()"
 							class="bi bi-trash me-2" viewBox="0 0 16 16" style="cursor: pointer;">
@@ -63,31 +64,49 @@
 
 			<div class="row g-2">
 				<div class="col-4">
-					<div class="p-3 border bg-light">아이디</div>
+					<div class="p-3 border bg-light">아이디<br>
+						<span th:text="${userInfo.userId}"></span>
+					</div>
 				</div>
 				<div class="col-4">
-					<div class="p-3 border bg-light">이름</div>
+					<div class="p-3 border bg-light">이름<br>
+						<span th:text="${userInfo.userName}"></span>
+					</div>
 				</div>
 				<div class="col-4">
-					<div class="p-3 border bg-light">생년월일</div>
+					<div class="p-3 border bg-light">생년월일<br>
+						<span th:text="${userInfo.userBirthday}"></span>
+					</div>
 				</div>
 				<div class="col-4">
-					<div class="p-3 border bg-light">이메일</div>
+					<div class="p-3 border bg-light">이메일<br>
+						<span th:text="${userInfo.userEmail}"></span>
+					</div>
 				</div>
 				<div class="col-4">
-					<div class="p-3 border bg-light">전화번호</div>
+					<div class="p-3 border bg-light">전화번호<br>
+						<span th:text="${userInfo.userPhone}"></span>
+					</div>
 				</div>
 				<div class="col-4">
-					<div class="p-3 border bg-light">생성일</div>
+					<div class="p-3 border bg-light">생성일<br>
+						<span th:text="${userInfo.createDate}"></span>
+					</div>
 				</div>
 				<div class="col-4">
-					<div class="p-3 border bg-light">수정일</div>
+					<div class="p-3 border bg-light">수정일<br>
+						<span th:text="${userInfo.updateDate}"></span>
+					</div>
 				</div>
 				<div class="col-4">
-					<div class="p-3 border bg-light">탈퇴여부</div>
+					<div class="p-3 border bg-light">탈퇴여부<br>
+						<span th:text="${userInfo.activate} ? '활성' : '비활성'"></span>
+					</div>
 				</div>
 				<div class="col-4">
-					<div class="p-3 border bg-light">로그인 유형</div>
+					<div class="p-3 border bg-light">가입 유형<br>
+						<span th:text="${userInfo.loginType}"></span>
+					</div>
 				</div>
 			</div>
 
@@ -104,7 +123,7 @@
 	
 	<script>
 		function deleteUser(){
-			alert("클릭");
+			fetch
 		}
 	</script>
 

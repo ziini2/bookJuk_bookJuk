@@ -9,3 +9,7 @@
 	border-color: #198754;
 	color: white;
 }
+
+tr > th {
+	text-align: left;
+}

@@ -73,9 +73,8 @@ async function registerBook() {
 		bookDate : formattedBookDate,
 		genreId: formData.get("genreId"),
 		rentMoney : formData.get("rentMoney"),
-		inventory : formData.get("inventory")
-		
-    };9788958287650
+
+    };
     console.log(JSON.stringify(data));
 
     try {

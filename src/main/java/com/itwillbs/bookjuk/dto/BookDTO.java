@@ -29,8 +29,8 @@ public class BookDTO {
 	private Long storeCode; //지점코드
 	private BookStatus bookStatus; // 도서상태
 	private Timestamp bookDate; //입고일
-	private Long inventory; //재고
 	private Long rentMoney; //대여금액
+	private Long rentCount; //대여횟수
 	
 	
 }

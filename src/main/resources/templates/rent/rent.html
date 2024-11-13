@@ -31,19 +31,46 @@
 <main id="main" class="main">
     <div class="container rent">
         <div class="inner-container">
+            <div class="search-bar d-flex justify-content-between mt-3">
+                <form id="searchForm">
+                    <select name="criteria" id="criteria">
+                        <option value="userName">회원 이름</option>
+                        <option value="userId">회원 아이디</option>
+                        <option value="bookName">책 이름</option>
+                    </select>
+                    <input type="text" id="keyword" placeholder="검색어 입력">
+                    <button type="button" id="searchButton" class="btn btn-success">검색</button>
+                </form>
+                <div class="boarder-1 rent-status">
+                    <!-- Radio using button groups -->
+                    <div class="btn-group" role="group">
+                        <input type="checkbox" class="btn-check rent-status-check" id="rented" value="rented"
+                               autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="rented">대여 중</label>
 
-            <form id="searchForm">
-                <select name="criteria" id="criteria">
-                    <option value="userName">회원 이름</option>
-                    <option value="userId">회원 아이디</option>
-                    <option value="bookName">책 이름</option>
-                </select>
-                <input type="text" id="keyword" placeholder="검색어 입력">
-                <button type="button" id="searchButton" class="btn btn-success">검색</button>
-                <button type="button" class="btn btn-primary my-5" data-bs-toggle="modal" data-bs-target="#rentalModal">
-                    도서 대여 등록
-                </button>
-            </form>
+                        <input type="checkbox" class="btn-check rent-status-check" id="returned" value="returned"
+                               autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="returned">반납 완료</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="return-process d-flex flex-row justify-content-end align-items-center gap-3 my-2 me-2">
+                <button type="button" id="returnButton" class="btn btn-danger">반납 처리</button>
+                <!-- 총 연체료 계산 -->
+                <div class="total-late-fee" style="background-color: yellow;">
+                    <span>총 연체료 : </span>
+                    <span id="totalLateFee">0</span>
+                    <span>원</span>
+                </div>
+                <!-- 모든 체크 박스 선택-->
+                <div class="select-all">
+                    <label for="selectAll">전체 선택</label>
+                    <input type="checkbox" id="selectAll" class="all-check" autocomplete="off">
+
+                </div>
+            </div>
 
             <table class="rental-table">
                 <thead>
@@ -74,6 +101,7 @@
 
 <script th:src="@{/js/common/main.js}"></script>
 <script th:src="@{/js/rent/rent.js}"></script>
+<script th:src="@{/js/rent/return.js}"></script>
 
 </body>
 </html>

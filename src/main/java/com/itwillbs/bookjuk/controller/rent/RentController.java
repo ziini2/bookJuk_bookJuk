@@ -27,11 +27,15 @@ public class RentController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "criteria", required = false) String criteria,
-            @RequestParam(value = "keyword", required = false) String keyword) {
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "rented", required = false) Boolean rented,
+            @RequestParam(value = "returned", required = false) Boolean returned) {
+
+        log.info("criteria: {}, keyword: {}, rented: {}, returned: {}", criteria, keyword, rented, returned);
 
         RentResponseDTO responseDTO = (criteria == null || keyword == null) ?
-                rentService.findAllWithDTO(page, size) :
-                rentService.findAllBySearchWithDTO(criteria, keyword, page, size);
+                rentService.findAllWithDTO(rented, returned, page, size) :
+                rentService.findAllBySearchWithDTO(criteria, keyword, rented, returned, page, size);
 
         return ResponseEntity.ok(responseDTO);
     }

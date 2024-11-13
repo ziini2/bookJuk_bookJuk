@@ -46,36 +46,89 @@ public class RentService {
     }
 
     // 전체 RentEntity를 RentResponseDTO로 반환
-    public RentResponseDTO findAllWithDTO(int page, int size) {
+    public RentResponseDTO findAllWithDTO(Boolean rented, Boolean returned, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("rentNum").descending());
-        Page<RentEntity> rentPage = rentRepository.findAll(pageable);
-        List<RentDTO> content = rentPage.getContent().stream().map(this::toDTO).collect(Collectors.toList());
+        Page<RentEntity> rentPage = null;
+        List<RentDTO> content = null;
+
+        if (rented && returned) {
+            rentPage = rentRepository.findAll(pageable);
+            content = rentPage.getContent().stream().map(this::toDTO).toList();
+        } else if (!rented) {
+            rentPage = rentRepository.findAllByRentStatusIsTrue(pageable);
+            content = rentPage.getContent().stream().map(this::toDTO).toList();
+        } else {
+            rentPage = rentRepository.findAllByRentStatusIsFalse(pageable);
+            content = rentPage.getContent().stream().map(this::toDTO).toList();
+        }
 
         return new RentResponseDTO(content, rentPage.getNumber(), rentPage.getTotalPages(), rentPage.getTotalElements());
     }
 
     // 검색 조건에 따라 RentEntity를 RentResponseDTO로 반환
-    public RentResponseDTO findAllBySearchWithDTO(String criteria, String keyword, int page, int size) {
+    public RentResponseDTO findAllBySearchWithDTO(
+            String criteria, String keyword, Boolean rented, Boolean returned, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("rentNum").descending());
 
-        Page<RentEntity> rentPage = switch (criteria) {
-            case "userName" -> userRepository.findAllByUserNameContaining(keyword)
-                    .map(userEntities -> rentRepository.findAllByUserIn(userEntities, pageable))
-                    .orElse(Page.empty());
+        Page<RentEntity> rentPage = null;
 
-            case "bookName" -> bookInfoRepository.findAllByBookNameContaining(keyword)
-                    .flatMap(booksRepository::findAllByBookInfoEntityIn)
-                    .map(booksEntities -> rentRepository.findAllByBookIn(booksEntities, pageable))
-                    .orElse(Page.empty());
+        if (rented && returned) {
+            rentPage = switch (criteria) {
+                case "userName" -> userRepository.findAllByUserNameContaining(keyword)
+                        .map(userEntities -> rentRepository.findAllByUserIn(userEntities, pageable))
+                        .orElse(Page.empty());
 
-            case "userId" -> userRepository.findByUserIdContaining(keyword)
-                    .map(userEntity -> rentRepository.findAllByUserIn(userEntity, pageable))
-                    .orElse(Page.empty());
+                case "bookName" -> bookInfoRepository.findAllByBookNameContaining(keyword)
+                        .flatMap(booksRepository::findAllByBookInfoEntityIn)
+                        .map(booksEntities -> rentRepository.findAllByBookIn(booksEntities, pageable))
+                        .orElse(Page.empty());
 
-            default -> Page.empty();
-        };
+                case "userId" -> userRepository.findByUserIdContaining(keyword)
+                        .map(userEntity -> rentRepository.findAllByUserIn(userEntity, pageable))
+                        .orElse(Page.empty());
+
+                default -> Page.empty();
+            };
+        } else if (!rented) {
+            rentPage = switch (criteria) {
+                case "userName" -> userRepository.findAllByUserNameContaining(keyword)
+                        .map(userEntities -> rentRepository.findAllByUserInAndRentStatusIsTrue(userEntities, pageable))
+                        .orElse(Page.empty());
+
+                case "bookName" -> bookInfoRepository.findAllByBookNameContaining(keyword)
+                        .flatMap(booksRepository::findAllByBookInfoEntityIn)
+                        .map(booksEntities -> rentRepository.findAllByBookInAndRentStatusIsTrue(booksEntities, pageable))
+                        .orElse(Page.empty());
+
+                case "userId" -> userRepository.findByUserIdContaining(keyword)
+                        .map(userEntity -> rentRepository.findAllByUserInAndRentStatusIsTrue(userEntity, pageable))
+                        .orElse(Page.empty());
+
+                default -> Page.empty();
+            };
+        } else {
+            rentPage = switch (criteria) {
+                case "userName" -> userRepository.findAllByUserNameContaining(keyword)
+                        .map(userEntities -> rentRepository.findAllByUserInAndRentStatusIsFalse(userEntities, pageable))
+                        .orElse(Page.empty());
+
+                case "bookName" -> bookInfoRepository.findAllByBookNameContaining(keyword)
+                        .flatMap(booksRepository::findAllByBookInfoEntityIn)
+                        .map(booksEntities -> rentRepository.findAllByBookInAndRentStatusIsFalse(booksEntities, pageable))
+                        .orElse(Page.empty());
+
+                case "userId" -> userRepository.findByUserIdContaining(keyword)
+                        .map(userEntity -> rentRepository.findAllByUserInAndRentStatusIsFalse(userEntity, pageable))
+                        .orElse(Page.empty());
+
+                default -> Page.empty();
+            };
+        }
+
 
         List<RentDTO> content = rentPage.getContent().stream().map(this::toDTO).collect(Collectors.toList());
+
+
         return new RentResponseDTO(content, rentPage.getNumber(), rentPage.getTotalPages(), rentPage.getTotalElements());
     }
 }

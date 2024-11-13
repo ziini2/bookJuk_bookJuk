@@ -20,4 +20,16 @@ public interface RentRepository extends JpaRepository<RentEntity, Long> {
     Page<RentEntity> findAllByBookIn(List<BooksEntity> booksId, Pageable pageable);
 
     Page<RentEntity> findAllByUserIn(List<UserEntity> userEntity, Pageable pageable);
+
+    Page<RentEntity> findAllByRentStatusIsTrue(Pageable pageable);
+
+    Page<RentEntity> findAllByRentStatusIsFalse(Pageable pageable);
+
+    Page<RentEntity> findAllByUserInAndRentStatusIsTrue(List<UserEntity> userEntities, Pageable pageable);
+
+    Page<RentEntity> findAllByUserInAndRentStatusIsFalse(List<UserEntity> userEntities, Pageable pageable);
+
+    Page<RentEntity> findAllByBookInAndRentStatusIsFalse(List<BooksEntity> booksEntities, Pageable pageable);
+
+    Page<RentEntity> findAllByBookInAndRentStatusIsTrue(List<BooksEntity> booksEntities, Pageable pageable);
 }

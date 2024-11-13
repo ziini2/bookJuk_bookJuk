@@ -3,7 +3,6 @@ package com.itwillbs.bookjuk.service.join;
 import com.itwillbs.bookjuk.util.SmsCertificationUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.stereotype.Service;
 
 @Slf4j

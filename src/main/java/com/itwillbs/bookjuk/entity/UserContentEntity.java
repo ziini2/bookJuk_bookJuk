@@ -28,7 +28,8 @@ public class UserContentEntity {
 
 	//유저번호(user 테이블 참조)
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userNum")
+
+    @JoinColumn(name = "user_num")
     private UserEntity userEntity;
    
    //관심 설정

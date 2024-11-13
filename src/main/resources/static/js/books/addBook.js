@@ -21,8 +21,9 @@ async function isbnSearch() {
 	        document.getElementById("author").value = book.AUTHOR || "";
 	        document.getElementById("publish").value = book.PUBLISHER || "";
 	        document.getElementById("publishDate").value = book.PUBLISH_PREDATE || "";
-			//document.getElementById("genreID").value = book.SUBJECT || "";
+			document.getElementById("genreId").value = book.SUBJECT || ""; 
 
+			
 	        // 줄거리 대신 책 소개나 다른 필드 사용
 	        const bookDescription = book.DESCRIPTION || book.INTRO || "책 소개 없음";
 	        document.getElementById("story").value = bookDescription;
@@ -38,7 +39,7 @@ async function isbnSearch() {
 	    isBookDataValid = false;
 	}
 }
-
+// 도서등록
 async function registerBook() {
     const form = document.getElementById("addBook");
 
@@ -58,7 +59,8 @@ async function registerBook() {
 
     // "20201110" 형식의 날짜를 "2020-11-10" 형식으로 변환
     const formattedPublishDate = formatPublishDate(publishDate);
-
+	const formattedBookDate = formatPublishDate(formData.get("bookDate"));
+	
     const data = {
         isbn: formData.get("isbn"),
         bookName: formData.get("bookName"),
@@ -66,13 +68,12 @@ async function registerBook() {
         publish: formData.get("publish"),
         publishDate: formattedPublishDate, // 변환된 날짜 사용
         story: formData.get("story"),
-		//storeCode=null, bookStatus=null, bookDate=null, genreId=null, inventory=null
 		storeCode: formData.get("storeCode"),
-		bookStatus:formData.get("bookStatus"),
-		bookDate : formData.get("bookDate"),
-		genreId : formData.get("genreId")
-		
-		
+		bookStatus: formData.get("bookStatus"),
+		bookDate : formattedBookDate,
+		genreId: formData.get("genreId"),
+		rentMoney : formData.get("rentMoney"),
+
     };
     console.log(JSON.stringify(data));
 
@@ -87,11 +88,12 @@ async function registerBook() {
 
         const responseData = await response.json();  // JSON 응답 받기
         if (response.ok) {
-            alert(responseData.message);  // 서버에서 전달한 메시지 표시
+           // alert(responseData.message);  // 서버에서 전달한 메시지 표시
             const modal = bootstrap.Modal.getInstance(document.getElementById('exampleModal'));
             modal.hide();
             form.reset();
             isBookDataValid = false;  // 등록 후 다시 초기화
+			alert("도서가 성공적으로 등록되었습니다!");
         } else {
             alert(responseData.message);  // 실패 메시지 표시
         }

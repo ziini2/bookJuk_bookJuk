@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.bookjuk.domain.books.BookStatus;
+import com.itwillbs.bookjuk.dto.BookDTO;
 import com.itwillbs.bookjuk.entity.GenreEntity;
 import com.itwillbs.bookjuk.entity.StoreEntity;
 import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
@@ -43,13 +45,73 @@ public class BooksService {
 	}
 
 	//도서 등록하기
-	public void insertBooks(BooksEntity booksEntity, 
-							BookInfoEntity bookInfoEntity) {
-		//입고일
-		//booksEntity.setBookDate(new Timestamp(System.currentTimeMillis()));
+	public void insertBooks(BookDTO bookDTO) {
 		
+		// StoreEntity 객체
+		StoreEntity storeEntity = storeRepository.findById(bookDTO.getStoreCode())
+		    .orElseThrow(() -> new IllegalArgumentException("Invalid storeCode"));
+		
+		// GenreEntity 객체를 bookDTO의 genreId로 조회
+	    GenreEntity genreEntity = genreRepository.findById(bookDTO.getGenreId())
+	        .orElseThrow(() -> new IllegalArgumentException("Invalid genreId"));
+		
+		
+		// BookInfoEntity 생성 먼저하고 저장 => bookNum 을 얻는다.
+//		BookInfoEntity bookInfoEntity = BookInfoEntity.builder()
+//				.bookName(bookDTO.getBookName())
+//				.author(bookDTO.getAuthor())
+//				.publish(bookDTO.getPublish())
+//				.story(bookDTO.getStory())
+//				.genre(genreEntity) //장르연결 
+//				.isbn(bookDTO.getIsbn())
+//				.publishDate(bookDTO.getPublishDate())
+//				.rentMoney(bookDTO.getRentMoney())
+//				.rentCount(bookDTO.getRentCount())
+//				.build();
+		
+		// BookInfoEntity 생성
+	    BookInfoEntity bookInfoEntity = BookInfoEntity.builder()
+	            .bookName(bookDTO.getBookName())
+	            .author(bookDTO.getAuthor())
+	            .publish(bookDTO.getPublish())
+	            .story(bookDTO.getStory())
+	            .genre(genreEntity) // 장르 연결
+	            .isbn(bookDTO.getIsbn())
+	            .publishDate(bookDTO.getPublishDate())
+	            .rentMoney(bookDTO.getRentMoney()) // rentMoney는 기본값이 0으로 설정됨
+	            .rentCount(bookDTO.getRentCount()) // rentCount는 bookDTO에서 받는다.
+	            .build();
+		
+		
+		
+		
+		// rentCount 값이 null일 경우 기본값 0 설정
+	    if (bookInfoEntity.getRentCount() == null) {
+	        bookInfoEntity.setRentCount(0L);  // 기본값 설정
+	    }
+	    
+		log.info("bookInfoEntity : {}", bookInfoEntity.toString());
+		
+		//BookInfoEntity 먼저 저장하고 bookNum 생성
+		BookInfoEntity savedBookInfo = bookInfoRepository.save(bookInfoEntity);
+	    log.info("bookInfoEntity : {}", savedBookInfo.toString());
+	    
+	    
+		//BooksEntity 에 저장된 bookInfoEntity 사용
+		BooksEntity booksEntity = BooksEntity.builder()
+	        	    .bookStatus(bookDTO.getBookStatus())
+	        	    .rentStatus(true)
+	        	    .storeEntity(storeEntity)
+	        	    .bookInfoEntity(savedBookInfo) // 저장된 bookInfoEntity 사용함
+	        	    .build();
+
+		
+	    log.info("booksEntity : {}", booksEntity.toString());
+	    log.info("savedBookInfo : {}", savedBookInfo.toString());
+	    
+	    // BooksEntity 저장
 		booksRepository.save(booksEntity);
-		bookInfoRepository.save(bookInfoEntity);
+		
 	}
 
 	// 지점 List 조회
@@ -60,6 +122,7 @@ public class BooksService {
 	
 	}
 
+	
 	// 장르ID 조회
 	public List<GenreEntity> getGenreList() {
 		
@@ -67,4 +130,9 @@ public class BooksService {
 		return genreRepository.findAll();
 	}
 
+	
+    
+    
+    
+    
 }

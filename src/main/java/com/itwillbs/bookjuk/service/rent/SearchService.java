@@ -3,7 +3,6 @@ package com.itwillbs.bookjuk.service.rent;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +21,21 @@ import lombok.extern.java.Log;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
+@Log
 public class SearchService {
-	
+//
+//	@Autowired
 //    private SearchRepository searchRepository;
+//
+//	@Autowired
 //    private BooksRepository booksRepository;
+//
+//    @Autowired
 //    private BookInfoRepository bookInfoRepository;
+//
+//    @Autowired
 //    private StoreRepository storeRepository;
-    
+//
 //    public List<UserEntity> searchUsers(String criteria, String keyword) {
 //        if ("userName".equals(criteria)) {
 //            return searchRepository.findByUserNameContainingIgnoreCase(keyword);
@@ -73,8 +79,8 @@ public class SearchService {
 //                })
 //                .collect(Collectors.toList());
 //    }
-
-    
-	
-	
+//
+//
+//
+//
 }

@@ -3,12 +3,14 @@ package com.itwillbs.bookjuk.service.join;
 import com.itwillbs.bookjuk.domain.login.LoginType;
 import com.itwillbs.bookjuk.domain.login.UserRole;
 import com.itwillbs.bookjuk.dto.UserDTO;
+import com.itwillbs.bookjuk.entity.UserContentEntity;
 import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.event.CouponEntity;
 import com.itwillbs.bookjuk.entity.event.EventConditionEntity;
 import com.itwillbs.bookjuk.entity.event.EventCountEntity;
 import com.itwillbs.bookjuk.entity.event.NotificationEntity;
 import com.itwillbs.bookjuk.exception.ValidationException;
+import com.itwillbs.bookjuk.repository.UserContentRepository;
 import com.itwillbs.bookjuk.repository.UserRepository;
 import com.itwillbs.bookjuk.repository.event.CouponRepository;
 import com.itwillbs.bookjuk.repository.event.EventConditionRepository;
@@ -32,9 +34,11 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class JoinService {
     private final UserRepository userRepository;
+    private final UserContentRepository userContentRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final EventConditionRepository eventConditionRepository;
     private final EventService eventService;
+
 
     //회원가입 프로세스
     public boolean joinProcess(UserDTO userDTO){
@@ -49,6 +53,11 @@ public class JoinService {
 
         //저장된 유저 반환
         UserEntity saveUser = userRepository.save(userEntity);
+
+        //userContent 테이블에 유저 등록
+        UserContentEntity userContentEntity = new UserContentEntity();
+        userContentEntity.setUserEntity(saveUser);
+        UserContentEntity saveUserContent = userContentRepository.save(userContentEntity);
 
         //저장 성공 여부 확인
         if(saveUser != null) {

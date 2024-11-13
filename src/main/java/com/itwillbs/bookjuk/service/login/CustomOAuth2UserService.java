@@ -1,7 +1,9 @@
 package com.itwillbs.bookjuk.service.login;
 
 import com.itwillbs.bookjuk.domain.login.UserRole;
+import com.itwillbs.bookjuk.entity.UserContentEntity;
 import com.itwillbs.bookjuk.entity.UserEntity;
+import com.itwillbs.bookjuk.repository.UserContentRepository;
 import com.itwillbs.bookjuk.repository.UserRepository;
 import com.itwillbs.bookjuk.security.CustomOAuth2User;
 import com.itwillbs.bookjuk.security.GoogleResponse;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     //DefaultOAuth2UserService 의 구현체
     private final UserRepository userRepository;
+    private final UserContentRepository userContentRepository;
 
 
     @Override
@@ -62,8 +65,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userEntity.setAccepted(true);
             userEntity.setActivate(true);
             userEntity.setUserRole(userRole);
-
             userRepository.save(userEntity);
+
+            //userContent 테이블에 유저 등록
+            UserContentEntity userContentEntity = new UserContentEntity();
+            userContentEntity.setUserEntity(userEntity);
+            userContentRepository.save(userContentEntity);
 
             userNum = userEntity.getUserNum();
         }

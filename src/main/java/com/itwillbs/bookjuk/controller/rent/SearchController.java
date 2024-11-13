@@ -18,9 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 public class SearchController {
-
-    private SearchService searchService;
-
+//
+//	@Autowired
+//    private SearchService searchService;
+//
 //    @GetMapping("/admin/search")
 //    public List<UserEntity> searchUsers(
 //            @RequestParam("criteria") String criteria,
@@ -34,5 +35,5 @@ public class SearchController {
 //            @RequestParam("keyword") String keyword) {
 //        return searchService.searchBooks(criteria, keyword);
 //    }
-    
+//
 }

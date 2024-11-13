@@ -1,21 +1,17 @@
 package com.itwillbs.bookjuk.entity.rent;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.itwillbs.bookjuk.entity.StoreEntity;
 import com.itwillbs.bookjuk.entity.UserEntity;
-import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
 import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 
 @Table(name = "rent")
 @Entity
@@ -23,6 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class RentEntity {
 
 	@Id
@@ -30,48 +27,48 @@ public class RentEntity {
 	@Column(name = "rent_num", nullable = false)
 	private Long rentNum;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne
 	@JoinColumn(name = "user_num", nullable = false)
 	private UserEntity user;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne
 	@JoinColumn(name = "store_code", nullable = false)
 	private StoreEntity storeCode;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "book_num", nullable = false)
-	private BookInfoEntity book;
-
-	@ColumnDefault("CURRENT_TIMESTAMP")
-	@Column(name = "rent_start", nullable = false)
-	private Instant rentStart;
-
-	@Column(name = "rent_end", nullable = false)
-	private Instant rentEnd;
+	@ManyToOne
+	@JoinColumn(name = "books_id", nullable = false)
+	private BooksEntity book;
 
 	@Column(name = "rent_price", nullable = false)
 	private Integer rentPrice;
 
 	@Column(name = "return_date")
-	private Instant returnDate;
+	private LocalDate returnDate;
 
-	@ColumnDefault("0")
 	@Column(name = "rent_status", nullable = false)
-	private Byte rentStatus;
+	private Byte rentStatus = 0;
 
-	@ColumnDefault("CURRENT_TIMESTAMP")
-	@Column(name = "create_date", nullable = false)
+	@Column(name = "create_date", nullable = false, updatable = false)
 	private Instant createDate;
 
-	@ColumnDefault("CURRENT_TIMESTAMP")
 	@UpdateTimestamp
 	@Column(name = "update_date", nullable = false)
 	private Instant updateDate;
 
-	@OneToOne(mappedBy = "rent")
-	private Overdue overdue;
+	@Column(name = "rent_start", nullable = false)
+	private LocalDate rentStart;
 
-	@OneToOne(mappedBy = "rent")
-	private PointDealEntity pointDeal;
+	@Column(name = "rent_end", nullable = false)
+	private LocalDate rentEnd;
 
+	@PrePersist
+	public void prePersist() {
+		this.createDate = Instant.now();
+		this.updateDate = Instant.now();
+	}
+
+	@PreUpdate
+	public void preUpdate() {
+		this.updateDate = Instant.now();
+	}
 }

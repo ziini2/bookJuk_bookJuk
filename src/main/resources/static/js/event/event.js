@@ -37,7 +37,6 @@ $(document).ready(function() {
 	    pageLength: 25,
 	    lengthMenu: [25, 50, 100, 200],
 	    language: {
-	        // 표기 언어 설정
 	        search: "",
 	        info: "",
 	        infoEmpty: "",

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
 import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.event.EventEntity;
@@ -23,13 +24,14 @@ import jakarta.persistence.criteria.Root;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Repository
 public class EventRepositoryImpl implements EventRepositoryCustom {
 
 	@PersistenceContext
 	private EntityManager entityManager;
 	
 	@Override
-	public Page<EventEntity> findByCriteriaAndFilter(String searchCriteria, 
+	public Page<EventEntity> eventTable(String searchCriteria, 
 												 String searchKeyword, 
 												 List<Map<String, String>> filter, 
 												 Pageable pageable) {

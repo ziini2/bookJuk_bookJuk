@@ -28,6 +28,7 @@ import com.itwillbs.bookjuk.repository.event.EventConditionRepository;
 import com.itwillbs.bookjuk.repository.event.EventCountRepository;
 import com.itwillbs.bookjuk.repository.event.EventRepository;
 import com.itwillbs.bookjuk.repository.event.NotificationRepository;
+import com.itwillbs.bookjuk.util.CouponUtil;
 import com.itwillbs.bookjuk.util.EventConditionParser;
 import com.itwillbs.bookjuk.util.SecurityUtil;
 
@@ -97,7 +98,7 @@ public class EventService {
 	public Page<EventDTO> getFilteredEvent(String searchCriteria, String searchKeyword, List<Map<String, String>> filter,
 			Pageable pageable) {
 		try {
-	        return eventRepository.findByCriteriaAndFilter(searchCriteria, searchKeyword, 
+	        return eventRepository.eventTable(searchCriteria, searchKeyword, 
 	        		filter, pageable).map(this::convertToDto);
 	    } catch (Exception e) {
 	        // 로그 출력 및 예외 처리
@@ -204,6 +205,13 @@ public class EventService {
     	    	
     	for(EventConditionEntity eventCondition : resultList) {
     		
+    		String coupon;
+    		
+    		// 쿠폰 번호 생성(db에 중복된 쿠폰 번호가 있으면 중복 안될때까지 랜덤 문자 함수 호출) 
+            do {
+                coupon = CouponUtil.generateRandomCouponNum(16);
+            } while (couponRepository.existsByCouponNum(coupon));
+    		
     		// event_count 생성
     		EventCountEntity eventCountEntity = EventCountEntity.builder()
     				.userNum(saveUser)
@@ -218,9 +226,9 @@ public class EventService {
 			NotificationEntity notificationEntity = NotificationEntity.builder()
 					.notiRecipient(saveUser)
 					.notiSender(eventCondition.getEventId().getEventManager())
-					.notiContent("신규 가입자를 위한 쿠폰입니다.")
+					.notiContent("신규 가입자를 위한 쿠폰입니다. 쿠폰 번호 : " + coupon)
 					.notiType("쪽지")
-					.notiStatus("전송")
+					.notiStatus("성공")
 					.notiCreationDate(new Timestamp(System.currentTimeMillis()))
 					.notiSentDate(new Timestamp(System.currentTimeMillis()))
 					.build();
@@ -232,7 +240,7 @@ public class EventService {
 					.eventConditionId(eventCondition)
 					.notiId(notificationEntity)
 					.userNum(saveUser)
-					.couponNum("33333")
+					.couponNum(coupon)
 					.couponPeriod(Timestamp.valueOf(LocalDateTime.now().plusYears(1)))
 					.couponStatus("유효")
 					.couponType(eventCondition.getEventClearReward())

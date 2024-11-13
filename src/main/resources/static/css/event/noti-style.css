@@ -7,7 +7,9 @@ li, button, th, td {
 button {
 	margin: 0 !important;
 }
-
+div.dataTables_processing {
+	top: 30% !important;
+}
 
 
 

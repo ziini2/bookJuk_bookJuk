@@ -1,11 +1,8 @@
 package com.itwillbs.bookjuk.entity.rent;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.itwillbs.bookjuk.entity.StoreEntity;
 import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
-import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,7 +16,6 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class RentEntity {
 
 	@Id
@@ -27,15 +23,15 @@ public class RentEntity {
 	@Column(name = "rent_num", nullable = false)
 	private Long rentNum;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_num", nullable = false)
 	private UserEntity user;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "store_code", nullable = false)
 	private StoreEntity storeCode;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "books_id", nullable = false)
 	private BooksEntity book;
 

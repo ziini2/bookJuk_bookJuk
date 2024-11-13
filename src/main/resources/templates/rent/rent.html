@@ -109,7 +109,6 @@
                 </select>
                 <input type="text" id="keyword" placeholder="검색어 입력">
                 <button type="button" id="searchButton" class="btn btn-success">검색</button>
-                <button type="button" class="btn btn-danger" onclick="window.location.href='/admin/rent'">초기화</button>
                 <!-- 도서 대여 관리 모달 열기 버튼 -->
                 <button type="button" class="btn btn-primary my-5" data-bs-toggle="modal" data-bs-target="#rentalModal">
                     도서 대여 등록
@@ -129,6 +128,7 @@
                     <th>반납예정일</th>
                     <th>반납일</th>
                     <th>연체 여부</th>
+                    <th>연체료</th>
                     <th>반납 여부</th>
                 </tr>
                 </thead>
@@ -144,6 +144,7 @@
                     <td th:text="${rent?.rentEnd != null ? rent.rentEnd.toString() : '미등록'}"></td>
                     <td th:text="${rent?.returnDate != null ? rent.returnDate.toString() : '미등록'}"></td>
                     <td class="delay-status"></td>
+                    <td
                     <td class="rent-status" th:text="${rent?.rentStatus != null ? '반납 완료' : '미반납'}"></td>
                 </tr>
                 </tbody>

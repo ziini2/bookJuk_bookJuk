@@ -12,8 +12,10 @@ public interface BookInfoRepository extends JpaRepository<BookInfoEntity, Long> 
 	
 	//대여등록 책검색
 	Optional<BookInfoEntity> findByIsbn(String isbn);
-	
-	//장바구니 추가
+
+    Optional<List<BookInfoEntity>> findAllByBookNameContaining(String keyword);
+
+    //장바구니 추가
 	//List<BookInfoEntity> fin
 	
 }

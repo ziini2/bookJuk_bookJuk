@@ -46,7 +46,7 @@ public class RentEntity {
 	private LocalDate returnDate;
 
 	@Column(name = "rent_status", nullable = false)
-	private Byte rentStatus = 0;
+	private Boolean rentStatus = false;
 
 	@Column(name = "create_date", nullable = false, updatable = false)
 	private Instant createDate;

@@ -1,15 +1,23 @@
 package com.itwillbs.bookjuk.repository;
 
+import com.itwillbs.bookjuk.entity.UserEntity;
+import com.itwillbs.bookjuk.entity.books.BooksEntity;
 import com.itwillbs.bookjuk.entity.rent.RentEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 public interface RentRepository extends JpaRepository<RentEntity, Long> {
-    @EntityGraph(attributePaths = {"user", "storeCode", "book"})
     Page<RentEntity> findAll(Pageable pageable);
+
+
+    Page<RentEntity> findByUser(UserEntity user, Pageable pageable);
+
+
+    Page<RentEntity> findAllByBookIn(List<BooksEntity> booksId, Pageable pageable);
+
+    Page<RentEntity> findAllByUserIn(List<UserEntity> userEntity, Pageable pageable);
 }

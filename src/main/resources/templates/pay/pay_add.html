@@ -43,7 +43,256 @@
            type="text/javascript"
            src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"
    ></script>
+
+
    
+</head>
+
+<body>
+	<div th:replace="~{/fragment/header :: header2}"></div>
+	<div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
+
+  <!-- 사이드바 열었다 닫았다 하는거 -->
+  <script th:src="@{/js/common/main.js}"></script>
+  <script th:src="@{/js/pay/payjs.js}"></script>
+
+  <main id="main" class="main">
+  	<div class="container justify-content-center" style="height: auto">
+		
+	<div class="d-flex" style="padding-top: 10%;">
+		<div><h2><b>포인트 충전</b></h2></div>
+		<div style="padding-left: 50%; padding-top: 20px;"><h5><b>보유</b></h5></div>
+		<div style="padding-left: 10px; padding-top: 20px;"><h5><b><span style="color: blue;" th:text="${userPoint}"></span>P</b></h5></div>
+	</div>
+	
+	<hr style="border:1px color= silver; width: 80%;">
+					
+		<div class="justify-content-center" style="width: 80%">
+			
+			<table class="table table-bordered">
+			  <thead>
+			    <tr>
+			      <th scope="col" style="width: 26%;">충전 포인트</th>
+			      <th scope="col" style="width: 37%;">총 결제 금액</th>
+			      <th scope="col" style="width: 37%;">추가 혜택</th>
+			    </tr>
+			  </thead>
+			  <tbody class="table-group-divider">
+				<!--1행-->
+			    <tr>
+				  <!--1열-->
+			      <td>
+					  <div class="form-check select-point d-flex align-items-center gap-2">
+					  <input class="form-check-input" type="radio" name="pointAddPrice" id="price5000" value="100" price-name="5000P 충전">
+					  <label class="form-check-label" for="price5000">
+					    <b>5000P</b>
+					  </label>
+					</div>
+				  </td>
+				  <!--2열-->
+			      <td>
+					  <p class="text-top"><b>6000원</b></p>
+					  <p class="text-bottom">(부가세 10% + 결제처리수수료 10% 포함)</p>
+				  </td>
+				  <!--3열-->
+			      <td></td>
+			    </tr>
+				
+				<!--2행-->
+			    <tr>
+				  <!--1열-->
+			      <td>
+					  <div class="form-check select-point d-flex align-items-center gap-2">
+					  <input class="form-check-input" type="radio" name="pointAddPrice" id="price10000" value="200" price-name="10000P 충전">
+					  <label class="form-check-label" for="price10000">
+					    <b>10,000P</b>
+					  </label>
+					</div>
+				  </td>
+				  <!--2열-->
+			      <td>
+					  <p class="text-top"><b>12,000원</b></p>
+					  <p class="text-bottom">(부가세 10% + 결제처리수수료 10% 포함)</p>
+				  </td>
+				  <!--3열-->
+			      <td></td>
+			    </tr>
+				
+				<!--3행-->
+			    <tr>
+				  <!--1열-->
+			      <td>
+					  <div class="form-check select-point d-flex align-items-center gap-2">
+					  <input class="form-check-input" type="radio" name="pointAddPrice" id="price30000" value="36000" price-name="30000P 충전">
+					  <label class="form-check-label" for="price30000">
+					    <b>30,000P</b>
+					  </label>
+					</div>
+				  </td>
+				  <!--2열-->
+			      <td>
+					  <p class="text-top"><b>36,000원</b></p>
+					  <p class="text-bottom">(부가세 10% + 결제처리수수료 10% 포함)</p>
+				  </td>
+				  <!--3열-->
+			      <td>
+					  <p class="text-top"><b>30,000P + 3000P</b></p>
+					  <p class="text-bottom">(총 충전 금액 33,000P)</p>
+				  </td>
+			    </tr>
+				
+				<!--4행-->
+			    <tr>
+				  <!--1열-->
+			      <td>
+					  <div class="form-check select-point d-flex align-items-center gap-2">
+					  <input class="form-check-input" type="radio" name="pointAddPrice" id="price50000" value="60000" price-name="50000P 충전">
+					  <label class="form-check-label" for="price50000">
+					    <b>50,000P</b>
+					  </label>
+					</div>
+				  </td>
+				  <!--2열-->
+			      <td>
+					  <p class="text-top"><b>60,000원</b></p>
+					  <p class="text-bottom">(부가세 10% + 결제처리수수료 10% 포함)</p>
+				  </td>
+				  <!--3열-->
+				  <td>
+  					  <p class="text-top"><b>50,000P + 5000P</b></p>
+  					  <p class="text-bottom">(총 충전 금액 55,000P)</p>
+  				  </td>
+			    </tr>
+				
+				<!--5행-->
+			    <tr>
+				  <!--1열-->
+			      <td>
+					  <div class="form-check select-point d-flex align-items-center gap-2">
+					  <input class="form-check-input" type="radio" name="pointAddPrice" id="price100000" value="120000" price-name="100000P 충전">
+					  <label class="form-check-label" for="price100000">
+					    <b>100,000P</b>
+					  </label>
+					</div>
+				  </td>
+				  <!--2열-->
+			      <td>
+					  <p class="text-top"><b>120,000원</b></p>
+					  <p class="text-bottom">(부가세 10% + 결제처리수수료 10% 포함)</p>
+				  </td>
+				  <!--3열-->
+				  <td>
+					  <p class="text-top"><b>100,000P + 12,000P</b></p>
+					  <p class="text-bottom">(총 충전 금액 112,000P)</p>
+				  </td>
+			    </tr>
+
+			  </tbody>
+			</table>
+			
+				<!--페이 카드-->
+				<div class="card card-pay-body rounded-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+					<div class="d-flex gap-3">
+						
+						<div class="row" style="padding-left: 10px;">
+							<p class="pay-title-text">결제 수단 선택</p>
+							<div class="d-flex" style="padding-top: 1%; padding-left: 50%;">
+								
+								<div class="form-check select-point d-flex align-items-center gap-2">
+								  <input class="form-check-input" type="radio" name="paySelect">
+								  <label class="form-check-label" for="paySelect">
+								    <b>신용카드/카카오페이</b>
+								  </label>
+								</div>
+								
+								<div style="padding-left: 100px;">
+								<div class="form-check select-point d-flex align-items-center gap-2">
+								  <input class="form-check-input" type="radio" name="paySelect" id="paySelect">
+								  <label class="form-check-label" for="paySelect">
+								    <b>무통장 입금</b>
+								  </label>
+								</div>
+								</div>
+							</div>
+							<div style="padding-left: 10%; padding-top: 18px;">
+							 <p class="text-pay-top"><b>요금 청구</b></p>
+							 <p class="text-pay-bottom">현재 결제 진행 건에 대해서만 결제되며, 매월 자동 결제되지 않습니다.</p>
+							 </div>
+						</div>
+						
+					</div> 
+				</div>
+				<!--페이 카드 END-->
+				
+				<!--결제인 정보-->
+				<div class="card card-pay-body rounded-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+					<div class="d-flex gap-3">
+						
+						<div class="row" style="padding-left: 10px;">
+							<p class="pay-title-text">결제인 정보</p>
+							<div class="d-flex gap-2" style="padding-top: 2%; padding-left: 10%;">
+								
+								<p class="pay-email-text">이메일 주소</p>
+									<input class="form-control email-bar" type="text" th:placeholder="${userEmail}">
+								
+							</div>
+							<div style="padding-left: 10%; padding-top: 18px;">
+							 <p class="text-pay-top"><b>결제 정보</b></p>
+							 <p class="text-pay-bottom">이메일을 통해 결제 정보가 전송됩니다.</p>
+							 </div>
+						</div>
+						
+					</div> 
+				</div>
+				<!--페이 카드 END-->
+		</div>	
+		<div style="padding-left: 26%;">
+		<button onclick="requestPay()" type="button" class="btn btn-pay">결제하기</button>
+		
+		</div>
+		
+		
+		<table class="table datatable" style="width: 80%;">
+				        <thead>
+				        <tr>
+				        <th>
+				        <b>고객명</b>
+				        </th>
+				            <th>결제 수단</th>
+				            <th>결제 금액</th>
+				            <th>포인트 충전 금액</th>
+				            <th>요청일자</th>
+				            <th>결제 번호</th>
+							<th>결제 상태</th>
+				         </tr>
+				         </thead>
+				                  
+						<tbody>
+							 
+						<tr th:each="payment : ${userPayments}">
+							<td th:text="${payment.userContentEntity.userEntity.userName}"></td>
+					        <td th:text="${payment.paymentMethod}"></td>
+					        <td th:text="${payment.paymentPrice}"></td>
+							<td th:text="${payment.priceName}"></td>
+							<td th:text="${payment.reqDate}"></td>
+							<td th:text="${payment.paymentId}"></td>
+							<td>
+								<!--결제 완료와 포인트 미사용 조건을 모두 충족할 시 결제 취소 버튼-->
+								<button th:if="${payment.paymentStatus.name() == 'SUCCESSFUL' && not payment.isPointUsed}" class="cancel-btn btn btn-danger" type="button">결제 취소</button>
+								<!--결제 취소 버튼 누를 시 환불 완료-->
+								<span  style="color: rgb(255, 0, 0);" th:if="${payment.paymentStatus.name() == 'CANCEL'}">환불 완료</span>
+								<!--결제 완료와 포인트 사용 조건을 모두 충족할 시 구매 확정(결제 취소 불가-->
+								<span style="color: rgb(0, 0, 255);" 
+								      th:if="${payment.paymentStatus.name() == 'SUCCESSFUL' && payment.isPointUsed}">구매 확정</span>
+							</td>
+					    </tr>
+						</tbody>
+				     </table>
+				     <!-- 테이블 끝 -->
+											 
+	</div>
+</main>
+
 
 <script>
     //전역 변수로 선언(여러 함수 접근 가능)
@@ -159,260 +408,6 @@
 	
 
 </script>
-
-
-  
-
-
-
-   
-</head>
-
-<body>
-	<div th:replace="~{/fragment/header :: header2}"></div>
-	<div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
-
-  <!-- 사이드바 열었다 닫았다 하는거 -->
-  <script th:src="@{/js/common/main.js}"></script>
-  <script th:src="@{/js/pay/payjs.js}"></script>
-
-  <main id="main" class="main">
-  	<div class="container justify-content-center" style="height: auto">
-		
-	<div class="d-flex" style="padding-top: 10%;">
-		<div><h2><b>포인트 충전</b></h2></div>
-		<div style="padding-left: 50%; padding-top: 20px;"><h5><b>보유</b></h5></div>
-		<div style="padding-left: 10px; padding-top: 20px;"><h5><b><span style="color: blue;" th:text="${userPoint}"></span>P</b></h5></div>
-	</div>
-	
-	<hr style="border:1px color= silver; width: 80%;">
-					
-		<div class="justify-content-center" style="width: 80%">
-			
-			<table class="table table-bordered">
-			  <thead>
-			    <tr>
-			      <th scope="col" style="width: 26%;">충전 포인트</th>
-			      <th scope="col" style="width: 37%;">총 결제 금액</th>
-			      <th scope="col" style="width: 37%;">추가 혜택</th>
-			    </tr>
-			  </thead>
-			  <tbody class="table-group-divider">
-				<!--1행-->
-			    <tr>
-				  <!--1열-->
-			      <td>
-					  <div class="form-check select-point d-flex align-items-center gap-2">
-					  <input class="form-check-input" type="radio" name="pointAddPrice" id="price5000" value="100" price-name="5000P 충전">
-					  <label class="form-check-label" for="price5000">
-					    <b>5000P</b>
-					  </label>
-					</div>
-				  </td>
-				  <!--2열-->
-			      <td>
-					  <p class="text-top"><b>6000원</b></p>
-					  <p class="text-bottom">(부가세 10% + 결제처리수수료 10% 포함)</p>
-				  </td>
-				  <!--3열-->
-			      <td></td>
-			    </tr>
-				
-				<!--2행-->
-			    <tr>
-				  <!--1열-->
-			      <td>
-					  <div class="form-check select-point d-flex align-items-center gap-2">
-					  <input class="form-check-input" type="radio" name="pointAddPrice" id="price10000" value="12000" price-name="10000P 충전">
-					  <label class="form-check-label" for="price10000">
-					    <b>10,000P</b>
-					  </label>
-					</div>
-				  </td>
-				  <!--2열-->
-			      <td>
-					  <p class="text-top"><b>12,000원</b></p>
-					  <p class="text-bottom">(부가세 10% + 결제처리수수료 10% 포함)</p>
-				  </td>
-				  <!--3열-->
-			      <td></td>
-			    </tr>
-				
-				<!--3행-->
-			    <tr>
-				  <!--1열-->
-			      <td>
-					  <div class="form-check select-point d-flex align-items-center gap-2">
-					  <input class="form-check-input" type="radio" name="pointAddPrice" id="price30000" value="36000" price-name="30000P 충전">
-					  <label class="form-check-label" for="price30000">
-					    <b>30,000P</b>
-					  </label>
-					</div>
-				  </td>
-				  <!--2열-->
-			      <td>
-					  <p class="text-top"><b>36,000원</b></p>
-					  <p class="text-bottom">(부가세 10% + 결제처리수수료 10% 포함)</p>
-				  </td>
-				  <!--3열-->
-			      <td>
-					  <p class="text-top"><b>30,000P + 3000P</b></p>
-					  <p class="text-bottom">(총 충전 금액 33,000P)</p>
-				  </td>
-			    </tr>
-				
-				<!--4행-->
-			    <tr>
-				  <!--1열-->
-			      <td>
-					  <div class="form-check select-point d-flex align-items-center gap-2">
-					  <input class="form-check-input" type="radio" name="pointAddPrice" id="price50000" value="60000" price-name="50000P 충전">
-					  <label class="form-check-label" for="price50000">
-					    <b>50,000P</b>
-					  </label>
-					</div>
-				  </td>
-				  <!--2열-->
-			      <td>
-					  <p class="text-top"><b>60,000원</b></p>
-					  <p class="text-bottom">(부가세 10% + 결제처리수수료 10% 포함)</p>
-				  </td>
-				  <!--3열-->
-				  <td>
-  					  <p class="text-top"><b>50,000P + 5000P</b></p>
-  					  <p class="text-bottom">(총 충전 금액 55,000P)</p>
-  				  </td>
-			    </tr>
-				
-				<!--5행-->
-			    <tr>
-				  <!--1열-->
-			      <td>
-					  <div class="form-check select-point d-flex align-items-center gap-2">
-					  <input class="form-check-input" type="radio" name="pointAddPrice" id="price100000" value="120000" price-name="100000P 충전">
-					  <label class="form-check-label" for="price100000">
-					    <b>100,000P</b>
-					  </label>
-					</div>
-				  </td>
-				  <!--2열-->
-			      <td>
-					  <p class="text-top"><b>120,000원</b></p>
-					  <p class="text-bottom">(부가세 10% + 결제처리수수료 10% 포함)</p>
-				  </td>
-				  <!--3열-->
-				  <td>
-					  <p class="text-top"><b>100,000P + 12,000P</b></p>
-					  <p class="text-bottom">(총 충전 금액 112,000P)</p>
-				  </td>
-			    </tr>
-
-			  </tbody>
-			</table>
-			
-				<!--페이 카드-->
-				<div class="card card-pay-body rounded-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
-					<div class="d-flex gap-3">
-						
-						<div class="row" style="padding-left: 10px;">
-							<p class="pay-title-text">결제 수단 선택</p>
-							<div class="d-flex" style="padding-top: 1%; padding-left: 50%;">
-								
-								<div class="form-check select-point d-flex align-items-center gap-2">
-								  <input class="form-check-input" type="radio" name="paySelect" id="paySelect">
-								  <label class="form-check-label" for="paySelect">
-								    <b>신용카드/카카오페이</b>
-								  </label>
-								</div>
-								
-								<div style="padding-left: 100px;">
-								<div class="form-check select-point d-flex align-items-center gap-2">
-								  <input class="form-check-input" type="radio" name="paySelect" id="paySelect">
-								  <label class="form-check-label" for="paySelect">
-								    <b>무통장 입금</b>
-								  </label>
-								</div>
-								</div>
-							</div>
-							<div style="padding-left: 10%; padding-top: 18px;">
-							 <p class="text-pay-top"><b>요금 청구</b></p>
-							 <p class="text-pay-bottom">현재 결제 진행 건에 대해서만 결제되며, 매월 자동 결제되지 않습니다.</p>
-							 </div>
-						</div>
-						
-					</div> 
-				</div>
-				<!--페이 카드 END-->
-				
-				<!--결제인 정보-->
-				<div class="card card-pay-body rounded-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
-					<div class="d-flex gap-3">
-						
-						<div class="row" style="padding-left: 10px;">
-							<p class="pay-title-text">결제인 정보</p>
-							<div class="d-flex gap-2" style="padding-top: 2%; padding-left: 10%;">
-								
-								<p class="pay-email-text">이메일 주소</p>
-									<input class="form-control email-bar" type="text" th:placeholder="${userEmail}">
-								
-							</div>
-							<div style="padding-left: 10%; padding-top: 18px;">
-							 <p class="text-pay-top"><b>결제 정보</b></p>
-							 <p class="text-pay-bottom">이메일을 통해 결제 정보가 전송됩니다.</p>
-							 </div>
-						</div>
-						
-					</div> 
-				</div>
-				<!--페이 카드 END-->
-		</div>	
-		<div style="padding-left: 26%;">
-		<button onclick="requestPay()" type="button" class="btn btn-pay">결제하기</button>
-		
-		</div>
-		
-		
-		<table class="table datatable" style="width: 80%;">
-				        <thead>
-				        <tr>
-				        <th>
-				        <b>고객명</b>
-				        </th>
-				            <th>결제 수단</th>
-				            <th>결제 금액</th>
-				            <th>포인트 충전 금액</th>
-				            <th>요청일자</th>
-				            <th>결제 번호</th>
-							<th>결제 상태</th>
-				         </tr>
-				         </thead>
-				                  
-						<tbody>
-							 
-						<tr th:each="payment : ${userPayments}">
-							<td th:text="${payment.userContentEntity.userEntity.userName}"></td>
-					        <td th:text="${payment.paymentMethod}"></td>
-					        <td th:text="${payment.paymentPrice}"></td>
-							<td th:text="${payment.priceName}"></td>
-							<td th:text="${payment.reqDate}"></td>
-							<td th:text="${payment.paymentId}"></td>
-							<td>
-								<!--결제 완료와 포인트 미사용 조건을 모두 충족할 시 결제 취소 버튼-->
-								<button th:if="${payment.paymentStatus.name() == 'SUCCESSFUL' && not payment.isPointUsed}" class="cancel-btn btn btn-danger" type="button">결제 취소</button>
-								<!--결제 취소 버튼 누를 시 환불 완료-->
-								<span  style="color: rgb(255, 0, 0);" th:if="${payment.paymentStatus.name() == 'CANCEL'}">환불 완료</span>
-								<!--결제 완료와 포인트 사용 조건을 모두 충족할 시 구매 확정(결제 취소 불가-->
-								<span style="color: rgb(0, 0, 255);" 
-								      th:if="${payment.paymentStatus.name() == 'SUCCESSFUL' && payment.isPointUsed}">구매 확정</span>
-							</td>
-					    </tr>
-						</tbody>
-				     </table>
-				     <!-- 테이블 끝 -->
-											 
-	</div>
-</main>
-
 </body>
 
 </html>

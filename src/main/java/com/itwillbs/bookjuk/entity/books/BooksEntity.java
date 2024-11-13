@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.itwillbs.bookjuk.entity.rent.RentEntity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -44,12 +45,12 @@ public class BooksEntity {
 
 	// bookINfoEntity 의 bookNum 을 참조해서 정보를 가지고온다.
 	@ManyToOne
-	@JoinColumn(name = "bookNum", referencedColumnName = "bookNum", nullable = false) // 외래 키 설정
+	@JoinColumn(name = "book_num", nullable = false) // 외래 키 설정
 	private BookInfoEntity bookInfoEntity;
  
 	// 지점 ID (StoreEntity와 연결)
 	@ManyToOne
-	@JoinColumn(name = "storeCode", referencedColumnName = "storeCode", nullable = false) // 외래 키 설정
+	@JoinColumn(name = "store_code", nullable = false) // 외래 키 설정
 	private StoreEntity storeEntity;
 
 	// 수정일
@@ -62,6 +63,7 @@ public class BooksEntity {
 
 	// rent 테이블과 양방향 관계 설정
 	@OneToMany(mappedBy = "book")
-	private List<RentEntity> books = new ArrayList<>();
+	@JsonManagedReference
+	private List<RentEntity> rents = new ArrayList<>();
 
 }

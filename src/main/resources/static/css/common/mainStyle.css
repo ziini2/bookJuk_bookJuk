@@ -1,0 +1,7 @@
+.main-search .card{
+    border: 1px solid #69cbbe;
+    background-color: #e1f0ed;
+}
+.main-search .form-control, .btn{
+    height: 50px;
+}

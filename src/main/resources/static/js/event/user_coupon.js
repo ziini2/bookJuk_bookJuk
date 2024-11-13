@@ -36,7 +36,7 @@ $(document).ready(function() {
 		dom: '<"d-flex justify-content-between align-items-end"<"d-flex align-items-end dataTables_filter_wrapper"f><"dataTables_length_wrapper"l>>rt<"d-flex justify-content-center"p>',
     
 		ajax: {
-	        url: '/admin/getCoupon',                   // 데이터 요청 URL
+	        url: '/getUserCoupon',                   // 데이터 요청 URL
 	        type: 'POST',                             // HTTP 메서드 설정
 	        contentType: 'application/json; charset=UTF-8',  // 요청 Content-Type 설정
 	        dataSrc: 'data',                          // 데이터 소스 경로 설정
@@ -81,7 +81,7 @@ $(document).ready(function() {
 	    columns: [
 	        { data: 'couponId', title: 'No.' },
 	        { data: 'eventTitle', title: '이벤트 제목' },
-	        { data: 'userId', title: '유저 아이디' },
+	        { data: 'couponNum', title: '쿠폰 번호' },
 	        { data: 'couponStatus', title: '쿠폰 상태' },
 	        { data: 'couponType', title: '쿠폰 종류' },
 	        { data: 'couponPeriod', title: '쿠폰 유효기간', render: function(data) { return dateChange(data); } }

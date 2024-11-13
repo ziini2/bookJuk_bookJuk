@@ -45,7 +45,7 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
             // 특정 필드에 대해 검색 기준이 지정된 경우
             switch (searchCriteria) {
                 case "eventId":
-                    predicates.add(cb.equal(event.get("eventId"), safeParseInt(searchKeyword)));
+                    predicates.add(cb.like(cb.concat(event.get("eventId").as(String.class), ""), "%" + searchKeyword + "%"));
                     break;
                 case "eventTitle":
                     predicates.add(cb.like(event.get("eventTitle"), "%" + searchKeyword + "%"));
@@ -135,12 +135,12 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
         return new PageImpl<>(resultList, pageable, total);
 	}
 	
-	private Integer safeParseInt(String keyword) {
-        try {
-            return Integer.parseInt(keyword);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
+//	private Integer safeParseInt(String keyword) {
+//        try {
+//            return Integer.parseInt(keyword);
+//        } catch (NumberFormatException e) {
+//            return null;
+//        }
+//    }
 	
 }

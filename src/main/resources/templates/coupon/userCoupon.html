@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport">
- 	<title>북적북적::쿠폰 관리</title>
+ 	<title>북적북적::내 쿠폰 관리</title>
   
 	<!-- 구글폰트 -->
 	<link href="https://fonts.gstatic.com" rel="preconnect">
@@ -18,8 +18,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   
 	<!-- Main CSS File -->
-	<link th:href="@{/css/event/coupon-style.css}" rel="stylesheet">
-	<link th:href="@{/css/common/style.css}" rel="stylesheet">
+	<link th:href="@{/css/event/user-coupon-style.css}" rel="stylesheet">
+	<link th:href="@{/css/common/userStyle.css}" rel="stylesheet">
     
 	<!--  DataTables-->
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
@@ -29,7 +29,7 @@
 	<div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
 	<main id="main" class="main">
 	<div class="coupon container my-4">
-		<h2 style="margin-bottom: 100px;">쿠폰 관리</h2>
+		<h2 style="margin-bottom: 100px;">내 쿠폰 관리</h2>
 		<div id="coupon-filterModal">
 			<div class="coupon-filterModal-content">
 				<span class="coupon-modal-close">&times;</span>		    
@@ -58,7 +58,7 @@
 	            <tr>
 	                <th>No.</th>
 	                <th>이벤트 제목</th>
-	                <th>유저 아이디</th>
+	                <th>쿠폰 번호</th>
 	                <th>쿠폰 상태</th>
 	                <th>쿠폰 종류</th>
 	                <th>쿠폰 유효기간</th>
@@ -91,6 +91,6 @@
 	<script th:src="@{/js/common/main.js}"></script>
 
 	<!-- 알림 관리 페이지 내 메인 자바스크립트-->
-	<script th:src="@{/js/event/coupon.js}"></script>
+	<script th:src="@{/js/event/user_coupon.js}"></script>
 </body>
 </html>

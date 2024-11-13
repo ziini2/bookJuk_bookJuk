@@ -45,7 +45,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
             // 특정 필드에 대해 검색 기준이 지정된 경우
             switch (searchCriteria) {
                 case "notiId":
-                    predicates.add(cb.equal(noti.get("notiId"), safeParseInt(searchKeyword)));
+                    predicates.add(cb.like(cb.concat(noti.get("notiId").as(String.class), ""), "%" + searchKeyword + "%"));
                     break;
                 case "recipient":
                     predicates.add(cb.like(recipientJoin.get("userId"), "%" + searchKeyword + "%"));
@@ -126,12 +126,12 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
         return new PageImpl<>(resultList, pageable, total);
 	}
 	
-	private Integer safeParseInt(String keyword) {
-        try {
-            return Integer.parseInt(keyword);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
+//	private Integer safeParseInt(String keyword) {
+//        try {
+//            return Integer.parseInt(keyword);
+//        } catch (NumberFormatException e) {
+//            return null;
+//        }
+//    }
 	
 }

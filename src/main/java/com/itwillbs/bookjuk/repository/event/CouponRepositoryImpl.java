@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.event.CouponEntity;
+import com.itwillbs.bookjuk.entity.event.EventEntity;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -39,16 +40,17 @@ public class CouponRepositoryImpl implements CouponRepositoryCustom {
         CriteriaQuery<CouponEntity> query = cb.createQuery(CouponEntity.class);
         Root<CouponEntity> coupon = query.from(CouponEntity.class);
         Join<CouponEntity, UserEntity> userJoin = coupon.join("userNum", JoinType.LEFT);
+        Join<CouponEntity, EventEntity> eventJoin = coupon.join("eventId", JoinType.LEFT);
         List<Predicate> predicates = new ArrayList<>();
         // 검색 조건 처리
         if (!searchCriteria.isEmpty()) {
             // 특정 필드에 대해 검색 기준이 지정된 경우
             switch (searchCriteria) {
                 case "couponId":
-                    predicates.add(cb.equal(coupon.get("couponId"), safeParseInt(searchKeyword)));
+                    predicates.add(cb.like(cb.concat(coupon.get("couponId").as(String.class), ""), "%" + searchKeyword + "%"));
                     break;
-                case "couponTitle":
-                    predicates.add(cb.like(coupon.get("couponTitle"), "%" + searchKeyword + "%"));
+                case "eventTitle":
+                    predicates.add(cb.like(eventJoin.get("eventTitle"), "%" + searchKeyword + "%"));
                     break;
                 case "userId":
                     predicates.add(cb.like(userJoin.get("userId"), "%" + searchKeyword + "%"));
@@ -68,7 +70,7 @@ public class CouponRepositoryImpl implements CouponRepositoryCustom {
         } else {    	        	
             predicates.add(cb.or(
                 cb.like(userJoin.get("userId"), "%" + searchKeyword + "%"),
-                cb.like(coupon.get("couponTitle"), "%" + searchKeyword + "%"),
+                cb.like(eventJoin.get("eventTitle"), "%" + searchKeyword + "%"),
                 cb.like(coupon.get("couponStatus"), "%" + searchKeyword + "%"),
                 cb.like(coupon.get("couponType"), "%" + searchKeyword + "%"),
                 cb.like(cb.function("DATE_FORMAT", String.class, coupon.get("couponPeriod"), cb.literal("%Y-%m-%d")), "%" + searchKeyword + "%"),
@@ -126,12 +128,12 @@ public class CouponRepositoryImpl implements CouponRepositoryCustom {
         return new PageImpl<>(resultList, pageable, total);
 	}
 	
-	private Integer safeParseInt(String keyword) {
-        try {
-            return Integer.parseInt(keyword);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
+//	private Integer safeParseInt(String keyword) {
+//        try {
+//            return Integer.parseInt(keyword);
+//        } catch (NumberFormatException e) {
+//            return null;
+//        }
+//    }
 	
 }

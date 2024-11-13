@@ -33,7 +33,7 @@ public class EventConditionEntity {
 	private Integer eventConditionId;
 	
 	// 이벤트 아이디
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "event_id")
     private EventEntity eventId;
 	
@@ -48,6 +48,10 @@ public class EventConditionEntity {
 	// 이벤트 활성 유무(기본값 false)
 	@Column(name = "event_is_active", nullable = false)
 	private boolean eventIsActive;
+	
+	// 이벤트 조건 값(3회, 5000원)
+	@Column(name = "event_required_value")
+	private Integer eventRequiredValue;
 	
 	
 	

@@ -57,16 +57,39 @@ public class BooksService {
 		
 		
 		// BookInfoEntity 생성 먼저하고 저장 => bookNum 을 얻는다.
-		BookInfoEntity bookInfoEntity = BookInfoEntity.builder()
-				.bookName(bookDTO.getBookName())
-				.author(bookDTO.getAuthor())
-				.publish(bookDTO.getPublish())
-				.story(bookDTO.getStory())
-				.genre(genreEntity) //장르연결 
-				.isbn(bookDTO.getIsbn())
-				.publishDate(bookDTO.getPublishDate())
-				.rentMoney(bookDTO.getRentMoney())
-				.build();
+//		BookInfoEntity bookInfoEntity = BookInfoEntity.builder()
+//				.bookName(bookDTO.getBookName())
+//				.author(bookDTO.getAuthor())
+//				.publish(bookDTO.getPublish())
+//				.story(bookDTO.getStory())
+//				.genre(genreEntity) //장르연결 
+//				.isbn(bookDTO.getIsbn())
+//				.publishDate(bookDTO.getPublishDate())
+//				.rentMoney(bookDTO.getRentMoney())
+//				.rentCount(bookDTO.getRentCount())
+//				.build();
+		
+		// BookInfoEntity 생성
+	    BookInfoEntity bookInfoEntity = BookInfoEntity.builder()
+	            .bookName(bookDTO.getBookName())
+	            .author(bookDTO.getAuthor())
+	            .publish(bookDTO.getPublish())
+	            .story(bookDTO.getStory())
+	            .genre(genreEntity) // 장르 연결
+	            .isbn(bookDTO.getIsbn())
+	            .publishDate(bookDTO.getPublishDate())
+	            .rentMoney(bookDTO.getRentMoney()) // rentMoney는 기본값이 0으로 설정됨
+	            .rentCount(bookDTO.getRentCount()) // rentCount는 bookDTO에서 받는다.
+	            .build();
+		
+		
+		
+		
+		// rentCount 값이 null일 경우 기본값 0 설정
+	    if (bookInfoEntity.getRentCount() == null) {
+	        bookInfoEntity.setRentCount(0L);  // 기본값 설정
+	    }
+	    
 		log.info("bookInfoEntity : {}", bookInfoEntity.toString());
 		
 		//BookInfoEntity 먼저 저장하고 bookNum 생성
@@ -82,7 +105,7 @@ public class BooksService {
 	        	    .bookInfoEntity(savedBookInfo) // 저장된 bookInfoEntity 사용함
 	        	    .build();
 
-
+		
 	    log.info("booksEntity : {}", booksEntity.toString());
 	    log.info("savedBookInfo : {}", savedBookInfo.toString());
 	    

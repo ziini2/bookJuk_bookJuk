@@ -1,0 +1,13 @@
+.main-search .card{
+    border: 1px solid #69cbbe;
+    background-color: #e1f0ed;
+}
+.main-search .form-control, .btn{
+    height: 50px;
+}
+.dropdown-menu {
+    --bs-dropdown-link-active-bg: #198753;
+}
+.dropdown .btn {
+    height: 32px;
+}

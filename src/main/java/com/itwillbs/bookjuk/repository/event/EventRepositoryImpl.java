@@ -57,6 +57,12 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
                 case "eventManager":
                 	predicates.add(cb.like(eventManagerJoin.get("userName"), "%" + searchKeyword + "%"));
                     break;
+                case "eventDate":
+                	predicates.add(cb.or(
+            	        cb.like(cb.function("DATE_FORMAT", String.class, event.get("startEventDate"), cb.literal("%Y-%m-%d")), "%" + searchKeyword + "%"),
+            	        cb.like(cb.function("DATE_FORMAT", String.class, event.get("endEventDate"), cb.literal("%Y-%m-%d")), "%" + searchKeyword + "%")
+            	    ));
+                    break;
                 default:
                     predicates.add(cb.conjunction());
             }
@@ -66,6 +72,8 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
                 cb.like(event.get("eventType"), "%" + searchKeyword + "%"),
                 cb.like(event.get("eventStatus"), "%" + searchKeyword + "%"),
                 cb.like(eventManagerJoin.get("userName"), "%" + searchKeyword + "%"),
+                cb.like(cb.function("DATE_FORMAT", String.class, event.get("startEventDate"), cb.literal("%Y-%m-%d")), "%" + searchKeyword + "%"),
+    	        cb.like(cb.function("DATE_FORMAT", String.class, event.get("endEventDate"), cb.literal("%Y-%m-%d")), "%" + searchKeyword + "%"),
                 cb.like(cb.concat(event.get("eventId").as(String.class), ""), "%" + searchKeyword + "%")
             ));
         }               

@@ -1,9 +1,11 @@
 body {
 	padding-top: 80px;
 }
-.logo img {
-	max-width: 80%;
-	height: auto;
+li, button, th, td {
+	font-size: 16px !important;
+}
+button {
+	margin: 0 !important;
 }
 
 

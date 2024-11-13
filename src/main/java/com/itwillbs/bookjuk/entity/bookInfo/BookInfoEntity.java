@@ -77,6 +77,10 @@ public class BookInfoEntity {
 	@Column(nullable = false)
 	private Long rentMoney;
  
+	// 대여횟수
+	@Column(nullable = false)
+	private Long rentCount;
+
 	// 입고일
 	@CreationTimestamp
 	@Column(name = "book_date", nullable = true, updatable = false)

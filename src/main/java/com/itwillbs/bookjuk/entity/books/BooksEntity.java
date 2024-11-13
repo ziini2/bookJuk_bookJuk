@@ -62,8 +62,4 @@ public class BooksEntity {
 	@UpdateTimestamp
 	private Timestamp bookUpdate;
 
-	// 재고
-	@Column(nullable = false)
-	private Long inventory;
-
 }

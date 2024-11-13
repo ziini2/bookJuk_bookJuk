@@ -5,10 +5,12 @@ import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Table(name = "rent")
 @Entity
@@ -45,11 +47,12 @@ public class RentEntity {
 	private Boolean rentStatus = false;
 
 	@Column(name = "create_date", nullable = false, updatable = false)
-	private Instant createDate;
+	@CreationTimestamp
+	private LocalDateTime createDate;
 
 	@UpdateTimestamp
 	@Column(name = "update_date", nullable = false)
-	private Instant updateDate;
+	private LocalDateTime updateDate;
 
 	@Column(name = "rent_start", nullable = false)
 	private LocalDate rentStart;
@@ -57,14 +60,5 @@ public class RentEntity {
 	@Column(name = "rent_end", nullable = false)
 	private LocalDate rentEnd;
 
-	@PrePersist
-	public void prePersist() {
-		this.createDate = Instant.now();
-		this.updateDate = Instant.now();
-	}
 
-	@PreUpdate
-	public void preUpdate() {
-		this.updateDate = Instant.now();
-	}
 }

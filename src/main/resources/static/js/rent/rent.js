@@ -44,7 +44,18 @@ $(document).ready(function () {
             const rentStart = rent.rentStart ? rent.rentStart.toString() : '미등록';
             const rentEnd = rent.rentEnd ? rent.rentEnd.toString() : '미등록';
             const returnDate = rent.returnDate ? rent.returnDate.toString() : '미등록';
-
+            let delayPayment = 0;
+            if (rent.returnDate) {
+                const rentEnd = new Date(rent.rentEnd);
+                const returnDate = new Date(rent.returnDate);
+                const diff = returnDate - rentEnd;
+                delayPayment = Math.floor(diff / (1000 * 60 * 60 * 24)) * 500;
+            } else {
+                const rentEnd = new Date(rent.rentEnd);
+                const today = new Date();
+                const diff = today - rentEnd;
+                delayPayment = Math.floor(diff / (1000 * 60 * 60 * 24)) * 500;
+            }
             const tempHtml = `
                 <tr>
                     <td>${rent.rentNum}</td>
@@ -56,7 +67,8 @@ $(document).ready(function () {
                     <td>${rentStart}</td>
                     <td>${rentEnd}</td>
                     <td>${returnDate}</td>
-                    <td>${rent.rentStatus}</td>
+                    <td>${numbers(delayPayment)}</td>
+                    <td>${rent.status}</td>
                 </tr>`;
             $('tbody').append(tempHtml);
         });
@@ -103,4 +115,9 @@ $(document).ready(function () {
         const page = $(this).data('page');
         loadRentData(page);
     });
+
+    // 천단위 마다 쉼표 추가하는 함수
+    let numbers = function (x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 });

@@ -244,7 +244,7 @@ public class PaymentService {
                 
                 // 결제 금액을 음수로 설정 (취소된 금액)
                 int amount = cancelResponse.getResponse().getAmount().intValue(); // 취소된 금액
-                paymentEntity.setPaymentPrice(-amount);  // 결제 금액을 음수로 설정
+                paymentEntity.setPaymentPrice(0);  // 결제 금액을 음수로 설정
                 
                 System.out.println("결제 금액취소2>>>" + amount);
                 System.out.println("결제 금액취소3>>>" + paymentEntity.getPaymentPrice());

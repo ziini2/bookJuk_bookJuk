@@ -13,13 +13,21 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "notification")
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class NotificationEntity {
 
 	// 알림 아이디
@@ -42,7 +50,7 @@ public class NotificationEntity {
 	@Column(name = "notiContent", columnDefinition = "TEXT", nullable = false)
 	private String notiContent;
 	
-	// 알림 유형(note, sms)
+	// 알림 유형(쪽지, sms)
 	@Column(name = "notiType", length = 10, nullable = false)
 	private String notiType;
 	

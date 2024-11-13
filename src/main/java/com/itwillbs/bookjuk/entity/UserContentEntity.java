@@ -28,6 +28,7 @@ public class UserContentEntity {
 
 	//유저번호(user 테이블 참조)
     @OneToOne(fetch = FetchType.LAZY)
+
     @JoinColumn(name = "user_num")
     private UserEntity userEntity;
    

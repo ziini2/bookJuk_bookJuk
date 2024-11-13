@@ -1,6 +1,7 @@
 package com.itwillbs.bookjuk.service.userPage;
 
 import com.itwillbs.bookjuk.dto.UserPageBooksDTO;
+import com.itwillbs.bookjuk.dto.UserPaginationDTO;
 import com.itwillbs.bookjuk.entity.UserContentEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
 import com.itwillbs.bookjuk.repository.BooksRepository;
@@ -11,10 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +23,7 @@ public class UserPageService {
 
 
     //대여가능한 책 리스트 반환
-    public List<UserPageBooksDTO> getBooksList(int page, int pageSize) {
+    public UserPaginationDTO getBooksList(int page, int pageSize) {
         //pageable 객체 생성
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<BooksEntity> booksEntityList = booksRepository.findAllByRentStatusTrue(pageable);
@@ -33,15 +31,23 @@ public class UserPageService {
     }
 
 
-    //userPageBooksDTO 리스트로 변환 메서드
-    public List<UserPageBooksDTO> convertBooksListToBooksDTOList(Page<BooksEntity> booksEntityList) {
-        return booksEntityList.stream().map(book -> UserPageBooksDTO.builder()
+    //UserPaginationDTO 로 변환 메서드
+    public UserPaginationDTO convertBooksListToBooksDTOList(Page<BooksEntity> booksEntityList) {
+        List<UserPageBooksDTO> userBookDTO = booksEntityList.stream().map(book -> UserPageBooksDTO.builder()
                 .booksId(book.getBooksId())
                 .bookNum(book.getBookInfoEntity())
                 .storeCode(book.getStoreEntity().getStoreName())
                 .bookStatus(book.getBookStatus())
                 .rentStatus(book.getRentStatus())
-                .build()).collect(Collectors.toList());
+                .build()).toList();
+
+        return UserPaginationDTO.builder()
+                .userPageBooksDTO(userBookDTO)
+                .totalPages(booksEntityList.getTotalPages())
+                .currentPage(booksEntityList.getNumber())
+                .hasNext(booksEntityList.hasNext())
+                .hasPrevious(booksEntityList.hasPrevious())
+                .build();
     }
 
     //userNum 값으로 userContentEntity 가져와서 포인트만 반환

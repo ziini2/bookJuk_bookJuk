@@ -26,6 +26,11 @@ public class RentController {
         Page<RentEntity> rentEntityList = rentService.findAll(page, size);
 
         rentEntityList.getContent().forEach(rentEntity -> {
+            if (rentEntity.getUser() != null) {
+                log.info("User ID: {}", rentEntity.getUser().getUserId());
+            } else {
+                log.warn("Rent entity has null user: {}", rentEntity.getRentNum());
+            }
             log.info("rentEntity: {}", rentEntity.toString());
         });
 
@@ -33,8 +38,6 @@ public class RentController {
         model.addAttribute("rentEntityList", rentEntityList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", rentEntityList.getTotalPages());
-
-
 
 
         return "rent/rent";

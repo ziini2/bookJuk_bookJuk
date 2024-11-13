@@ -57,13 +57,6 @@ public class BooksEntity {
 	@UpdateTimestamp
 	private Timestamp bookUpdate;
 
-	// 재고
-	@Column(nullable = false)
-	private Long inventory;
 
-	// rent 테이블과 양방향 관계 설정
-	@OneToMany(mappedBy = "book")
-	@JsonManagedReference
-	private List<RentEntity> rents = new ArrayList<>();
 
 }

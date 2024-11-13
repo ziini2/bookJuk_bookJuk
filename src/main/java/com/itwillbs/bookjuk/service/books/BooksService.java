@@ -79,7 +79,6 @@ public class BooksService {
 	        	    .bookStatus(bookDTO.getBookStatus())
 	        	    .rentStatus(true)
 	        	    .storeEntity(storeEntity)
-	        	    .inventory(bookDTO.getInventory())
 	        	    .bookInfoEntity(savedBookInfo) // 저장된 bookInfoEntity 사용함
 	        	    .build();
 

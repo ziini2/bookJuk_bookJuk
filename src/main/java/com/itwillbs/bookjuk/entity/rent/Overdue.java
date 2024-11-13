@@ -1,6 +1,5 @@
 package com.itwillbs.bookjuk.entity.rent;
 
-import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +7,6 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -20,10 +17,6 @@ public class Overdue {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "over_num", nullable = false)
     private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "rent_num", nullable = false)
-    private RentEntity rent;
 
     @Column(name = "over_price", nullable = false)
     private Integer overPrice;
@@ -43,7 +36,7 @@ public class Overdue {
     @Column(name = "update_date", nullable = false)
     private Instant updateDate;
 
-    @OneToOne(mappedBy = "overdue")
-    private PointDealEntity pointDeal;
-
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "rent_num", nullable = false) // RentEntity를 외래 키로 참조
+    private RentEntity rent;
 }

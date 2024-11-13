@@ -19,6 +19,8 @@ public class RentService {
 
     public Page<RentEntity> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("rentNum").descending());
-        return rentRepository.findAll(pageable);
+        Page<RentEntity> rentEntities = rentRepository.findAll(pageable);
+        log.debug("Loaded Rent Entities: {}", rentEntities.getContent());
+        return rentEntities;
     }
 }

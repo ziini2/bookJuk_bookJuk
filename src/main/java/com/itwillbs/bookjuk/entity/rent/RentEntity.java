@@ -27,29 +27,26 @@ public class RentEntity {
 	@Column(name = "rent_num", nullable = false)
 	private Long rentNum;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne
 	@JoinColumn(name = "user_num", nullable = false)
-	@JsonBackReference
 	private UserEntity user;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne
 	@JoinColumn(name = "store_code", nullable = false)
-	@JsonBackReference
 	private StoreEntity storeCode;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne
 	@JoinColumn(name = "books_id", nullable = false)
-	@JsonBackReference
 	private BooksEntity book;
 
 	@Column(name = "rent_price", nullable = false)
 	private Integer rentPrice;
 
 	@Column(name = "return_date")
-	private LocalDate returnDate; // LocalDate로 변경
+	private LocalDate returnDate;
 
 	@Column(name = "rent_status", nullable = false)
-	private Byte rentStatus = 0; // 기본값 설정
+	private Byte rentStatus = 0;
 
 	@Column(name = "create_date", nullable = false, updatable = false)
 	private Instant createDate;
@@ -57,14 +54,6 @@ public class RentEntity {
 	@UpdateTimestamp
 	@Column(name = "update_date", nullable = false)
 	private Instant updateDate;
-
-	@OneToOne(mappedBy = "rent")
-	@JsonManagedReference
-	private Overdue overdue;
-
-	@OneToOne(mappedBy = "rent")
-	@JsonManagedReference
-	private PointDealEntity pointDeal;
 
 	@Column(name = "rent_start", nullable = false)
 	private LocalDate rentStart;

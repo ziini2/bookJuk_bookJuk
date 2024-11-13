@@ -73,7 +73,4 @@ public class StoreEntity {
 	@Column(nullable = true)
 	private String storeStatus;
 
-	@OneToMany(mappedBy = "storeCode")
-	@JsonManagedReference
-	private List<RentEntity> rent = new ArrayList<>();
 }

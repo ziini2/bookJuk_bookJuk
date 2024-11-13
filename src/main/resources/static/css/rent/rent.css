@@ -1,0 +1,107 @@
+/*
+#3c955a;
+#c5e774;
+#e8f1a5;
+*/
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.container.rent {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+
+}
+
+.modal-body {
+  text-align: center; /* 텍스트와 폼 요소를 가운데 정렬 */
+}
+
+.rental-form {
+  display: inline-block; /* 폼을 블록으로 중앙에 정렬 */
+  text-align: left; /* 폼 내부의 텍스트는 왼쪽 정렬 */
+}
+
+.rental-form .form-control {
+  width: 200px; /* 기존 가로 길이 유지 */
+}
+
+.rental-form .row {
+  display: flex;
+  align-items: center;
+}
+
+.form-control {
+  width: 200px;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.btn {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-success {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.btn-danger {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.rental-table {
+  width: 100%;
+  border-collapse: collapse;
+/*  margin-top: 20px;*/
+}
+
+.rental-table th, .rental-table td {
+  padding: 10px;
+  text-align: left;
+/*  border: 1px solid #ddd;*/
+}
+
+.rental-table th {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.rental-table select {
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.modal-dialog {
+  max-width: 500px; /* 모달 창의 최대 가로 길이 설정 (필요에 따라 조정) */
+  margin: auto;
+}
+.input-group {
+    display: inline-block;
+}
+
+.input-group .btn {
+    margin-left: 10px; /* 버튼과 입력 칸 사이 간격 */
+}
+
+

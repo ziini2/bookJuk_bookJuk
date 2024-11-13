@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/login/style.css}" />
+</head>
+<body>
+<div id="container" class="container">
+    <!-- FORM SECTION -->
+    <div class="row">
+        <!-- 아이디 | 비밀번호 찾기 -->
+        <div class="col align-items-center flex-col sign-up">
+            <div class="form-wrapper align-items-center">
+                <div class="form sign-up">
+
+                    <!-- 비밀번호 찾기 -->
+                    <form id="find-password">
+                        <!-- userID 입력란 -->
+                        <div class="input-group">
+                            <i class="bx bx-mail-send"></i>
+                            <input id="findPassword-userId" name="userId" type="text" placeholder="아이디" />
+                        </div>
+
+                        <!-- userPhoneNumber 입력란 -->
+                        <div class="input-group" id="input-userPhone">
+                            <i class="bx bx-mail-send"></i>
+                            <input id="join-userPhone" name="userPhone" type="text" placeholder="전화번호 (ex. 010-1111-1111)" />
+                            <div class="phoneValidate">
+                                <button id="validate-button" type="button" onclick="validateSMS()" disabled>보내기</button>
+                            </div>
+                        </div>
+                        <!-- 인증번호 입력란 -->
+                        <div class="input-group" id="input-validateNumber"></div>
+                        <!-- 남은 시간을 표시할 곳 -->
+                        <div class="timer"></div>
+                        <div class="input-group" id="findPass-result"></div>
+
+                        <!-- 비밀번호 찾기 버튼 -->
+                        <button id="findPassword" disabled>비밀번호 찾기</button>
+                        <div id="loading" style="display:none;">
+                            <img th:src="@{/images/login/loading.gif}" alt="로딩 중..." />
+                        </div>
+
+                    </form>
+                    <p>
+                        <span> 아이디를 잃어 버리셨나요? </span>
+                        <b onclick="toggle()" class="pointer"> 아이디 찾기 </b>
+                    </p>
+                    <p class="pointer-find">
+                        <b onclick="location.href='/login'" class="pointer-find">로그인 페이지</b>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- 비밀번호 찾기 end -->
+
+        <!-- 아이디 찾기 -->
+        <div class="col align-items-center flex-col sign-in">
+            <div class="form-wrapper align-items-center">
+                <div class="form sign-in">
+                    <form id="find-id">
+
+                        <!-- 회원가입 시 입력했던 이름 입력란 -->
+                        <div class="input-group">
+                            <i class="bx bxs-user"></i>
+                            <input id="findId-userName" name="userName" type="text" placeholder="이름" />
+                        </div>
+
+                        <!-- 회원가입시 입력했던 이메일 입력란 -->
+                        <div class="input-group">
+                            <i class="bx bxs-lock-alt"></i>
+                            <input id="findId-userEmail" name="userEmail" type="email" placeholder="이메일" />
+                        </div>
+                        <div class="input-group" id="findId-result"></div>
+
+                        <!-- 찾기 버튼 -->
+                        <button id="findId">아이디 찾기</button>
+
+                        <p>
+                            <span> 비밀번호를 잃어버리 셨나요? </span>
+                            <b onclick="toggle()" class="pointer"> 비밀번호 찾기 </b>
+                        </p>
+                        <p class="pointer-find">
+                            <b onclick="location.href='/login'" class="pointer-find">로그인 페이지</b>
+                        </p>
+                    </form>
+                </div>
+            </div>
+            <div class="form-wrapper"></div>
+        </div>
+    </div>
+
+    <!-- CONTENT SECTION -->
+    <div class="row content-row">
+
+        <!-- 비밀번호 찾기 페이지 전환 링크 -->
+        <div class="col align-items-center flex-col">
+            <div class="text sign-in">
+                <h2>Did you forget<br> your ID?</h2>
+            </div>
+            <div class="img sign-in"></div>
+        </div>
+
+        <!-- 아이디 찾기 페이지 전환 링크 -->
+        <div class="col align-items-center flex-col">
+            <div class="img sign-up"></div>
+            <div class="text sign-up">
+                <h2>Did you forget<br> your Password?</h2>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!-- jQuery 라이브러리 추가 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/js/login/index.js}"></script>
+<script th:src="@{/js/login/login.js}"></script>
+<script th:src="@{/js/login/find.js}"></script>
+<script th:src="@{/js/login/validateSMS.js}"></script>
+<script th:src="@{/js/login/timer.js}"></script>
+
+</body>
+</html>

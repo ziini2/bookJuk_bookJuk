@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+	<title>지점정보 | 북적북적</title>
+
+	<!-- 구글폰트 -->
+	<link href="https://fonts.gstatic.com" rel="preconnect">
+	<link
+		href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+		rel="stylesheet">
+
+	<!-- 사이드바 아이콘 -->
+
+	<link th:href="@{/images/common/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+	<link th:href="@{/images/common/remixicon/remixicon.css}" rel="stylesheet">
+
+
+	<!--부트스트랩 외부링크-->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Main CSS File -->
+
+
+	<link th:href="@{/css/common/style.css}" rel="stylesheet">
+
+
+</head>
+
+<body>
+	<div th:replace="~{/fragment/header :: header2}"></div>
+	<div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
+
+	<main id="main" class="main">
+
+
+
+		<div class="container">
+
+			<div class="pagetitle">
+				<h1 class="d-flex align-items-center justify-content-between">
+					<div>
+						<span class="me-2" style="font-size: 25px;" th:text="${storeInfo.storeName}"></span>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+							th:onclick="|deleteStore('${storeInfo.storeCode}')| 	" class="bi bi-trash me-2"
+							viewBox="0 0 16 16" style="cursor: pointer;">
+							<!-- deleteStore('${storeInfo.storeCode}') 이런식으로 데이터전달 가능 -->
+							<path
+								d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+							<path
+								d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+						</svg>
+					</div>
+
+					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+						data-bs-whatever="@mdo">수정</button>
+				</h1>
+			</div><!-- End Page Title -->
+
+			<div class="row g-2">
+				<div class="col-3">
+					<div class="p-3 border bg-light">
+						지점명<br><span th:text="${storeInfo.storeName}"></span>
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="p-3 border bg-light">
+						전화번호<br><span th:text="${storeInfo.storeTel}"></span>
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="p-3 border bg-light">
+						지역<br><span th:text="${storeInfo.storeLocation}" id="storelocal"></span>
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="p-3 border bg-light">
+						지역상세<br><span th:text="${storeInfo.storeLocation2}"></span>
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="p-3 border bg-light">
+						대표자<br><span th:text="${storeInfo.storeRepresent}"></span>
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="p-3 border bg-light">
+						이메일<br><span th:text="${storeInfo.storeEmail}"></span>
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="p-3 border bg-light">
+						등록일자<br><span th:text="${storeInfo.storeRegiDate}"></span>
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="p-3 border bg-light">
+						수정일<br><span th:text="${storeInfo.storeUpdateDate}"></span>
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="p-3 border bg-light">
+						사업자등록번호<br><span th:text="${storeInfo.storeRegiNum}"></span>
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="p-3 border bg-light">
+						지점상태<br><span th:text="${storeInfo.storeStatus == 'open' ? '운영중' : '폐점'}"></span>
+					</div>
+				</div>
+			</div>
+			<br>
+
+			<div id="map" style="width:500px;height:400px;"></div>
+
+		</div>
+
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">지점수정</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form id="storeUpdate" method="post" action="/admin/store/store_update">
+
+							<!--						히든으로 지점코드, 등록일를 넘겨야 업데이트가 됨-->
+							<input name="storeCode" type="hidden" th:value="${storeInfo.storeCode}">
+							<input name="storeRegiDate" type="hidden" th:value="${storeInfo.storeRegiDate}">
+
+							<div class="mb-3">
+								<label for="store-name" class="col-form-label">지점명</label>
+								<input name="storeName" type="text" class="form-control" id="store-name"
+									th:value="${storeInfo.storeName}">
+							</div>
+
+							<div class="mb-3">
+								<label for="store-tel" class="col-form-label">전화번호</label>
+								<input name="storeTel" type="text" class="form-control" id="store-tel"
+									th:value="${storeInfo.storeTel}">
+							</div>
+
+							<div class="mb-3">
+								<label for="store-represent" class="col-form-label">대표자명</label>
+								<input name="storeRepresent" type="text" class="form-control" id="store-represent"
+									th:value="${storeInfo.storeRepresent}"></input>
+							</div>
+
+							<div class="mb-3">
+								<label for="store-email" class="col-form-label">이메일</label>
+								<input name="storeEmail" type="text" class="form-control" id="store-email"
+									th:value="${storeInfo.storeEmail}"></input>
+							</div>
+
+							<div class="mb-3">
+								<label for="store-regiNum" class="col-form-label">사업자등록번호</label>
+								<input name="storeRegiNum" type="text" class="form-control" id="store-regiNum"
+									th:value="${storeInfo.storeRegiNum}"></input>
+							</div>
+
+							<div class="mb-3 position-relative">
+								<label for="store-location" class="col-form-label">위치</label>
+								<input name="storeLocation" type="text" class="form-control pr-5" id="store-location"
+									th:value="${storeInfo.storeLocation}">
+
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+									class="bi bi-map position-absolute" onclick="storeLocationUpdate()"
+									style="top: 75%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+									<path fill-rule="evenodd"
+										d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z" />
+								</svg>
+							</div>
+
+							<div class="mb-3">
+								<label for="store-location2" class="col-form-label">위치 참고 항목</label>
+								<input name="storeLocation2" type="text" class="form-control pr-5" id="store-location2"
+									th:value="${storeInfo.storeLocation2}"></input>
+							</div>
+						</form>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+						<button type="button" class="btn btn-primary" onclick="storeUpadate()">수정</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</main><!-- End #main -->
+
+
+	<!-- 사이드바 열었다 닫았다 하는거 -->
+	<script th:src="@{/js/common/main.js}"></script>
+	<link th:href="@{/css/customer/customer.css}" rel="stylesheet">
+
+	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<!--	<script type="text/javascript"-->
+	<!--		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f6430a7993b55e483c7bd0e3602ce298"></script>-->
+	<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f6430a7993b55e483c7bd0e3602ce298&libraries=services"></script>
+
+	<script>
+
+		// 주소를 가져와서
+		var data = document.getElementById('store-location').value;
+		//console.log(data);
+
+		//주소-좌표 변환 객체
+		var geocoder = new kakao.maps.services.Geocoder();
+		//console.log(geocoder);
+
+		// 주소 검색해서 좌표가져옴
+		geocoder.addressSearch(data, function (results, status) {
+			// 정상적으로 검색이 완료됐으면
+			if (status === daum.maps.services.Status.OK) {
+
+				var result = results[0]; //첫번째 결과의 값을 활용
+
+				// 해당 주소에 대한 좌표를 받아서
+				var coords = new kakao.maps.LatLng(result.y, result.x);
+
+				// 지도에 넣어줌
+				var mapContainer = document.getElementById('map'), // 지도 div id
+					mapOption = {
+						center: coords, // 받아온 좌표
+						level: 2 // 지도의 확대 레벨
+					};
+				// 지도 생성
+				var map = new kakao.maps.Map(mapContainer, mapOption);
+
+				// 좌표에 마커 생성
+				var marker = new kakao.maps.Marker({
+					position: coords
+				});
+
+				// 마커가 지도 위에 표시되도록 설정
+				marker.setMap(map);
+			}
+		});
+
+	</script>
+
+	<script>
+		// 지점상태변경(삭제)
+		function deleteStore(storeCode) {
+			// 확인은 true, 취소는 false 반환
+			const deleteCheck = confirm("폐점 상태로 변경됩니다.");
+
+			if (deleteCheck) {
+				fetch('/admin/store/store_delete', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({storeCode: storeCode})
+				})
+					.then(response => response.text())
+					.then(data => {
+						if (parseInt(data) == 1) {
+							console.log(data);
+							alert("변경됐습니다.");
+						} else {
+							alert("변경에 실패했습니다.");
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						alert("에러가 발생했습니다.");
+					});
+			} else {
+				// 취소를 클릭한 경우
+				return;
+			}
+		}
+
+		function storeLocationUpdate() {
+			alert("지도 업데이트");
+		}
+	</script>
+
+	<script>
+		// 유효성 검사 함수
+		function validateInput(input) {
+			if (input.value.trim() === '') {
+				input.style.border = '2px solid red';
+				return false;
+			} else {
+				input.style.border = '1px solid #dee2e6';
+				return true;
+			}
+		}
+
+		// 입력 필드를 벗어날 때마다 검사
+		document.querySelectorAll('#storeUpdate input').forEach(input => {
+			input.addEventListener('blur', () => validateInput(input));
+		});
+
+		// 유효성 검사와 폼전송
+		function storeUpadate() {
+			let check = true;
+			const form = document.querySelector('#storeUpdate');
+			const inputs = document.querySelectorAll('#storeUpdate input');
+
+			inputs.forEach(input => {
+				if (input.value.trim() === '') {
+					check = false;
+					input.style.border = '2px solid red';
+				}
+			});
+
+			if (!check) {
+				alert("모든 정보를 입력해주세요.");
+			} else {
+				form.submit();
+			}
+		}
+
+	</script>
+
+
+</body>
+
+</html>

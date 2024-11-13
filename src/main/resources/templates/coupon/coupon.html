@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+ 	<title>북적북적::쿠폰 관리</title>
+  
+	<!-- 구글폰트 -->
+	<link href="https://fonts.gstatic.com" rel="preconnect">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  
+	<!-- 사이드바 아이콘 -->
+	<link th:href="@{/images/common/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+	<link th:href="@{/images/common/remixicon/remixicon.css}" rel="stylesheet">
+  
+	<!--부트스트랩 외부링크-->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+	<!-- Main CSS File -->
+	<link th:href="@{/css/event/coupon-style.css}" rel="stylesheet">
+	<link th:href="@{/css/common/style.css}" rel="stylesheet">
+    
+	<!--  DataTables-->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+</head>
+<body>
+	<div th:replace="~{/fragment/header :: header2}"></div>
+	<div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
+	<main id="main" class="main">
+	<div class="coupon container my-4">
+		<h2 style="margin-bottom: 100px;">쿠폰 관리</h2>
+		<div id="coupon-filterModal">
+			<div class="coupon-filterModal-content">
+				<span class="coupon-modal-close">&times;</span>		    
+				<h3>필터 설정</h3>		    
+				<label>쿠폰 상태</label>
+				<div id="couponStatus">
+					<button type="button" class="coupon-filterModal-toggleBtn" data-value="유효">유효</button>
+					<button type="button" class="coupon-filterModal-toggleBtn" data-value="완료">완료</button>
+					<button type="button" class="coupon-filterModal-toggleBtn" data-value="만료">만료</button>
+				</div>		    
+				<label>쿠폰 종류</label>
+		    	<div id="couponType">
+					<button type="button" class="coupon-filterModal-toggleBtn" data-value="포인트">포인트</button>
+				</div>
+				<label>쿠폰 유효기간</label>
+				<div class="coupon-date-container">
+					<input type="date" id="couponStartDate" value="">
+					<span> ~ </span>
+					<input type="date" id="couponEndDate" value="">
+		    	</div>		    
+				<button id="coupon-filterModal-apply">완료</button>
+			</div>
+		</div>
+	    <table id="coupon-table" class="coupon table table-striped table-bordered">
+	        <thead>
+	            <tr>
+	                <th>No.</th>
+	                <th>이벤트 제목</th>
+	                <th>유저 아이디</th>
+	                <th>쿠폰 상태</th>
+	                <th>쿠폰 종류</th>
+	                <th>쿠폰 유효기간</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr>
+	                <td><span>1</span></td>
+	                <td><span>여름맞이 신규 가입 행사</span></td>
+	                <td><span>kim123</span></td>
+	                <td><span>유효</span></td>
+	                <td><span>1000p</span></td>
+	                <td><span>2024-12-08 16:10:07</span></td>
+	            </tr>
+	            <tr>
+	                <td><span>2</span></td>
+	                <td><span>가을맞이 이벤트</span></td>
+	                <td><span>park456</span></td>
+	                <td><span>완료</span></td>
+	                <td><span>3000p</span></td>
+	                <td><span>2024-12-17 04:08:00</span></td>
+	            </tr>
+	        </tbody>
+	    </table>
+		<div id="coupon-detailModal">
+		    <div class="coupon-detailModal-content">
+		        <span class="coupon-modal-close">&times;</span>
+		        <h3>쿠폰 상세 정보</h3>
+		        <p><strong>이벤트 제목 : </strong><span id="coupon-detailTitle"></span></p>
+		        <p><strong>유저 아이디 : </strong><span id="coupon-detailUser"></span></p>
+		        <p><strong>쿠폰 상태 : </strong><span id="coupon-detailStatus"></span></p>
+		        <p><strong>쿠폰 종류 : </strong><span id="coupon-detailType"></span></p>
+		        <p><strong>쿠폰 유효기간 : </strong><span id="coupon-detailDate"></span></p>
+		    </div>
+		</div>
+	</div>
+	</main>
+
+	<!-- jQuery and DataTables JS -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- 사이드바 열었다 닫았다 하는거 -->
+	<script th:src="@{/js/common/main.js}"></script>
+
+	<!-- 알림 관리 페이지 내 메인 자바스크립트-->
+	<script th:src="@{/js/event/coupon.js}"></script>
+</body>
+</html>

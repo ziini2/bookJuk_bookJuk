@@ -55,9 +55,9 @@ public class PointDealEntity {
 	@Column(nullable = false)
 	private String pointPayName;
 	
-	//유저번호(users 테이블 참조)
+	//유저번호(user_content 테이블 참조)
 	@ManyToOne
-	@JoinColumn(name = "userNum")
+	@JoinColumn(name = "memberNum")
 	private UserContentEntity userContentEntity;  // UserContent 테이블 참조
 	
 	//쿠폰 아이디
@@ -65,12 +65,12 @@ public class PointDealEntity {
     @JoinColumn(name = "coupon_id")
     private CouponEntity couponId;
 
-	
+	//연체번호
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "over_num")
     private Overdue overdue;
 
- 
+    //대여번호
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "rent_num")
 	private RentEntity rent;

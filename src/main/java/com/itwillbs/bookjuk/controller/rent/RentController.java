@@ -20,15 +20,21 @@ public class RentController {
     private final RentService rentService;
 
     @GetMapping("/rent")
-    public String rent(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+    public String rent(Model model, @RequestParam(value = "page", defaultValue = "1") int page,
                        @RequestParam(value = "size", defaultValue = "10") int size) {
 
         Page<RentEntity> rentEntityList = rentService.findAll(page, size);
+
+        rentEntityList.getContent().forEach(rentEntity -> {
+            log.info("rentEntity: {}", rentEntity.toString());
+        });
 
 
         model.addAttribute("rentEntityList", rentEntityList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", rentEntityList.getTotalPages());
+
+
 
 
         return "rent/rent";

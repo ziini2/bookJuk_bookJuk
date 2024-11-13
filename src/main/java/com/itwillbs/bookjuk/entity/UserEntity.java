@@ -1,5 +1,6 @@
 package com.itwillbs.bookjuk.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.itwillbs.bookjuk.domain.login.LoginType;
 import com.itwillbs.bookjuk.domain.login.UserRole;
 import com.itwillbs.bookjuk.entity.rent.RentEntity;
@@ -74,5 +75,6 @@ public class UserEntity {
 
     // rent 테이블과 양방향 관게 설정
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<RentEntity> rent;
 }

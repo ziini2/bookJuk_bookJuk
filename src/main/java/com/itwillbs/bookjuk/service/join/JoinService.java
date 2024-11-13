@@ -3,8 +3,10 @@ package com.itwillbs.bookjuk.service.join;
 import com.itwillbs.bookjuk.domain.login.LoginType;
 import com.itwillbs.bookjuk.domain.login.UserRole;
 import com.itwillbs.bookjuk.dto.UserDTO;
+import com.itwillbs.bookjuk.entity.UserContentEntity;
 import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.exception.ValidationException;
+import com.itwillbs.bookjuk.repository.UserContentRepository;
 import com.itwillbs.bookjuk.repository.UserRepository;
 import com.itwillbs.bookjuk.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,9 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class JoinService {
     private final UserRepository userRepository;
+    private final UserContentRepository userContentRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     //회원가입 프로세스
     public boolean joinProcess(UserDTO userDTO){
@@ -35,8 +39,13 @@ public class JoinService {
         //저장된 유저 반환
         UserEntity saveUser = userRepository.save(userEntity);
 
+        //userContent 테이블에 유저 등록
+        UserContentEntity userContentEntity = new UserContentEntity();
+        userContentEntity.setUserEntity(saveUser);
+        UserContentEntity saveUserContent = userContentRepository.save(userContentEntity);
+
         //저장 성공 여부 확인
-        return saveUser != null ? true : false;
+        return (saveUser != null && saveUserContent != null);
     }
 
     //UserDTO -> UserEntity 변환 메서드

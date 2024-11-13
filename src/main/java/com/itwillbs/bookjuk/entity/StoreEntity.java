@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.itwillbs.bookjuk.entity.rent.RentEntity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -72,6 +73,4 @@ public class StoreEntity {
 	@Column(nullable = true)
 	private String storeStatus;
 
-	@OneToMany(mappedBy = "storeCode")
-	private List<RentEntity> rent = new ArrayList<>();
 }

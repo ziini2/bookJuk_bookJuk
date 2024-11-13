@@ -50,12 +50,12 @@ public class BooksEntity {
 
 	// bookINfoEntity 의 bookNum 을 참조해서 정보를 가지고온다.
 	@ManyToOne
-	@JoinColumn(name = "bookNum", referencedColumnName = "bookNum", nullable = false) // 외래 키 설정
+	@JoinColumn(name = "bookNum", nullable = false) // 외래 키 설정
 	private BookInfoEntity bookInfoEntity;
  
 	// 지점 ID (StoreEntity와 연결)
 	@ManyToOne
-	@JoinColumn(name = "storeCode", referencedColumnName = "storeCode", nullable = false) // 외래 키 설정
+	@JoinColumn(name = "storeCode", nullable = false) // 외래 키 설정
 	private StoreEntity storeEntity;
 
 	// 수정일

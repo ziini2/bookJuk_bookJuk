@@ -1,6 +1,7 @@
 package com.itwillbs.bookjuk.entity.pay;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.itwillbs.bookjuk.entity.rent.Overdue;
 import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
 import com.itwillbs.bookjuk.entity.UserContentEntity;
@@ -57,7 +58,7 @@ public class PointDealEntity {
 	
 	//유저번호(user_content 테이블 참조)
 	@ManyToOne
-	@JoinColumn(name = "memberNum")
+	@JoinColumn(name = "member_num")
 	private UserContentEntity userContentEntity;  // UserContent 테이블 참조
 	
 	//쿠폰 아이디
@@ -65,15 +66,13 @@ public class PointDealEntity {
     @JoinColumn(name = "coupon_id")
     private CouponEntity couponId;
 
-	//연체번호
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "over_num")
-    private Overdue overdue;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "over_num")
+	private Overdue overdue;  // 단방향 참조
 
-    //대여번호
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "rent_num")
-	private RentEntity rent;
+	private RentEntity rent;  // 단방향 참조
 
 
 }

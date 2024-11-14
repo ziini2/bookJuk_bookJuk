@@ -60,8 +60,9 @@
 								<div class="search-bar">
 									<form class="search-form d-flex align-items-center" method="get"
 										action="/admin/store/store_list">
-										<input name="search" class="form-control me-2" type="search"
-											placeholder="지점명을 입력하세요" aria-label="Search">
+										<input name="search" class="form-control me-2" type="search" placeholder="검색"
+											aria-label="Search">
+											
 										<button class="btn btn-outline-success" type="submit">Search</button>
 									</form>
 								</div>
@@ -175,25 +176,26 @@
 									</tr>
 								</tbody>
 							</table>
-							
+
 							<!--페이지네이션 버튼-->
 							<nav aria-label="Page navigation example" th:if="${storeList != null}">
 								<ul class="pagination">
 									<li class="page-item"><a class="page-link"
-											th:href="|@{/admin/store/store_list(page=${currentPage}-1, search=${search})}|" th:text="이전"
-											th:if="${currentPage > 1}"></a></li>
+											th:href="|@{/admin/store/store_list(page=${currentPage}-1, search=${search})}|"
+											th:text="이전" th:if="${currentPage > 1}"></a></li>
 
 									<li class="page-item" th:each="page:${#numbers.sequence(startPage, endPage)}">
 										<span class="page-link" th:if="${page == currentPage}" th:text="${page}"></span>
 										<span th:unless="${page == currentPage}">
-											<a class="page-link" th:href="|@{/admin/store/store_list(page=${page}, search=${search})}|"
+											<a class="page-link"
+												th:href="|@{/admin/store/store_list(page=${page}, search=${search})}|"
 												th:text="${page}"></a>
 										</span>
 									</li>
 
 									<li class="page-item"><a class="page-link"
-											th:href="|@{/admin/store/store_list(page=${currentPage}+1, search=${search})}|" th:text="다음"
-											th:if="${currentPage < totalPages}"></a></li>
+											th:href="|@{/admin/store/store_list(page=${currentPage}+1, search=${search})}|"
+											th:text="다음" th:if="${currentPage < totalPages}"></a></li>
 								</ul>
 							</nav>
 
@@ -214,69 +216,63 @@
 	<link th:href="@{/css/customer/customer.css}" rel="stylesheet">
 
 	<script>
-		// 주소검색 api
-		function addressUpdate() {
-			new daum.Postcode({
-				oncomplete: function (data) {
-					// 각 주소의 노출 규칙에 따라 주소를 조합한다.
-					// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-					var addr = ''; // 주소 변수
-					var extraAddr = ''; // 참고항목 변수
+		const telInput = document.getElementById('store-tel');
 
-					//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-					if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우 R
-						addr = data.roadAddress;
-					} else { // 사용자가 지번 주소를 선택했을 경우(J)
-						addr = data.jibunAddress;
-					}
+		telInput.addEventListener('input', function (e) {
+			if (tel.length <= 3) {
+				e.target.value = phoneNumber; // 3자리까지만 입력
+			} else {
+				e.target.value = phoneNumber.replace(/(\d{3})(\d{3})(\d{0,4})/, '$1-$2-$3'); // 3-3-4자리 형식
+			}
+		});
+	</script>
 
-					// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-					if (data.userSelectedType === 'R') {
-						// 법정동명이 있을 경우 추가한다. (법정리는 제외)
-						// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-						// /[동|로|가]$/g는 JavaScript 정규 표현식 특정 문자로 문자열이 끝나는지를 검사하는 패턴
-						if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-							extraAddr += data.bname;
-						}
-						// 건물명이 있고, 공동주택일 경우 추가한다.
-						if (data.buildingName !== '' && data.apartment === 'Y') {
-							extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-						}
-						// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-						if (extraAddr !== '') {
-							extraAddr = ' (' + extraAddr + ')';
-						}
-						// 조합된 참고항목을 해당 필드에 넣는다.
-						document.getElementById("store-location").value = extraAddr;
+	<!-- 주소api js -->
+	<script th:src="@{/js/customer/address.js}"></script>
 
-					} else {
-						document.getElementById("store-location2").value = '';
-					}
+	<script>
+		// 모달을 닫으면 input초기화
+		document.getElementById('storeModal').addEventListener('hidden.bs.modal', function () {
+			this.querySelector('form').reset();
+		});
+	</script>
 
-					// 우편번호와 주소 정보를 해당 필드에 넣는다.
-					//document.getElementById('sample6_postcode').value = data.zonecode;
-					document.getElementById("store-location").value = addr + ' ' + data.buildingName;
-					document.getElementById("store-location2").value = data.bname;
-					// 커서를 상세주소 필드로 이동한다.
-					//document.getElementById("sample6_detailAddress").focus();
-				}
-			}).open();
+	<script>
+
+		// 유효성 검사 함수
+		function validateInput(input) {
+			if (input.value.trim() === '') {
+				input.style.border = '2px solid red';
+				return false;
+			} else {
+				input.style.border = '1px solid #dee2e6';
+				return true;
+			}
 		}
 
-		// 모달을 닫으면
-		$('#storeModal').on('hidden.bs.modal', function () {
-			// 모든 입력 필드 초기화
-			$(this).find('form')[0].reset();
+		// 입력 필드를 벗어날 때마다 검사
+		document.querySelectorAll('#addStoreForm input').forEach(input => {
+			input.addEventListener('blur', () => validateInput(input));
 		});
-		
+
 		// 유효성 검사와 폼전송
 		function addStore() {
 			let check = true;
-			const inputs = document.querySelector('#addStoreForm');
-			
-			//inputs.forEach
-			
-			inputs.submit();
+			const form = document.querySelector('#addStoreForm');
+			const inputs = document.querySelectorAll('#addStoreForm input');
+
+			inputs.forEach(input => {
+				if (input.value.trim() === '') {
+					check = false;
+					input.style.border = '2px solid red';
+				}
+			});
+
+			if (!check) {
+				alert("모든 정보를 입력해주세요.");
+			} else {
+				form.submit();
+			}
 		}
 	</script>
 

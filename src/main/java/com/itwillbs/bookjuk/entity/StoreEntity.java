@@ -1,15 +1,20 @@
 package com.itwillbs.bookjuk.entity;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.itwillbs.bookjuk.entity.rent.RentEntity;
-import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.itwillbs.bookjuk.entity.books.BooksEntity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -72,5 +77,7 @@ public class StoreEntity {
 	// 지점상태(폐점, 운영)
 	@Column(nullable = true)
 	private String storeStatus;
-
+	
+	@OneToMany(mappedBy = "storeEntity")
+    private List<BooksEntity> books;
 }

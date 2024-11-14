@@ -2,6 +2,7 @@ package com.itwillbs.bookjuk.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
 
 import jakarta.persistence.Column;
@@ -34,11 +35,12 @@ public class GenreEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long genreId;
-	
+
 	// 여러 개의 도서가 하나의 장르에 속함 => OneToMany 관계 설정
     @OneToMany(mappedBy = "genre")
-    private Set<BookInfoEntity> books;
-		
+	@JsonIgnore // 순환 참조 방지를 위해 직렬화에서 제외
+	private Set<BookInfoEntity> books;
+
 	// 장르이름
 	@Column(nullable = false)
 	private String genreName;

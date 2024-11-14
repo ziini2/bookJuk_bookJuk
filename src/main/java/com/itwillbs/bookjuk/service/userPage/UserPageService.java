@@ -2,9 +2,13 @@ package com.itwillbs.bookjuk.service.userPage;
 
 import com.itwillbs.bookjuk.dto.UserPageBooksDTO;
 import com.itwillbs.bookjuk.dto.UserPaginationDTO;
+import com.itwillbs.bookjuk.entity.GenreEntity;
+import com.itwillbs.bookjuk.entity.StoreEntity;
 import com.itwillbs.bookjuk.entity.UserContentEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
 import com.itwillbs.bookjuk.repository.BooksRepository;
+import com.itwillbs.bookjuk.repository.GenreRepository;
+import com.itwillbs.bookjuk.repository.StoreRepository;
 import com.itwillbs.bookjuk.repository.UserContentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,13 +24,18 @@ public class UserPageService {
 
     private final BooksRepository booksRepository;
     private final UserContentRepository userContentRepository;
+    private final GenreRepository genreRepository;
+    private final StoreRepository storeRepository;
 
 
     //대여가능한 책 리스트 반환
-    public UserPaginationDTO getBooksList(int page, int pageSize) {
+    public UserPaginationDTO getBooksList(int page, int pageSize, String keyword, String genre, String store) {
+        if (genre != null && genre.isEmpty()) genre = null;
+        if (keyword != null && keyword.isEmpty()) keyword = null;
+        if (store != null && store.isEmpty()) store = null;
         //pageable 객체 생성
         Pageable pageable = PageRequest.of(page, pageSize);
-        Page<BooksEntity> booksEntityList = booksRepository.findAllByRentStatusTrue(pageable);
+        Page<BooksEntity> booksEntityList = booksRepository.findAllByRentStatusTrue(keyword, genre, store,pageable);
         return convertBooksListToBooksDTOList(booksEntityList);
     }
 
@@ -50,6 +59,12 @@ public class UserPageService {
                 .build();
     }
 
+    //검색으로 인한 책 목록 반환
+    public Page<BooksEntity> searchBooks(int page, int pageSize, String search) {
+        return null;
+    }
+
+
     //userNum 값으로 userContentEntity 가져와서 포인트만 반환
     public int getUserPoint(Long userNum) {
         UserContentEntity userContentEntity = userContentRepository.findById(userNum).orElse(null);
@@ -57,5 +72,14 @@ public class UserPageService {
             return userContentEntity.getUserPoint();
         }
         return 0;
+    }
+
+    //전체 장르 리스트 반환
+    public List<GenreEntity> getGenreList() {
+        return genreRepository.findAll();
+    }
+
+    public List<StoreEntity> getStoreList() {
+        return storeRepository.findAll();
     }
 }

@@ -351,6 +351,6 @@ button {
 
 /* 메인페이지 css 배너 슬라이드 */
 #recommendCarousel {
-max-width: 600px; /* 원하는 너비로 설정 */
-margin: 0 auto; /* 중앙 정렬 */
+	max-width: 600px; /* 원하는 너비로 설정 */
+	margin: 0 auto; /* 중앙 정렬 */
 }

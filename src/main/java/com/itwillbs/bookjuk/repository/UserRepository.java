@@ -2,10 +2,12 @@ package com.itwillbs.bookjuk.repository;
 
 
 import com.itwillbs.bookjuk.entity.UserEntity;
+import org.springframework.data.domain.Range;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
@@ -20,4 +22,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     // dashboard 사용할 메서드
     long countByCreateDateBetween(Timestamp startOfDay, Timestamp endOfDay);
+
+
+    Optional<List<UserEntity>> findAllByUserName(String keyword);
+
+    Optional<List<UserEntity>> findAllByUserNameContaining(String keyword);
+
+    Optional<List<UserEntity>> findByUserIdContaining(String keyword);
 }

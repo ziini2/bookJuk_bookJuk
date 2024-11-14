@@ -12,13 +12,15 @@ import java.time.LocalDate;
 public class RentDTO {
 
     private Long rentNum;
-    private Long userNum;
-    private Long storeCode;
-    private Long bookId;
-    private Integer rentPrice;
+    private String userId;
+    private String userName;
+    private String userPhone;
+    private String bookName;
+    private Long bookNum;
+    private String storeName;
     private LocalDate rentStart;
     private LocalDate rentEnd;
     private LocalDate returnDate;
-    private Byte rentStatus;
+    private String status;
 
 }

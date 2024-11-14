@@ -1,6 +1,7 @@
 package com.itwillbs.bookjuk.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,4 +25,5 @@ public interface BooksRepository extends JpaRepository<BooksEntity, Long> {
 	 //전체 대여가능 목록 데이터 가져오기
 	 Page<BooksEntity> findAllByRentStatusTrue(Pageable pageable);
 
+    Optional<List<BooksEntity>> findAllByBookInfoEntityIn(List<BookInfoEntity> bookNums);
 }

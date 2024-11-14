@@ -66,12 +66,3 @@
     height: 280px;
 }
 
-.book-details {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 8px 10px; /* 세로 간격 8px, 항목과 값 간격 20px */
-}
-
-.detail-item {
-    display: contents; /* 내부 요소가 그리드 영역을 채우도록 함 */
-}

@@ -6,9 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -34,8 +32,6 @@ public class UserCartPageAPIController {
             session.invalidate();
             session.setAttribute("userNum", currentUserNum);
         }
-
-
 
         //세션에서 장바구니 리스트 가져오고 없으면 새로 생성
         ArrayList<Long> myCartBookIdList = (ArrayList<Long>) session.getAttribute("myCartBookId");

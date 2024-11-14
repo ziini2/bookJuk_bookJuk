@@ -175,7 +175,9 @@
 					<!--오른쪽: 마이 포인트 -->
 					<div class="d-flex align-items-center">
 						<img th:src="@{/images/main/myPoint-icon.png}" alt="myPoint" style="width: 32px; height: 32px;">
-						<h4 class="mx-2 my-0" th:if="${userPoint != null}"> <span th:text="${#numbers.formatInteger(userPoint, 3, 'COMMA')}"></span>p</h4>
+						<div th:if="${userPoint != null}">
+							<h4 class="mx-2 my-0" th:if="${userPoint != 0}"> <span th:text="${#numbers.formatInteger(userPoint, 3, 'COMMA')}"></span>p</h4>
+						</div>
 					</div>
 				</div>
 				<div class="card p-2">
@@ -193,7 +195,7 @@
 							</thead>
 							<tbody>
 								<th:block th:each="books : ${booksInfo.getUserPageBooksDTO()}">
-									<tr th:attr="data-pk=${books.booksId}" data-bs-toggle="modal" data-bs-target="#salesModal">
+									<tr th:attr="data-pk=${books.booksId}" onclick="getBooksInfo(this)">
 										<td th:text="${books.booksId}" scope="row">1</td>
 										<td th:text="${books.getBookNum().getBookName()}"></td>
 										<td th:text="${books.getBookNum().getAuthor()}"></td>
@@ -230,7 +232,7 @@
 					<!-- 페이지네이션 끝 -->
 
 					<!-- 클릭시 모달창 -->
-					<div id="salesModal" class="modal" tabindex="-1" role="dialog">
+					<div id="bookInfoModal" class="modal" tabindex="-1" role="dialog">
 						<div class="modal-dialog modal-lg"  role="document">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -247,35 +249,36 @@
 											<div class="container row pe-2">
 												<div class="col-6 mb-1">
 													<strong>도서명</strong>
-													<p>누가 내 머리에 공 던졌어?</p>
+													<p id="bookName"></p>
 												</div>
 												<div class="col-6 mb-1">
 													<strong>저자 </strong>
-													<p>작가 이름</p>
+													<p id="bookAuthor"></p>
 												</div>
 												<div class="col-6 mb-1">
 													<strong>출판사</strong>
-													<p>출판사 이름</p>
+													<p id="bookPublish"></p>
 												</div>
 												<div class="col-6 mb-1">
 													<strong>장르</strong>
-													<p>장르 이름</p>
+													<p id="bookGenreName"></p>
 												</div>
 												<div class="col-12 mb-1">
 													<strong>출판일 </strong>
-													<p>2024-11-07</p>
+													<p id="bookPublishDate"></p>
 												</div>
-												<div class="col-auto mb-1">
+												<div class="col-12 mb-1">
 													<strong>책소개</strong>
-													<p>책 소개 내용 책 소개 내용 책 소개 내용책 소개책 소개책 소개책 소개책 소개책 소개책 소개책 소개책 소개책 소개책 소개책 소개책 소개책 소개책 소개</p>
+													<p id="bookStory"></p>
 												</div>
+												<hr>
 												<div class="col-6 mb-1">
 													<strong>대여금액</strong>
-													<p>10,000원</p>
+													<p id="bookRentMoney"></p>
 												</div>
 												<div class="col-6 mb-1">
 													<strong>대여지점 </strong>
-													<p>서울 도서관</p>
+													<p id="bookStore"></p>
 												</div>
 											</div>
 										</div>
@@ -283,7 +286,7 @@
 								</div>
 
 								<div class="modal-footer">
-									<button sec:authorize="isAuthenticated()" type="button" class="btn btn-success" data-bs-dismiss="modal">장바구니</button>
+									<button sec:authorize="isAuthenticated()" type="button" class="btn btn-success bookCartAdd" onclick="bookCartAdd()">장바구니</button>
 									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 								</div>
 							</div>
@@ -297,5 +300,9 @@
 
 	<!-- 사이드바 열었다 닫았다 하는거 -->
 	<script th:src="@{/js/common/main.js}"></script>
+	<!-- jQuery CDN -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script th:src="@{/js/main/booksInfo.js}"></script>
+	<script th:src="@{/js/main/bookCartAdd.js}"></script>
 </body>
 </html>

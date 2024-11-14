@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @Slf4j
 @RequiredArgsConstructor
@@ -38,5 +40,12 @@ public class RentController {
                 rentService.findAllBySearchWithDTO(criteria, keyword, rented, returned, page, size);
 
         return ResponseEntity.ok(responseDTO);
+    }
+
+    @PostMapping("/rent/return")
+    @ResponseBody
+    public ResponseEntity<RentResponseDTO> returnBook(@RequestParam List<Long> rentNums) {
+        rentService.returnBook(rentNums);
+        return ResponseEntity.ok(rentService.findAllWithDTO(null, null, 0, 10));
     }
 }

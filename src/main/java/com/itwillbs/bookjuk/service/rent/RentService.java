@@ -3,10 +3,8 @@ package com.itwillbs.bookjuk.service.rent;
 import com.itwillbs.bookjuk.dto.RentDTO;
 import com.itwillbs.bookjuk.dto.RentResponseDTO;
 import com.itwillbs.bookjuk.entity.rent.RentEntity;
-import com.itwillbs.bookjuk.repository.BookInfoRepository;
-import com.itwillbs.bookjuk.repository.BooksRepository;
-import com.itwillbs.bookjuk.repository.RentRepository;
-import com.itwillbs.bookjuk.repository.UserRepository;
+import com.itwillbs.bookjuk.repository.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -15,8 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.time.LocalDate.now;
 
 @Service
 @Slf4j
@@ -27,6 +28,8 @@ public class RentService {
     private final UserRepository userRepository;
     private final BooksRepository booksRepository;
     private final BookInfoRepository bookInfoRepository;
+    private final OverdueRepository overdueRepository;
+    private final UserContentRepository userContentRepository;
 
     // RentEntity -> RentDTO 변환
     private RentDTO toDTO(RentEntity rent) {
@@ -130,5 +133,20 @@ public class RentService {
 
 
         return new RentResponseDTO(content, rentPage.getNumber(), rentPage.getTotalPages(), rentPage.getTotalElements());
+    }
+
+    @Transactional
+    public void returnBook(List<Long> rentNums) {
+        rentNums.forEach(rentNum -> {
+            RentEntity rent = rentRepository.findById(rentNum).orElseThrow();
+            rent.setRentStatus(true);
+            rent.setReturnDate(now());
+            rentRepository.save(rent);
+
+            if (rent.getRentEnd().isBefore(now())) {
+                log.info("연체료 부과{}", rent.getRentNum());
+
+            }
+        });
     }
 }

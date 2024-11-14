@@ -57,11 +57,7 @@ $(document).ready(function () {
             const rentEnd = rent.rentEnd ? rent.rentEnd.toString() : '미등록';
             const returnDate = rent.returnDate ? rent.returnDate.toString() : '미등록';
             let rentStatus;
-            if (rent.returnDate) {
-                rentStatus = "반납 완료";
-            } else {
-                rentStatus = `대여 중 <input type="checkbox" class="return-check" data-rent-id="${rent.rentNum}">`;
-            }
+
 
 
             let delayPayment = 0;
@@ -75,6 +71,13 @@ $(document).ready(function () {
                 const today = new Date();
                 const diff = today - rentEndDate;
                 delayPayment = (Math.floor(diff / (1000 * 60 * 60 * 24)) + 1 ) * 500;
+            }
+
+            if (rent.returnDate) {
+                rentStatus = "반납 완료";
+            } else {
+                rentStatus = `대여 중 <input type="checkbox" class="return-check" 
+                            data-rent-num="${rent.rentNum}" data-late-fee="${delayPayment}">`;
             }
 
 

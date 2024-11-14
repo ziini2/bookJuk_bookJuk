@@ -210,19 +210,19 @@
 						<ul class="pagination pagination-success mb-0">
 							<!-- 이전 10개 묶음으로 이동 -->
 							<li class="page-item" th:if="${booksInfo.getCurrentPage() >= 10}">
-								<a class="page-link" th:href="@{/(page=${T(java.lang.Math).max(0, (booksInfo.getCurrentPage() / 10 - 1) * 10)}, genre=${genre}, keyword=${keyword} )}">&lt;</a>
+								<a class="page-link" th:href="@{/(page=${T(java.lang.Math).max(0, (booksInfo.getCurrentPage() / 10 - 1) * 10)}, genre=${genre}, keyword=${keyword}, store=${store})}">&lt;</a>
 							</li>
 
 							<!-- 현재 페이지 집합 (10개씩 고정) -->
 							<li class="page-item"
 								th:each="i : ${#numbers.sequence((booksInfo.getCurrentPage() / 10) * 10, T(java.lang.Math).min((booksInfo.currentPage / 10 + 1) * 10 - 1, booksInfo.getTotalPages() - 1))}"
 								th:classappend="${i == booksInfo.getCurrentPage()} ? 'active'">
-								<a class="page-link" th:href="@{/(page=${i}, genre=${genre}, keyword=${keyword})}" th:text="${i + 1}">1</a>
+								<a class="page-link" th:href="@{/(page=${i}, genre=${genre}, keyword=${keyword}, store=${store})}" th:text="${i + 1}">1</a>
 							</li>
 
 							<!-- 다음 10개 묶음으로 이동 -->
 							<li class="page-item" th:if="${(booksInfo.currentPage / 10 + 1) * 10 < booksInfo.getTotalPages()}">
-								<a class="page-link" th:href="@{/(page=${(booksInfo.getCurrentPage() / 10 + 1) * 10}, genre=${genre}, keyword=${keyword})}">&gt;</a>
+								<a class="page-link" th:href="@{/(page=${(booksInfo.getCurrentPage() / 10 + 1) * 10}, genre=${genre}, keyword=${keyword}, store=${store})}">&gt;</a>
 							</li>
 						</ul>
 					</div>

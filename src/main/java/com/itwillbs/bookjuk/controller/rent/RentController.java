@@ -44,8 +44,14 @@ public class RentController {
 
     @PostMapping("/rent/return")
     @ResponseBody
-    public ResponseEntity<RentResponseDTO> returnBook(@RequestParam List<Long> rentNums) {
-        rentService.returnBook(rentNums);
-        return ResponseEntity.ok(rentService.findAllWithDTO(null, null, 0, 10));
+    public ResponseEntity<RentResponseDTO> returnBook(@RequestBody ReturnDTO returnDTO) {
+        log.info("returnDTO: {}", returnDTO);
+        rentService.returnBook(returnDTO.rentNums());
+        return ResponseEntity.ok(rentService.findAllBySearchWithDTO(returnDTO.criteria(), returnDTO.keyword(),
+                returnDTO.rented(), returnDTO.returned(), returnDTO.page(), returnDTO.size()));
+    }
+
+    public record ReturnDTO(List<Long> rentNums, String criteria, String keyword,
+                        Boolean rented, Boolean returned, int page, int size) {
     }
 }

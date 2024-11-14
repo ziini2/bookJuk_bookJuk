@@ -50,15 +50,13 @@ $(document).ready(function () {
         });
     }
 
-    function renderTable(data) {
+    window.renderTable = function(data) {
         $('tbody').empty();
         data.forEach(rent => {
             const rentStart = rent.rentStart ? rent.rentStart.toString() : '미등록';
             const rentEnd = rent.rentEnd ? rent.rentEnd.toString() : '미등록';
             const returnDate = rent.returnDate ? rent.returnDate.toString() : '미등록';
             let rentStatus;
-
-
 
             let delayPayment = 0;
             if (rent.returnDate) {
@@ -80,15 +78,14 @@ $(document).ready(function () {
                             data-rent-num="${rent.rentNum}" data-late-fee="${delayPayment}">`;
             }
 
-
-
             const tempHtml = `
                 <tr>
                     <td>${rent.rentNum}</td>
-                    <td>${rent.userId}</td>
+                    <td>${rent.storeName}</td>
                     <td>${rent.userName}</td>
                     <td>${rent.userPhone}</td>
                     <td>${rent.bookNum}</td>
+                    <td>${rent.isbn}</td>
                     <td>${rent.bookName}</td>
                     <td>${rentStart}</td>
                     <td>${rentEnd}</td>
@@ -100,8 +97,8 @@ $(document).ready(function () {
         });
     }
 
-    function renderPagination(pageInfo) {
-        $('#serverPagination').empty();
+    window.renderPagination = function(pageInfo) {
+        $('#serverPagination ul').empty(); // 기존 페이지네이션을 초기화
 
         if (!pageInfo || pageInfo.totalPages === 0) {
             console.log("페이지네이션 정보가 없습니다.");
@@ -118,18 +115,21 @@ $(document).ready(function () {
         let paginationHtml = '';
 
         if (startPage > 1) {
-            paginationHtml += `<a class="btn btn-secondary mx-1 page-link" data-page="${startPage - 1}">이전</a>`;
+            paginationHtml += `<li class="page-item"><a class="page-link" data-page="${startPage - 1}">이전</a></li>`;
         }
 
         for (let i = startPage; i <= endPage; i++) {
-            paginationHtml += `<a class="btn ${i === currentPage ? 'btn-secondary active' : 'btn-secondary mx-1'} page-link" data-page="${i}">${i}</a>`;
+            paginationHtml += `
+                <li class="page-item ${i === currentPage ? 'active' : ''}">
+                    <a class="page-link" data-page="${i}">${i}</a>
+                </li>`;
         }
 
         if (endPage < totalPages) {
-            paginationHtml += `<a class="btn btn-secondary mx-1 page-link" data-page="${endPage + 1}">다음</a>`;
+            paginationHtml += `<li class="page-item"><a class="page-link" data-page="${endPage + 1}">다음</a></li>`;
         }
 
-        $('#serverPagination').html(paginationHtml);
+        $('#serverPagination ul').html(paginationHtml); // 페이지네이션을 ul에 추가
     }
 
     $('#serverPagination').on('click', '.page-link', function () {
@@ -140,6 +140,5 @@ $(document).ready(function () {
     let numbers = function (x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-
 
 });

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class UserPageController {
     private final UserPageService userPageService;
-    private final int PAGE_SIZE = 20;
+    private final int PAGE_SIZE = 10;
 
 
 
@@ -41,7 +41,7 @@ public class UserPageController {
             model.addAttribute("userPoint", userPageService.getUserPoint(SecurityUtil.getUserNum()));
         }
         //대여가능한 페이지 List 전달
-        model.addAttribute("booksList", userPageService.getBooksList(page, PAGE_SIZE));
+        model.addAttribute("booksInfo", userPageService.getBooksList(page, PAGE_SIZE));
         
         model.addAttribute("userName", SecurityUtil.getUserName());
         

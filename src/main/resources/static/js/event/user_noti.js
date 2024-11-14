@@ -36,7 +36,7 @@ $(document).ready(function() {
 		dom: '<"d-flex justify-content-between align-items-end"<"d-flex align-items-end dataTables_filter_wrapper"f><"dataTables_length_wrapper"l>>rt<"d-flex justify-content-center"p>',
     
 		ajax: {
-	        url: '/admin/getNoti',                   // 데이터 요청 URL
+	        url: '/getUserNoti',                   // 데이터 요청 URL
 	        type: 'POST',                             // HTTP 메서드 설정
 	        contentType: 'application/json; charset=UTF-8',  // 요청 Content-Type 설정
 	        dataSrc: 'data',                          // 데이터 소스 경로 설정
@@ -80,7 +80,7 @@ $(document).ready(function() {
 	    
 	    columns: [
 	        { data: 'notiId', title: 'No.' },
-	        { data: 'recipient', title: '수신 아이디' },
+	        { data: 'sender', title: '발신인' },
 	        { data: 'notiContent', title: '알림 내용' },
 	        { data: 'notiType', title: '알림 유형' },
 	        { data: 'notiStatus', title: '전송 상태' },
@@ -106,7 +106,7 @@ $(document).ready(function() {
 	    <select id="noti-columnSelect" class="noti-select ms-2" style="width: auto; display: inline;">
 	        <option value="">전체</option>
 	        <option value="notiId">NO</option>
-	        <option value="recipient">수신 아이디</option>
+	        <option value="notiSender">발신인</option>
 	        <option value="notiContent">알림 내용</option>
 	        <option value="notiType">알림 유형</option>
 	        <option value="notiStatus">전송 상태</option>
@@ -142,7 +142,7 @@ $(document).ready(function() {
 		const columnMap = {
 		    "": null,
 		    "notiId": 0,
-		    "recipient": 1,
+		    "notiSender": 1,
 		    "notiContent": 2,
 		    "notiType": 3,
 		    "notiStatus": 4,
@@ -173,11 +173,11 @@ $(document).ready(function () {
 		const rowData = table.row(this).data();  // 클릭된 행의 기본 데이터 가져오기
 	    const notiId = rowData.notiId;  // 알림 ID 추출
 	    $.ajax({
-	        url: `/admin/noti/${notiId}`,  // RESTful 경로로 알림 ID 사용
+	        url: `/noti/${notiId}`,  // RESTful 경로로 알림 ID 사용
 	        method: 'GET',
 	        success: function(data) {
 	            // 가져온 데이터를 모달 창에 표시
-	            $('#noti-detailReceiver').text(data.recipient);
+	            $('#noti-detailSender').text(data.notiSender);
 	            $('#noti-detailContent').text(data.notiContent);
 	            $('#noti-detailType').text(data.notiType);
 	            $('#noti-detailStatus').text(data.notiStatus);

@@ -30,9 +30,20 @@
 	<main id="main" class="main">
 	<div class="coupon container my-4">
 		<h2 style="margin-bottom: 100px;">내 쿠폰 관리</h2>
+		<button id="coupon-couponUseBtn">쿠폰 사용</button>
+		<div id="coupon-couponUseModal">
+			<div class="coupon-couponUseModal-content">
+			    <div>
+					<span class="coupon-modal-close">&times;</span>
+			    	<h3 style="margin-bottom: 20px;">쿠폰 번호 입력</h3>
+			    	<input type="text" id="couponCode" placeholder="쿠폰 번호를 입력하세요.">
+			    	<button id="coupon-couponUseModal-apply">입력</button>
+			    </div>
+			</div>
+		</div>
 		<div id="coupon-filterModal">
 			<div class="coupon-filterModal-content">
-				<span class="coupon-modal-close">&times;</span>		    
+				<span class="coupon-modal-close">&times;</span>
 				<h3>필터 설정</h3>		    
 				<label>쿠폰 상태</label>
 				<div id="couponStatus">

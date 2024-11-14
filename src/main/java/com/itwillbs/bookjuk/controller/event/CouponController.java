@@ -39,6 +39,7 @@ public class CouponController {
 	@ResponseBody
 	public Map<String, Object> getCoupon(@RequestBody Map<String, Object> payload){
 		try {
+			Long userNum = 0L;
 			String searchCriteria = (String) payload.get("searchCriteria");
 		    String searchKeyword = (String) payload.get("searchKeyword");
 		    @SuppressWarnings("unchecked")
@@ -58,18 +59,18 @@ public class CouponController {
 			int page = start / length;
 			Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortColumn);
 			Pageable pageable = PageRequest.of(page, length, sort);
-			long totalRecords = couponService.getAllEvent(Pageable.unpaged()).getTotalElements();
+			long totalRecords = couponService.getAllCoupon(userNum, Pageable.unpaged()).getTotalElements();
 			Page<CouponDTO> couponPage;
 			
 			if (searchKeyword.isEmpty()) {
 				if(filter.isEmpty()) {
-					couponPage = couponService.getAllEvent(pageable);
+					couponPage = couponService.getAllCoupon(userNum, pageable);
 				}else {
-					couponPage = couponService.getFilteredEvent(searchCriteria, searchKeyword, 
+					couponPage = couponService.getFilteredCoupon(userNum, searchCriteria, searchKeyword, 
 			    			filter, pageable);
 				}			
 		    } else {
-		    	couponPage = couponService.getFilteredEvent(searchCriteria, searchKeyword, 
+		    	couponPage = couponService.getFilteredCoupon(userNum, searchCriteria, searchKeyword, 
 		    			filter, pageable);
 		    }
 			return Map.of(

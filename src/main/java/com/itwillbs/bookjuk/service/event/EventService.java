@@ -153,17 +153,6 @@ public class EventService {
 	    });
 		eventConditionRepository.saveAll(endCondition);
 		
-        // 시작 날짜가 오늘이고 상태가 "시작 전"인 이벤트 목록을 "진행 중"으로 변경하고
-		// 이벤트 조건의 활성 유무를 true로 변경	
-//        List<EventEntity> eventsToStart = eventRepository.findByStartEventDateAndEventStatus(today, "시작 전");
-//        eventsToStart.forEach(event -> event.setEventStatus("진행 중"));        
-//        eventRepository.saveAll(eventsToStart);
-        
-
-        // 종료 날짜가 오늘 이전이고 상태가 "진행 중"인 이벤트 목록을 "종료"로 변경
-//        List<EventEntity> eventsToEnd = eventRepository.findByEndEventDateBeforeAndEventStatus(today, "진행 중");
-//        eventsToEnd.forEach(event -> event.setEventStatus("종료"));
-//        eventRepository.saveAll(eventsToEnd);
 	}
 
 	public EventDTO getEventDetail(Integer eventId) {

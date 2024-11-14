@@ -31,15 +31,21 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
 	private EntityManager entityManager;
 	
 	@Override
-	public Page<NotificationEntity> notiTable(String searchCriteria, 
-												 String searchKeyword, 
-												 List<Map<String, String>> filter, 
-												 Pageable pageable) {
+	public Page<NotificationEntity> notiTable(Long userNum,
+											  String searchCriteria, 
+											  String searchKeyword, 
+										 	  List<Map<String, String>> filter, 
+											  Pageable pageable) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<NotificationEntity> query = cb.createQuery(NotificationEntity.class);
         Root<NotificationEntity> noti = query.from(NotificationEntity.class);
         Join<NotificationEntity, UserEntity> recipientJoin = noti.join("notiRecipient", JoinType.LEFT);
+        Join<NotificationEntity, UserEntity> senderJoin = noti.join("notiSender", JoinType.LEFT);
         List<Predicate> predicates = new ArrayList<>();
+        // 회원으로 접속할 경우 회원 아이디 조회 추가
+        if (userNum != 0L) {
+            predicates.add(cb.equal(recipientJoin.get("userNum"), userNum));
+        }
         // 검색 조건 처리
         if (!searchCriteria.isEmpty()) {
             // 특정 필드에 대해 검색 기준이 지정된 경우
@@ -50,13 +56,16 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
                 case "recipient":
                     predicates.add(cb.like(recipientJoin.get("userId"), "%" + searchKeyword + "%"));
                     break;
+                case "sender":
+                    predicates.add(cb.like(senderJoin.get("userName"), "%" + searchKeyword + "%"));
+                    break;
                 case "notiContent":
                     predicates.add(cb.like(noti.get("notiContent"), "%" + searchKeyword + "%"));
                     break;
                 case "notiType":
                     predicates.add(cb.like(noti.get("notiType"), "%" + searchKeyword + "%"));
                     break;
-                case "transferStatus":
+                case "notiStatus":
                 	predicates.add(cb.like(noti.get("notiStatus"), "%" + searchKeyword + "%"));
                     break;
                 case "notiSentDate":
@@ -65,15 +74,26 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
                 default:
                     predicates.add(cb.conjunction());
             }
-        } else {    	        	
-            predicates.add(cb.or(
-                cb.like(recipientJoin.get("userId"), "%" + searchKeyword + "%"),
-                cb.like(noti.get("notiContent"), "%" + searchKeyword + "%"),
-                cb.like(noti.get("notiType"), "%" + searchKeyword + "%"),
-                cb.like(noti.get("notiStatus"), "%" + searchKeyword + "%"),
-                cb.like(cb.function("DATE_FORMAT", String.class, noti.get("notiSentDate"), cb.literal("%Y-%m-%d")), "%" + searchKeyword + "%"),
-                cb.like(cb.concat(noti.get("notiId").as(String.class), ""), "%" + searchKeyword + "%")
-            ));
+        } else {   
+        	if(userNum != 0L) {
+        		predicates.add(cb.or(
+		            cb.like(senderJoin.get("userName"), "%" + searchKeyword + "%"),
+		            cb.like(noti.get("notiContent"), "%" + searchKeyword + "%"),
+		            cb.like(noti.get("notiType"), "%" + searchKeyword + "%"),
+		            cb.like(noti.get("notiStatus"), "%" + searchKeyword + "%"),
+		            cb.like(cb.function("DATE_FORMAT", String.class, noti.get("notiSentDate"), cb.literal("%Y-%m-%d")), "%" + searchKeyword + "%"),
+		            cb.like(cb.concat(noti.get("notiId").as(String.class), ""), "%" + searchKeyword + "%")
+		        ));
+        	}else {
+        		predicates.add(cb.or(
+		            cb.like(recipientJoin.get("userId"), "%" + searchKeyword + "%"),
+		            cb.like(noti.get("notiContent"), "%" + searchKeyword + "%"),
+		            cb.like(noti.get("notiType"), "%" + searchKeyword + "%"),
+		            cb.like(noti.get("notiStatus"), "%" + searchKeyword + "%"),
+		            cb.like(cb.function("DATE_FORMAT", String.class, noti.get("notiSentDate"), cb.literal("%Y-%m-%d")), "%" + searchKeyword + "%"),
+		            cb.like(cb.concat(noti.get("notiId").as(String.class), ""), "%" + searchKeyword + "%")
+		        ));
+        	}
         }               
 
         // 필터 조건 처리
@@ -85,7 +105,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
 	                case "notiType":
 	                    predicates.add(cb.equal(noti.get("notiType"), value));
 	                    break;
-	                case "transferStatus":
+	                case "notiStatus":
 	                    predicates.add(cb.equal(noti.get("notiStatus"), value));
 	                    break;
 	                case "date":
@@ -125,13 +145,4 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
         long total = resultListto.size();
         return new PageImpl<>(resultList, pageable, total);
 	}
-	
-//	private Integer safeParseInt(String keyword) {
-//        try {
-//            return Integer.parseInt(keyword);
-//        } catch (NumberFormatException e) {
-//            return null;
-//        }
-//    }
-	
 }

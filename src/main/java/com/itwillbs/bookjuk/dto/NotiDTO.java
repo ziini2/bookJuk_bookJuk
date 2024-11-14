@@ -1,7 +1,8 @@
 package com.itwillbs.bookjuk.dto;
 
 import java.sql.Timestamp;
-import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +31,7 @@ public class NotiDTO {
 	private String notiType;
 	
 	// 전송 상태(대기, 전송, 실패)
-	private String transferStatus;
+	private String notiStatus;
 	
 	// 알림 생성 날짜
 	private Timestamp notiCreationDate;

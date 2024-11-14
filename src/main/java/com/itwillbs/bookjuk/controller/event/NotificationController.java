@@ -39,6 +39,7 @@ public class NotificationController {
 	@ResponseBody
 	public Map<String, Object> getNoti(@RequestBody Map<String, Object> payload){
 		try {
+			Long userNum = 0L;
 			String searchCriteria = (String) payload.get("searchCriteria");
 		    String searchKeyword = (String) payload.get("searchKeyword");
 		    @SuppressWarnings("unchecked")
@@ -58,18 +59,18 @@ public class NotificationController {
 			int page = start / length;
 			Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortColumn);
 			Pageable pageable = PageRequest.of(page, length, sort);
-			long totalRecords = notiService.getAllEvent(Pageable.unpaged()).getTotalElements();
+			long totalRecords = notiService.getAllEvent(userNum, Pageable.unpaged()).getTotalElements();
 			Page<NotiDTO> notiPage;
 			
 			if (searchKeyword.isEmpty()) {
 				if(filter.isEmpty()) {
-					notiPage = notiService.getAllEvent(pageable);
+					notiPage = notiService.getAllEvent(userNum, pageable);
 				}else {
-					notiPage = notiService.getFilteredEvent(searchCriteria, searchKeyword, 
+					notiPage = notiService.getFilteredEvent(userNum, searchCriteria, searchKeyword, 
 			    			filter, pageable);
 				}			
 		    } else {
-		    	notiPage = notiService.getFilteredEvent(searchCriteria, searchKeyword, 
+		    	notiPage = notiService.getFilteredEvent(userNum, searchCriteria, searchKeyword, 
 		    			filter, pageable);
 		    }
 			return Map.of(

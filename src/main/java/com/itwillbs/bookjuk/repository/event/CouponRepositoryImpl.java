@@ -32,16 +32,21 @@ public class CouponRepositoryImpl implements CouponRepositoryCustom {
 	private EntityManager entityManager;
 	
 	@Override
-	public Page<CouponEntity> couponTable(String searchCriteria, 
-												 String searchKeyword, 
-												 List<Map<String, String>> filter, 
-												 Pageable pageable) {
+	public Page<CouponEntity> couponTable(Long userNum,
+									      String searchCriteria, 
+										  String searchKeyword, 
+										  List<Map<String, String>> filter, 
+										  Pageable pageable) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<CouponEntity> query = cb.createQuery(CouponEntity.class);
         Root<CouponEntity> coupon = query.from(CouponEntity.class);
         Join<CouponEntity, UserEntity> userJoin = coupon.join("userNum", JoinType.LEFT);
         Join<CouponEntity, EventEntity> eventJoin = coupon.join("eventId", JoinType.LEFT);
         List<Predicate> predicates = new ArrayList<>();
+        // 관리자로 접속할 경우 userNum = 0
+        if (userNum != 0L) {
+            predicates.add(cb.equal(userJoin.get("userNum"), userNum));
+        }
         // 검색 조건 처리
         if (!searchCriteria.isEmpty()) {
             // 특정 필드에 대해 검색 기준이 지정된 경우
@@ -85,7 +90,7 @@ public class CouponRepositoryImpl implements CouponRepositoryCustom {
             if(key != null) {
 	            switch (key) {
 	                case "couponType":
-	                	predicates.add(cb.like(coupon.get("couponType"), "%" + value));
+	                	predicates.add(cb.like(coupon.get("couponType"), "%p"));
 	                    break;
 	                case "couponStatus":
 	                    predicates.add(cb.equal(coupon.get("couponStatus"), value));
@@ -127,13 +132,5 @@ public class CouponRepositoryImpl implements CouponRepositoryCustom {
         long total = resultListto.size();
         return new PageImpl<>(resultList, pageable, total);
 	}
-	
-//	private Integer safeParseInt(String keyword) {
-//        try {
-//            return Integer.parseInt(keyword);
-//        } catch (NumberFormatException e) {
-//            return null;
-//        }
-//    }
-	
+		
 }

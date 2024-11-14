@@ -1,7 +1,7 @@
 // 날짜 형식을 YYYY-MM-DD 00:00:00 으로 변경
 function dateChange(data) {
     const date = new Date(data);
-    const formattedDate = date.toISOString().slice(0, 19).replace("T", " ");
+    const formattedDate = date.toISOString().slice(0, 10);
     return formattedDate;
 }
 
@@ -59,7 +59,7 @@ $(document).ready(function() {
 	            return JSON.stringify({
 	                searchCriteria: $('#coupon-columnSelect').val(),
 	                searchKeyword: $('#coupon-table_filter input').val(),
-	                filter: $('#coupon-selectedFilter .noti-filterChip').map(function() {
+	                filter: $('#coupon-selectedFilter .coupon-filterChip').map(function() {
 	                    return { type: $(this).data('type'), value: $(this).data('value') };
 	                }).get(),
 	                start: d.start || 0,
@@ -301,7 +301,7 @@ $(document).ready(function () {
 
 	// 쿠폰 검색 필터 모달창 내 선택된 버튼 출력
 	function addFilterChip(text, type) {
-		const chip = $('<div class="noti-filterChip"></div>')
+		const chip = $('<div class="coupon-filterChip"></div>')
 			.text(text)
 			.attr('data-type', type)
 	        .attr('data-value', text);

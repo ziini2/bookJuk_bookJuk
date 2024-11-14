@@ -1,7 +1,7 @@
 // 날짜 형식을 YYYY-MM-DD 00:00:00 으로 변경
 function dateChange(data) {
     const date = new Date(data);
-    const formattedDate = date.toISOString().slice(0, 19).replace("T", " ");
+    const formattedDate = date.toISOString().slice(0, 10);
     return formattedDate;
 }
 
@@ -59,7 +59,7 @@ $(document).ready(function() {
 	            return JSON.stringify({
 	                searchCriteria: $('#coupon-columnSelect').val(),
 	                searchKeyword: $('#coupon-table_filter input').val(),
-	                filter: $('#coupon-selectedFilter .noti-filterChip').map(function() {
+	                filter: $('#coupon-selectedFilter .coupon-filterChip').map(function() {
 	                    return { type: $(this).data('type'), value: $(this).data('value') };
 	                }).get(),
 	                start: d.start || 0,
@@ -106,7 +106,7 @@ $(document).ready(function() {
 	        <option value="">전체</option>
 	        <option value="couponId">NO</option>
 	        <option value="eventTitle">이벤트 제목</option>
-	        <option value="userId">유저 아이디</option>
+	        <option value="userId">쿠폰 번호</option>
 	        <option value="couponStatus">쿠폰 상태</option>
 	        <option value="couponType">쿠폰 종류</option>
 	        <option value="couponPeriod">쿠폰 유효기간</option>
@@ -172,7 +172,7 @@ $(document).ready(function () {
 		const rowData = table.row(this).data();  // 클릭된 행의 기본 데이터 가져오기
 	    const couponId = rowData.couponId;  // 알림 ID 추출
 	    $.ajax({
-	        url: `/admin/coupon/${couponId}`,  // RESTful 경로로 알림 ID 사용
+	        url: `/coupon/${couponId}`,  // RESTful 경로로 알림 ID 사용
 	        method: 'GET',
 	        success: function(data) {
 	            // 가져온 데이터를 모달 창에 표시
@@ -200,6 +200,37 @@ $(document).ready(function () {
 	        }
 	    });
     });
+	
+	// 쿠폰 사용 버튼
+	$('#coupon-couponUseBtn').click(function(){
+		$('#coupon-couponUseModal').fadeIn();
+	})
+	
+	// 쿠폰 입력시 유효성 검사
+	$('#coupon-couponUseModal-apply').click(function(){
+		const couponNum = $('#couponCode').val();
+		$.ajax({
+	        url: '/couponUse',
+	        method: 'POST',
+	        contentType: 'application/json',
+	        data: JSON.stringify({
+	            couponCode: couponNum,
+	        }),
+	        success: function (response) {
+				if(response.success){
+		            alert(response.message);
+		            table.draw();
+					$('#coupon-couponUseModal').fadeOut();
+				}else{
+					alert(response.message)
+				}
+	        },
+	        error: function (error) {
+				alert("오류: " + error.responseText);
+	            console.error("쿠폰 사용 실패", error);
+	        }
+	    });
+	})
 	
 	// 쿠폰 상세 모달창 닫기
 	$('.close').on('click', function () {
@@ -264,10 +295,11 @@ $(document).ready(function () {
     	$('#coupon-filterModal').css('display', 'block');
 	});
 
-	// 쿠폰 검색 필터 모달창 닫기
+	// 모달창 닫기
 	$('.coupon-modal-close').click(() => {
 		$('#coupon-filterModal').css('display', 'none');
 		$('#coupon-detailModal').css('display', 'none');
+		$('#coupon-couponUseModal').fadeOut();
 	});
 
 	// 쿠폰 검색 필터 모달창 내 완료 버튼
@@ -301,7 +333,7 @@ $(document).ready(function () {
 
 	// 쿠폰 검색 필터 모달창 내 선택된 버튼 출력
 	function addFilterChip(text, type) {
-		const chip = $('<div class="noti-filterChip"></div>')
+		const chip = $('<div class="coupon-filterChip"></div>')
 			.text(text)
 			.attr('data-type', type)
 	        .attr('data-value', text);

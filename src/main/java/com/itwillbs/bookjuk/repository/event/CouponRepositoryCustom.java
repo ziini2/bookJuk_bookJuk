@@ -10,10 +10,11 @@ import com.itwillbs.bookjuk.entity.event.CouponEntity;
 
 public interface CouponRepositoryCustom {
 
-	// 쿠폰 관리 페이지 리스트 출력
-	Page<CouponEntity> couponTable(String searchCriteria, 
+	// 쿠폰 페이지 리스트 출력
+	Page<CouponEntity> couponTable(Long userNum, 
+								   String searchCriteria, 
 								   String searchKeyword, 
 								   List<Map<String, String>> filter, 
 								   Pageable pageable);
-
+	
 }

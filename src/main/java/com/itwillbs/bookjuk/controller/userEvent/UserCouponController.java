@@ -1,5 +1,6 @@
 package com.itwillbs.bookjuk.controller.userEvent;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,19 +8,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.bookjuk.dto.CouponDTO;
-import com.itwillbs.bookjuk.entity.UserEntity;
-import com.itwillbs.bookjuk.repository.UserRepository;
-import com.itwillbs.bookjuk.repository.event.CouponRepository;
 import com.itwillbs.bookjuk.service.event.CouponService;
-import com.itwillbs.bookjuk.service.userEvent.UserCouponService;
 import com.itwillbs.bookjuk.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class UserCouponController {
 	
-	private final UserCouponService userCouponService;
+	private final CouponService couponService;
 	
 	@GetMapping("/userCoupon")
 	public String coupon() {
@@ -42,11 +41,6 @@ public class UserCouponController {
 	public Map<String, Object> getUserCoupon(@RequestBody Map<String, Object> payload){
 		try {
 			Long userNum = SecurityUtil.getUserNum();
-			UserEntity user = userCouponService.getUserByUserNum(userNum);
-	        if (user == null) {
-	            SecurityContextHolder.clearContext();
-	            return Map.of("result", "FAIL", "message", "User not authenticated");
-	        }
 			String searchCriteria = (String) payload.get("searchCriteria");
 		    String searchKeyword = (String) payload.get("searchKeyword");
 		    @SuppressWarnings("unchecked")
@@ -66,18 +60,18 @@ public class UserCouponController {
 			int page = start / length;
 			Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortColumn);
 			Pageable pageable = PageRequest.of(page, length, sort);
-			long totalRecords = userCouponService.getAllCoupon(userNum, Pageable.unpaged()).getTotalElements();
+			long totalRecords = couponService.getAllCoupon(userNum, Pageable.unpaged()).getTotalElements();
 			Page<CouponDTO> couponPage;
 			
 			if (searchKeyword.isEmpty()) {
 				if(filter.isEmpty()) {
-					couponPage = userCouponService.getAllCoupon(userNum, pageable);
+					couponPage = couponService.getAllCoupon(userNum, pageable);
 				}else {
-					couponPage = userCouponService.getFilteredCoupon(userNum, searchCriteria, searchKeyword, 
+					couponPage = couponService.getFilteredCoupon(userNum, searchCriteria, searchKeyword, 
 			    			filter, pageable);
 				}			
 		    } else {
-		    	couponPage = userCouponService.getFilteredCoupon(userNum, searchCriteria, searchKeyword, 
+		    	couponPage = couponService.getFilteredCoupon(userNum, searchCriteria, searchKeyword, 
 		    			filter, pageable);
 		    }
 			return Map.of(
@@ -96,4 +90,39 @@ public class UserCouponController {
 		}		
 	}
 
+	@GetMapping("/coupon/{couponId}")
+	public ResponseEntity<?> getCouponDetail(@PathVariable("couponId") Long couponId) {
+		Long userNum = SecurityUtil.getUserNum();
+	    boolean userCheck = couponService.getCouponByIdAndUserNum(couponId, userNum);
+	    if (!userCheck) {
+	        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+	                             .body(Map.of("result", "FAIL", "message", "Access denied"));
+	    }
+		CouponDTO couponDetail = couponService.getCouponDetail(couponId);                
+        if (couponDetail != null) {
+        	log.info("Coupon Content: {}", couponDetail.getCouponStatus());
+            return ResponseEntity.ok(couponDetail);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+	
+	// 쿠폰 사용
+	@PostMapping("/couponUse")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> couponUse(
+			@RequestBody Map<String, String> request){
+		Long userNum = SecurityUtil.getUserNum();
+		String couponNum = request.get("couponCode");
+		boolean isApplied = couponService.useCoupon(userNum, couponNum);
+		Map<String, Object> response = new HashMap<>();
+	    if (isApplied) {
+	        response.put("success", true);
+	        response.put("message", "쿠폰이 성공적으로 사용되었습니다.");
+	    } else {
+	        response.put("success", false);
+	        response.put("message", "유효하지 않은 쿠폰입니다.");
+	    }
+	    return ResponseEntity.ok(response);
+	}
 }

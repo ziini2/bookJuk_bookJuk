@@ -21,24 +21,29 @@ public class NotificationService {
 
 	private final NotificationRepository notiRepository;
 	
-	public Page<NotiDTO> getAllEvent(Pageable pageable) {
+	public Page<NotiDTO> getAllEvent(Long userNum, Pageable pageable) {
 		try {
-	        return notiRepository.findAll(pageable).map(this::convertToDto);
+			// 알림 관리 페이지
+			if(userNum == 0L) {
+				return notiRepository.findAll(pageable).map(this::convertToDto);
+			}else {
+			// 유저 알림 페이지
+				return notiRepository.findByNotiRecipient_UserNum(userNum, pageable).map(this::convertToDto);
+			}
 	    } catch (Exception e) {
-	        // 로그 출력 및 예외 처리
 	        log.error("Error fetching all notis: ", e);
 	        return Page.empty(pageable);
 	    }
 	}
 	
-	private NotiDTO convertToDto(NotificationEntity notificationEntity) {		
+	private NotiDTO convertToDto(NotificationEntity notificationEntity) {
         return NotiDTO.builder()
         		.notiId(notificationEntity.getNotiId())
         		.notiRecipient(notificationEntity.getNotiRecipient().getUserNum())
         		.notiSender(notificationEntity.getNotiSender().getUserNum())
         		.notiContent(notificationEntity.getNotiContent())
         		.notiType(notificationEntity.getNotiType())
-        		.transferStatus(notificationEntity.getNotiStatus())
+        		.notiStatus(notificationEntity.getNotiStatus())
         		.notiCreationDate(notificationEntity.getNotiCreationDate())
         		.notiSentDate(notificationEntity.getNotiSentDate())
         		.recipient(notificationEntity.getNotiRecipient().getUserId())
@@ -46,13 +51,12 @@ public class NotificationService {
         		.build();
     }
 
-	public Page<NotiDTO> getFilteredEvent(String searchCriteria, String searchKeyword, List<Map<String, String>> filter,
+	public Page<NotiDTO> getFilteredEvent(Long userNum, String searchCriteria, String searchKeyword, List<Map<String, String>> filter,
 			Pageable pageable) {
 		try {
-	        return notiRepository.notiTable(searchCriteria, searchKeyword, 
+	        return notiRepository.notiTable(userNum, searchCriteria, searchKeyword, 
 	        		filter, pageable).map(this::convertToDto);
 	    } catch (Exception e) {
-	        // 로그 출력 및 예외 처리
 	        log.error("Error fetching filtered events: ", e);
 	        return Page.empty(pageable); // 예외 발생 시 빈 페이지 반환
 	    }
@@ -66,12 +70,16 @@ public class NotificationService {
         		.notiSender(notificationEntity.getNotiSender().getUserNum())
         		.notiContent(notificationEntity.getNotiContent())
         		.notiType(notificationEntity.getNotiType())
-        		.transferStatus(notificationEntity.getNotiStatus())
+        		.notiStatus(notificationEntity.getNotiStatus())
         		.notiCreationDate(notificationEntity.getNotiCreationDate())
         		.notiSentDate(notificationEntity.getNotiSentDate())
         		.recipient(notificationEntity.getNotiRecipient().getUserId())
         		.sender(notificationEntity.getNotiSender().getUserName())
         		.build();
+	}
+
+	public boolean getNotiByIdAndUserNum(Long notiId, Long userNum) {
+		return notiRepository.existsByNotiIdAndNotiRecipient_UserNum(notiId, userNum);
 	}
 
 	

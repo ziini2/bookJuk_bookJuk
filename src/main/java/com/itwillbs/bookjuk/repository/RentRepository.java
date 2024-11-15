@@ -32,4 +32,7 @@ public interface RentRepository extends JpaRepository<RentEntity, Long> {
     Page<RentEntity> findAllByBookInAndRentStatusIsFalse(List<BooksEntity> booksEntities, Pageable pageable);
 
     Page<RentEntity> findAllByBookInAndRentStatusIsTrue(List<BooksEntity> booksEntities, Pageable pageable);
+
+    //마이페이지 유저 rent 내역 가져오기
+    Page<RentEntity> findByUser_UserNum(Long userNum, Pageable pageable);
 }

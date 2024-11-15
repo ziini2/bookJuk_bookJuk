@@ -3,6 +3,7 @@ package com.itwillbs.bookjuk.repository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,6 +17,6 @@ public interface PaymentRepository extends JpaRepository<PaymentEntity, String> 
 	List<PaymentEntity> findByUserContentEntity_MemberNumOrderByReqDateDesc(Long memberNum); //사용자 본인 결제 정보만 조회
 
 	@Query("SELECT SUM(p.paymentPrice) FROM PaymentEntity p WHERE p.reqDate BETWEEN :startDate AND :endDate")
-	Long sumAmountByReqDateBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+	Optional<Long> sumAmountByReqDateBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
 }

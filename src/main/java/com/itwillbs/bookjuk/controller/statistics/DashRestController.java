@@ -33,15 +33,15 @@ public class DashRestController {
         return dashRestService.getDailyPoint();
     }
 
-//    @GetMapping("/rental")
-//    public long getDailyRental() {
-//        return dashRestService.getDailyRental();
-//    }
-//
-//    @GetMapping("/delay")
-//    public long getDailyDelay() {
-//        return dashRestService.getDailyDelay();
-//    }
+    @GetMapping("/rental")
+    public Long getDailyRental() {
+        return dashRestService.getDailyRental();
+    }
+
+    @GetMapping("/delay")
+    public Long getDailyDelay() {
+        return dashRestService.getDailyDelay();
+    }
 
 
 }

@@ -97,96 +97,162 @@
             </div>
         </div>
 
-        <div class="statistics-charts mt-5">
+        <div class="statistics-charts mt-4">
             <div class="total_short_cut_chart">
-                <div class="d-flex align-items-center justify-content-center total-title">
-                    <h3 class="mr-3">전체 요약 통계</h3> <!-- 적절한 간격을 위해 margin-right 추가 -->
-                </div>
-                <div class="total-chart-sub-options d-flex col">
-                    <div class="detail-options d-flex justify-content-center">
-                        <!-- 라디오버튼으로 매출, 대여건수, 신규 가입자, 누적 가입자 만들기 -->
-                        <input type="radio" name="detail-option" id="revenue" value="point" checked>
-                        <label for="revenue">매출</label>
-                        <input type="radio" name="detail-option" id="point" value="point" checked>
-                        <label for="point">포인트</label>
-                        <input type="radio" name="detail-option" id="rental" value="rental">
-                        <label for="rental">대여건수</label>
-                        <input type="radio" name="detail-option" id="delay" value="delay">
-                        <label for="delay">연체건수</label>
-                        <input type="radio" name="detail-option" id="new-user" value="newUser">
-                        <label for="new-user">신규 가입자</label>
-                        <input type="radio" name="detail-option" id="total-user" value="totalUser">
-                        <label for="total-user">누적 가입자</label>
+                <div class="chart-title">
+                    <div>
+                        <div class="chart-title-context">
+                            전체 요약 통계
+                        </div>
+                        <div class="radio-buttons  d-flex col align-items-center m-0 justify-content-end gap-2">
+                            <!-- 라디오버튼으로 매출, 대여건수, 신규 가입자, 누적 가입자 만들기 -->
+                            <input type="radio" name="detail-option" id="revenue" value="point" checked>
+                            <label for="revenue">매출</label>
+                            <input type="radio" name="detail-option" id="point" value="point" checked>
+                            <label for="point">포인트</label>
+                            <input type="radio" name="detail-option" id="rental" value="rental">
+                            <label for="rental">대여건수</label>
+                            <input type="radio" name="detail-option" id="delay" value="delay">
+                            <label for="delay">연체건수</label>
+                            <input type="radio" name="detail-option" id="new-user" value="newUser">
+                            <label for="new-user">신규 가입자</label>
+                            <input type="radio" name="detail-option" id="total-user" value="totalUser">
+                            <label for="total-user">누적 가입자</label>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="chart-wrapper d-flex col justify-content-between">
                 <div class="revenue-pie-container">
-                    <div class="pie-body">
-                        <div class="chart-title">
-                            지점별 포인트 사용 내역
+                    <div class="chart-title">
+                        <div>
+                            <div class="chart-title-context">
+                                포인트 분석
+                            </div>
+                            <div class="radio-buttons  d-flex col align-items-center m-0 justify-content-end gap-2">
+                                <input type="radio" name="point-option" id="point-gender" value="gender" checked>
+                                <label for="point-gender">성별</label>
+                                <input type="radio" name="point-option" id="point-age" value="age">
+                                <label for="point-age">나이</label>
+                                <input type="radio" name="point-option" id="point-genre" value="genre">
+                                <label for="point-genre">장르</label>
+                                <input type="radio" name="point-option" id="point-branch" value="branch">
+                                <label for="point-branch">지점</label>
+                            </div>
                         </div>
-                        <div class="radio-buttons">
-                            <input type="radio" name="sale-option" id="rentalBranch" value="대여료" checked>
-                            <label for="rentalBranch">대여료</label>
-                            <input type="radio" name="sale-option" id="overdueBranch" value="연장료">
-                            <label for="overdueBranch">연장료</label>
-                            <input type="radio" name="sale-option" id="lateFeeBranch" value="연체료">
-                            <label for="lateFeeBranch">연체료</label>
+                        <div class="d-flex flex-row gap-2">
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                    매출항목: 전체
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">전체</a></li>
+                                    <li><a class="dropdown-item" href="#">대여료</a></li>
+                                    <li><a class="dropdown-item" href="#">연체료</a></li>
+                                </ul>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                    지점: 전체
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">전체</a></li>
+                                    <li><a class="dropdown-item" href="#">강남점</a></li>
+                                    <li><a class="dropdown-item" href="#">대연점</a></li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="revenue-pie"></div>
                     </div>
-                    <div class="legend" id="pie-legend"></div> <!-- 범례를 추가할 영역 -->
+                    <div class="point-bar-body">
+                        <div class="point-bar"></div>
+                        <div class="legend" id="point-bar-legend"></div>
+                    </div>
+                    <!-- 범례를 추가할 영역 -->
                 </div>
                 <div class="accumulation-bar-chart-container">
-                    <div class="acc-bar-body">
-                        <div class="chart-title">
-                            지점별 포인트 사용내역 상세
-                        </div>
-                        <div class="accumulation-bar-chart">
+                    <div class="chart-title">
+                        <div>
+                            <div class="chart-title-context">
+                                매출 분석
+                            </div>
+                            <div class="radio-buttons  d-flex col align-items-center m-0 justify-content-end gap-2">
+                                <input type="radio" name="revenue-option" id="revenue-gender" value="gender" checked>
+                                <label for="revenue-gender">성별</label>
+                                <input type="radio" name="revenue-option" id="revenue-age" value="age">
+                                <label for="revenue-age">나이</label>
+                            </div>
                         </div>
                     </div>
-                    <div class="bar-chart-legend">
-                    </div> <!-- 누적 막대차트 범례를 추가할 영역 -->
-
+                    <div class="acc-bar-body">
+                        <div class="revenue-bar-chart"></div><!-- 누적 막대차트 범례를 추가할 영역 -->
+                    </div>
                 </div>
             </div>
             <div class="chart-wrapper d-flex col justify-content-between">
                 <div class="customer-bar-container">
-                    <div class="cus-bar-body">
-                        <div class="chart-title">
-                            신규가입자 상세
+                    <div class="chart-title">
+                        <div>
+                            <div class="chart-title-context">
+                                신규가입자 분석
+                            </div>
+                            <div class="radio-buttons d-flex col align-items-center m-0 justify-content-end gap-2">
+                                <input type="radio" name="customer-option" id="gender" value="gender" checked>
+                                <label for="gender">성별</label>
+                                <input type="radio" name="customer-option" id="age" value="age">
+                                <label for="age">나이</label>
+                                <input type="radio" name="customer-option" id="genre" value="genre">
+                                <label for="genre">장르</label>
+                            </div>
                         </div>
-                        <div class="radio-buttons">
-                            <input type="radio" name="customer-option" id="gender" value="gender" checked>
-                            <label for="gender">성별</label>
-                            <input type="radio" name="customer-option" id="age" value="age">
-                            <label for="age">나이</label>
-                            <input type="radio" name="customer-option" id="genre" value="genre">
-                            <label for="genre">장르</label>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                지점선택
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">해운대점</a></li>
+                                <li><a class="dropdown-item" href="#">강남점</a></li>
+                                <li><a class="dropdown-item" href="#">대연점</a></li>
+                            </ul>
                         </div>
-                        <div class="customer-bar"></div>
                     </div>
-                    <div class="legend" id="cus-bar-legend"></div> <!-- 범례를 추가할 영역 -->
+                    <div class="cus-bar-body">
+                        <div>
+                            <div class="customer-bar"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="delay-bar-container">
+                    <div class="chart-title">
+                        <div>
+                            <div class="chart-title-context">
+                                연체 분석
+                            </div>
+                            <div class="radio-buttons  d-flex col align-items-center m-0 justify-content-end gap-2">
+                                <input type="radio" name="delay-option" id="delay-gender" value="gender" checked>
+                                <label for="delay-gender">성별</label>
+                                <input type="radio" name="delay-option" id="delay-age" value="age">
+                                <label for="delay-age">나이</label>
+                                <input type="radio" name="delay-option" id="delay-genre" value="genre">
+                                <label for="delay-genre">장르</label>
+                                <input type="radio" name="delay-option" id="delay-branch" value="branch">
+                                <label for="delay-branch">지점</label>
+                            </div>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                지점선택
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">해운대점</a></li>
+                                <li><a class="dropdown-item" href="#">강남점</a></li>
+                                <li><a class="dropdown-item" href="#">대연점</a></li>
+                            </ul>
+                        </div>
+                    </div>
                     <div class="delay-bar-body">
-                        <div class="chart-title">
-                            연체 분석
-                        </div>
-                        <div class="radio-buttons">
-                            <input type="radio" name="delay-option" id="delay-gender" value="gender" checked>
-                            <label for="delay-gender">성별</label>
-                            <input type="radio" name="delay-option" id="delay-age" value="age">
-                            <label for="delay-age">나이</label>
-                            <input type="radio" name="delay-option" id="delay-genre" value="genre">
-                            <label for="delay-genre">장르</label>
-                            <input type="radio" name="delay-option" id="delay-branch" value="branch">
-                            <label for="delay-branch">지점</label>
-                        </div>
                         <div class="delay-bar"></div>
                     </div>
-                    <div class="legend" id="delay-bar-legend"></div> <!-- 범례를 추가할 영역 -->
+
                 </div>
             </div>
         </div>
@@ -200,8 +266,8 @@
 <!-- 챠트 모음 -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script th:src="@{/js/statistics/totalGraph.js}"></script>
-<script th:src="@{/js/statistics/revenuePie.js}"></script>
-<script th:src="@{/js/statistics/accumulationBar.js}"></script>
+<script th:src="@{/js/statistics/pointAccumulationBar.js}"></script>
+<script th:src="@{/js/statistics/revenueBar.js}"></script>
 <script th:src="@{/js/statistics/customerBar.js}"></script>
 <script th:src="@{/js/statistics/delayBar.js}"></script>
 <script th:src="@{/js/statistics/dailyStatistics.js}"></script>

@@ -2,6 +2,7 @@ package com.itwillbs.bookjuk.service.statistics;
 
 import com.itwillbs.bookjuk.repository.PaymentRepository;
 import com.itwillbs.bookjuk.repository.PointDealRepository;
+import com.itwillbs.bookjuk.repository.RentRepository;
 import com.itwillbs.bookjuk.repository.UserRepository;
 import com.itwillbs.bookjuk.repository.event.EventRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +23,7 @@ public class DashRestService {
     private final EventRepository eventRepository;
     private final PaymentRepository paymentRepository;
     private final PointDealRepository pointDealRepository;
+    private final RentRepository rentRepository;
     private LocalDate now = LocalDate.now();
 
     public Long getNumbersOfNewCustomers() {
@@ -44,8 +47,8 @@ public class DashRestService {
         LocalDateTime startOfDay = now.atStartOfDay();
         LocalDateTime endOfDay = now.plusDays(1).atStartOfDay().minusNanos(1);
 
-        return paymentRepository.sumAmountByReqDateBetween(startOfDay, endOfDay);
-
+        Optional<Long> revenue = paymentRepository.sumAmountByReqDateBetween(startOfDay, endOfDay);
+        return revenue.orElse(0L);
     }
 
     public Long getDailyPoint() {
@@ -53,22 +56,21 @@ public class DashRestService {
         LocalDateTime startOfDay = now.atStartOfDay();
         LocalDateTime endOfDay = now.plusDays(1).atStartOfDay().minusNanos(1);
 
-        return pointDealRepository.sumAmountByReqDateBetween(startOfDay, endOfDay);
+        Optional<Long> point = pointDealRepository.sumAmountByReqDateBetween(startOfDay, endOfDay);
+        return point.orElse(0L) * -1L;
     }
 
-//    public long getDailyRental() {
-//
-//        Timestamp startOfDay = Timestamp.valueOf(now.atStartOfDay());
-//        Timestamp endOfDay = Timestamp.valueOf(now.plusDays(1).atStartOfDay().minusNanos(1));
-//
-//        return rentRepository.countByRentDateBeforeAndReturnDateAfterAndReturnInfo(startOfDay, endOfDay, "대여중");
-//    }
-//
-//
-//    public long getDailyDelay() {
-//
-//        Timestamp returnDay = Timestamp.valueOf(now.atStartOfDay());
-//
-//        return rentRepository.countByReturnDateBeforeAndReturnInfo(returnDay, "대여중");
-//    }
+    public Long getDailyRental() {
+
+        Optional<Long> rental = rentRepository.countByRentStatusIsFalse();
+
+        return rental.orElse(0L);
+    }
+
+    public long getDailyDelay() {
+
+        Optional<Long> delay = rentRepository.countByRentEndAfterAndRentStatusIsFalse(now);
+
+        return delay.orElse(0L);
+    }
 }

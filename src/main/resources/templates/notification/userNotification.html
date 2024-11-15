@@ -34,18 +34,18 @@
 			<div class="noti-filterModal-content">
 				<span class="noti-modal-close">&times;</span>		    
 				<h3>필터 설정</h3>		    
-				<label>알림 유형</label>
-				<div id="notiType">
-					<button type="button" class="noti-filterModal-toggleBtn" data-value="SMS">SMS</button>
-					<button type="button" class="noti-filterModal-toggleBtn" data-value="쪽지">쪽지</button>
-				</div>		    
-				<label>전송 상태</label>
+<!--				<label>알림 유형</label>-->
+<!--				<div id="notiType">-->
+<!--					<button type="button" class="noti-filterModal-toggleBtn" data-value="SMS">SMS</button>-->
+<!--					<button type="button" class="noti-filterModal-toggleBtn" data-value="쪽지">쪽지</button>-->
+<!--				</div>		    -->
+				<label>읽음 여부</label>
 		    	<div id="notiStatus">
 					<button type="button" class="noti-filterModal-toggleBtn" data-value="대기">대기</button>
 					<button type="button" class="noti-filterModal-toggleBtn" data-value="성공">성공</button>
 					<button type="button" class="noti-filterModal-toggleBtn" data-value="실패">실패</button>
 				</div>
-				<label>전송 날짜</label>
+				<label>받은 날짜</label>
 				<div class="noti-date-container">
 					<input type="date" id="notiStartDate" value="">
 					<span> ~ </span>
@@ -60,9 +60,9 @@
 	                <th>No.</th>
 	                <th>발신인</th>
 	                <th>알림 내용</th>
-	                <th>알림 유형</th>
-	                <th>전송 상태</th>
-	                <th>전송 날짜</th>
+<!--	                <th>알림 유형</th>-->
+	                <th>읽음 여부</th>
+	                <th>받은 날짜</th>
 	            </tr>
 	        </thead>
 	        <tbody>
@@ -74,9 +74,9 @@
 		        <h3>알림 상세 정보</h3>
 		        <p><strong>발신인 : </strong><span id="noti-detailSender"></span></p>
 		        <p><strong>알림 내용 : </strong><span id="noti-detailContent"></span></p>
-		        <p><strong>알림 유형 : </strong><span id="noti-detailType"></span></p>
-		        <p><strong>전송 상태 : </strong><span id="noti-detailStatus"></span></p>
-		        <p><strong>전송 날짜 : </strong><span id="noti-detailSentDate"></span></p>
+<!--		        <p><strong>알림 유형 : </strong><span id="noti-detailType"></span></p>-->
+		        <p><strong>읽음 여부 : </strong><span id="noti-detailStatus"></span></p>
+		        <p><strong>받은 날짜 : </strong><span id="noti-detailSentDate"></span></p>
 		    </div>
 		</div>
 	</div>

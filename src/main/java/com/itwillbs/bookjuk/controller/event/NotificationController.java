@@ -59,12 +59,12 @@ public class NotificationController {
 			int page = start / length;
 			Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortColumn);
 			Pageable pageable = PageRequest.of(page, length, sort);
-			long totalRecords = notiService.getAllEvent(userNum, Pageable.unpaged()).getTotalElements();
+			long totalRecords = notiService.getAllNoti(userNum, Pageable.unpaged()).getTotalElements();
 			Page<NotiDTO> notiPage;
 			
 			if (searchKeyword.isEmpty()) {
 				if(filter.isEmpty()) {
-					notiPage = notiService.getAllEvent(userNum, pageable);
+					notiPage = notiService.getAllNoti(userNum, pageable);
 				}else {
 					notiPage = notiService.getFilteredEvent(userNum, searchCriteria, searchKeyword, 
 			    			filter, pageable);

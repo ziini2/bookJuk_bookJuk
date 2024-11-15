@@ -44,5 +44,28 @@ public class NotiDTO {
 	
 	// 발신 아이디에서 이름 추출
 	private String sender;
+	
+	// 알림 읽었는지 여부
+	private String readCheck;
+	
+	// 알림 체크 아이디
+	private Long notiCheckedId;
+	
+	// 알림 확인 유무
+	private boolean notiChecked;
+	
+	public NotiDTO(Long notiId, String notiContent, Timestamp notiSentDate, 
+               Long notiCheckedId, boolean notiChecked, Long notiRecipient) {
+		this.notiId = notiId;
+		this.notiContent = notiContent;
+		this.notiSentDate = notiSentDate;
+		this.notiCheckedId = notiCheckedId;
+		this.notiChecked = notiChecked;
+		this.notiRecipient = notiRecipient;
+	}
+	
+
+	
+	
 
 }

@@ -21,12 +21,14 @@ import com.itwillbs.bookjuk.entity.event.CouponEntity;
 import com.itwillbs.bookjuk.entity.event.EventConditionEntity;
 import com.itwillbs.bookjuk.entity.event.EventCountEntity;
 import com.itwillbs.bookjuk.entity.event.EventEntity;
+import com.itwillbs.bookjuk.entity.event.NotiCheckEntity;
 import com.itwillbs.bookjuk.entity.event.NotificationEntity;
 import com.itwillbs.bookjuk.repository.UserRepository;
 import com.itwillbs.bookjuk.repository.event.CouponRepository;
 import com.itwillbs.bookjuk.repository.event.EventConditionRepository;
 import com.itwillbs.bookjuk.repository.event.EventCountRepository;
 import com.itwillbs.bookjuk.repository.event.EventRepository;
+import com.itwillbs.bookjuk.repository.event.NotiCheckRepository;
 import com.itwillbs.bookjuk.repository.event.NotificationRepository;
 import com.itwillbs.bookjuk.util.CouponUtil;
 import com.itwillbs.bookjuk.util.EventConditionParser;
@@ -46,6 +48,7 @@ public class EventService {
 	private final EventCountRepository eventCountRepository;
 	private final CouponRepository couponRepository;
 	private final NotificationRepository notificationRepository;
+	private final NotiCheckRepository notiCheckRepository;
 	
 	@Transactional
 	public void createEvent(EventDTO eventDTO) {
@@ -188,7 +191,7 @@ public class EventService {
                 .build();        
 	}
 	
-	// event_count, 쿠폰, 알림 데이터 생성 메서드
+	// event_count, 쿠폰, 알림, noti_check 데이터 생성 메서드
     @Transactional
     public void createEventEntitiesForUser(List<EventConditionEntity> resultList, UserEntity saveUser) {
     	    	
@@ -235,6 +238,14 @@ public class EventService {
 					.couponType(eventCondition.getEventClearReward())
 					.build();
 			couponRepository.save(couponEntity);
+			
+			// noti_check 생성
+			NotiCheckEntity notiCheckEntity = NotiCheckEntity.builder()
+					.notiId(notificationEntity)
+					.notiRecipient(saveUser)
+					.notiChecked(false)
+					.build();
+			notiCheckRepository.save(notiCheckEntity);
 		}
     	
     }

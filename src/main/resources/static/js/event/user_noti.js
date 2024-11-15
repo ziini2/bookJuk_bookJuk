@@ -82,9 +82,9 @@ $(document).ready(function() {
 	        { data: 'notiId', title: 'No.' },
 	        { data: 'sender', title: '발신인' },
 	        { data: 'notiContent', title: '알림 내용' },
-	        { data: 'notiType', title: '알림 유형' },
-	        { data: 'notiStatus', title: '전송 상태' },
-	        { data: 'notiSentDate', title: '전송 날짜', render: function(data) { return dateChange(data); } }
+//	        { data: 'notiType', title: '알림 유형' },
+	        { data: 'readCheck', title: '읽음 여부' },
+	        { data: 'notiSentDate', title: '받은 날짜', render: function(data) { return dateChange(data); } }
 	    ]
 		
 	});
@@ -108,9 +108,9 @@ $(document).ready(function() {
 	        <option value="notiId">NO</option>
 	        <option value="notiSender">발신인</option>
 	        <option value="notiContent">알림 내용</option>
-	        <option value="notiType">알림 유형</option>
-	        <option value="notiStatus">전송 상태</option>
-	        <option value="notiSentDate">전송 날짜</option>
+//	        <option value="notiType">알림 유형</option>
+	        <option value="readCheck">읽음 여부</option>
+	        <option value="notiSentDate">받은 날짜</option>
 	    </select>
 	`);
 	
@@ -145,7 +145,7 @@ $(document).ready(function() {
 		    "notiSender": 1,
 		    "notiContent": 2,
 		    "notiType": 3,
-		    "notiStatus": 4,
+		    "readCheck": 4,
 		    "notiSentDate": 5
 		};
 		const column = $('#noti-columnSelect').val();
@@ -161,10 +161,10 @@ $(document).ready(function() {
 $(document).ready(function () {
 	const table = $('#noti-table').DataTable();
 	const notiTypeButtons = $('#notiType .noti-filterModal-toggleBtn');
-	const notiStatusButtons = $('#notiStatus .noti-filterModal-toggleBtn');
+	const readCheckButtons = $('#readCheck .noti-filterModal-toggleBtn');
 	const notiDetailModal = $('#noti-detailModal');
 	let notiType = '';
-	let notiStatus = '';
+	let readCheck = '';
 	let notiStartDate = '';
 	let notiEndDate = '';
 	
@@ -180,7 +180,7 @@ $(document).ready(function () {
 	            $('#noti-detailSender').text(data.notiSender);
 	            $('#noti-detailContent').text(data.notiContent);
 	            $('#noti-detailType').text(data.notiType);
-	            $('#noti-detailStatus').text(data.notiStatus);
+	            $('#noti-detailStatus').text(data.readCheck);
 	            $('#noti-detailSentDate').text(dateChange(data.notiSentDate));
 
 	            // 모달 창 표시
@@ -219,61 +219,40 @@ $(document).ready(function () {
 		}
 	});
 
-	// 알림 검색 필터 모달창 내 전송 상태 버튼
-	notiStatusButtons.click(function () {
+	// 알림 검색 필터 모달창 내 읽음 여부 버튼
+	readCheckButtons.click(function () {
 		if ($(this).hasClass('active')) {
 			$(this).removeClass('active');
-			notiStatus = '';
+			readCheck = '';
 		} else {
-			notiStatusButtons.removeClass('active');
+			readCheckButtons.removeClass('active');
 			$(this).addClass('active');
-			notiStatus = $(this).data('value');
+			readCheck = $(this).data('value');
 		}
 	});
   
-	// 알림 검색 필터 모달창 내 전송 날짜 설정
+	// 알림 검색 필터 모달창 내 받은 날짜 설정
 	$.fn.dataTable.ext.search.push(function (data) {
 		
 		const rowNotiType = data[3];
-		const rownotiStatus = data[4];
+		const rowreadCheck = data[4];
 		const rowDate = data[5];
 		if (notiType && rowNotiType !== notiType) return false;
-		if (notiStatus && rownotiStatus !== notiStatus) return false;
+		if (readCheck && rowreadCheck !== readCheck) return false;
 		if (notiStartDate || notiEndDate) {
 			const date = new Date(rowDate);
 			if (notiStartDate && date < new Date(notiStartDate)) return false;
 			if (notiEndDate && date > new Date(notiEndDate)) return false;
     	}
 		return true;
-		
-//		const rowNotiType = data[3];
-//		const rowNotiStatus = data[4];
-//		const rowDateRange = data[5].split(" ~ ");
-//		const rowStartDate = new Date(rowDateRange[0]);
-//		const rowEndDate = new Date(rowDateRange[1]);
-//		const filterStartDate = notiStartDate ? new Date(notiStartDate) : null;
-//	    const filterEndDate = notiEndDate ? new Date(notiEndDate) : null;
-//		if (notiType && rowNotiType !== notiType) return false;
-//		if (notiStatus && rowNotiStatus !== notiStatus) return false;
-//		if (filterStartDate || filterEndDate) {
-//	        if (
-//	            (filterStartDate && filterStartDate <= rowEndDate && filterStartDate >= rowStartDate) || // 필터 시작 날짜가 기간에 포함
-//	            (filterEndDate && filterEndDate >= rowStartDate && filterEndDate <= rowEndDate) || // 필터 종료 날짜가 기간에 포함
-//	            (filterStartDate && filterEndDate && rowStartDate >= filterStartDate && rowEndDate <= filterEndDate) // 기간이 필터 범위에 완전히 포함
-//	        ) {
-//	            return true;
-//	        }
-//	        return false;
-//	    }
-//		return true;
 	});
 
 	// 알림 검색 필터 버튼 눌렀을 때
 	$('#noti-filterBtn').click(() => {
 		notiTypeButtons.removeClass('active');
-		notiStatusButtons.removeClass('active');
+		readCheckButtons.removeClass('active');
 		notiType = '';
-		notiStatus = '';
+		readCheck = '';
 		notiStartDate = '';
 		notiEndDate = '';
 		$('#notiEndDate').attr('min', '');
@@ -314,7 +293,7 @@ $(document).ready(function () {
 	function displayAppliedFilters() {
 		$('#noti-selectedFilter').empty();
     	if (notiType) addFilterChip(notiType, 'notiType');
-    	if (notiStatus) addFilterChip(`${notiStatus}`, 'notiStatus');
+    	if (readCheck) addFilterChip(`${readCheck}`, 'readCheck');
     	if (notiStartDate && notiEndDate) addFilterChip(`${notiStartDate} ~ ${notiEndDate}`, 'date');
 	}
 
@@ -332,7 +311,7 @@ $(document).ready(function () {
 	// 알림 검색 필터 모달창 내 값 초기화
 	function removeFilter(type, text) {
 		if (type === 'notiType') notiType = '';
-    	if (type === 'notiStatus') notiStatus = '';
+    	if (type === 'readCheck') readCheck = '';
     	if (type === 'date') { notiStartDate = ''; notiEndDate = ''; }
 		$(`.noti-filterChip[data-type="${type}"][data-value="${text}"]`).remove();
     	table.draw();

@@ -133,16 +133,14 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
                 .setFirstResult((int) pageable.getOffset())
                 .setMaxResults(pageable.getPageSize())
                 .getResultList();       
-        
-        List<NotificationEntity> resultListto = entityManager.createQuery(query)
-              .getResultList();
-        
-        // 전체 개수 조회
+
+        // 필터링 된 데이터 개수 조회
         CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
         Root<NotificationEntity> countRoot = countQuery.from(NotificationEntity.class);
-//        countRoot.join("eventManager", JoinType.LEFT);
+        countRoot.join("notiRecipient", JoinType.LEFT);
+        countRoot.join("notiSender", JoinType.LEFT);
         countQuery.select(cb.count(countRoot)).where(cb.and(predicates.toArray(new Predicate[0])));
-        long total = resultListto.size();
+        long total = entityManager.createQuery(countQuery).getSingleResult();
         return new PageImpl<>(resultList, pageable, total);
 	}
 }

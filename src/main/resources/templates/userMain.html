@@ -43,7 +43,7 @@
 		<!-- 상단 card -->
 		<div class="container">
 			<div class="row main-search justify-content-center">
-				<!-- 왼쪽 카드들 -->
+				<!-- 왼쪽 검색란 -->
 				<div class="col-md-6">
 					<div class="card mb-3">
 						<div class="card-body">
@@ -51,52 +51,49 @@
 								<img class="search-icon me-2" th:src="@{/images/main/search-icon.png}" alt="searchBooks" style="width: 40px; height: 40px;">
 								<h4 class="my-0">책을 검색해 보세요</h4>
 							</div>
-							<div class="row justify-content-center">
+							<form id="searchForm" class="row justify-content-center" th:action="@{/}" method="get">
 								<div class="col-8">
-									<input class="form-control" type="text" placeholder="검색">
+									<input class="form-control" type="text" placeholder="검색" name="search">
 								</div>
 								<div class="col-3">
 									<button class="btn btn-success w-100" type="submit">검색</button>
 								</div>
-							</div>
+								<!-- 장르 필터 포함 검색을 위한 hidden 값 -->
+								<input type="hidden" name="genre" id="genreHidden" value="">
+								<input type="hidden" name="store" id="storeHidden" value="">
+							</form>
 						</div>
 					</div>
-
+					<!-- 왼쪽 모아보기 -->
 					<div class="card">
 						<div class="card-body">
 							<div class="d-flex align-items-center mb-2">
 								<img class="me-2" th:src="@{/images/main/groupBooks-icon.png}" alt="groupBooks" style="width: 32px; height: 32px;">
-								<h4 class="mb-0">모아보기</h4>
+								<h5 class="mb-0">필터를 적용해서 검색하세요</h5>
 							</div>
 							<div class="d-flex align-items-center gap-2">
 								<div class="dropdown">
-									<button class="btn btn-sm btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									<button id="genreButton" class="btn btn-sm btn-success dropdown-toggle 채ㅣ" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 										장르별
 									</button>
-									<ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="#">Action</a></li>
-										<li><a class="dropdown-item" href="#">Another action</a></li>
-										<li><a class="dropdown-item" href="#">Something else here</a></li>
+									<ul class="dropdown-menu dropdown-scroll">
+										<th:block th:each="genre : ${genreList}">
+											<li>
+												<a class="dropdown-item" onclick="setGenre(this)" th:text="${genre.getGenreName()}"></a>
+											</li>
+										</th:block>
 									</ul>
 								</div>
 								<div class="dropdown">
-									<button class="btn btn-sm btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-										작가별
-									</button>
-									<ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="#">Action</a></li>
-										<li><a class="dropdown-item" href="#">Another action</a></li>
-										<li><a class="dropdown-item" href="#">Something else here</a></li>
-									</ul>
-								</div>
-								<div class="dropdown">
-									<button class="btn btn-sm btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									<button id="storeButton" class="btn btn-sm btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 										지점별
 									</button>
-									<ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="#">Action</a></li>
-										<li><a class="dropdown-item" href="#">Another action</a></li>
-										<li><a class="dropdown-item" href="#">Something else here</a></li>
+									<ul class="dropdown-menu dropdown-scroll">
+										<th:block th:each="store : ${storeList}">
+											<li>
+												<a class="dropdown-item" onclick="setStoreName(this)" th:text="${store.getStoreName()}"></a>
+											</li>
+										</th:block>
 									</ul>
 								</div>
 							</div>
@@ -210,25 +207,25 @@
 
 					<!-- 페이지네이션 -->
 					<div class="d-flex justify-content-center" th:if="${booksInfo.getTotalPages() > 0}">
-					<ul class="pagination pagination-success mb-0">
-						<!-- 이전 10개 묶음으로 이동 -->
-						<li class="page-item" th:if="${booksInfo.getCurrentPage() >= 10}">
-							<a class="page-link" th:href="@{/(page=${T(java.lang.Math).max(0, (booksInfo.getCurrentPage() / 10 - 1) * 10)})}">&lt;</a>
-						</li>
+						<ul class="pagination pagination-success mb-0">
+							<!-- 이전 10개 묶음으로 이동 -->
+							<li class="page-item" th:if="${booksInfo.getCurrentPage() >= 10}">
+								<a class="page-link" th:href="@{/(page=${T(java.lang.Math).max(0, (booksInfo.getCurrentPage() / 10 - 1) * 10)}, genre=${genre}, keyword=${keyword}, store=${store})}">&lt;</a>
+							</li>
 
-						<!-- 현재 페이지 집합 (10개씩 고정) -->
-						<li class="page-item"
-							th:each="i : ${#numbers.sequence((booksInfo.getCurrentPage() / 10) * 10, T(java.lang.Math).min((booksInfo.currentPage / 10 + 1) * 10 - 1, booksInfo.getTotalPages() - 1))}"
-							th:classappend="${i == booksInfo.getCurrentPage()} ? 'active'">
-							<a class="page-link" th:href="@{/(page=${i})}" th:text="${i + 1}">1</a>
-						</li>
+							<!-- 현재 페이지 집합 (10개씩 고정) -->
+							<li class="page-item"
+								th:each="i : ${#numbers.sequence((booksInfo.getCurrentPage() / 10) * 10, T(java.lang.Math).min((booksInfo.currentPage / 10 + 1) * 10 - 1, booksInfo.getTotalPages() - 1))}"
+								th:classappend="${i == booksInfo.getCurrentPage()} ? 'active'">
+								<a class="page-link" th:href="@{/(page=${i}, genre=${genre}, keyword=${keyword}, store=${store})}" th:text="${i + 1}">1</a>
+							</li>
 
-						<!-- 다음 10개 묶음으로 이동 -->
-						<li class="page-item" th:if="${(booksInfo.currentPage / 10 + 1) * 10 < booksInfo.getTotalPages()}">
-							<a class="page-link" th:href="@{/(page=${(booksInfo.getCurrentPage() / 10 + 1) * 10})}">&gt;</a>
-						</li>
-					</ul>
-				</div>
+							<!-- 다음 10개 묶음으로 이동 -->
+							<li class="page-item" th:if="${(booksInfo.currentPage / 10 + 1) * 10 < booksInfo.getTotalPages()}">
+								<a class="page-link" th:href="@{/(page=${(booksInfo.getCurrentPage() / 10 + 1) * 10}, genre=${genre}, keyword=${keyword}, store=${store})}">&gt;</a>
+							</li>
+						</ul>
+					</div>
 					<!-- 페이지네이션 끝 -->
 
 					<!-- 클릭시 모달창 -->
@@ -243,7 +240,7 @@
 									<div id="modal-content" class="container">
 										<div class="container ms-1 d-flex align-items-start gap-3">
 											<!-- 이미지 영역 -->
-											<img src="https://www.nl.go.kr/seoji/fu/ecip/dbfiles/CIP_FILES_TBL/2021/05/06/9791170479512.jpg" alt="bookImage">
+											<img id="bookInfoImage" src="/images/books/noimage.png" alt="bookImage">
 
 											<!-- 책 상세정보  -->
 											<div class="container row pe-2">
@@ -304,5 +301,6 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script th:src="@{/js/main/booksInfo.js}"></script>
 	<script th:src="@{/js/main/bookCartAdd.js}"></script>
+	<script th:src="@{/js/main/filterSet.js}"></script>
 </body>
 </html>

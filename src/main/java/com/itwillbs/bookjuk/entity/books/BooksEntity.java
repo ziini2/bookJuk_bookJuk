@@ -67,4 +67,6 @@ public class BooksEntity {
 	@UpdateTimestamp
 	private Timestamp bookUpdate;
 
+	
+
 }

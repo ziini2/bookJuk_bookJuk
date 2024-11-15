@@ -1,5 +1,6 @@
 package com.itwillbs.bookjuk.service.statistics;
 
+import com.itwillbs.bookjuk.dto.dashboard.TotalStatisticsDTO;
 import com.itwillbs.bookjuk.repository.PaymentRepository;
 import com.itwillbs.bookjuk.repository.PointDealRepository;
 import com.itwillbs.bookjuk.repository.RentRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -72,5 +74,15 @@ public class DashRestService {
         Optional<Long> delay = rentRepository.countByRentEndAfterAndRentStatusIsFalse(now);
 
         return delay.orElse(0L);
+    }
+
+    public List<TotalStatisticsDTO> getTotalStatistics(String period) {
+
+
+
+
+
+
+
     }
 }

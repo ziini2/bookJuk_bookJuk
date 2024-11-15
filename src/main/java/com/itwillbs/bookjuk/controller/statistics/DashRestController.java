@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -52,8 +51,8 @@ public class DashRestController {
 
     // weekly or more dashboard
     @GetMapping("period/total")
-    public ResponseEntity<List<TotalStatisticsDTO>> getTotalStatistics(@RequestParam String period) {
-        return ResponseEntity.ok(dashRestService.getTotalStatistics(period));
+    public ResponseEntity<List<TotalStatisticsDTO>> getTotalStatistics(@RequestParam(defaultValue = "week") String period) {
+        return ResponseEntity.ok(dashRestService.getConsolidatedStatisticsWithFilledDates(period));
     }
 
 

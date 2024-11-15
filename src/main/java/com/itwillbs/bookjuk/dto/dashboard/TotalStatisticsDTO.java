@@ -11,12 +11,13 @@ import java.time.LocalDate;
 @Builder
 public class TotalStatisticsDTO {
 
-    private LocalDate date;
+    private String date;
     private long revenue;
     private long point;
     private long rental;
     private long delay;
     private long newUser;
-    private long totalUser;
+
+
 
 }

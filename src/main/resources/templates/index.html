@@ -106,9 +106,9 @@
                         </div>
                         <div class="radio-buttons  d-flex col align-items-center m-0 justify-content-end gap-2">
                             <!-- 라디오버튼으로 매출, 대여건수, 신규 가입자, 누적 가입자 만들기 -->
-                            <input type="radio" name="detail-option" id="revenue" value="point" checked>
+                            <input type="radio" name="detail-option" id="revenue" value="revenue" checked>
                             <label for="revenue">매출</label>
-                            <input type="radio" name="detail-option" id="point" value="point" checked>
+                            <input type="radio" name="detail-option" id="point" value="point">
                             <label for="point">포인트</label>
                             <input type="radio" name="detail-option" id="rental" value="rental">
                             <label for="rental">대여건수</label>
@@ -116,8 +116,6 @@
                             <label for="delay">연체건수</label>
                             <input type="radio" name="detail-option" id="new-user" value="newUser">
                             <label for="new-user">신규 가입자</label>
-                            <input type="radio" name="detail-option" id="total-user" value="totalUser">
-                            <label for="total-user">누적 가입자</label>
                         </div>
                     </div>
                 </div>
@@ -265,12 +263,13 @@
 
 <!-- 챠트 모음 -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
+<script th:src="@{/js/statistics/dailyStatistics.js}"></script>
 <script th:src="@{/js/statistics/totalGraph.js}"></script>
 <script th:src="@{/js/statistics/pointAccumulationBar.js}"></script>
 <script th:src="@{/js/statistics/revenueBar.js}"></script>
 <script th:src="@{/js/statistics/customerBar.js}"></script>
 <script th:src="@{/js/statistics/delayBar.js}"></script>
-<script th:src="@{/js/statistics/dailyStatistics.js}"></script>
+
 </body>
 
 </html>

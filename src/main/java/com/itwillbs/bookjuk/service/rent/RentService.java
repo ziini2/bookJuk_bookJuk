@@ -1,7 +1,12 @@
 package com.itwillbs.bookjuk.service.rent;
 
+import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
 import com.itwillbs.bookjuk.dto.RentDTO;
 import com.itwillbs.bookjuk.dto.RentResponseDTO;
+import com.itwillbs.bookjuk.entity.UserContentEntity;
+import com.itwillbs.bookjuk.entity.books.BooksEntity;
+import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
+import com.itwillbs.bookjuk.entity.rent.Overdue;
 import com.itwillbs.bookjuk.entity.rent.RentEntity;
 import com.itwillbs.bookjuk.repository.*;
 import jakarta.transaction.Transactional;
@@ -14,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +36,7 @@ public class RentService {
     private final BookInfoRepository bookInfoRepository;
     private final OverdueRepository overdueRepository;
     private final UserContentRepository userContentRepository;
+    private final PointDealRepository pointDealRepository;
 
     // RentEntity -> RentDTO 변환
     private RentDTO toDTO(RentEntity rent) {
@@ -38,8 +45,9 @@ public class RentService {
                 rent.getUser().getUserId(),
                 rent.getUser().getUserName(),
                 rent.getUser().getUserPhone(),
-                rent.getBook().getBookInfoEntity().getBookName(),
                 rent.getBook().getBookInfoEntity().getBookNum(),
+                rent.getBook().getBookInfoEntity().getIsbn(),
+                rent.getBook().getBookInfoEntity().getBookName(),
                 rent.getStoreCode().getStoreName(),
                 rent.getRentStart(),
                 rent.getRentEnd(),
@@ -86,7 +94,7 @@ public class RentService {
                         .map(booksEntities -> rentRepository.findAllByBookIn(booksEntities, pageable))
                         .orElse(Page.empty());
 
-                case "userId" -> userRepository.findByUserIdContaining(keyword)
+                case "userPhone" -> userRepository.findByUserPhoneContaining(keyword)
                         .map(userEntity -> rentRepository.findAllByUserIn(userEntity, pageable))
                         .orElse(Page.empty());
 
@@ -103,7 +111,7 @@ public class RentService {
                         .map(booksEntities -> rentRepository.findAllByBookInAndRentStatusIsTrue(booksEntities, pageable))
                         .orElse(Page.empty());
 
-                case "userId" -> userRepository.findByUserIdContaining(keyword)
+                case "userPhone" -> userRepository.findByUserPhoneContaining(keyword)
                         .map(userEntity -> rentRepository.findAllByUserInAndRentStatusIsTrue(userEntity, pageable))
                         .orElse(Page.empty());
 
@@ -120,7 +128,7 @@ public class RentService {
                         .map(booksEntities -> rentRepository.findAllByBookInAndRentStatusIsFalse(booksEntities, pageable))
                         .orElse(Page.empty());
 
-                case "userId" -> userRepository.findByUserIdContaining(keyword)
+                case "userPhone" -> userRepository.findByUserPhoneContaining(keyword)
                         .map(userEntity -> rentRepository.findAllByUserInAndRentStatusIsFalse(userEntity, pageable))
                         .orElse(Page.empty());
 
@@ -138,15 +146,57 @@ public class RentService {
     @Transactional
     public void returnBook(List<Long> rentNums) {
         rentNums.forEach(rentNum -> {
+            // 1. rent 테이블에 반납일 추가
             RentEntity rent = rentRepository.findById(rentNum).orElseThrow();
             rent.setRentStatus(true);
             rent.setReturnDate(now());
             rentRepository.save(rent);
 
+            // 2. Books 테이블에 대여 가능으로 변경
+            BooksEntity book = rent.getBook();
+            book.setRentStatus(false);
+            booksRepository.save(book);
+
+            // 연체시
+            // 1. overdue 테이블에 연체 기록 추가
+            // 2. PointDeal 테이블에 연체료 추가
+            // 3. UserContent 포인트 차감
             if (rent.getRentEnd().isBefore(now())) {
                 log.info("연체료 부과{}", rent.getRentNum());
+                int perDay = 500;
+                LocalDate now = now();
+                int overPrice = (int) ((rent.getRentEnd().toEpochDay() - now.toEpochDay()) * perDay);
 
+                // 1. overdue 테이블에 연체 기록 추가
+                Overdue overdue = Overdue.builder()
+                        .rent(rent)
+                        .overPrice(overPrice)
+                        .overStart(rent.getRentEnd().plusDays(1))
+                        .overEnd(now)
+                        .build();
+
+                overdueRepository.save(overdue);
+
+                // 2. PointDeal 테이블에 연체료 추가
+                long userNum = rent.getUser().getUserNum();
+                UserContentEntity member = userContentRepository.findByUserEntity_UserNum(userNum);
+                PointDealEntity pointDeal = PointDealEntity.builder()
+                        .userContentEntity(member)
+                        .pointPrice(overPrice)
+                        .pointPayStatus(PointPayStatus.SUCCESSFUL)
+                        .reqDate(LocalDateTime.now())
+                        .pointPayName("연체료")
+                        .overdue(overdue)
+                        .build();
+
+                pointDealRepository.save(pointDeal);
+
+                // 3. UserContent 포인트 차감
+                member.setUserPoint(member.getUserPoint() + overPrice);
+                userContentRepository.save(member);
             }
         });
     }
+
+
 }

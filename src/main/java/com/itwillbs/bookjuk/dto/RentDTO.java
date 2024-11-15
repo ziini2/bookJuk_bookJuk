@@ -15,8 +15,9 @@ public class RentDTO {
     private String userId;
     private String userName;
     private String userPhone;
-    private String bookName;
     private Long bookNum;
+    private String isbn;
+    private String bookName;
     private String storeName;
     private LocalDate rentStart;
     private LocalDate rentEnd;

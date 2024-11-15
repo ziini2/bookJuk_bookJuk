@@ -22,32 +22,49 @@ public class UserPageController {
 	//관리자가 회원페이지로도 이동을 할 수 있게 만든다.
     //이유는 ("/") 하게되면 관리자일때 회원페이지가 아닌 관리자 대시보드 화면으로 넘어가기때문!
     @GetMapping("/")
-    public String userMain(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+    public String userMain(@RequestParam(name = "page", defaultValue = "0") int page,
+                           @RequestParam(name = "search", required = false) String keyword,
+                           @RequestParam(name = "genre", required = false) String genre,
+                           @RequestParam(name = "store", required = false) String store,
+                           Model model) {
         log.info("userMain");
         log.info("userRole: {}", SecurityUtil.getUserRoles());
         log.info("userName: {}", SecurityUtil.getUserName());
         log.info("userNum: {}", SecurityUtil.getUserNum());
+        log.info("search: {}", keyword);
+        log.info("genre: {}", genre);
 
+        //권한이 "ROLE_INACTIVE"라면 리다이렉트
         if (SecurityUtil.hasRole("ROLE_INACTIVE")){
-            return "redirect:/login/phone"; // 권한이 "ROLE_INACTIVE"라면 리다이렉트
+            return "redirect:/login/phone";
         }
         // 관리자가 로그인했을 때는 관리자 대시보드로 리다이렉트
         if (SecurityUtil.hasRole("ROLE_ADMIN")){
-            return "redirect:/admin/dashboard"; // 권한이 "ROLE_ADMIN"라면 리다이렉트
+            //권한이 "ROLE_ADMIN"라면 리다이렉트
+            return "redirect:/admin/dashboard";
         }
 
         //회원 포인트 전달
-        if (SecurityUtil.getUserNum() != null) {
-            model.addAttribute("userPoint", userPageService.getUserPoint(SecurityUtil.getUserNum()));
-        }
+        addCommonAttributes(model);
+
+        //검색과 장르 필터가 값 유지
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("genre", genre);
+        model.addAttribute("store", store);
+
         //대여가능한 페이지 List 전달
-        model.addAttribute("booksInfo", userPageService.getBooksList(page, PAGE_SIZE));
+        model.addAttribute("booksInfo", userPageService.getBooksList(page, PAGE_SIZE, keyword, genre, store));
+
+        //전체 모아보기에 보여줄 장르 List
+        model.addAttribute("genreList", userPageService.getGenreList());
+        //전체 모아보기에 보여줄 지점별 List
+        model.addAttribute("storeList", userPageService.getStoreList());
         
-        model.addAttribute("userName", SecurityUtil.getUserName());
-        
-     // 일반 사용자일 경우에는 userMain 뷰 반환
+        //일반 사용자일 경우에는 userMain 뷰 반환
         return "userMain";
     }
+
+
     
     // 관리자도 회원페이지로 이동할 수 있게 하는 메서드(버튼클릭시)
     @GetMapping("/userMain")
@@ -58,9 +75,15 @@ public class UserPageController {
     	}
     	 return "redirect:/admin/dashboard";
     }
-    
-    
-    
+
+    //유저 포인트를 모델에 담아주는 메서드
+    private void addCommonAttributes(Model model) {
+        // 현재 로그인된 유저의 정보를 모델에 추가
+        if (SecurityUtil.getUserNum() != null) {
+            model.addAttribute("userPoint", userPageService.getUserPoint(SecurityUtil.getUserNum()));
+        }
+        model.addAttribute("userName", SecurityUtil.getUserName());
+    }
     
     
     

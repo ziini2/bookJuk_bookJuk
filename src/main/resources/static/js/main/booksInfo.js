@@ -12,6 +12,8 @@ function getBooksInfo(id) {
         console.log(res.result);
         // 데이터 처리 로직 추가
         const result = res.result.bookNum;
+        if (result.bookImage === null) $("#bookInfoImage").prop("src", "/images/books/noimage.png");
+        else $("#bookInfoImage").prop("src", result.bookImage);
         $("#bookName").text(result.bookName);
         $("#bookAuthor").text(result.author);
         $("#bookPublish").text(result.publish);

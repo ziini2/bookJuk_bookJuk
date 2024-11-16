@@ -22,6 +22,8 @@ public class UserInfoDTO {
     private String userPassword;
     //유저 이름
     private String userName;
+    //유저 성별
+    private String userGender;
     //유저 생년월일 1994-10-00(패턴)
     private String userBirthday;
     //유저 email

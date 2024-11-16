@@ -10,6 +10,16 @@ button {
 div.dataTables_processing {
 	top: 30% !important;
 }
+#noti-notiDelete {
+	padding: 7px 16px;
+	font-size: 16px;
+	font-weight: 600;
+	color: #fff;
+	background-color: #007bff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
 
 
 
@@ -28,6 +38,8 @@ div.dataTables_processing {
 #noti-table th:nth-child(1),
 #noti-table td:nth-child(1) {
 	width: 5% !important;
+	pointer-events: none !important;
+    cursor: default !important;
 }
 #noti-table th:nth-child(2),
 #noti-table td:nth-child(2) {
@@ -61,6 +73,11 @@ div.dataTables_processing {
     font-size: 1rem;
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
+}
+#noti-table th:nth-child(1).sorting::after, 
+#noti-table th:nth-child(1).sorting_asc::after,  
+#noti-table th:nth-child(1).sorting_desc::after {
+    display: none !important;
 }
 /*--- 알림 관리 페이지 datatables ↑ CSS ---*/
 

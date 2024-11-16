@@ -218,7 +218,10 @@ public class EventService {
 			NotificationEntity notificationEntity = NotificationEntity.builder()
 					.notiRecipient(saveUser)
 					.notiSender(eventCondition.getEventId().getEventManager())
-					.notiContent("신규 가입자를 위한 쿠폰입니다. 쿠폰 번호 : " + coupon)
+					.notiContent("신규 가입자를 위한 무료 " +
+								 eventCondition.getEventClearReward() +
+								 " 쿠폰입니다.\n" +
+								 "쿠폰 번호 : " + coupon)
 					.notiType("쪽지")
 					.notiStatus("성공")
 					.notiCreationDate(new Timestamp(System.currentTimeMillis()))

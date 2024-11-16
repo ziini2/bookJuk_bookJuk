@@ -49,11 +49,11 @@ public class UserNotiController {
 		    Integer start = (Integer) payload.get("start");
 		    Integer length = (Integer) payload.get("length");
 		    Integer draw = (Integer) payload.get("draw");
-		    String sortColumn = (String) payload.get("sortColumn");
+		    String sortColumn = "notiId";
 		    String sortDirection = (String) payload.get("sortDirection");
 		    if(sortColumn.equals("sender")) {
 		    	sortColumn = "notiSender";
-		    }
+		    }		    
 			int page = start / length;
 			Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortColumn);
 			Pageable pageable = PageRequest.of(page, length, sort);

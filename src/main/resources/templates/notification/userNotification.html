@@ -30,15 +30,11 @@
 	<main id="main" class="main">
 	<div class="notification container my-4">
 		<h2 style="margin-bottom: 100px;">알림 수신함</h2>
+		<button id="noti-notiDelete">알림 삭제</button>
 		<div id="noti-filterModal">
 			<div class="noti-filterModal-content">
 				<span class="noti-modal-close">&times;</span>		    
-				<h3>필터 설정</h3>		    
-<!--				<label>알림 유형</label>-->
-<!--				<div id="notiType">-->
-<!--					<button type="button" class="noti-filterModal-toggleBtn" data-value="SMS">SMS</button>-->
-<!--					<button type="button" class="noti-filterModal-toggleBtn" data-value="쪽지">쪽지</button>-->
-<!--				</div>		    -->
+				<h3>필터 설정</h3>
 				<label>읽음 여부</label>
 		    	<div id="notiStatus">
 					<button type="button" class="noti-filterModal-toggleBtn" data-value="대기">대기</button>
@@ -57,10 +53,10 @@
 	    <table id="noti-table" class="notification table table-striped table-bordered">
 	        <thead>
 	            <tr>
-	                <th>No.</th>
+	                <th></th>
+					<th>No.</th>
 	                <th>발신인</th>
 	                <th>알림 내용</th>
-<!--	                <th>알림 유형</th>-->
 	                <th>읽음 여부</th>
 	                <th>받은 날짜</th>
 	            </tr>
@@ -74,8 +70,6 @@
 		        <h3>알림 상세 정보</h3>
 		        <p><strong>발신인 : </strong><span id="noti-detailSender"></span></p>
 		        <p><strong>알림 내용 : </strong><span id="noti-detailContent"></span></p>
-<!--		        <p><strong>알림 유형 : </strong><span id="noti-detailType"></span></p>-->
-		        <p><strong>읽음 여부 : </strong><span id="noti-detailStatus"></span></p>
 		        <p><strong>받은 날짜 : </strong><span id="noti-detailSentDate"></span></p>
 		    </div>
 		</div>

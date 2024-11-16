@@ -76,17 +76,33 @@ $(document).ready(function() {
 	        }
 	    },
 		
-		order: [[0, 'desc']], // 여기서 기본 정렬 조건 설정 (0번째 컬럼을 내림차순으로 정렬)
+		order: [[1, 'desc']], // 여기서 기본 정렬 조건 설정 (0번째 컬럼을 내림차순으로 정렬)
 	    
-	    columns: [
-	        { data: 'notiId', title: 'No.' },
-	        { data: 'sender', title: '발신인' },
-	        { data: 'notiContent', title: '알림 내용' },
-//	        { data: 'notiType', title: '알림 유형' },
-	        { data: 'readCheck', title: '읽음 여부' },
-	        { data: 'notiSentDate', title: '받은 날짜', render: function(data) { return dateChange(data); } }
-	    ]
-		
+		columns: [
+		    { 
+		        data: null, 
+		        title: '<input type="checkbox" id="selectAll" />', 
+		        orderable: false, 
+		        render: function(data, type, row) {
+		            return `<input type="checkbox" class="row-checkbox" data-id="${row.notiId}" />`;
+		        } 
+		    },
+		    { data: 'notiId', title: '', visible: false },
+		    { data: 'sender', title: '발신인' },
+		    { data: 'notiContent', title: '알림 내용' },
+		    { data: 'notiChecked', title: '읽음 여부' },
+		    { data: 'notiSentDate', title: '받은 날짜', render: function(data) { return dateChange(data); } }
+		]
+	});
+	
+	// Select All checkbox
+	$('#noti-table').on('click', '#selectAll', function() {
+	    const isChecked = $(this).is(':checked');
+	    $('.row-checkbox').prop('checked', isChecked);
+	});
+	
+	$('#noti-table').on('draw.dt', function() {
+	    $('#selectAll').prop('checked', false);
 	});
 	
 	// 알림 검색 결과 수 상단에 표시
@@ -106,10 +122,10 @@ $(document).ready(function() {
 	    <select id="noti-columnSelect" class="noti-select ms-2" style="width: auto; display: inline;">
 	        <option value="">전체</option>
 	        <option value="notiId">NO</option>
-	        <option value="notiSender">발신인</option>
+	        <option value="sender">발신인</option>
 	        <option value="notiContent">알림 내용</option>
 //	        <option value="notiType">알림 유형</option>
-	        <option value="readCheck">읽음 여부</option>
+	        <option value="notiChecked">읽음 여부</option>
 	        <option value="notiSentDate">받은 날짜</option>
 	    </select>
 	`);
@@ -142,11 +158,10 @@ $(document).ready(function() {
 		const columnMap = {
 		    "": null,
 		    "notiId": 0,
-		    "notiSender": 1,
+		    "sender": 1,
 		    "notiContent": 2,
-		    "notiType": 3,
-		    "readCheck": 4,
-		    "notiSentDate": 5
+		    "notiChecked": 3,
+		    "notiSentDate": 4
 		};
 		const column = $('#noti-columnSelect').val();
 		const columnIndex = columnMap[column];
@@ -161,10 +176,10 @@ $(document).ready(function() {
 $(document).ready(function () {
 	const table = $('#noti-table').DataTable();
 	const notiTypeButtons = $('#notiType .noti-filterModal-toggleBtn');
-	const readCheckButtons = $('#readCheck .noti-filterModal-toggleBtn');
+	const notiCheckedButtons = $('#notiChecked .noti-filterModal-toggleBtn');
 	const notiDetailModal = $('#noti-detailModal');
 	let notiType = '';
-	let readCheck = '';
+	let notiChecked = '';
 	let notiStartDate = '';
 	let notiEndDate = '';
 	
@@ -177,10 +192,10 @@ $(document).ready(function () {
 	        method: 'GET',
 	        success: function(data) {
 	            // 가져온 데이터를 모달 창에 표시
-	            $('#noti-detailSender').text(data.notiSender);
+	            $('#noti-detailSender').text(data.sender);
 	            $('#noti-detailContent').text(data.notiContent);
 	            $('#noti-detailType').text(data.notiType);
-	            $('#noti-detailStatus').text(data.readCheck);
+	            $('#noti-detailStatus').text(data.notiChecked);
 	            $('#noti-detailSentDate').text(dateChange(data.notiSentDate));
 
 	            // 모달 창 표시
@@ -191,12 +206,12 @@ $(document).ready(function () {
 	            alert("알림 세부 정보를 불러오는 데 오류가 발생했습니다.");
 	        }
 	    });
-
 	    // 모달 외부 클릭 시 닫기 이벤트 추가
 	    $(window).on('click.modalClose', function (event) {
 	        if ($(event.target).is($('#noti-detailModal'))) {
 	            $('#noti-detailModal').hide();
 	            $(window).off('click.modalClose');
+				table.draw();
 	        }
 	    });
     });
@@ -204,7 +219,7 @@ $(document).ready(function () {
 	// 알림 상세 모달창 닫기
 	$('.close').on('click', function () {
         notiDetailModal.hide(); // 모달창 숨기기
-        $(window).off('click.modalClose'); // 이벤트 제거
+        $(window).off('click.modalClose'); // 이벤트 제거		
     });
 
 	// 알림 검색 필터 모달창 내 알림 유형 버튼
@@ -220,14 +235,14 @@ $(document).ready(function () {
 	});
 
 	// 알림 검색 필터 모달창 내 읽음 여부 버튼
-	readCheckButtons.click(function () {
+	notiCheckedButtons.click(function () {
 		if ($(this).hasClass('active')) {
 			$(this).removeClass('active');
-			readCheck = '';
+			notiChecked = '';
 		} else {
-			readCheckButtons.removeClass('active');
+			notiCheckedButtons.removeClass('active');
 			$(this).addClass('active');
-			readCheck = $(this).data('value');
+			notiChecked = $(this).data('value');
 		}
 	});
   
@@ -235,10 +250,10 @@ $(document).ready(function () {
 	$.fn.dataTable.ext.search.push(function (data) {
 		
 		const rowNotiType = data[3];
-		const rowreadCheck = data[4];
+		const rownotiChecked = data[4];
 		const rowDate = data[5];
 		if (notiType && rowNotiType !== notiType) return false;
-		if (readCheck && rowreadCheck !== readCheck) return false;
+		if (notiChecked && rownotiChecked !== notiChecked) return false;
 		if (notiStartDate || notiEndDate) {
 			const date = new Date(rowDate);
 			if (notiStartDate && date < new Date(notiStartDate)) return false;
@@ -250,9 +265,9 @@ $(document).ready(function () {
 	// 알림 검색 필터 버튼 눌렀을 때
 	$('#noti-filterBtn').click(() => {
 		notiTypeButtons.removeClass('active');
-		readCheckButtons.removeClass('active');
+		notiCheckedButtons.removeClass('active');
 		notiType = '';
-		readCheck = '';
+		notiChecked = '';
 		notiStartDate = '';
 		notiEndDate = '';
 		$('#notiEndDate').attr('min', '');
@@ -266,6 +281,7 @@ $(document).ready(function () {
 	$('.noti-modal-close').click(() => {
 		$('#noti-filterModal').css('display', 'none');
 		$('#noti-detailModal').css('display', 'none');
+		table.draw();
 	});
 
 	// 알림 검색 필터 모달창 내 완료 버튼
@@ -293,7 +309,7 @@ $(document).ready(function () {
 	function displayAppliedFilters() {
 		$('#noti-selectedFilter').empty();
     	if (notiType) addFilterChip(notiType, 'notiType');
-    	if (readCheck) addFilterChip(`${readCheck}`, 'readCheck');
+    	if (notiChecked) addFilterChip(`${notiChecked}`, 'notiChecked');
     	if (notiStartDate && notiEndDate) addFilterChip(`${notiStartDate} ~ ${notiEndDate}`, 'date');
 	}
 
@@ -311,7 +327,7 @@ $(document).ready(function () {
 	// 알림 검색 필터 모달창 내 값 초기화
 	function removeFilter(type, text) {
 		if (type === 'notiType') notiType = '';
-    	if (type === 'readCheck') readCheck = '';
+    	if (type === 'notiChecked') notiChecked = '';
     	if (type === 'date') { notiStartDate = ''; notiEndDate = ''; }
 		$(`.noti-filterChip[data-type="${type}"][data-value="${text}"]`).remove();
     	table.draw();

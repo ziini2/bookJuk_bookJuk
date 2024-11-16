@@ -8,6 +8,7 @@ import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public interface PointDealRepository extends JpaRepository<PointDealEntity, Long> {
 
@@ -19,4 +20,7 @@ public interface PointDealRepository extends JpaRepository<PointDealEntity, Long
 
     //userInfo 에서 사용
     Page<PointDealEntity> findByUserContentEntity_MemberNum(Long memberNum, Pageable pageable);
+
+    Optional<Long> sumAmountByReqDateBetween(LocalDateTime startOfDay, LocalDateTime endOfDay);
+
 }

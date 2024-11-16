@@ -14,8 +14,8 @@ public interface PointDealRepository extends JpaRepository<PointDealEntity, Long
 
 
     // dashboard에서 사용
-    @Query("SELECT SUM(p.pointPrice) FROM PointDealEntity p WHERE p.reqDate BETWEEN :startOfDay AND :endOfDay")
-    Long sumAmountByReqDateBetween(LocalDateTime startOfDay, LocalDateTime endOfDay);
+//    @Query("SELECT SUM(p.pointPrice) FROM PointDealEntity p WHERE p.reqDate BETWEEN :startOfDay AND :endOfDay")
+//    Long sumAmountByReqDateBetween(LocalDateTime startOfDay, LocalDateTime endOfDay);
 
 
     //userInfo 에서 사용

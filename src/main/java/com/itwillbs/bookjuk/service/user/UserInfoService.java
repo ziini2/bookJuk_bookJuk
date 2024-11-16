@@ -5,7 +5,9 @@ import com.itwillbs.bookjuk.dto.*;
 import com.itwillbs.bookjuk.entity.UserContentEntity;
 import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
+import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
 import com.itwillbs.bookjuk.entity.rent.RentEntity;
+import com.itwillbs.bookjuk.repository.PointDealRepository;
 import com.itwillbs.bookjuk.repository.RentRepository;
 import com.itwillbs.bookjuk.repository.UserContentRepository;
 import com.itwillbs.bookjuk.repository.UserRepository;
@@ -27,6 +29,7 @@ public class UserInfoService {
     private final UserRepository userRepository;
     private final UserContentRepository userContentRepository;
     private final RentRepository rentRepository;
+    private final PointDealRepository pointDealRepository;
 
 
     //유저pk 로 유저 정보 가져오기
@@ -52,6 +55,7 @@ public class UserInfoService {
         userInfoDTO.setUserEmail(userEntity.getUserEmail());
         userInfoDTO.setUserPhone(userEntity.getUserPhone());
         userInfoDTO.setLoginType(userEntity.getLoginType());
+        userInfoDTO.setUserGender(userEntity.getUserGender());
         userInfoDTO.setUserPoint(userContentEntity.getUserPoint());
         userInfoDTO.setBringBook(userContentEntity.getBringBook());
         return userInfoDTO;
@@ -83,6 +87,33 @@ public class UserInfoService {
                 .currentPage(rentEntityList.getNumber())
                 .hasNext(rentEntityList.hasNext())
                 .hasPrevious(rentEntityList.hasPrevious())
+                .build();
+    }
+
+
+    //포인트 사용 정보 가져오기
+    public PointPaginationDTO getPointInfo(Long userNum, int pageSize, int pointPage) {
+        log.info("getPointInfo userNum={}", userNum);
+        Pageable pageable = PageRequest.of(pointPage, pageSize, Sort.by("reqDate").descending());
+        Page<PointDealEntity> pointDealEntityPage = pointDealRepository.findByUserContentEntity_MemberNum(userNum, pageable);
+        log.info("getPointInfo pointDealEntityPage={}", pointDealEntityPage.toString());
+        return toPointPagination(pointDealEntityPage);
+    }
+
+    //PointPaginationDTO 로 변환 메서드
+    public PointPaginationDTO toPointPagination(Page<PointDealEntity> pointDealEntity) {
+        List<PointInfoDTO> pointInfoDTOList = pointDealEntity.stream().map(point -> PointInfoDTO.builder()
+                .reqDate(point.getReqDate().toString())
+                .pointPrice(point.getPointPrice())
+                .pointPayName(point.getPointPayName())
+                .build()).toList();
+
+        return PointPaginationDTO.builder()
+                .items(pointInfoDTOList)
+                .totalPages(pointDealEntity.getTotalPages())
+                .currentPage(pointDealEntity.getNumber())
+                .hasNext(pointDealEntity.hasNext())
+                .hasPrevious(pointDealEntity.hasPrevious())
                 .build();
     }
 }

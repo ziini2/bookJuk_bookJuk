@@ -77,6 +77,13 @@
 							<p class="col-auto my-0" id="userInfo-name" th:text="${userInfo.getUserName()}"></p>
 						</div>
 
+						<!-- userGender -->
+						<div class="row justify-content-start mb-2">
+							<strong class="col-3 me-3">성별</strong>
+							<p class="col-auto my-0" id="userInfo-male" th:if="${userInfo.getUserGender() == 'male'}">남</p>
+							<p class="col-auto my-0" id="userInfo-female" th:if="${userInfo.getUserGender() == 'female'}">여</p>
+						</div>
+
 						<!-- userBirthDay -->
 						<div class="row justify-content-start mb-2">
 							<strong class="col-3 me-3">생년월일</strong>
@@ -136,6 +143,7 @@
 							포인트 거래 내역
 						</button>
 					</p>
+					<!-- 책 대여 상세 내역 -->
 					<div class="collapse mx-2 mb-3" id="rentInfo">
 						<div class="table-responsive">
 							<h5>책 대여 내역</h5>
@@ -169,52 +177,71 @@
 							<div class="d-flex justify-content-center" th:if="${bookRentInfo.getTotalPages() > 0}">
 								<ul class="pagination pagination-success mb-0">
 									<!-- 이전 10개 묶음으로 이동 -->
-									<li class="page-item" th:if="${pagination.hasPreviousGroup}">
-										<a class="page-link" th:href="@{/user/info(rentPage=${pagination.startPage - 1})}">&laquo;</a>
+									<li class="page-item" th:if="${paginationRent.hasPreviousGroup}">
+										<a class="page-link" th:href="@{/user/info(rentPage=${paginationRent.startPage - 1})}">&laquo;</a>
 									</li>
 
 									<!-- 현재 페이지 집합 (10개씩 고정) -->
 									<li class="page-item"
-										th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
+										th:each="i : ${#numbers.sequence(paginationRent.startPage, paginationRent.endPage)}"
 										th:classappend="${i == bookRentInfo.getCurrentPage()} ? 'active'">
 										<a class="page-link" th:href="@{/user/info(rentPage=${i})}" th:text="${i + 1}"></a>
 									</li>
 
 									<!-- 다음 10개 묶음으로 이동 -->
-									<li class="page-item" th:if="${pagination.hasNextGroup}">
-										<a class="page-link" th:href="@{/user/info(rentPage=${pagination.endPage + 1})}">&raquo;</a>
+									<li class="page-item" th:if="${paginationRent.hasNextGroup}">
+										<a class="page-link" th:href="@{/user/info(rentPage=${paginationRent.endPage + 1})}">&raquo;</a>
 									</li>
 								</ul>
 							</div>
 							<!-- 페이지네이션 끝 -->
 						</div>
 					</div>
+					<!-- 포인트 사용 상세 내역 -->
 					<div class="collapse mx-2 mb-3" id="pointInfo">
 						<div class="table-responsive">
 							<h5>포인트 상세 내역</h5>
 							<hr class="my-2">
 							<table class="table table-hover text-center">
 								<thead>
-								<tr>
-									<th scope="col">포인트</th>
-									<th scope="col">책 이름</th>
-									<th scope="col">작가</th>
-									<th scope="col">장르</th>
-									<th scope="col">대여 가능 지점</th>
-									<th scope="col">대여료</th>
-								</tr>
+									<tr>
+										<th scope="col">사용일자</th>
+										<th scope="col">포인트 거래 금액</th>
+										<th scope="col">포인트 거래 품목</th>
+									</tr>
 								</thead>
 								<tbody>
-								<tr>
-									<td>책 번호</td>
-									<td>책 이름</td>
-									<td>작가</td>
-									<td>장르</td>
-									<td>대여 가능 지점</td>
-									<td>대여료</td>
-								</tr>
+									<th:block th:each="point : ${pointInfo.getItems()}">
+										<tr>
+											<td th:text="${point.getReqDate()}"></td>
+											<td th:text="${point.getPointPrice()}"></td>
+											<td th:text="${point.getPointPayName()}"></td>
+										</tr>
+									</th:block>
 								</tbody>
 							</table>
+							<!-- 페이지네이션 -->
+							<div class="d-flex justify-content-center" th:if="${pointInfo.getTotalPages() > 0}">
+								<ul class="pagination pagination-success mb-0">
+									<!-- 이전 10개 묶음으로 이동 -->
+									<li class="page-item" th:if="${paginationPoint.hasPreviousGroup}">
+										<a class="page-link" th:href="@{/user/info(pointPage=${paginationPoint.startPage - 1})}">&laquo;</a>
+									</li>
+
+									<!-- 현재 페이지 집합 (10개씩 고정) -->
+									<li class="page-item"
+										th:each="i : ${#numbers.sequence(paginationPoint.startPage, paginationPoint.endPage)}"
+										th:classappend="${i == pointInfo.getCurrentPage()} ? 'active'">
+										<a class="page-link" th:href="@{/user/info(pointPage=${i})}" th:text="${i + 1}"></a>
+									</li>
+
+									<!-- 다음 10개 묶음으로 이동 -->
+									<li class="page-item" th:if="${paginationPoint.hasNextGroup}">
+										<a class="page-link" th:href="@{/user/info(pointPage=${paginationPoint.endPage + 1})}">&raquo;</a>
+									</li>
+								</ul>
+							</div>
+							<!-- 페이지네이션 끝 -->
 						</div>
 					</div>
 				</div>

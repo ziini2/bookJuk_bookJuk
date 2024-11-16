@@ -11,9 +11,25 @@
     <div class="form-wrapper">
         <div class="form">
             <div class="input-group headerTitle">
-                <h3 class="header-phoneValidate">전화번호 인증</h3>
-                <p class="header-phoneValidate example">(전화번호 인증해야 페이지 사용할 수 있습니다.)</p>
+                <h3 class="header-phoneValidate">추가정보 인증</h3>
+                <p class="header-phoneValidate example">(추가정보 인증해야 페이지 사용할 수 있습니다.)</p>
             </div>
+
+            <!-- userGender 입력란 -->
+            <div class="input-group">
+                <input type="radio" id="male" name="userGender" value="male">
+                <label for="male">남성</label>
+
+                <input type="radio" id="female" name="userGender" value="female">
+                <label for="female">여성</label>
+            </div>
+
+            <!-- userBirthday 입력란 -->
+            <div class="input-group">
+                <i class="bx bx-mail-send"></i>
+                <input id="join-userBirthday" name="userBirthday" type="text" placeholder="생년월일 (ex. 2000년 10월 10일)" />
+            </div>
+
 
             <!-- 전화번호 입력 -->
             <div class="input-group">

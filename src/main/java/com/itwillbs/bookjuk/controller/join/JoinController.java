@@ -106,19 +106,15 @@ public class JoinController {
         return Map.of("RESULT", "FAIL");
     }
 
-    //간편로그인 시 전화번호 저장 페이지
-    @PostMapping("/join/phone")
+    //간편로그인 시 추가정보 저장 페이지
+    @PostMapping("/join/addInfo")
     @ResponseBody
-    public Map<String, String> phoneSave(@RequestBody String userPhone) {
+    public Map<String, String> userAddInfoSave(@RequestBody UserDTO userDTO) {
         log.info("phoneSave");
-        log.info("userPhone: {}", userPhone);
-        //1. 전화번호 입력페이지로 이동시키고 전화번호 등록후 USER_ROLE값 변경 시켜주면됨!
-        //  - 전화번호 입력하는 페이지 보여주고
-        //  - 전화번호 중복확인 - userCheck 로 보내서 체크
-        //  - 전화번호 중복확인후 저장 - saveUserPhone <<
-        //  - 전화번호 저장후 리다이렉트 메인으로 - SUCCESS 반환해서 js에서 메인으로 리다이렉트
+        log.info("userPhone: {}", userDTO);
+
         Long userNum = SecurityUtil.getUserNum();
-        boolean isSaved = joinService.saveUserPhone(userNum, userPhone);
+        boolean isSaved = joinService.saveUserAddInfo(userNum, userDTO);
         log.info("isSaved: {}", isSaved);
         if (isSaved){
             return Map.of("RESULT", "SUCCESS");

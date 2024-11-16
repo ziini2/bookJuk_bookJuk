@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.itwillbs.bookjuk.entity.StoreEntity;
 import com.itwillbs.bookjuk.entity.UserEntity;
 
+import java.util.List;
+
 public interface StoreRepository extends JpaRepository<StoreEntity, Long> {
 
 //	Page<StoreEntity> findByStoreNameContaining(Pageable pageable, String search);
@@ -43,5 +45,7 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Long> {
 	@Modifying
 	@Query("UPDATE UserEntity u SET u.activate = :status WHERE u.userNum = :userNum")
 	void deleteUser(@Param("userNum") Long userNum, @Param("status") int status);
+
+	List<StoreEntity> findAllStoreNameByStoreStatus(String storeStatus);
 
 }

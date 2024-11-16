@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.bookjuk.dto.CouponDTO;
+import com.itwillbs.bookjuk.entity.UserContentEntity;
 import com.itwillbs.bookjuk.entity.event.CouponEntity;
+import com.itwillbs.bookjuk.repository.UserContentRepository;
 import com.itwillbs.bookjuk.repository.event.CouponRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CouponService {
 	
 	private final CouponRepository couponRepository;
+	private final UserContentRepository userContentRepository;
 	
 	public Page<CouponDTO> getAllCoupon(Long userNum, Pageable pageable) {
 		try {
@@ -108,6 +111,7 @@ public class CouponService {
 
 	
 	// 유저 pk, 쿠폰 번호, 쿠폰 상태가 유효 인지 조회해서 데이터가 있으면 쿠폰 상태 완료로 변경
+	@Transactional
 	public boolean useCoupon(Long userNum, String couponNum) {
 		Optional<CouponEntity> couponOpt = couponRepository.findByUserNum_UserNumAndCouponNumAndCouponStatus(userNum, couponNum, "유효");
 
@@ -115,6 +119,13 @@ public class CouponService {
             CouponEntity coupon = couponOpt.get();
             coupon.setCouponStatus("완료");
             couponRepository.save(coupon);
+            UserContentEntity userContentEntity = userContentRepository.findByUserEntity_UserNum(userNum);
+            // 숫자만 추출
+            String result = coupon.getEventConditionId().getEventClearReward();
+            int couponReward = Integer.parseInt(result.replaceAll("[^\\d]", ""));
+            int reward = userContentEntity.getUserPoint() + couponReward;
+            userContentEntity.setUserPoint(reward);
+            userContentRepository.save(userContentEntity);
             return true;
         }
         return false;

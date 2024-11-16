@@ -1,137 +1,203 @@
-//package com.itwillbs.bookjuk.service.rent;
-//
-//import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
-//import com.itwillbs.bookjuk.entity.rent.RentEntity;
-//import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
-//import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
-//import com.itwillbs.bookjuk.repository.BookInfoRepository;
-//import com.itwillbs.bookjuk.repository.PointDealRepository;
-//import com.itwillbs.bookjuk.repository.RentRepository;
-//import jakarta.annotation.PostConstruct;
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.data.domain.Page;
-//import org.springframework.data.domain.Pageable;
-//import org.springframework.scheduling.annotation.Scheduled;
-//import org.springframework.stereotype.Service;
-//
-//import java.sql.Timestamp;
-//import java.time.Instant;
-//import java.time.LocalDate;
-//import java.time.LocalDateTime;
-//import java.util.List;
-//import java.util.Optional;
-//
-//@Service
-//@RequiredArgsConstructor
-//@Slf4j
-//public class RentService {
-//
-//	private final RentRepository rentRepository;
-//	private final PointDealRepository pointDealRepository;
-//	private final BookInfoRepository bookInfoRepository;
-//
-//	public Page<RentEntity> getRentList(Pageable pageable) {
-//		log.info("RentService getRentList()");
-//
-//		return rentRepository.findAll(pageable);
-//	}
-//
-//	public void updateReturnInfo(Long rentNum, String returnInfo) {
-//        log.info("RentService updateReturnInfo() - rentNum: {}, returnInfo: {}", rentNum, returnInfo);
-//
-//        Optional<RentEntity> rentOpt = rentRepository.findById(rentNum);
-//        if (rentOpt.isPresent()) {
-//            RentEntity rent = rentOpt.get();
-//            rent.setReturnInfo(returnInfo);
-//
-//            // returnInfo가 "반납완료"인 경우에만 returnDate를 현재 시간으로 설정
-//            if ("반납완료".equals(returnInfo)) {
-//                rent.setReturnDate(Timestamp.from(Instant.now()));
-//            } else {
-//                // 반납 상태가 "반납완료"가 아닌 경우 returnDate를 null로 설정할 수 있음
-//                rent.setReturnDate(null);
-//            }
-//
-//            rentRepository.save(rent);
-//        } else {
-//            throw new IllegalArgumentException("잘못된 대여 번호입니다: " + rentNum);
-//        }
-//    }
-//
-//	// 서버 시작 시 실행되는 초기화 메서드
-//	@PostConstruct
-//	public void updateOverdueRentalsOnStartup() {
-//		log.info("서버 시작 시 연체 상태 업데이트 시작");
-//		updateOverdueRentals();
-//		log.info("서버 시작 시 연체 상태 업데이트 완료");
-//	}
-//
-//	@Scheduled(cron = "0 0 0 * * ?")
-//	public void updateOverdueRentals() {
-//	    log.info("연체 상태 업데이트 시작");
-//
-//	    LocalDate oneWeekAgoDate = LocalDate.now().minusDays(7);
-//	    Timestamp oneWeekAgoTimestamp = Timestamp.valueOf(oneWeekAgoDate.atStartOfDay());
-//
-//	    List<RentEntity> overdueRentals = rentRepository.findByReturnDateIsNullAndRentDateBefore(oneWeekAgoTimestamp);
-//	    for (RentEntity rent : overdueRentals) {
-//	        rent.setReturnInfo("연체중");
-//	        rentRepository.save(rent);
-//	    }
-//
-//	    log.info("연체 상태 업데이트 완료");
-//	}
-//
-////	public List<RentEntity> searchByCriteria(String criteria, String keyword) {
-////		log.info("searchByCriteria called with criteria: " + criteria + ", keyword: " + keyword);
-////        switch (criteria) {
-////            case "userName":
-////                return rentRepository.findByUserNameContainingOrderByRentNumDesc(keyword);
-////            case "userId":
-////                return rentRepository.findByUserIdContainingOrderByRentNumDesc(keyword);
-////            case "bookName":
-////                return rentRepository.findByBookNameContainingOrderByRentNumDesc(keyword);
-////            default:
-////                return new ArrayList<>(); // 조건에 맞지 않으면 빈 리스트 반환
-////        }
-////    }
-//
-//	public Page<RentEntity> searchByCriteria(String criteria, String keyword, Pageable pageable) {
-//        log.info("searchByCriteria 호출됨 - 기준: {}, 키워드: {}", criteria, keyword);
-//        return switch (criteria) {
-//            case "userName" -> rentRepository.findByUserNameContaining(keyword, pageable);
-//            case "userId" -> rentRepository.findByUserIdContaining(keyword, pageable);
-//            case "bookName" -> rentRepository.findByBookNameContaining(keyword, pageable);
-//            default -> Page.empty(pageable); // 조건이 맞지 않으면 빈 페이지 반환
-//        };
-//	}
-//
-//	//대여등록
-//	public void registerRent(RentEntity rentEntity) {
-//	    log.info("대여 등록 시작");
-//
-//	    // RentEntity 저장
-//	    rentRepository.save(rentEntity);
-//
-//	    // BooksEntity에서 rentMoney 가져오기
-//	    Optional<BookInfoEntity> bookOpt = bookInfoRepository.findById(rentEntity.getBookNum());
-//	    if (bookOpt.isEmpty()) {
-//	        throw new IllegalArgumentException("존재하지 않는 책 번호입니다: " + rentEntity.getBookNum());
-//	    }
-//	    Long rentMoney = bookOpt.get().getRentMoney();
-//
-//	    // PointDeal 생성 및 저장
-//	    PointDealEntity pointDeal = PointDealEntity.builder()
-//	            .pointPrice(rentMoney)
-//	            .pointPayStatus(PointPayStatus.SUCCESSFUL)
-//	            .reqDate(LocalDateTime.now())
-//	            .build();
-//	    pointDealRepository.save(pointDeal);
-//
-//	    log.info("대여 등록 완료");
-//	}
-//
-//
-//
-//}
+package com.itwillbs.bookjuk.service.rent;
+
+import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
+import com.itwillbs.bookjuk.dto.RentDTO;
+import com.itwillbs.bookjuk.dto.RentResponseDTO;
+import com.itwillbs.bookjuk.entity.UserContentEntity;
+import com.itwillbs.bookjuk.entity.books.BooksEntity;
+import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
+import com.itwillbs.bookjuk.entity.rent.Overdue;
+import com.itwillbs.bookjuk.entity.rent.RentEntity;
+import com.itwillbs.bookjuk.repository.*;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.time.LocalDate.now;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class RentService {
+
+    private final RentRepository rentRepository;
+    private final UserRepository userRepository;
+    private final BooksRepository booksRepository;
+    private final BookInfoRepository bookInfoRepository;
+    private final OverdueRepository overdueRepository;
+    private final UserContentRepository userContentRepository;
+    private final PointDealRepository pointDealRepository;
+
+    // RentEntity -> RentDTO 변환
+    private RentDTO toDTO(RentEntity rent) {
+        return new RentDTO(
+                rent.getRentNum(),
+                rent.getUser().getUserId(),
+                rent.getUser().getUserName(),
+                rent.getUser().getUserPhone(),
+                rent.getBook().getBookInfoEntity().getBookNum(),
+                rent.getBook().getBookInfoEntity().getIsbn(),
+                rent.getBook().getBookInfoEntity().getBookName(),
+                rent.getStoreCode().getStoreName(),
+                rent.getRentStart(),
+                rent.getRentEnd(),
+                rent.getReturnDate(),
+                rent.getRentStatus() ? "반납 완료" : "대여 중"
+        );
+    }
+
+    // 전체 RentEntity를 RentResponseDTO로 반환
+    public RentResponseDTO findAllWithDTO(Boolean rented, Boolean returned, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("rentNum").descending());
+        Page<RentEntity> rentPage = null;
+        List<RentDTO> content = null;
+
+        if (rented && returned) {
+            rentPage = rentRepository.findAll(pageable);
+            content = rentPage.getContent().stream().map(this::toDTO).toList();
+        } else if (!rented) {
+            rentPage = rentRepository.findAllByRentStatusIsTrue(pageable);
+            content = rentPage.getContent().stream().map(this::toDTO).toList();
+        } else {
+            rentPage = rentRepository.findAllByRentStatusIsFalse(pageable);
+            content = rentPage.getContent().stream().map(this::toDTO).toList();
+        }
+
+        return new RentResponseDTO(content, rentPage.getNumber(), rentPage.getTotalPages(), rentPage.getTotalElements());
+    }
+
+    // 검색 조건에 따라 RentEntity를 RentResponseDTO로 반환
+    public RentResponseDTO findAllBySearchWithDTO(
+            String criteria, String keyword, Boolean rented, Boolean returned, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("rentNum").descending());
+
+        Page<RentEntity> rentPage = null;
+
+        if (rented && returned) {
+            rentPage = switch (criteria) {
+                case "userName" -> userRepository.findAllByUserNameContaining(keyword)
+                        .map(userEntities -> rentRepository.findAllByUserIn(userEntities, pageable))
+                        .orElse(Page.empty());
+
+                case "bookName" -> bookInfoRepository.findAllByBookNameContaining(keyword)
+                        .flatMap(booksRepository::findAllByBookInfoEntityIn)
+                        .map(booksEntities -> rentRepository.findAllByBookIn(booksEntities, pageable))
+                        .orElse(Page.empty());
+
+                case "userPhone" -> userRepository.findByUserPhoneContaining(keyword)
+                        .map(userEntity -> rentRepository.findAllByUserIn(userEntity, pageable))
+                        .orElse(Page.empty());
+
+                default -> Page.empty();
+            };
+        } else if (!rented) {
+            rentPage = switch (criteria) {
+                case "userName" -> userRepository.findAllByUserNameContaining(keyword)
+                        .map(userEntities -> rentRepository.findAllByUserInAndRentStatusIsTrue(userEntities, pageable))
+                        .orElse(Page.empty());
+
+                case "bookName" -> bookInfoRepository.findAllByBookNameContaining(keyword)
+                        .flatMap(booksRepository::findAllByBookInfoEntityIn)
+                        .map(booksEntities -> rentRepository.findAllByBookInAndRentStatusIsTrue(booksEntities, pageable))
+                        .orElse(Page.empty());
+
+                case "userPhone" -> userRepository.findByUserPhoneContaining(keyword)
+                        .map(userEntity -> rentRepository.findAllByUserInAndRentStatusIsTrue(userEntity, pageable))
+                        .orElse(Page.empty());
+
+                default -> Page.empty();
+            };
+        } else {
+            rentPage = switch (criteria) {
+                case "userName" -> userRepository.findAllByUserNameContaining(keyword)
+                        .map(userEntities -> rentRepository.findAllByUserInAndRentStatusIsFalse(userEntities, pageable))
+                        .orElse(Page.empty());
+
+                case "bookName" -> bookInfoRepository.findAllByBookNameContaining(keyword)
+                        .flatMap(booksRepository::findAllByBookInfoEntityIn)
+                        .map(booksEntities -> rentRepository.findAllByBookInAndRentStatusIsFalse(booksEntities, pageable))
+                        .orElse(Page.empty());
+
+                case "userPhone" -> userRepository.findByUserPhoneContaining(keyword)
+                        .map(userEntity -> rentRepository.findAllByUserInAndRentStatusIsFalse(userEntity, pageable))
+                        .orElse(Page.empty());
+
+                default -> Page.empty();
+            };
+        }
+
+
+        List<RentDTO> content = rentPage.getContent().stream().map(this::toDTO).collect(Collectors.toList());
+
+
+        return new RentResponseDTO(content, rentPage.getNumber(), rentPage.getTotalPages(), rentPage.getTotalElements());
+    }
+
+    @Transactional
+    public void returnBook(List<Long> rentNums) {
+        rentNums.forEach(rentNum -> {
+            // 1. rent 테이블에 반납일 추가
+            RentEntity rent = rentRepository.findById(rentNum).orElseThrow();
+            rent.setRentStatus(true);
+            rent.setReturnDate(now());
+            rentRepository.save(rent);
+
+            // 2. Books 테이블에 대여 가능으로 변경
+            BooksEntity book = rent.getBook();
+            book.setRentStatus(false);
+            booksRepository.save(book);
+
+            // 연체시
+            // 1. overdue 테이블에 연체 기록 추가
+            // 2. PointDeal 테이블에 연체료 추가
+            // 3. UserContent 포인트 차감
+            if (rent.getRentEnd().isBefore(now())) {
+                log.info("연체료 부과{}", rent.getRentNum());
+                int perDay = 500;
+                LocalDate now = now();
+                int overPrice = (int) ((rent.getRentEnd().toEpochDay() - now.toEpochDay()) * perDay);
+
+                // 1. overdue 테이블에 연체 기록 추가
+                Overdue overdue = Overdue.builder()
+                        .rent(rent)
+                        .overPrice(overPrice)
+                        .overStart(rent.getRentEnd().plusDays(1))
+                        .overEnd(now)
+                        .build();
+
+                overdueRepository.save(overdue);
+
+                // 2. PointDeal 테이블에 연체료 추가
+                long userNum = rent.getUser().getUserNum();
+                UserContentEntity member = userContentRepository.findByUserEntity_UserNum(userNum);
+                PointDealEntity pointDeal = PointDealEntity.builder()
+                        .userContentEntity(member)
+                        .pointPrice(overPrice)
+                        .pointPayStatus(PointPayStatus.SUCCESSFUL)
+                        .reqDate(LocalDateTime.now())
+                        .pointPayName("연체료")
+                        .rent(rent)
+                        .overdue(overdue)
+                        .build();
+
+                pointDealRepository.save(pointDeal);
+
+                // 3. UserContent 포인트 차감
+                member.setUserPoint(member.getUserPoint() + overPrice);
+                userContentRepository.save(member);
+            }
+        });
+    }
+
+
+}

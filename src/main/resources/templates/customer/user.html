@@ -58,9 +58,10 @@
 							<div class="col d-flex justify-content-between">
 								<!--검색-->
 								<div class="search-bar">
-									<form class="search-form d-flex align-items-center" method="POST" action="#">
-										<input name="search" class="form-control me-2" type="search"
-											placeholder="검색" aria-label="Search">
+									<form class="search-form d-flex align-items-center" method="get"
+										action="/admin/user/user_list">
+										<input name="search" class="form-control me-2" type="search" placeholder="검색"
+											aria-label="Search">
 										<button class="btn btn-outline-success" type="submit">Search</button>
 									</form>
 								</div>
@@ -78,7 +79,7 @@
 										<th>이메일</th>
 										<th>생성일</th>
 										<th>등급</th>
-<!--										<th></th>-->
+										<!--										<th></th>-->
 									</tr>
 
 								</thead>
@@ -91,30 +92,41 @@
 										<td th:text="${user.userEmail}"></td>
 										<td th:text="${user.createDate}"></td>
 										<td>일반</td>
-<!--										<td>-->
-<!--											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"-->
-<!--												style="cursor: pointer;" fill="currentColor" class="bi bi-trash me-2"-->
-<!--												viewBox="0 0 16 16" onclick="deleteUser()">-->
-<!--												<path-->
-<!--													d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />-->
-<!--												<path-->
-<!--													d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />-->
-<!--											</svg>-->
-<!--										</td>-->
+										<!--										<td>-->
+										<!--											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"-->
+										<!--												style="cursor: pointer;" fill="currentColor" class="bi bi-trash me-2"-->
+										<!--												viewBox="0 0 16 16" onclick="deleteUser()">-->
+										<!--												<path-->
+										<!--													d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />-->
+										<!--												<path-->
+										<!--													d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />-->
+										<!--											</svg>-->
+										<!--										</td>-->
 									</tr>
 								</tbody>
 							</table>
 							<!-- End Table with stripped rows -->
 
-							<nav aria-label="Page navigation example">
+							<nav aria-label="Page navigation example" th:if="${userList != null}">
 								<ul class="pagination">
-									<li class="page-item"><a class="page-link" href="#">이전</a></li>
+									<li class="page-item"><a class="page-link"
+											th:href="|@{/admin/user/user_list(page=${currentPage}-1, search=${search})}|"
+											th:text="이전" th:if="${currentPage > 1}"></a></li>
 
-									<li class="page-item"><a class="page-link" href="#">1</a></li>
+									<li class="page-item" th:each="page:${#numbers.sequence(startPage, endPage)}">
+										<span class="page-link" th:if="${page == currentPage}" th:text="${page}"></span>
+										<span th:unless="${page == currentPage}">
+											<a class="page-link"
+												th:href="|@{/admin/user/user_list(page=${page}, search=${search})}|"
+												th:text="${page}"></a>
+										</span>
+									</li>
 
-									<li class="page-item"><a class="page-link" href="#">다음</a></li>
+									<li class="page-item"><a class="page-link"
+											th:href="|@{/admin/user/user_list(page=${currentPage}+1, search=${search})}|"
+											th:text="다음" th:if="${currentPage < totalPages}"></a></li>
 								</ul>
-							</nav><!-- End Basic Pagination -->
+							</nav>
 
 						</div>
 					</div>
@@ -129,11 +141,7 @@
 	<!-- 사이드바 열었다 닫았다 하는거 -->
 	<script th:src="@{/js/common/main.js}"></script>
 
-	<script>
-		function deleteUser() {
-			alert("클릭");
-		}
-	</script>
+
 
 </body>
 

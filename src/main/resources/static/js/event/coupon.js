@@ -1,16 +1,26 @@
+// 날짜 형식을 YYYY-MM-DD 00:00:00 으로 변경
+function dateChange(data) {
+    const date = new Date(data);
+    const formattedDate = date.toISOString().slice(0, 10);
+    return formattedDate;
+}
+
 $(document).ready(function() {
 	// datatables 라이브러리 설정
     const table = $('#coupon-table').DataTable({
         paging: true,
         searching: true,
+		processing: true,
+		pagingType: "full_numbers",
         info: true,
+		serverSide: true,
 		pageLength: 25,
+		lengthMenu: [25, 50, 100, 200],
         language: {
             search: "",
 			info: "",
 			infoEmpty: "",
 			infoFiltered: "",
-			infoPostFix: "",
 			lengthMenu: 
                `<select class="coupon-select">
 			   		<option value="25">25개씩 보기</option>
@@ -24,7 +34,59 @@ $(document).ready(function() {
             }
         },
 		dom: '<"d-flex justify-content-between align-items-end"<"d-flex align-items-end dataTables_filter_wrapper"f><"dataTables_length_wrapper"l>>rt<"d-flex justify-content-center"p>',
-    });
+    
+		ajax: {
+	        url: '/admin/getCoupon',                   // 데이터 요청 URL
+	        type: 'POST',                             // HTTP 메서드 설정
+	        contentType: 'application/json; charset=UTF-8',  // 요청 Content-Type 설정
+	        dataSrc: 'data',                          // 데이터 소스 경로 설정
+	        data: function(d) {
+	            console.log(d);
+	
+	            // 요청 중단 조건: 데이터 길이가 0인 경우
+	            if (d.length === 0) {
+	                console.log("No more data to send.");
+	                return false;
+	            }
+	
+	            // 정렬 및 필터링 조건 설정
+	            const order = d.order[0];
+	            const columnIdx = order.column;
+	            const sortDirection = order.dir;
+	            const sortColumn = d.columns[columnIdx].data;
+	
+	            // 서버로 전송할 데이터 객체
+	            return JSON.stringify({
+	                searchCriteria: $('#coupon-columnSelect').val(),
+	                searchKeyword: $('#coupon-table_filter input').val(),
+	                filter: $('#coupon-selectedFilter .coupon-filterChip').map(function() {
+	                    return { type: $(this).data('type'), value: $(this).data('value') };
+	                }).get(),
+	                start: d.start || 0,
+	                length: d.length || 25,
+	                draw: d.draw,
+	                sortColumn: sortColumn,
+	                sortDirection: sortDirection
+	            });
+	        },
+			error: function(error, thrown) {
+	            alert("서버 요청 중 오류가 발생했습니다.");
+	            console.error("Error: ", error);
+	            console.error("Thrown Error: ", thrown);
+	        }
+	    },
+		
+		order: [[0, 'desc']], // 여기서 기본 정렬 조건 설정 (0번째 컬럼을 내림차순으로 정렬)
+	    
+	    columns: [
+	        { data: 'couponId', title: 'No.' },
+	        { data: 'eventTitle', title: '이벤트 제목' },
+	        { data: 'userId', title: '유저 아이디' },
+	        { data: 'couponStatus', title: '쿠폰 상태' },
+	        { data: 'couponType', title: '쿠폰 종류' },
+	        { data: 'couponPeriod', title: '쿠폰 유효기간', render: function(data) { return dateChange(data); } }
+	    ]		
+	});
 	
 	// 쿠폰 검색 결과 수 상단에 표시
     $('.dataTables_length').before('<div id="coupon-searchResults" style="text-align: right;">&nbsp;</div>');
@@ -32,6 +94,7 @@ $(document).ready(function() {
     // 쿠폰 검색 결과 수 업데이트
     table.on('draw', function() {
         const info = table.page.info();
+		page = table.page.info().page;
         $('#coupon-searchResults').text(`검색 결과 : ${info.recordsDisplay}개`);
     });
 
@@ -41,12 +104,12 @@ $(document).ready(function() {
 	$(".dataTables_filter").prepend(`
 	    <select id="coupon-columnSelect" class="coupon-select ms-2" style="width: auto; display: inline;">
 	        <option value="">전체</option>
-	        <option value="0">NO</option>
-	        <option value="1">이벤트 제목</option>
-	        <option value="2">유저 아이디</option>
-	        <option value="3">쿠폰 상태</option>
-	        <option value="4">쿠폰 종류</option>
-	        <option value="5">쿠폰 유효기간</option>
+	        <option value="couponId">NO</option>
+	        <option value="eventTitle">이벤트 제목</option>
+	        <option value="userId">유저 아이디</option>
+	        <option value="couponStatus">쿠폰 상태</option>
+	        <option value="couponType">쿠폰 종류</option>
+	        <option value="couponPeriod">쿠폰 유효기간</option>
 	    </select>
 	`);
 	
@@ -75,12 +138,22 @@ $(document).ready(function() {
 
 	// 쿠폰 검색 함수
 	function triggerSearch() {
+		const columnMap = {
+		    "": null,
+		    "couponId": 0,
+		    "eventTitle": 1,
+		    "userId": 2,
+		    "couponStatus": 3,
+		    "couponType": 4,
+		    "couponPeriod": 5
+		};
 		const column = $('#coupon-columnSelect').val();
+		const columnIndex = columnMap[column];
 		const searchValue = $('#coupon-table_filter input').val();
-		if (column) {
-			table.column(column).search(searchValue).draw();
+		if (columnIndex !== null) {
+		    table.column(columnIndex).search(searchValue).draw();
 		} else {
-			table.search(searchValue).draw();
+		    table.search(searchValue).draw();
 		}
 	}
 });
@@ -96,23 +169,36 @@ $(document).ready(function () {
 	
 	// DataTables의 'draw' 이벤트에 이벤트 리스너 등록
     $('#coupon-table tbody').on('click', 'tr', function () {
-        const cells = $(this).find('td');
+		const rowData = table.row(this).data();  // 클릭된 행의 기본 데이터 가져오기
+	    const couponId = rowData.couponId;  // 알림 ID 추출
+	    $.ajax({
+	        url: `/admin/coupon/${couponId}`,  // RESTful 경로로 알림 ID 사용
+	        method: 'GET',
+	        success: function(data) {
+	            // 가져온 데이터를 모달 창에 표시
+	            $('#coupon-detailTitle').text(data.eventTitle);
+	            $('#coupon-detailUser').text(data.userId);
+	            $('#coupon-detailStatus').text(data.couponStatus);
+	            $('#coupon-detailType').text(data.couponType);
+				$('#coupon-detailNum').text(data.couponNum);
+	            $('#coupon-detailDate').text(dateChange(data.couponPeriod));
 
-        // 쿠폰 상세 데이터 추출
-        $('#coupon-detailTitle').text(cells.eq(1).text());
-        $('#coupon-detailUser').text(cells.eq(2).text());
-        $('#coupon-detailStatus').text(cells.eq(3).text());
-        $('#coupon-detailType').text(cells.eq(4).text());
-        $('#coupon-detailDate').text(cells.eq(5).text());
-        couponDetailModal.show();
-		
-        // 쿠폰 상세 모달 외부 클릭 시 닫기 이벤트 추가
-        $(window).on('click.modalClose', function (event) {
-            if ($(event.target).is(couponDetailModal)) {
-                couponDetailModal.hide();
-                $(window).off('click.modalClose');
-            }
-        });
+	            // 모달 창 표시
+	            $('#coupon-detailModal').show();
+	        },
+	        error: function(error) {
+	            console.error("Error fetching noti details:", error);
+	            alert("알림 세부 정보를 불러오는 데 오류가 발생했습니다.");
+	        }
+	    });
+
+	    // 모달 외부 클릭 시 닫기 이벤트 추가
+	    $(window).on('click.modalClose', function (event) {
+	        if ($(event.target).is($('#coupon-detailModal'))) {
+	            $('#coupon-detailModal').hide();
+	            $(window).off('click.modalClose');
+	        }
+	    });
     });
 	
 	// 쿠폰 상세 모달창 닫기
@@ -146,7 +232,8 @@ $(document).ready(function () {
 	});
   
 	// 쿠폰 검색 필터 모달창 내 전송 날짜 설정
-	$.fn.dataTable.ext.search.push(function (settings, data) {
+	$.fn.dataTable.ext.search.push(function (data) {
+		
 		const rowCouponStatus = data[3];
 		const rowCouponType = data[4];
 		const rowDate = data[5];
@@ -214,7 +301,10 @@ $(document).ready(function () {
 
 	// 쿠폰 검색 필터 모달창 내 선택된 버튼 출력
 	function addFilterChip(text, type) {
-    	const chip = $('<div class="coupon-filterChip"></div>').text(text);
+		const chip = $('<div class="coupon-filterChip"></div>')
+			.text(text)
+			.attr('data-type', type)
+	        .attr('data-value', text);
     	const closeBtn = $('<span>x</span>').click(() => removeFilter(type, text));
     	chip.append(closeBtn);
     	$('#coupon-selectedFilter').append(chip);
@@ -225,7 +315,7 @@ $(document).ready(function () {
 		if (type === 'couponStatus') couponStatus = '';
     	if (type === 'couponType') couponType = '';
     	if (type === 'date') { couponStartDate = ''; couponEndDate = ''; }
-    	displayAppliedFilters();
+    	$(`.coupon-filterChip[data-type="${type}"][data-value="${text}"]`).remove();
     	table.draw();
 	}
 });

@@ -1,0 +1,27 @@
+#userInfo-password .btn {
+    height: 30px;
+}
+
+.top-menu .card{
+    border: 1px solid #69cbbe;
+    background-color: #e1f0ed;
+}
+
+.pagination {
+    --bs-pagination-color: #fff;
+    --bs-pagination-bg: #198753;
+    --bs-pagination-border-color: #198753;
+    --bs-pagination-hover-color: #fff;
+    --bs-pagination-hover-bg: #157347;
+    --bs-pagination-hover-border-color: #198754;
+    --bs-pagination-active-color: #fff;
+    --bs-pagination-active-bg: #157347;
+    --bs-pagination-active-border-color: #157347;
+
+    --bs-pagination-focus-color: #fff;
+    --bs-pagination-focus-bg: #115c3a;
+}
+.modal-body img{
+    width: 200px;
+    height: 280px;
+}

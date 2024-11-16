@@ -9,6 +9,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.bookjuk.entity.StoreEntity;
+import com.itwillbs.bookjuk.entity.UserEntity;
+
+import java.util.List;
 
 public interface StoreRepository extends JpaRepository<StoreEntity, Long> {
 
@@ -21,17 +24,28 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Long> {
 	// 테이블이름과 컬럼이름은 엔티티클래스를 따라야함
 	@Transactional
 	@Modifying
-	@Query("UPDATE StoreEntity s SET s.storeStatus = 'close' WHERE s.storeCode = :storeCode")
+	@Query("UPDATE StoreEntity s SET s.storeStatus = 'close', s.storeUpdateDate = now() WHERE s.storeCode = :storeCode")
 	void deleteStore(@Param("storeCode") Long storeCode);
-	
+
 	// 지점 컬럼검색 쿼리
 	// 테이블이름과 컬럼이름은 엔티티클래스를 따라야함
-	@Query("SELECT s FROM StoreEntity s WHERE " +
-		       "s.storeName LIKE %:search% OR " +
-		       "s.storeTel LIKE %:search% OR " +
-		       "s.storeLocation LIKE %:search% OR " +
-		       "s.storeLocation2 LIKE %:search% OR " +
-		       "s.storeRegiNum LIKE %:search% OR " +
-		       "CAST(s.storeRegiDate AS string) LIKE %:search%") // 타임스탬프는 문자로 변환해서 검색
+	@Query("SELECT s FROM StoreEntity s WHERE " + "s.storeName LIKE %:search% OR " + "s.storeTel LIKE %:search% OR "
+			+ "s.storeLocation LIKE %:search% OR " + "s.storeLocation2 LIKE %:search% OR "
+			+ "s.storeRegiNum LIKE %:search% OR " + "CAST(s.storeRegiDate AS string) LIKE %:search%") // 타임스탬프는 문자로 변환해서
 	Page<StoreEntity> findByStoreNameContaining(Pageable pageable, @Param("search") String search);
+
+	// 검색쿼리
+	@Query("SELECT u FROM UserEntity u WHERE " + "u.userName LIKE %:search% OR " + "u.userId LIKE %:search% OR "
+			+ "u.userBirthday LIKE %:search% OR " + "u.userEmail LIKE %:search% OR "
+			+ "CAST(u.createDate AS string) LIKE %:search%")
+	Page<UserEntity> findByUserContaining(Pageable pageable, @Param("search") String search);
+
+	// 회원탈퇴처리 쿼리
+	@Transactional
+	@Modifying
+	@Query("UPDATE UserEntity u SET u.activate = :status WHERE u.userNum = :userNum")
+	void deleteUser(@Param("userNum") Long userNum, @Param("status") int status);
+
+	List<StoreEntity> findAllStoreNameByStoreStatus(String storeStatus);
+
 }

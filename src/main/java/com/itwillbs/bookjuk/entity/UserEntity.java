@@ -1,5 +1,6 @@
 package com.itwillbs.bookjuk.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.itwillbs.bookjuk.domain.login.LoginType;
 import com.itwillbs.bookjuk.domain.login.UserRole;
 import com.itwillbs.bookjuk.entity.rent.RentEntity;
@@ -37,6 +38,8 @@ public class UserEntity {
     //유저 이름
     private String userName;
 
+    private String userGender;
+
     //유저 생년월일 1994-10-00(패턴)
     private String userBirthday;
 
@@ -72,7 +75,4 @@ public class UserEntity {
     //유저 활성상태(탈퇴회원 여부 판단)
     private boolean activate;
 
-    // rent 테이블과 양방향 관게 설정
-    @OneToMany(mappedBy = "user")
-    private List<RentEntity> rent;
 }

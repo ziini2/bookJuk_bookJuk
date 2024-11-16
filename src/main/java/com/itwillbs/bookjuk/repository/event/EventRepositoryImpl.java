@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
 import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.event.EventEntity;
@@ -23,13 +24,14 @@ import jakarta.persistence.criteria.Root;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Repository
 public class EventRepositoryImpl implements EventRepositoryCustom {
 
 	@PersistenceContext
 	private EntityManager entityManager;
 	
 	@Override
-	public Page<EventEntity> findByCriteriaAndFilter(String searchCriteria, 
+	public Page<EventEntity> eventTable(String searchCriteria, 
 												 String searchKeyword, 
 												 List<Map<String, String>> filter, 
 												 Pageable pageable) {
@@ -43,7 +45,7 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
             // 특정 필드에 대해 검색 기준이 지정된 경우
             switch (searchCriteria) {
                 case "eventId":
-                    predicates.add(cb.equal(event.get("eventId"), safeParseInt(searchKeyword)));
+                    predicates.add(cb.like(cb.concat(event.get("eventId").as(String.class), ""), "%" + searchKeyword + "%"));
                     break;
                 case "eventTitle":
                     predicates.add(cb.like(event.get("eventTitle"), "%" + searchKeyword + "%"));
@@ -133,12 +135,12 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
         return new PageImpl<>(resultList, pageable, total);
 	}
 	
-	private Integer safeParseInt(String keyword) {
-        try {
-            return Integer.parseInt(keyword);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
+//	private Integer safeParseInt(String keyword) {
+//        try {
+//            return Integer.parseInt(keyword);
+//        } catch (NumberFormatException e) {
+//            return null;
+//        }
+//    }
 	
 }

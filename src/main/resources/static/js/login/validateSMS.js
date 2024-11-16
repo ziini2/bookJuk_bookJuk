@@ -99,11 +99,30 @@ checkSmsCode = () => {
 //소셜로그인 유저 전화번호 따로 저장하기 버튼 클릭시
 saveUserPhone = () => {
   const userPhone = $("#join-userPhone").val()
+
+  //성별 확인 로직 추가
+  const userGender = $("input[name='userGender']:checked").val(); // 선택된 성별 값 가져오기
+  if (!userGender) {
+    alert("성별을 선택해주세요."); // 성별이 선택되지 않았다면 경고 메시지
+    return; // 처리 중단
+  }
+
+  //생년월일 확인 로직
+  const userBirthday = $("#join-userBirthday").val(); // 선택된 성별 값 가져오기
+  if (!userBirthday) {
+    alert("생년월일 을 입력해주세요.");
+    return; // 처리 중단
+  }
+
   $.ajax({
     type: "POST",
-    url: "/login/join/phone",
+    url: "/login/join/addInfo",
     contentType: "application/json",
-    data: userPhone,
+    data: JSON.stringify({
+      userPhone: userPhone,
+      userGender: userGender,
+      userBirthday: userBirthday,
+    }),
     success: (res) => {
       if (res.RESULT === "SUCCESS"){
         alert("저장되었습니다.")

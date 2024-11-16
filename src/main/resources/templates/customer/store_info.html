@@ -110,7 +110,7 @@
 				</div>
 				<div class="col-3">
 					<div class="p-3 border bg-light">
-						지점상태<br><span th:text="${storeInfo.storeStatus == 'open' ? '운영중' : '폐점'}"></span>
+						지점상태<br><span id="storeStatusUp" th:text="${storeInfo.storeStatus == 'open' ? '운영중' : '폐점'}"></span>
 					</div>
 				</div>
 			</div>
@@ -170,7 +170,7 @@
 									th:value="${storeInfo.storeLocation}">
 
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-									class="bi bi-map position-absolute" onclick="storeLocationUpdate()"
+									class="bi bi-map position-absolute" onclick="addressUpdate()"
 									style="top: 75%; right: 10px; transform: translateY(-50%); cursor: pointer;">
 									<path fill-rule="evenodd"
 										d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z" />
@@ -199,6 +199,9 @@
 	<!-- 사이드바 열었다 닫았다 하는거 -->
 	<script th:src="@{/js/common/main.js}"></script>
 	<link th:href="@{/css/customer/customer.css}" rel="stylesheet">
+
+	<!-- 주소검색 api js -->
+	<script th:src="@{/js/customer/address.js}"></script>
 
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<!--	<script type="text/javascript"-->
@@ -247,6 +250,8 @@
 
 	</script>
 
+	
+
 	<script>
 		// 지점상태변경(삭제)
 		function deleteStore(storeCode) {
@@ -263,9 +268,10 @@
 				})
 					.then(response => response.text())
 					.then(data => {
-						if (parseInt(data) == 1) {
+						if (data === '1') {
 							console.log(data);
 							alert("변경됐습니다.");
+							document.getElementById("storeStatusUp").textContent = '폐점';
 						} else {
 							alert("변경에 실패했습니다.");
 						}
@@ -280,9 +286,7 @@
 			}
 		}
 
-		function storeLocationUpdate() {
-			alert("지도 업데이트");
-		}
+
 	</script>
 
 	<script>

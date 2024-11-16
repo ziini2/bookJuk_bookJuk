@@ -1,148 +1,57 @@
-//package com.itwillbs.bookjuk.controller.rent;
-//
-//import java.util.Map;
-//
-//import org.springframework.data.domain.Page;
-//import org.springframework.data.domain.PageRequest;
-//import org.springframework.data.domain.Pageable;
-//import org.springframework.data.domain.Sort;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestParam;
-//
-//import com.itwillbs.bookjuk.entity.rent.RentEntity;
-//import com.itwillbs.bookjuk.service.rent.RentService;
-//
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-//
-//@Controller
-//@RequiredArgsConstructor
-//@Slf4j
-//public class RentController {
-//
-//	private final RentService rentService;
-//
-//	@GetMapping("/admin/rent")
-//	public String rent(Model model,
-//			@RequestParam(value = "page", defaultValue = "1", required = false) int page,
-//			@RequestParam(value = "size", defaultValue = "10", required = false) int size) {
-//		log.info("RentController rent()");
-//
-//		// 페이지 로드 시 연체 상태 업데이트
-//        rentService.updateOverdueRentals();
-//
-//		// 페이지번호 page
-//		// 한화면에 보여줄 글 개수 size
-//		// PageRequest 에서는 page 0부터 시작 => page-1 설정
-//		Pageable pageable = PageRequest.of(page-1, size, Sort.by("rentNum").descending());
-//
-//		Page<RentEntity> rentList = rentService.getRentList(pageable);
-//
-//		model.addAttribute("rentList",rentList);
-//		model.addAttribute("currentPage", page);
-//		model.addAttribute("pageSize", size);
-//		//전체 페이지 개수
-//		model.addAttribute("totalPages", rentList.getTotalPages());
-//
-//		//한화면에 보여줄 페이지 개수 설정
-//		int pageBlock = 10;
-//		int startPage = (page-1)/pageBlock*pageBlock+1;
-//		int endPage=startPage + pageBlock - 1;
-//		if(endPage > rentList.getTotalPages()) {
-//			endPage = rentList.getTotalPages();
-//		}
-//
-//		model.addAttribute("startPage", startPage);
-//		model.addAttribute("endPage", endPage);
-//
-//		return "/rent/rent";
-//	}
-//
-//	@PostMapping("/updateReturnInfo")
-//	public ResponseEntity<?> updateReturnInfo(@RequestBody Map<String, Object> requestData) {
-//	    Number rentNum = (Number) requestData.get("rentNum"); // rentNum을 Number로 받아서 형변환
-//	    String returnInfo = (String) requestData.get("returnInfo");
-//
-//	    try {
-//	        // rentNum을 Long이나 Integer로 변환하여 사용
-//	        rentService.updateReturnInfo(rentNum.longValue(), returnInfo);
-//	        return ResponseEntity.ok().build();
-//	    } catch (Exception e) {
-//	        log.error("Failed to update return info", e);
-//	        return ResponseEntity.status(500).body("Failed to update return info");
-//	    }
-//	}
-//
-////	@GetMapping("/rent/search")
-////    public ResponseEntity<List<RentEntity>> searchRent(
-////        @RequestParam("criteria") String criteria,
-////        @RequestParam("keyword") String keyword) {
-////
-////        List<RentEntity> rentList = rentService.searchByCriteria(criteria, keyword);
-////        return ResponseEntity.ok(rentList); // JSON 형식으로 데이터 반환
-////    }
-//
-//	@GetMapping("/rent/search")
-//	public ResponseEntity<Page<RentEntity>> searchRent(
-//	    @RequestParam("criteria") String criteria,
-//	    @RequestParam("keyword") String keyword,
-//	    @RequestParam(value = "page", defaultValue = "1") int page,
-//	    @RequestParam(value = "size", defaultValue = "10") int size) {
-//
-//	    Pageable pageable = PageRequest.of(page - 1, size, Sort.by("rentNum").descending());
-//	    Page<RentEntity> rentList = rentService.searchByCriteria(criteria, keyword, pageable);
-//	    return ResponseEntity.ok(rentList); // JSON 형식으로 페이지 데이터 반환
-//	}
-//
-//
-//	@GetMapping("/admin/membersearch")
-//	public String membersearch() {
-//		log.info("RentController membersearch()");
-//
-//		return "/rent/membersearch";
-//	}
-//
-//	//membersearch검색
-////	@GetMapping("/searchMembers")
-////    public List<UserEntity> searchMembers(@RequestParam String criteria, @RequestParam String keyword) {
-////		log.info("RentController searchMembers()");
-////
-////        return rentService.searchMembers(criteria, keyword);
-////    }
-//
-//
-//
-//	@GetMapping("/admin/booksearch")
-//	public String booksearch() {
-//		log.info("RentController booksearch()");
-//
-//		return "/rent/booksearch";
-//	}
-//
-//	//대여등록
-//	@PostMapping("/admin/rent/register")
-//	public ResponseEntity<String> registerRent(@RequestBody RentEntity rentEntity) {
-//		log.info("RentController 대여등록()");
-//	    try {
-//	        rentService.registerRent(rentEntity);
-//	        return ResponseEntity.ok("대여 등록 성공");
-//	    } catch (Exception e) {
-//	        log.error("대여 등록 실패", e);
-//	        return ResponseEntity.status(500).body("대여 등록 실패");
-//	    }
-//	}
-//
-//	@GetMapping("/rent")
-//	public String userrent() {
-//		log.info("RentController userrent()");
-//
-//		return "/rent/userrent";
-//	}
-//
-//
-//}
+package com.itwillbs.bookjuk.controller.rent;
+
+import com.itwillbs.bookjuk.dto.RentResponseDTO;
+import com.itwillbs.bookjuk.service.rent.RentService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Controller
+@Slf4j
+@RequiredArgsConstructor
+@RequestMapping("/admin")
+public class RentController {
+
+    private final RentService rentService;
+
+    @GetMapping("rent")
+    public String rent() {
+        return "rent/rent";
+    }
+
+    @GetMapping("/rent/search")
+    @ResponseBody
+    public ResponseEntity<RentResponseDTO> searchRent(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "criteria", required = false) String criteria,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "rented", required = false) Boolean rented,
+            @RequestParam(value = "returned", required = false) Boolean returned) {
+
+        log.info("criteria: {}, keyword: {}, rented: {}, returned: {}", criteria, keyword, rented, returned);
+
+        RentResponseDTO responseDTO = (criteria == null || keyword == null) ?
+                rentService.findAllWithDTO(rented, returned, page, size) :
+                rentService.findAllBySearchWithDTO(criteria, keyword, rented, returned, page, size);
+
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @PostMapping("/rent/return")
+    @ResponseBody
+    public ResponseEntity<RentResponseDTO> returnBook(@RequestBody ReturnDTO returnDTO) {
+        log.info("returnDTO: {}", returnDTO);
+        rentService.returnBook(returnDTO.rentNums());
+        return ResponseEntity.ok(rentService.findAllBySearchWithDTO(returnDTO.criteria(), returnDTO.keyword(),
+                returnDTO.rented(), returnDTO.returned(), returnDTO.page(), returnDTO.size()));
+    }
+
+    public record ReturnDTO(List<Long> rentNums, String criteria, String keyword,
+                        Boolean rented, Boolean returned, int page, int size) {
+    }
+}

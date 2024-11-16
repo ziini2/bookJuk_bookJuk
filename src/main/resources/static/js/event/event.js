@@ -37,7 +37,6 @@ $(document).ready(function() {
 	    pageLength: 25,
 	    lengthMenu: [25, 50, 100, 200],
 	    language: {
-	        // 표기 언어 설정
 	        search: "",
 	        info: "",
 	        infoEmpty: "",
@@ -479,9 +478,14 @@ $(document).ready(function () {
 	            $('#event-detailContent').text(data.eventContent);
 
 	            // 조건 목록 출력
-	            $('#event-detailCondition').html(data.eventCondition
-	                .map(condition => `[${condition.eventConditionType} : ${condition.eventRequiredValue}] [${condition.eventClearReward} 지급]`)
-	                .join('<br>'));
+				$('#event-detailCondition').html(data.eventCondition
+				    .map(condition => {
+				        // 조건에 따라 rewardText 생성
+				        const rewardText = condition.eventRequiredValue == "0" ? '' : `${condition.eventRequiredValue}`; 
+				        return `[ ${condition.eventConditionType} ${rewardText}] [ ${condition.eventClearReward} ]`.trim();
+				    })
+				    .join('<br>')
+				);
 
 	            $('#event-detailCreationDate').text(data.eventCreationDate.split('T')[0]);
 

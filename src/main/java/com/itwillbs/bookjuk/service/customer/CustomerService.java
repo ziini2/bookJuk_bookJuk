@@ -10,13 +10,14 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.bookjuk.entity.StoreEntity;
 import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.repository.StoreRepository;
+import com.itwillbs.bookjuk.repository.UserContentRepository;
 import com.itwillbs.bookjuk.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Log
+@Slf4j
 @RequiredArgsConstructor
 public class CustomerService {
 	
@@ -24,18 +25,23 @@ public class CustomerService {
 	
 	private final UserRepository userRepository;
 	
+	private final UserContentRepository userContentRepository;
+	
 	public Page<StoreEntity> getStoreList(Pageable pageable) {
 		return storeRepository.findAll(pageable);
 	}
 
+	// 지점 등록 함수
 	public void addStore(StoreEntity storeEntity) {
 		storeRepository.save(storeEntity);
 	}
-
+	
+	// 검색어포함 페이지네이션 함수
 	public Page<StoreEntity> findByStoreNameContaining(Pageable pageable, String search) {
 		return storeRepository.findByStoreNameContaining(pageable, search);
 	}
-
+	
+	// 한 지점정보를 가져오는 함수
 	public Optional<StoreEntity> findById(Long storeCode) {
 		return storeRepository.findById(storeCode);
 	}
@@ -53,7 +59,20 @@ public class CustomerService {
 	}
 
 	public UserEntity getUserInfo(Long userNum) {
-		return userRepository.getById(userNum);
+		return userRepository.getReferenceById(userNum);
+	}
+
+	public Page<UserEntity> findByUserContaining(Pageable pageable, String search) {
+		return storeRepository.findByUserContaining(pageable, search);
+	}
+
+//	public UserContentEntity getGrade(Long userNum) {
+//		return userContentRepository.findByUserNum(userNum);
+//	}
+
+	public void deleteUser(Long userNum) {
+		int status = 0;
+		storeRepository.deleteUser(userNum, status);
 	}
 	
 	

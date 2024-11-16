@@ -44,16 +44,17 @@
     filter: invert(33%) sepia(64%) saturate(317%) hue-rotate(104deg) brightness(91%) contrast(101%);
 }
 
+
 .pagination {
     --bs-pagination-color: #fff;
     --bs-pagination-bg: #198753;
     --bs-pagination-border-color: #198753;
     --bs-pagination-hover-color: #fff;
-    --bs-pagination-hover-bg: #136841;
-    --bs-pagination-hover-border-color: #136841;
+    --bs-pagination-hover-bg: #157347;
+    --bs-pagination-hover-border-color: #198754;
     --bs-pagination-active-color: #fff;
-    --bs-pagination-active-bg: #136841;
-    --bs-pagination-active-border-color: #136841;
+    --bs-pagination-active-bg: #157347;
+    --bs-pagination-active-border-color: #157347;
 
     --bs-pagination-focus-color: #fff;
     --bs-pagination-focus-bg: #115c3a;

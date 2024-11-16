@@ -263,7 +263,7 @@ body {
     color: orange;
     font-size: 0.8rem;
     text-align: left;
-    margin: 0.5rem 0.5rem 2rem 0.5rem;
+    margin: 0.5rem 0.5rem 1rem 0.5rem;
 }
 
 /* 버튼 비활성 상태시 */
@@ -290,6 +290,47 @@ button:disabled{
     width: 10%;
     height: 10%;
 }
+
+
+/* 전체 input-group 정렬 */
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 버튼 간격 */
+    margin: 1rem 0; /* 위아래 여백 */
+}
+
+/* 라디오 버튼 숨기기 */
+.input-group input[type="radio"] {
+    display: none;
+}
+
+/* 라벨 스타일 기본 */
+.input-group label {
+    display: inline-block;
+    flex: 1; /* 모든 레이블의 너비를 동일하게 */
+    text-align: center;
+    padding: 0.7rem 1rem; /* 입력 필드와 동일한 패딩 */
+    border-radius: 5px;
+    background-color: var(--gray);
+    color: var(--gray-2);
+    line-height: 1.5rem; /* 입력 필드와 동일한 높이 */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* 선택된 라벨 스타일 */
+.input-group input[type="radio"]:checked + label {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.phoneValidate button{
+    font-size: 1.2rem;
+}
+
 
 /*==============================================================*/
 /* RESPONSIVE */

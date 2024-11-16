@@ -83,6 +83,7 @@ public class JoinService {
                 .userId(userDTO.getUserId())
                 .userPassword(userDTO.getUserPassword())
                 .userName(userDTO.getUserName())
+                .userGender(userDTO.getUserGender())
                 .userBirthday(userDTO.getUserBirthday())
                 .userEmail(userDTO.getUserEmail())
                 .userPhone(userDTO.getUserPhone())
@@ -119,17 +120,18 @@ public class JoinService {
         }
     }
 
-    //소셜로그인 전화번호 저장
-    public boolean saveUserPhone(Long userNum, String userPhone) {
+    //소셜로그인 추가정보 저장
+    public boolean saveUserAddInfo(Long userNum, UserDTO userDTO) {
         log.info("saveUserPhone: {}", userNum);
         UserEntity user = userRepository.findByUserNum(userNum);
         if (user == null) {
             return false;
         }
-        user.setUserPhone(userPhone);
+        user.setUserPhone(userDTO.getUserPhone());
+        user.setUserBirthday(userDTO.getUserBirthday());
+        user.setUserGender(userDTO.getUserGender());
         user.setUserRole(UserRole.ROLE_USER);
         UserEntity updateUser = userRepository.save(user);
-
         return SecurityUtil.reloadUserRole(updateUser);
     }
 }

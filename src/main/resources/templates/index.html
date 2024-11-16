@@ -134,32 +134,34 @@
                                 <label for="point-age">나이</label>
                                 <input type="radio" name="point-option" id="point-genre" value="genre">
                                 <label for="point-genre">장르</label>
-                                <input type="radio" name="point-option" id="point-branch" value="branch">
-                                <label for="point-branch">지점</label>
+                                <input type="radio" name="point-option" id="point-store" value="store">
+                                <label for="point-store">지점</label>
                             </div>
                         </div>
-                        <div class="d-flex flex-row gap-2">
-                            <div class="dropdown">
-                                <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
-                                    매출항목: 전체
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">전체</a></li>
-                                    <li><a class="dropdown-item" href="#">대여료</a></li>
-                                    <li><a class="dropdown-item" href="#">연체료</a></li>
-                                </ul>
+                        <div>
+                            <div class="d-flex flex-row gap-2">
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                        매출항목: 전체
+                                    </button>
+                                    <ul class="dropdown-menu sales-option">
+                                        <li><a class="dropdown-item" href="#">전체</a></li>
+                                        <li><a class="dropdown-item" href="#">대여료</a></li>
+                                        <li><a class="dropdown-item" href="#">연체료</a></li>
+                                    </ul>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle stores-btn stores-revenue" data-bs-toggle="dropdown">
+                                        지점: 전체
+                                    </button>
+                                    <ul class="dropdown-menu stores-revenue-dropdown">
+                                        <li><a class="dropdown-item revenue-store" data-store="전체">전체</a></li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="dropdown">
-                                <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
-                                    지점: 전체
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">전체</a></li>
-                                    <li><a class="dropdown-item" href="#">강남점</a></li>
-                                    <li><a class="dropdown-item" href="#">대연점</a></li>
-                                </ul>
-                            </div>
+                            <div class="selected-revenue-stores mt-2">선택된 지점이 없습니다.</div>
                         </div>
+
                     </div>
                     <div class="point-bar-body">
                         <div class="point-bar"></div>
@@ -198,19 +200,7 @@
                                 <label for="gender">성별</label>
                                 <input type="radio" name="customer-option" id="age" value="age">
                                 <label for="age">나이</label>
-                                <input type="radio" name="customer-option" id="genre" value="genre">
-                                <label for="genre">장르</label>
                             </div>
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
-                                지점선택
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">해운대점</a></li>
-                                <li><a class="dropdown-item" href="#">강남점</a></li>
-                                <li><a class="dropdown-item" href="#">대연점</a></li>
-                            </ul>
                         </div>
                     </div>
                     <div class="cus-bar-body">
@@ -236,15 +226,18 @@
                                 <label for="delay-branch">지점</label>
                             </div>
                         </div>
-                        <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
-                                지점선택
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">해운대점</a></li>
-                                <li><a class="dropdown-item" href="#">강남점</a></li>
-                                <li><a class="dropdown-item" href="#">대연점</a></li>
-                            </ul>
+                        <div>
+                            <div class="d-flex flex-row gap-2 justify-content-end">
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle stores-btn stores-delay" data-bs-toggle="dropdown">
+                                        지점: 전체
+                                    </button>
+                                    <ul class="dropdown-menu stores-delay-dropdown">
+                                        <li><a class="dropdown-item delay-store" data-store="전체">전체</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="selected-delay-stores mt-2">선택된 지점이 없습니다.</div>
                         </div>
                     </div>
                     <div class="delay-bar-body">
@@ -263,6 +256,7 @@
 
 <!-- 챠트 모음 -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
+<script th:src="@{/js/statistics/dropdownStores.js}"></script>
 <script th:src="@{/js/statistics/dailyStatistics.js}"></script>
 <script th:src="@{/js/statistics/totalGraph.js}"></script>
 <script th:src="@{/js/statistics/pointAccumulationBar.js}"></script>

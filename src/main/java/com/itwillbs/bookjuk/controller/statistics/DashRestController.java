@@ -1,5 +1,6 @@
 package com.itwillbs.bookjuk.controller.statistics;
 
+import com.itwillbs.bookjuk.dto.dashboard.PointResponseDTO;
 import com.itwillbs.bookjuk.dto.dashboard.TotalStatisticsDTO;
 import com.itwillbs.bookjuk.service.statistics.DashRestService;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +54,17 @@ public class DashRestController {
     @GetMapping("period/total")
     public ResponseEntity<List<TotalStatisticsDTO>> getTotalStatistics(@RequestParam(defaultValue = "week") String period) {
         return ResponseEntity.ok(dashRestService.getConsolidatedStatisticsWithFilledDates(period));
+    }
+
+    // stores 드롭다운에 표기될 지점명
+    @GetMapping("stores")
+    public ResponseEntity<List<String>> getStores() {
+        return ResponseEntity.ok(dashRestService.getStores());
+    }
+
+    @GetMapping("period/point")
+    public ResponseEntity<PointResponseDTO> getPointStatistics(@RequestParam(defaultValue = "week") String period) {
+        return ResponseEntity.ok(dashRestService.getPointStatistics(period));
     }
 
 

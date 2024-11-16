@@ -1,6 +1,10 @@
 package com.itwillbs.bookjuk.service.statistics;
 
+import com.itwillbs.bookjuk.dto.dashboard.CategoryData;
+import com.itwillbs.bookjuk.dto.dashboard.PointResponseDTO;
 import com.itwillbs.bookjuk.dto.dashboard.TotalStatisticsDTO;
+import com.itwillbs.bookjuk.entity.StoreEntity;
+import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
 import com.itwillbs.bookjuk.repository.*;
 import com.itwillbs.bookjuk.repository.event.EventRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +27,7 @@ public class DashRestService {
     private final PaymentRepository paymentRepository;
     private final PointDealRepository pointDealRepository;
     private final RentRepository rentRepository;
-    private final OverdueRepository overdueRepository;
+    private final StoreRepository storeRepository;
     private final JdbcTemplate jdbcTemplate;
     private LocalDate now = LocalDate.now();
 
@@ -80,19 +84,7 @@ public class DashRestService {
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = LocalDate.now();
 
-        switch (period) {
-            case "week":
-                startDate = LocalDate.now().minusWeeks(1);
-                break;
-            case "month":
-                startDate = LocalDate.now().minusMonths(1);
-                break;
-            case "quarter":
-                startDate = LocalDate.now().minusMonths(3);
-                break;
-            default:
-                break;
-        }
+        startDate = getStartDate(period, startDate);
 
         String sql = """
             SELECT date,
@@ -174,7 +166,7 @@ public class DashRestService {
                         .build()
         );
 
-        // Fill missing dates with zero values
+        // 날짜가 없는 경우 0으로 채워서 반환
         Map<LocalDate, TotalStatisticsDTO> statisticsMap = new HashMap<>();
         for (TotalStatisticsDTO stat : statisticsList) {
             statisticsMap.put(LocalDate.parse(stat.getDate()), stat);
@@ -199,8 +191,48 @@ public class DashRestService {
         return filledStatisticsList;
     }
 
+    private static LocalDate getStartDate(String period, LocalDate startDate) {
+        switch (period) {
+            case "week":
+                startDate = LocalDate.now().minusWeeks(1);
+                break;
+            case "month":
+                startDate = LocalDate.now().minusMonths(1);
+                break;
+            case "quarter":
+                startDate = LocalDate.now().minusMonths(3);
+                break;
+            default:
+                break;
+        }
+        return startDate;
+    }
 
 
+    public List<String> getStores() {
+        List<StoreEntity> storelist = storeRepository.findAllStoreNameByStoreStatus("open");
+        return storelist.stream().map(StoreEntity::getStoreName).map(name -> {
+            return name.split(" ", 2)[1];
+        }).sorted().toList();
+    }
 
+    public PointResponseDTO getPointStatistics(String period) {
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = LocalDate.now();
 
+        startDate = getStartDate(period, startDate);
+
+        Optional<List<PointDealEntity>> genderDate = pointDealRepository.findAllFirstByReqDateBetweenOrderByReqDateDesc(
+                LocalDateTime.of(startDate, LocalDateTime.MIN.toLocalTime()), LocalDateTime.of(endDate, LocalDateTime.MAX.toLocalTime()));
+
+        List<CategoryData> pointDate = new ArrayList<>();
+
+        if (genderDate.isPresent()) {
+            for (PointDealEntity pointDealEntity : genderDate.get()) {
+                pointDate.add(CategoryData.builder()
+                        .category(pointDealEntity.getUserContentEntity().getUserEntity().get)
+            }
+        }
+
+    }
 }

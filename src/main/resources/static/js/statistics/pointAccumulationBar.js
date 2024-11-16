@@ -1,5 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const data = {
+
+    $.ajax({
+        url: '/admin/period/point'
+        method: 'GET',
+        data: {
+            period: period;
+        },
+        success: function(data) {
+
+        }
+    })
+
+
+/*    const data = {
         gender: [
             { category: "남", 대여료: 1500, 연체료: 1000 },
             { category: "여", 대여료: 2000, 연체료: 1000 }
@@ -26,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
             { category: "지점 3", 대여료: 1500, 연체료: 1000 },
             { category: "지점 4", 대여료: 1000, 연체료: 500 }
         ]
-    };
+    };*/
 
     const width = 400;
     const height = 300;

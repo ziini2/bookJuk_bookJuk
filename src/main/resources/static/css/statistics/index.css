@@ -213,7 +213,7 @@
 .customer-bar-container,
 .delay-bar-container {
     width: 600px;
-    height: 400px; /* 두 차트의 높이를 동일하게 설정 */
+    height: 430px; /* 두 차트의 높이를 동일하게 설정 */
     margin: 0; /* 양쪽 차트 간 간격 최소화 */
     padding: 0 !important;
     box-sizing: border-box;
@@ -347,6 +347,15 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+}
+
+.selected-stores {
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+.badge {
+    padding: 0.5em 0.7em;
+    cursor: pointer;
 }
 
 

@@ -16,92 +16,121 @@ document.addEventListener('DOMContentLoaded', function () {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    $.ajax({
-        url: "/admin/period/total",
-        type: "GET",
-        data: {
-            "period": period
-        },
-        success: function (result) {
-            // 데이터 파싱 및 변환
-            const data = result.map(d => ({
-                date: parseTime(d.date),
-                revenue: +d.revenue,
-                point: +d.point,
-                rental: +d.rental,
-                delay: +d.delay,
-                newUser: +d.newUser,
-                totalUser: +d.totalUser
-            }));
+    rebuildGraph();
 
-            // 그래프 업데이트 함수
-            function updateGraph(selectedYValue) {
-                const valueline = d3.line()
-                    .x(d => x(d.date))
-                    .y(d => y(d[selectedYValue]));
 
-                // x축 도메인 설정 (날짜 범위)
-                x.domain(d3.extent(data, d => d.date));
+    function rebuildGraph() {
+        $.ajax({
+            url: "/admin/period/total",
+            type: "GET",
+            data: {
+                "period": period
+            },
+            success: function (result) {
+                // 데이터 파싱 및 변환
+                const data = result.map(d => ({
+                    date: parseTime(d.date),
+                    revenue: +d.revenue,
+                    point: +d.point,
+                    rental: +d.rental,
+                    delay: +d.delay,
+                    newUser: +d.newUser,
+                    totalUser: +d.totalUser
+                }));
 
-                // y축 도메인 설정 (0 ~ 최대값)
-                y.domain([0, d3.max(data, d => d[selectedYValue]) * 1.1]);
+                // 그래프 업데이트 함수
+                function updateGraph(selectedYValue) {
+                    const valueline = d3.line()
+                        .x(d => x(d.date))
+                        .y(d => y(d[selectedYValue]));
 
-                // 선 업데이트
-                const line = svg.selectAll(".line")
-                    .data([data]);
+                    // x축 도메인 설정 (날짜 범위)
+                    x.domain(d3.extent(data, d => d.date));
 
-                line.enter()
-                    .append("path")
-                    .attr("class", "line")
-                    .merge(line)
-                    .transition()
-                    .duration(1000)
-                    .attr("d", valueline);
+                    // y축 도메인 설정 (0 ~ 최대값)
+                    y.domain([0, d3.max(data, d => d[selectedYValue]) * 1.1]);
 
-                line.exit().remove();
+                    // 선 업데이트
+                    const line = svg.selectAll(".line")
+                        .data([data]);
 
-                // x축 업데이트 (날짜만 표시)
-                const xAxis = d3.axisBottom(x)
-                    .ticks(d3.timeDay.every(1)) // 1일 간격으로 표시
-                    .tickFormat(d3.timeFormat("%Y-%m-%d")); // 날짜 포맷 설정
+                    line.enter()
+                        .append("path")
+                        .attr("class", "line")
+                        .merge(line)
+                        .transition()
+                        .duration(1000)
+                        .attr("d", valueline);
 
-                svg.selectAll(".x-axis").remove();
-                svg.append("g")
-                    .attr("class", "x-axis axis")
-                    .attr("transform", `translate(0,${height})`)
-                    .transition()
-                    .duration(1000)
-                    .call(xAxis);
+                    line.exit().remove();
 
-                // y축 업데이트
-                const yAxis = d3.axisLeft(y)
-                    .ticks(5); // 적절한 y축 간격 설정
+                    // x축 업데이트
+                    let tickInterval, tickFormat;
 
-                svg.selectAll(".y-axis").remove();
-                svg.append("g")
-                    .attr("class", "y-axis axis")
-                    .transition()
-                    .duration(1000)
-                    .call(yAxis);
+                    if (period === "week") {
+                        tickInterval = d3.timeDay.every(1); // 1일 간격
+                        tickFormat = d3.timeFormat("%Y-%m-%d");
+                    } else if (period === "month") {
+                        tickInterval = d3.timeWeek.every(1); // 1주 간격
+                        tickFormat = d3.timeFormat("%Y-%m-%d");
+                    } else if (period === "quarter") {
+                        tickInterval = d3.timeMonth.every(1); // 1개월 간격
+                        tickFormat = d3.timeFormat("%Y-%m");
+                    }
+
+                    const xAxis = d3.axisBottom(x)
+                        .ticks(tickInterval)
+                        .tickFormat(tickFormat);
+
+                    svg.selectAll(".x-axis").remove();
+                    svg.append("g")
+                        .attr("class", "x-axis axis")
+                        .attr("transform", `translate(0,${height})`)
+                        .transition()
+                        .duration(1000)
+                        .call(xAxis);
+
+                    // y축 업데이트
+                    const yAxis = d3.axisLeft(y)
+                        .ticks(5); // 적절한 y축 간격 설정
+
+                    svg.selectAll(".y-axis").remove();
+                    svg.append("g")
+                        .attr("class", "y-axis axis")
+                        .transition()
+                        .duration(1000)
+                        .call(yAxis);
+                }
+
+                // 초기 그래프 표시
+                updateGraph('revenue');
+
+                // 라디오 버튼 이벤트 리스너
+                const detailOptions = document.querySelectorAll('input[name="detail-option"]');
+
+                function onInputChange() {
+                    const selectedYValue = document.querySelector('input[name="detail-option"]:checked').value;
+                    updateGraph(selectedYValue);
+                }
+
+                detailOptions.forEach(option => {
+                    option.addEventListener('change', onInputChange);
+                });
+            },
+            error: function (error) {
+                console.error("Error fetching data:", error);
             }
+        });
+    }
 
-            // 초기 그래프 표시
-            updateGraph('revenue');
+    // period 값이 변경될 때마다 그래프 재생성
+    $(document).ready(function () {
+        $("#period").change(function () {
+            period = $("#period").val(); // 값을 가져옴
+            rebuildGraph(); // 그래프 재생성 함수 호출
 
-            // 라디오 버튼 이벤트 리스너
-            const detailOptions = document.querySelectorAll('input[name="detail-option"]');
-
-            function onInputChange() {
-                const selectedYValue = document.querySelector('input[name="detail-option"]:checked').value;
-                updateGraph(selectedYValue);
-            }
-
-            detailOptions.forEach(option => {
-                option.addEventListener('change', onInputChange);
-            });
-        },
-        error: function (error) {
-            console.error("Error fetching data:", error);
-        }
+        });
     });
+
+
 });

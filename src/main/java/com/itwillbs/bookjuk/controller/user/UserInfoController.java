@@ -1,6 +1,6 @@
 package com.itwillbs.bookjuk.controller.user;
 
-import com.itwillbs.bookjuk.dto.PaginationDTO;
+import com.itwillbs.bookjuk.dto.PointPaginationDTO;
 import com.itwillbs.bookjuk.dto.RentPaginationDTO;
 import com.itwillbs.bookjuk.service.user.UserInfoService;
 import com.itwillbs.bookjuk.util.PaginationUtil;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -28,7 +27,7 @@ public class UserInfoController {
 
     @GetMapping("/info")
     public String userInfo(@RequestParam(name = "rentPage", defaultValue = "0") int rentPage,
-//                           @RequestParam(name = "pointPage", defaultValue = "0") int pointPage,
+                           @RequestParam(name = "pointPage", defaultValue = "0") int pointPage,
                            Model model) {
         if (SecurityUtil.getUserNum() == null){
             return "redirect:/login";
@@ -43,12 +42,17 @@ public class UserInfoController {
 
         //1.책 대여 내역 넘겨줘야함 (유저 별)
         RentPaginationDTO rentPaginationDTO = userInfoService.getBookRentInfo(SecurityUtil.getUserNum(), PAGE_SIZE, rentPage);
-        Map<String, Object> pagination = PaginationUtil.getPagination(rentPaginationDTO.getCurrentPage(), rentPaginationDTO.getTotalPages(), PAGE_BLOCK_SIZE);
+        Map<String, Object> paginationRent = PaginationUtil.getPagination(rentPaginationDTO.getCurrentPage(), rentPaginationDTO.getTotalPages(), PAGE_BLOCK_SIZE);
 
         model.addAttribute("bookRentInfo", rentPaginationDTO);
-        model.addAttribute("pagination", pagination);
+        model.addAttribute("paginationRent", paginationRent);
+
         //2.포인트 거래 내역 넘겨줘야함 (유저 별)
-//        model.addAttribute("pointInfo", userInfoService.getPointInfo(SecurityUtil.getUserNum()));
+        PointPaginationDTO pointPaginationDTO = userInfoService.getPointInfo(SecurityUtil.getUserNum(), PAGE_SIZE, pointPage);
+        Map<String, Object> paginationPoint = PaginationUtil.getPagination(pointPaginationDTO.getCurrentPage(),pointPaginationDTO.getTotalPages(), PAGE_BLOCK_SIZE);
+
+        model.addAttribute("pointInfo", pointPaginationDTO);
+        model.addAttribute("paginationPoint", paginationPoint);
 
 
         return "user/userInfo";

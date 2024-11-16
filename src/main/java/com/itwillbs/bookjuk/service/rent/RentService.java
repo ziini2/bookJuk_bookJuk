@@ -186,6 +186,7 @@ public class RentService {
                         .pointPayStatus(PointPayStatus.SUCCESSFUL)
                         .reqDate(LocalDateTime.now())
                         .pointPayName("연체료")
+                        .rent(rent)
                         .overdue(overdue)
                         .build();
 

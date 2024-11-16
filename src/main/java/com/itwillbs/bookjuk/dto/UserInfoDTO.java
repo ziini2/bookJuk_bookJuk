@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class UserInfoDTO {
+
+    //내 정보
     //유저테이블 PK
     private Long userNum;
     //유저 id
@@ -32,9 +34,13 @@ public class UserDTO {
     private UserRole userRole;
     //유저 LoginType (enum 클래스의 정의된 것만 사용)
     private LoginType loginType;
-    //약관 동의 여부
-    private boolean accepted;
-    //유저 활성상태(탈퇴회원 여부 판단)
-    private boolean activate;
+
+    //======================================================================
+
+    //이용 정보
+    //대여 도서수
+    private int bringBook;
+    //유저 포인트
+    private int userPoint;
 
 }

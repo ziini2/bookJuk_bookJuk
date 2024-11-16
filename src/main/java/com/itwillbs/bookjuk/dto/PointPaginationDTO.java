@@ -9,12 +9,11 @@ import java.util.List;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserPaginationDTO implements PaginationDTO<UserPageBooksDTO> {
+@NoArgsConstructor
+public class PointPaginationDTO implements PaginationDTO<PointInfoDTO> {
 
-    private List<UserPageBooksDTO> items;
-    //페이지네이션 관련
+    private List<PointInfoDTO> items;
     private int totalPages;
     private int currentPage;
     private boolean hasNext;
@@ -24,7 +23,6 @@ public class UserPaginationDTO implements PaginationDTO<UserPageBooksDTO> {
     public boolean hasNext() {
         return false;
     }
-
     @Override
     public boolean hasPrevious() {
         return false;

@@ -37,12 +37,12 @@
 
 <body>
 	<div th:replace="~{/fragment/header :: header2}"></div>
-	<div th:replace="/fragment/sidebar :: sidebar2"></div>
+	<div th:replace="~{/fragment/sidebar :: sidebar2}"></div>
 
 	<main id="main" class="main">
 		<!-- 상단 card -->
 		<div class="container">
-			<div class="row gap-2 align-items-top justify-content-center">
+			<div class="top-menu row gap-3 align-items-top justify-content-center">
 				<!-- 내정보 -->
 				<div class="card col-5 px-2">
 					<div class="mt-2 d-flex align-items-center">
@@ -53,38 +53,53 @@
 					<div class="justify-content-start align-items-center px-2">
 						<!-- userID -->
 						<div class="row justify-content-start mb-2">
-							<strong class="col-3 me-3">아이디</strong>
-							<p class="col-auto my-0" id="userInfo-id">furitstore1</p>
+							<strong th:if="${userInfo.loginType.toString() != 'MANUAL'}" class="col-3 me-3">소셜 로그인 </strong>
+							<strong th:if="${userInfo.loginType.toString() == 'MANUAL'}"class="col-3 me-3">아이디</strong>
+							<p class="col-auto my-0" id="userInfo-id" th:text="${userInfo.getUserId()}"></p>
 						</div>
 
 						<!-- userPassword -->
 						<div class="row justify-content-start align-items-center mb-2">
 							<strong class="col-3 me-3">비밀번호</strong>
-							<p class="col-auto my-0" id="userInfo-password"> <button class="btn btn-success btn-sm"> 수정 </button></p>
+							<div class="col-auto my-0" id="userInfo-password">
+								<div th:if="${userInfo.getLoginType().toString() == 'MANUAL'}">
+									<button class="btn btn-success btn-sm"> 변경 </button>
+								</div>
+								<div th:if="${userInfo.getLoginType().toString() != 'MANUAL'}">
+									<button class="btn btn-success btn-sm" disabled> 변경 </button>
+								</div>
+							</div>
 						</div>
 
 						<!-- userName -->
 						<div class="row justify-content-start mb-2">
 							<strong class="col-3 me-3">이름</strong>
-							<p class="col-auto my-0" id="userInfo-name">김길동</p>
+							<p class="col-auto my-0" id="userInfo-name" th:text="${userInfo.getUserName()}"></p>
+						</div>
+
+						<!-- userGender -->
+						<div class="row justify-content-start mb-2">
+							<strong class="col-3 me-3">성별</strong>
+							<p class="col-auto my-0" id="userInfo-male" th:if="${userInfo.getUserGender() == 'male'}">남</p>
+							<p class="col-auto my-0" id="userInfo-female" th:if="${userInfo.getUserGender() == 'female'}">여</p>
 						</div>
 
 						<!-- userBirthDay -->
 						<div class="row justify-content-start mb-2">
 							<strong class="col-3 me-3">생년월일</strong>
-							<p class="col-auto my-0" id="userInfo-birthday">2024-10-10</p>
+							<p class="col-auto my-0" id="userInfo-birthday" th:text="${userInfo.getUserBirthday()}"></p>
 						</div>
 
 						<!-- userEmail -->
 						<div class="row justify-content-start mb-2">
 							<strong class="col-3 me-3">이메일</strong>
-							<p class="col-auto my-0" id="userInfo-email">test123@naver.com</p>
+							<p class="col-auto my-0" id="userInfo-email" th:text="${userInfo.getUserEmail()}"></p>
 						</div>
 
 						<!-- userPhone -->
 						<div class="row justify-content-start mb-2">
 							<strong class="col-3 me-3">전화번호</strong>
-							<p class="col-auto my-0" id="userInfo-phone">010-0000-0000</p>
+							<p class="col-auto my-0" id="userInfo-phone" th:text="${userInfo.getUserPhone()}"></p>
 						</div>
 
 					</div>
@@ -101,13 +116,13 @@
 						<!-- userID -->
 						<div class="row justify-content-start mb-2">
 							<strong class="col-4 me-3">총 대여 도서수</strong>
-							<p class="col-auto my-0" id="userInfo-bringBook">100 권</p>
+							<p class="col-auto my-0" id="userInfo-bringBook" th:text="${userInfo.getBringBook() + ' 권'}"></p>
 						</div>
 
 						<!-- userPassword -->
 						<div class="row justify-content-start mb-2">
 							<strong class="col-4 me-3">현재 나의 포인트</strong>
-							<p class="col-auto my-0" id="userInfo-point"> 4,000 p</p>
+							<p class="col-auto my-0" id="userInfo-point" th:text="${#numbers.formatInteger(userInfo.getUserPoint(), 3, 'COMMA') + ' p'}"></p>
 						</div>
 
 					</div>
@@ -115,7 +130,7 @@
 			</div>
 			<div class="mt-3 px-2 py-2 card">
 				<div class="mt-2 d-flex align-items-center">
-					<img class="me-2" src="/images/user/userInfo-icon.png" alt="userInfo" style="width: 40px; height: 40px;">
+					<img class="me-2" src="/images/user/info-icon.png" alt="userInfo" style="width: 36px; height: 36px;">
 					<h4 class="my-2">상세 보기</h4>
 				</div>
 				<hr class="my-2">
@@ -128,6 +143,7 @@
 							포인트 거래 내역
 						</button>
 					</p>
+					<!-- 책 대여 상세 내역 -->
 					<div class="collapse mx-2 mb-3" id="rentInfo">
 						<div class="table-responsive">
 							<h5>책 대여 내역</h5>
@@ -144,44 +160,88 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>책 번호</td>
-										<td>책 이름</td>
-										<td>작가</td>
-										<td>장르</td>
-										<td>대여 가능 지점</td>
-										<td>대여료</td>
-									</tr>
+									<th:block th:each="rent : ${bookRentInfo.getItems()}">
+										<tr>
+											<td th:text="${rent.getBookName()}"></td>
+											<td th:text="${rent.getStoreName()}"></td>
+											<td th:text="${rent.getRentStart()}"></td>
+											<td th:text="${rent.getRentEnd()}"></td>
+											<td th:text="${#numbers.formatInteger(rent.getRentPrice(), 3, 'COMMA')}"></td>
+											<td th:if="${rent.isRentStatus()}"><span class="badge text-bg-secondary">반납완료</span></td>
+											<td th:if="${!rent.isRentStatus()}"><span class="badge text-bg-success">대여중</span></td>
+										</tr>
+									</th:block>
 								</tbody>
 							</table>
+							<!-- 페이지네이션 -->
+							<div class="d-flex justify-content-center" th:if="${bookRentInfo.getTotalPages() > 0}">
+								<ul class="pagination pagination-success mb-0">
+									<!-- 이전 10개 묶음으로 이동 -->
+									<li class="page-item" th:if="${paginationRent.hasPreviousGroup}">
+										<a class="page-link" th:href="@{/user/info(rentPage=${paginationRent.startPage - 1})}">&laquo;</a>
+									</li>
+
+									<!-- 현재 페이지 집합 (10개씩 고정) -->
+									<li class="page-item"
+										th:each="i : ${#numbers.sequence(paginationRent.startPage, paginationRent.endPage)}"
+										th:classappend="${i == bookRentInfo.getCurrentPage()} ? 'active'">
+										<a class="page-link" th:href="@{/user/info(rentPage=${i})}" th:text="${i + 1}"></a>
+									</li>
+
+									<!-- 다음 10개 묶음으로 이동 -->
+									<li class="page-item" th:if="${paginationRent.hasNextGroup}">
+										<a class="page-link" th:href="@{/user/info(rentPage=${paginationRent.endPage + 1})}">&raquo;</a>
+									</li>
+								</ul>
+							</div>
+							<!-- 페이지네이션 끝 -->
 						</div>
 					</div>
+					<!-- 포인트 사용 상세 내역 -->
 					<div class="collapse mx-2 mb-3" id="pointInfo">
 						<div class="table-responsive">
 							<h5>포인트 상세 내역</h5>
 							<hr class="my-2">
 							<table class="table table-hover text-center">
 								<thead>
-								<tr>
-									<th scope="col">포인트</th>
-									<th scope="col">책 이름</th>
-									<th scope="col">작가</th>
-									<th scope="col">장르</th>
-									<th scope="col">대여 가능 지점</th>
-									<th scope="col">대여료</th>
-								</tr>
+									<tr>
+										<th scope="col">사용일자</th>
+										<th scope="col">포인트 거래 금액</th>
+										<th scope="col">포인트 거래 품목</th>
+									</tr>
 								</thead>
 								<tbody>
-								<tr>
-									<td>책 번호</td>
-									<td>책 이름</td>
-									<td>작가</td>
-									<td>장르</td>
-									<td>대여 가능 지점</td>
-									<td>대여료</td>
-								</tr>
+									<th:block th:each="point : ${pointInfo.getItems()}">
+										<tr>
+											<td th:text="${point.getReqDate()}"></td>
+											<td th:text="${point.getPointPrice()}"></td>
+											<td th:text="${point.getPointPayName()}"></td>
+										</tr>
+									</th:block>
 								</tbody>
 							</table>
+							<!-- 페이지네이션 -->
+							<div class="d-flex justify-content-center" th:if="${pointInfo.getTotalPages() > 0}">
+								<ul class="pagination pagination-success mb-0">
+									<!-- 이전 10개 묶음으로 이동 -->
+									<li class="page-item" th:if="${paginationPoint.hasPreviousGroup}">
+										<a class="page-link" th:href="@{/user/info(pointPage=${paginationPoint.startPage - 1})}">&laquo;</a>
+									</li>
+
+									<!-- 현재 페이지 집합 (10개씩 고정) -->
+									<li class="page-item"
+										th:each="i : ${#numbers.sequence(paginationPoint.startPage, paginationPoint.endPage)}"
+										th:classappend="${i == pointInfo.getCurrentPage()} ? 'active'">
+										<a class="page-link" th:href="@{/user/info(pointPage=${i})}" th:text="${i + 1}"></a>
+									</li>
+
+									<!-- 다음 10개 묶음으로 이동 -->
+									<li class="page-item" th:if="${paginationPoint.hasNextGroup}">
+										<a class="page-link" th:href="@{/user/info(pointPage=${paginationPoint.endPage + 1})}">&raquo;</a>
+									</li>
+								</ul>
+							</div>
+							<!-- 페이지네이션 끝 -->
 						</div>
 					</div>
 				</div>
@@ -193,8 +253,6 @@
 	<script th:src="@{/js/common/main.js}"></script>
 	<!-- jQuery CDN -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script th:src="@{/js/main/booksInfo.js}"></script>
-	<script th:src="@{/js/main/bookCartAdd.js}"></script>
-	<script th:src="@{/js/main/filterSet.js}"></script>
+	<script th:src="@{/js/user/collapseStatus.js}"></script>
 </body>
 </html>

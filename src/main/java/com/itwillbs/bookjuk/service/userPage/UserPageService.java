@@ -51,19 +51,13 @@ public class UserPageService {
                 .build()).toList();
 
         return UserPaginationDTO.builder()
-                .userPageBooksDTO(userBookDTO)
+                .items(userBookDTO)
                 .totalPages(booksEntityList.getTotalPages())
                 .currentPage(booksEntityList.getNumber())
                 .hasNext(booksEntityList.hasNext())
                 .hasPrevious(booksEntityList.hasPrevious())
                 .build();
     }
-
-    //검색으로 인한 책 목록 반환
-    public Page<BooksEntity> searchBooks(int page, int pageSize, String search) {
-        return null;
-    }
-
 
     //userNum 값으로 userContentEntity 가져와서 포인트만 반환
     public int getUserPoint(Long userNum) {

@@ -295,6 +295,14 @@ $(document).ready(function () {
   $("#joinButton").on('click', async (e) => {
     e.preventDefault();
     const isValid = await validateAll();
+
+    // 성별 확인 로직 추가
+    const gender = $("input[name='userGender']:checked").val(); // 선택된 성별 값 가져오기
+    if (!gender) {
+      alert("성별을 선택해주세요."); // 성별이 선택되지 않았다면 경고 메시지
+      return; // 처리 중단
+    }
+
     if (isValid) {
       //폼데이터 직렬화
       //const joinFormData = new FormData($("#joinForm")[0]);
@@ -302,6 +310,10 @@ $(document).ready(function () {
       $("#joinForm").serializeArray().forEach(({ name, value }) => {
           formData[name] = value;
         });
+
+      //선택된 성별을 formData에 추가
+      formData.gender = gender;
+
       console.log(formData);
 
       $.ajax({

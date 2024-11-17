@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    let period;
-    let salesOption;
+    let period = $('#period').val();
+    let salesOption = $('.sales-option.active').text();
+
 
     $('#period').on('change', function () {
         period = $(this).val();
@@ -93,13 +94,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         item.append("span").text(key === "rentalFee" ? "대여료" : "연체료");
                     });
                 }
-
+                let selectedOption = $("input[name='point-option']:checked").val();
                 d3.selectAll("input[name='point-option']").on("change", function () {
-                    const selectedOption = this.value;
+                    selectedOption = this.value;
                     updateChart(data[selectedOption]);
                 });
 
-                updateChart(data.gender); // 초기 렌더링
+                updateChart(data[selectedOption]); // 초기 렌더링
             }
         });
     };

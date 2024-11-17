@@ -109,8 +109,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 // 초기 차트 렌더링
+                let selectedOption = $("input[name='customer-option']:checked").val();
+
                 function renderInitialChart() {
-                    const initialData = data.gender; // 초기 데이터: 성별
+                    const initialData = data[selectedOption]; // 초기 데이터: 성별
                     updateAxis(initialData);
                     updateChart(initialData);
                 }

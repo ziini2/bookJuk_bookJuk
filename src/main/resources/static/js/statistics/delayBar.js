@@ -57,7 +57,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     svg.append("g")
                         .attr("class", "y-axis")
                         .attr("transform", `translate(${margin.left},0)`)
-                        .call(d3.axisLeft(y));
+                        .call(d3.axisLeft(y)
+                            .ticks(5) // 적절한 y축 간격 설정
+                            .tickFormat(d3.format("d"))); // 정수 값만 표시
                 }
 
                 // 차트 업데이트 함수
@@ -109,8 +111,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 // 초기 차트 렌더링
+
+                let selectedOption = $("input[name='delay-option']:checked").val();
+
                 function renderInitialChart() {
-                    const initialData = data.gender; // 초기 데이터: 성별
+                    const initialData = data[selectedOption]; // 초기 데이터: 성별
                     updateAxis(initialData);
                     updateChart(initialData);
                 }
@@ -132,6 +137,5 @@ document.addEventListener('DOMContentLoaded', function () {
     window.globalState.delayRequestData = delayRequestData;
 
     delayRequestData();
-
 
 });

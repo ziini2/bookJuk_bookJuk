@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // 초기 데이터 정의
 
-    let period;
+    let period = $("#period").val();
 
     $('#period').on('change', function () {
         period = $(this).val();
@@ -109,9 +109,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         .text(d => d.category);
                 }
 
+                let selectedOption = $("input[name='revenue-option']:checked").val();
+
                 // 초기 차트 렌더링
                 function renderInitialChart() {
-                    const initialData = data.gender; // 초기 데이터: 성별
+                    const initialData = data[selectedOption];
                     updateAxis(initialData);
                     updateChart(initialData);
                 }

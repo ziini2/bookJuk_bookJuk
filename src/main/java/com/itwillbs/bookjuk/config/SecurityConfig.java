@@ -49,7 +49,7 @@ public class SecurityConfig {
                 //소셜로그인 회원은 전화번호 입력하지않으면 계속해서 전화번호 입력창으로 리다이렉트!
                 .requestMatchers("/login/phone").hasAnyRole("INACTIVE")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/", "/main/**", "/login/**").permitAll()
+                .requestMatchers("/", "/userMain", "/main/**", "/login/**").permitAll()
                 .requestMatchers("/user/**").hasAnyRole("ADMIN", "USER") //여기에 로그인 된사람만 할수있는 페이지 추가
                 .anyRequest().authenticated()
         );

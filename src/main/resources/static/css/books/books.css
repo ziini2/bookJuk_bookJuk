@@ -1,19 +1,35 @@
 /* 모든 입력 필드의 높이와 패딩을 통일하여 균일한 크기 설정 */
 .form-control {
-    height: calc(2.25rem + 2px); /* 높이 설정 */
-    padding: 0.375rem 0.75rem; /* 패딩 통일 */
-    margin: 0; /* 마진 초기화 */
-    width: 100%; /* 입력 필드 너비를 부모 요소에 맞춤 */
-    box-sizing: border-box; /* 너비에 패딩과 테두리 포함 */
+	height: calc(2.25rem + 2px); /* 높이 설정 */
+	padding: 0.375rem 0.75rem; /* 패딩 통일 */
+	margin: 0; /* 마진 초기화 */
+	width: 100%; /* 입력 필드 너비를 부모 요소에 맞춤 */
+	box-sizing: border-box; /* 너비에 패딩과 테두리 포함 */
 }
 
 .table-responsive {
-    width: 100%; /* 부모 크기에 맞춰서 테이블 너비 설정 */
-    overflow-x: auto; /* 스크롤을 자동으로 추가 */
-    margin-top: 20px; /* 필요에 따라 여백 조정 */
+	width: 100%; /* 부모 크기에 맞춰서 테이블 너비 설정 */
+	overflow-x: auto; /* 스크롤을 자동으로 추가 */
+	margin-top: 20px; /* 필요에 따라 여백 조정 */
 }
 
 table {
-    width: 100%; /* 테이블 너비를 100%로 설정하여 부모 요소에 맞게 확장 */
-    table-layout: auto; /* 내용에 따라 자동으로 열 크기 조정 */
+	width: 100%; /* 테이블 너비를 100%로 설정하여 부모 요소에 맞게 확장 */
+	table-layout: auto; /* 내용에 따라 자동으로 열 크기 조정 */
+}
+
+/* 필터 항목 크기 조정 */
+.filter-item {
+	min-width: 150px; /* 최소 너비 */
+	max-width: 200px; /* 최대 너비 */
+}
+
+/* 검색창이 적절히 늘어나도록 설정 */
+#search {
+	flex: 1;
+}
+
+/* 전체 컨테이너 간격 및 정렬 */
+.d-flex.gap-3 {
+	align-items: center;
 }

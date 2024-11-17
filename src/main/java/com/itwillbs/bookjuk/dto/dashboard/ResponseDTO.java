@@ -5,13 +5,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-public class CategoryData {
+public class ResponseDTO {
 
-    private String category;
-    private long count;
-
+    List<CategoryData> gender;
+    List<CategoryData> age;
+    List<CategoryData> genre;
+    List<CategoryData> store;
 }

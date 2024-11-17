@@ -1,6 +1,7 @@
 package com.itwillbs.bookjuk.controller.statistics;
 
 import com.itwillbs.bookjuk.dto.dashboard.PointResponseDTO;
+import com.itwillbs.bookjuk.dto.dashboard.ResponseDTO;
 import com.itwillbs.bookjuk.dto.dashboard.TotalStatisticsDTO;
 import com.itwillbs.bookjuk.service.statistics.DashRestService;
 import lombok.RequiredArgsConstructor;
@@ -63,8 +64,30 @@ public class DashRestController {
     }
 
     @GetMapping("period/point")
-    public ResponseEntity<PointResponseDTO> getPointStatistics(@RequestParam(defaultValue = "week") String period) {
-        return ResponseEntity.ok(dashRestService.getPointStatistics(period));
+    public ResponseEntity<PointResponseDTO> getPointStatistics(
+            @RequestParam(defaultValue = "week") String period,
+            @RequestParam(defaultValue = "") List<String> storeList,
+            @RequestParam(defaultValue = "전체") String salesOption) {
+        return ResponseEntity.ok(dashRestService.getPointStatistics(period, storeList, salesOption));
+    }
+
+    @GetMapping("period/delay")
+    public ResponseEntity<ResponseDTO> getDelayStatistics(
+            @RequestParam(defaultValue = "week") String period,
+            @RequestParam(defaultValue = "") List<String> storeList) {
+        return ResponseEntity.ok(dashRestService.getDelayStatistics(period, storeList));
+    }
+
+    @GetMapping("period/revenue")
+    public ResponseEntity<ResponseDTO> getRevenueStatistics(
+            @RequestParam(defaultValue = "week") String period) {
+        return ResponseEntity.ok(dashRestService.getRevenueStatistics(period));
+    }
+
+    @GetMapping("period/customer")
+    public ResponseEntity<ResponseDTO> getCustomerStatistics(
+            @RequestParam(defaultValue = "week") String period) {
+        return ResponseEntity.ok(dashRestService.getCustomerStatistics(period));
     }
 
 

@@ -56,8 +56,16 @@ public class UserInfoService {
         userInfoDTO.setUserPhone(userEntity.getUserPhone());
         userInfoDTO.setLoginType(userEntity.getLoginType());
         userInfoDTO.setUserGender(userEntity.getUserGender());
-        userInfoDTO.setUserPoint(userContentEntity.getUserPoint());
-        userInfoDTO.setBringBook(userContentEntity.getBringBook());
+
+        // UserContentEntity 정보 설정 (null 체크)
+        if (userContentEntity != null) {
+            userInfoDTO.setUserPoint(userContentEntity.getUserPoint());
+            userInfoDTO.setBringBook(userContentEntity.getBringBook());
+        } else {
+            log.warn("UserContentEntity is null for userNum={}", userEntity.getUserNum());
+            userInfoDTO.setUserPoint(0); // 기본값 설정
+            userInfoDTO.setBringBook(0); // 기본값 설정
+        }
         return userInfoDTO;
     }
 

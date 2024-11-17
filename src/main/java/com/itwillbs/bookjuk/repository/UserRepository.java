@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,5 +30,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<List<UserEntity>> findByUserPhoneContaining(String keyword);
 
 
-
+    Optional<List<UserEntity>> findAllByCreateDateBetween(Timestamp of, Timestamp of1);
 }

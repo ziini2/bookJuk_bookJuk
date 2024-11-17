@@ -1,7 +1,8 @@
 $(document).ready(function () {
-    const maxStores = 5; // 선택 가능한 최대 지점 수
+    const maxStores = 5;
+    const revenueStoreList = window.globalState.revenueStoreList; // 포인트 분석용 전역 storeList 참조
+    const delayStoreList = window.globalState.delayStoreList;     // 연체 분석용 전역 storeList 참조
 
-    // 공통 함수: 드롭다운 구성
     function populateDropdown(response, dropdownClass, dropdownItemClass) {
         const dropdown = $(dropdownClass);
         response.forEach(store => {
@@ -9,48 +10,50 @@ $(document).ready(function () {
         });
     }
 
-    // 공통 함수: 선택된 지점 관리
-    function handleDropdownClick(dropdownItem, buttonClass, selectedStoresContainerClass, selectedStoresSet) {
+    function handleDropdownClick(dropdownItem, buttonClass, selectedStoresContainerClass, storeList, requestDataFunc) {
         $(document).on('click', dropdownItem, function () {
             const storeName = $(this).data('store');
             const button = $(buttonClass);
             const selectedStoresContainer = $(selectedStoresContainerClass);
 
             if (storeName === "전체") {
-                selectedStoresSet.clear();
+                storeList.clear();
                 $(dropdownItem).removeClass('active');
-            } else if (selectedStoresSet.has(storeName)) {
-                selectedStoresSet.delete(storeName);
+            } else if (storeList.has(storeName)) {
+                storeList.delete(storeName);
                 $(this).removeClass('active');
             } else {
-                if (selectedStoresSet.size < maxStores) {
-                    selectedStoresSet.add(storeName);
+                if (storeList.size < maxStores) {
+                    storeList.add(storeName);
                     $(this).addClass('active');
                 } else {
                     alert(`최대 ${maxStores}개의 지점만 선택할 수 있습니다.`);
                 }
             }
 
-            updateButtonText(button, selectedStoresSet);
-            updateSelectedStores(selectedStoresContainer, selectedStoresSet);
+            updateButtonText(button, storeList);
+            updateSelectedStores(selectedStoresContainer, storeList);
+
+            // 전역 requestData 함수 호출하여 최신 데이터를 요청
+            if (typeof requestDataFunc === 'function') {
+                requestDataFunc();
+            }
         });
     }
 
-    // 버튼 문구 업데이트
-    function updateButtonText(button, selectedStoresSet) {
-        if (selectedStoresSet.size > 0) {
+    function updateButtonText(button, storeList) {
+        if (storeList.size > 0) {
             button.text('지점: 선택중');
         } else {
             button.text('지점: 전체');
         }
     }
 
-    // 선택된 지점 표시 업데이트
-    function updateSelectedStores(selectedStoresContainer, selectedStoresSet) {
+    function updateSelectedStores(selectedStoresContainer, storeList) {
         selectedStoresContainer.empty();
 
-        if (selectedStoresSet.size > 0) {
-            selectedStoresSet.forEach(store => {
+        if (storeList.size > 0) {
+            storeList.forEach(store => {
                 selectedStoresContainer.append(`<span class="badge bg-primary me-1">${store}</span>`);
             });
         } else {
@@ -58,30 +61,32 @@ $(document).ready(function () {
         }
     }
 
-    // AJAX 요청으로 데이터 가져오기
     $.ajax({
         type: 'GET',
         url: '/admin/stores',
         dataType: 'json',
         success: function (response) {
-            // 매출항목 드롭다운 구성
+            // 포인트 분석 드롭다운 구성
             populateDropdown(response, '.stores-revenue-dropdown', 'dropdown-item revenue-store');
+            // 연체 분석 드롭다운 구성
             populateDropdown(response, '.stores-delay-dropdown', 'dropdown-item delay-store');
 
-            // 매출항목 드롭다운 이벤트 처리
+            // 포인트 분석 드롭다운 이벤트 처리
             handleDropdownClick(
                 '.revenue-store',
                 '.stores-btn.stores-revenue',
                 '.selected-revenue-stores',
-                new Set()
+                revenueStoreList,
+                window.globalState.requestData
             );
 
-            // 연체항목 드롭다운 이벤트 처리
+            // 연체 분석 드롭다운 이벤트 처리
             handleDropdownClick(
                 '.delay-store',
                 '.stores-btn.stores-delay',
                 '.selected-delay-stores',
-                new Set()
+                delayStoreList,
+                window.globalState.delayRequestData
             );
         },
         error: function (error) {

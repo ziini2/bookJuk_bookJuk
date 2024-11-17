@@ -11,8 +11,8 @@ import java.util.List;
 @Setter
 public class PointResponseDTO {
 
-    private List<CategoryData> gender;
-    private List<CategoryData> age;
-    private List<CategoryData> genre;
-    private List<CategoryData> store;
+    private List<CategoryPointData> gender;
+    private List<CategoryPointData> age;
+    private List<CategoryPointData> genre;
+    private List<CategoryPointData> store;
 }

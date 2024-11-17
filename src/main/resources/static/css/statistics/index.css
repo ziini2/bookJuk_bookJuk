@@ -284,14 +284,15 @@
 
 .fixed-period-select {
     position: fixed;
-    top: 310px;
-    right: 225px;
+    top: 330px;
+    left: 300px;
     z-index: 1000;
     background: #ffffff;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
     transition: box-shadow 0.3s ease;
+    cursor: grab;
 }
 
 .fixed-period-select label {
@@ -314,13 +315,17 @@
     outline: none;
 }
 
-/* 호버 효과 추가 */
 .fixed-period-select:hover {
     box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.25);
 }
 
+.fixed-period-select:active {
+    cursor: grabbing;
+}
+
 /* title이라는 단어가 포함된 클래스에 적용*/
 .chart-title {
+    height: 101px;
     background-color: rgba(60, 149, 90, 0.6);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;

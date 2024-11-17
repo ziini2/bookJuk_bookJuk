@@ -1,13 +1,14 @@
-let period = $("#period").val();
-
 document.addEventListener('DOMContentLoaded', function () {
+
+    let period = $("#period").val();
+
     const margin = {top: 20, right: 40, bottom: 30, left: 50},
         width = 1200 - margin.left - margin.right,
         height = 350 - margin.top - margin.bottom;
 
     const parseTime = d3.timeParse("%Y-%m-%d");
 
-    const x = d3.scaleTime().range([0, width]);
+    const x = d3.scaleBand().range([0, width]).padding(0.1);
     const y = d3.scaleLinear().range([height, 0]);
 
     const svg = d3.select(".total_short_cut_chart").append("svg")
@@ -16,8 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
+    let selectedYValue = 'revenue'; // 초기 선택 값
     rebuildGraph();
-
 
     function rebuildGraph() {
         $.ajax({
@@ -39,48 +40,50 @@ document.addEventListener('DOMContentLoaded', function () {
                 }));
 
                 // 그래프 업데이트 함수
-                function updateGraph(selectedYValue) {
-                    const valueline = d3.line()
-                        .x(d => x(d.date))
-                        .y(d => y(d[selectedYValue]));
-
+                function updateGraph() {
                     // x축 도메인 설정 (날짜 범위)
-                    x.domain(d3.extent(data, d => d.date));
+                    x.domain(data.map(d => d.date));
 
                     // y축 도메인 설정 (0 ~ 최대값)
-                    y.domain([0, d3.max(data, d => d[selectedYValue]) * 1.1]);
+                    const yMax = d3.max(data, d => d[selectedYValue]);
+                    y.domain([0, yMax > 0 ? Math.ceil(yMax * 1.1) : 1]); // 모든 값이 0일 때 최소값을 1로 설정
 
-                    // 선 업데이트
-                    const line = svg.selectAll(".line")
-                        .data([data]);
+                    // 막대 업데이트
+                    const bars = svg.selectAll(".bar")
+                        .data(data);
 
-                    line.enter()
-                        .append("path")
-                        .attr("class", "line")
-                        .merge(line)
+                    bars.enter()
+                        .append("rect")
+                        .attr("class", "bar")
+                        .attr("x", d => x(d.date))
+                        .attr("width", x.bandwidth())
+                        .attr("y", height) // 시작 위치를 아래로 설정
+                        .attr("height", 0) // 시작 높이를 0으로 설정
+                        .style("fill", "steelblue") // 막대 색상 설정
+                        .merge(bars)
                         .transition()
                         .duration(1000)
-                        .attr("d", valueline);
+                        .attr("y", d => y(d[selectedYValue]))
+                        .attr("height", d => height - y(d[selectedYValue]));
 
-                    line.exit().remove();
+                    bars.exit()
+                        .transition()
+                        .duration(500)
+                        .attr("y", height) // 아래로 내려가는 애니메이션
+                        .attr("height", 0)
+                        .remove();
 
                     // x축 업데이트
-                    let tickInterval, tickFormat;
-
+                    let tickValues = [];
                     if (period === "week") {
-                        tickInterval = d3.timeDay.every(1); // 1일 간격
-                        tickFormat = d3.timeFormat("%Y-%m-%d");
-                    } else if (period === "month") {
-                        tickInterval = d3.timeWeek.every(1); // 1주 간격
-                        tickFormat = d3.timeFormat("%Y-%m-%d");
-                    } else if (period === "quarter") {
-                        tickInterval = d3.timeMonth.every(1); // 1개월 간격
-                        tickFormat = d3.timeFormat("%Y-%m");
+                        tickValues = data.map(d => d.date); // 1일 간격 모든 날짜 표시
+                    } else if (period === "month" || period === "quarter") {
+                        tickValues = data.filter((d, i) => i % 7 === 0).map(d => d.date); // 7일 간격 표시
                     }
 
                     const xAxis = d3.axisBottom(x)
-                        .ticks(tickInterval)
-                        .tickFormat(tickFormat);
+                        .tickValues(tickValues)
+                        .tickFormat(d3.timeFormat("%Y-%m-%d"));
 
                     svg.selectAll(".x-axis").remove();
                     svg.append("g")
@@ -92,7 +95,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     // y축 업데이트
                     const yAxis = d3.axisLeft(y)
-                        .ticks(5); // 적절한 y축 간격 설정
+                        .ticks(5) // 적절한 y축 간격 설정
+                        .tickFormat(d3.format("d")); // 정수 값만 표시
 
                     svg.selectAll(".y-axis").remove();
                     svg.append("g")
@@ -103,14 +107,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 // 초기 그래프 표시
-                updateGraph('revenue');
+                updateGraph();
 
                 // 라디오 버튼 이벤트 리스너
                 const detailOptions = document.querySelectorAll('input[name="detail-option"]');
 
                 function onInputChange() {
-                    const selectedYValue = document.querySelector('input[name="detail-option"]:checked').value;
-                    updateGraph(selectedYValue);
+                    selectedYValue = document.querySelector('input[name="detail-option"]:checked').value;
+                    updateGraph();
                 }
 
                 detailOptions.forEach(option => {
@@ -128,9 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $("#period").change(function () {
             period = $("#period").val(); // 값을 가져옴
             rebuildGraph(); // 그래프 재생성 함수 호출
-
         });
     });
-
 
 });

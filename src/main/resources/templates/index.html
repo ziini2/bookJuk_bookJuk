@@ -33,6 +33,16 @@
     <!-- Jquery 추가-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <!-- 전역 객체를 정의합니다 -->
+    <script>
+        window.globalState = {
+            revenueStoreList: new Set(), // 포인트 분석용 storeList
+            delayStoreList: new Set(),   // 연체 분석용 storeList
+            requestData: null,           // a.js의 requestData 함수 참조
+            delayRequestData: null       // delay 분석용 requestData 함수 참조
+        };
+    </script>
+
 </head>
 
 <body>
@@ -141,13 +151,13 @@
                         <div>
                             <div class="d-flex flex-row gap-2">
                                 <div class="dropdown">
-                                    <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle sales-btn" data-bs-toggle="dropdown">
                                         매출항목: 전체
                                     </button>
-                                    <ul class="dropdown-menu sales-option">
-                                        <li><a class="dropdown-item" href="#">전체</a></li>
-                                        <li><a class="dropdown-item" href="#">대여료</a></li>
-                                        <li><a class="dropdown-item" href="#">연체료</a></li>
+                                    <ul class="dropdown-menu sales">
+                                        <li><a class="dropdown-item sales-option">전체</a></li>
+                                        <li><a class="dropdown-item sales-option">대여료</a></li>
+                                        <li><a class="dropdown-item sales-option">연체료</a></li>
                                     </ul>
                                 </div>
                                 <div class="dropdown">
@@ -222,8 +232,8 @@
                                 <label for="delay-age">나이</label>
                                 <input type="radio" name="delay-option" id="delay-genre" value="genre">
                                 <label for="delay-genre">장르</label>
-                                <input type="radio" name="delay-option" id="delay-branch" value="branch">
-                                <label for="delay-branch">지점</label>
+                                <input type="radio" name="delay-option" id="delay-store" value="store">
+                                <label for="delay-store">지점</label>
                             </div>
                         </div>
                         <div>
@@ -263,6 +273,7 @@
 <script th:src="@{/js/statistics/revenueBar.js}"></script>
 <script th:src="@{/js/statistics/customerBar.js}"></script>
 <script th:src="@{/js/statistics/delayBar.js}"></script>
+<script th:src="@{/js/statistics/dragAndDrop.js}"></script>
 
 </body>
 

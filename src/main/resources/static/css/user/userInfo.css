@@ -25,3 +25,10 @@
     width: 200px;
     height: 280px;
 }
+
+.error-message{
+    color: orange;
+    font-size: 0.8rem;
+    text-align: left;
+    margin-left: 0.5rem;
+}

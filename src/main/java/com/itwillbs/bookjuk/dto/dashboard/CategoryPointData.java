@@ -9,9 +9,9 @@ import lombok.Setter;
 @Setter
 @Builder
 @AllArgsConstructor
-public class CategoryData {
+public class CategoryPointData {
 
     private String category;
-    private long count;
-
+    private long rentalFee;
+    private long overdueFee;
 }

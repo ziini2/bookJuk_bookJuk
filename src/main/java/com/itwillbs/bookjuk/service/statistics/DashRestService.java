@@ -1,10 +1,11 @@
 package com.itwillbs.bookjuk.service.statistics;
 
-import com.itwillbs.bookjuk.dto.dashboard.CategoryData;
-import com.itwillbs.bookjuk.dto.dashboard.PointResponseDTO;
-import com.itwillbs.bookjuk.dto.dashboard.TotalStatisticsDTO;
+import com.itwillbs.bookjuk.dto.dashboard.*;
 import com.itwillbs.bookjuk.entity.StoreEntity;
+import com.itwillbs.bookjuk.entity.UserEntity;
+import com.itwillbs.bookjuk.entity.pay.PaymentEntity;
 import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
+import com.itwillbs.bookjuk.entity.rent.Overdue;
 import com.itwillbs.bookjuk.repository.*;
 import com.itwillbs.bookjuk.repository.event.EventRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +30,7 @@ public class DashRestService {
     private final PointDealRepository pointDealRepository;
     private final RentRepository rentRepository;
     private final StoreRepository storeRepository;
+    private final OverdueRepository overdueRepository;
     private final JdbcTemplate jdbcTemplate;
     private final LocalDate now = LocalDate.now();
 
@@ -218,51 +219,56 @@ public class DashRestService {
         }).sorted().toList();
     }
 
-    public PointResponseDTO getPointStatistics(String period) {
-        LocalDate startDate = LocalDate.now();
+    public PointResponseDTO getPointStatistics(String period, List<String> storeList, String salesOption) {
+        LocalDate startDate = now;
         LocalDate endDate = LocalDate.now();
 
         startDate = getStartDate(period, startDate);
 
-        Optional<List<PointDealEntity>> genderDate = pointDealRepository.findAllFirstByReqDateBetweenOrderByReqDateDesc(
+        Optional<List<PointDealEntity>> rawData = pointDealRepository.findAllFirstByReqDateBetweenOrderByReqDateDesc(
                 LocalDateTime.of(startDate, LocalDateTime.MIN.toLocalTime()), LocalDateTime.of(endDate, LocalDateTime.MAX.toLocalTime()));
 
-        List<CategoryData> genderData = new ArrayList<>();
-        List<CategoryData> ageData = new ArrayList<>();
-        List<CategoryData> genreData = new ArrayList<>();
-        List<CategoryData> storeData = new ArrayList<>();
+        if (rawData.isEmpty()) {
+            return PointResponseDTO.builder().build();
+        }
 
-        if (genderDate.isPresent()) {
-            for (PointDealEntity pointDealEntity : genderDate.get()) {
+        // 조건에 따른 필터
+        rawData = Optional.of(filterData(rawData.get(), storeList, salesOption));
 
-                // 성별 포인트 사용 내역
-                String genderCategory = pointDealEntity.getUserContentEntity().getUserEntity().getUserGender().equals("mail") ? "남성" : "여성";
-                genderData.add(getCategoryData(genderCategory, pointDealEntity));
+        List<CategoryPointData> genderData = new ArrayList<>();
+        List<CategoryPointData> ageData = new ArrayList<>();
+        List<CategoryPointData> genreData = new ArrayList<>();
+        List<CategoryPointData> storeData = new ArrayList<>();
 
-                // 나이별 포인트 사용 내역
-                String birthday = pointDealEntity.getUserContentEntity().getUserEntity().getUserBirthday();
-                int ageNum = now.getYear() - Integer.parseInt(birthday.substring(0, 4)) + 1;
+        for (PointDealEntity pointDealEntity : rawData.get()) {
 
-                String ageCategory = getAgeCategory(ageNum);
+            // 성별 포인트 사용 내역
+            String genderCategory = pointDealEntity.getUserContentEntity().getUserEntity().getUserGender().equals("male") ? "남성" : "여성";
+            genderData.add(getCategoryData(genderCategory, pointDealEntity));
 
-                ageData.add(getCategoryData(ageCategory, pointDealEntity));
+            // 나이별 포인트 사용 내역
+            String birthday = pointDealEntity.getUserContentEntity().getUserEntity().getUserBirthday();
+            int ageNum = now.getYear() - Integer.parseInt(birthday.substring(0, 4)) + 1;
 
-                // 장르별 포인트 사용 내역
-                String genre = pointDealEntity.getRent().getBook().getBookInfoEntity().getGenre().getGenreName();
+            String ageCategory = getAgeCategory(ageNum);
 
-                genreData.add(getCategoryData(genre, pointDealEntity));
+            ageData.add(getCategoryData(ageCategory, pointDealEntity));
 
-                // 지점별 포인트 사용 내역
-                String store = pointDealEntity.getRent().getStoreCode().getStoreName().split(" ", 2)[1];
+            // 장르별 포인트 사용 내역
+            String genre = pointDealEntity.getRent().getBook().getBookInfoEntity().getGenre().getGenreName();
 
-                storeData.add(getCategoryData(store, pointDealEntity));
+            genreData.add(getCategoryData(genre, pointDealEntity));
 
-            }
+            // 지점별 포인트 사용 내역
+            String store = pointDealEntity.getRent().getStoreCode().getStoreName().split(" ", 2)[1];
+
+            storeData.add(getCategoryData(store, pointDealEntity));
+
         }
 
         // 중복된 카테고리들은 합쳐서 반환 및 대여료와 연체료 부호 +로 변경
         genderData = changeSign(mergeCategoryData(genderData));
-        ageData = changeSign(mergeCategoryData(ageData));
+        ageData = changeSign(mergeCategoryData(ageData)).stream().sorted(Comparator.comparing(CategoryPointData::getCategory)).toList();
         genreData = changeSign(mergeCategoryData(genreData));
         storeData = changeSign(mergeCategoryData(storeData));
 
@@ -277,7 +283,7 @@ public class DashRestService {
 
     }
 
-    private List<CategoryData> changeSign(List<CategoryData> data) {
+    private List<CategoryPointData> changeSign(List<CategoryPointData> data) {
         return data.stream().map(categoryData -> {
             categoryData.setRentalFee(categoryData.getRentalFee() * -1);
             categoryData.setOverdueFee(categoryData.getOverdueFee() * -1);
@@ -285,23 +291,15 @@ public class DashRestService {
         }).toList();
     }
 
-    private List<CategoryData> mergeCategoryData(List<CategoryData> data) {
-        List<CategoryData> mergedData = new ArrayList<>();
-        // rentalfee와 overduefee를 각각의 변수로 합산
-        for (CategoryData categoryData : data) {
-            String category = categoryData.getCategory();
-            long rentalFee = categoryData.getRentalFee();
-            long overdueFee = categoryData.getOverdueFee();
-
-            if (mergedData.stream().anyMatch(data1 -> data1.getCategory().equals(category))) {
-                CategoryData merged = mergedData.stream().filter(data1 -> data1.getCategory().equals(category)).findFirst().get();
-                merged.setRentalFee(merged.getRentalFee() + rentalFee);
-                merged.setOverdueFee(merged.getOverdueFee() + overdueFee);
-            } else {
-                mergedData.add(categoryData);
-            }
+    private List<CategoryPointData> mergeCategoryData(List<CategoryPointData> data) {
+        Map<String, CategoryPointData> mergedData = new HashMap<>();
+        for (CategoryPointData categoryData : data) {
+            mergedData.computeIfAbsent(categoryData.getCategory(), k -> new CategoryPointData(k, 0L, 0L));
+            CategoryPointData merged = mergedData.get(categoryData.getCategory());
+            merged.setRentalFee(merged.getRentalFee() + categoryData.getRentalFee());
+            merged.setOverdueFee(merged.getOverdueFee() + categoryData.getOverdueFee());
         }
-        return mergedData;
+        return new ArrayList<>(mergedData.values());
     }
 
     @NotNull
@@ -316,12 +314,189 @@ public class DashRestService {
         };
     }
 
-    public CategoryData getCategoryData(String category, PointDealEntity pointDealEntity) {
+    public CategoryPointData getCategoryData(String category, PointDealEntity pointDealEntity) {
 
-        return CategoryData.builder()
+        return CategoryPointData.builder()
                 .category(category)
                 .rentalFee(pointDealEntity.getPointPayName().equals("대여료") ? pointDealEntity.getPointPrice() : 0L)
                 .overdueFee(pointDealEntity.getPointPayName().equals("연체료") ? pointDealEntity.getPointPrice() : 0L)
                 .build();
+    }
+
+    private List<PointDealEntity> filterData(List<PointDealEntity> data, List<String> storeList, String salesOption) {
+        return data.stream()
+                .filter(pointDeal -> storeList.isEmpty() || storeList.contains(pointDeal.getRent().getStoreCode().getStoreName().split(" ", 2)[1]))
+                .filter(pointDeal -> salesOption.equals("전체") || pointDeal.getPointPayName().equals(salesOption))
+                .toList();
+    }
+
+    public ResponseDTO getRevenueStatistics(String period) {
+
+        LocalDate startDate = now;
+        LocalDate endDate = LocalDate.now();
+
+        startDate = getStartDate(period, startDate);
+
+        Optional<List<PaymentEntity>> rawData = paymentRepository.findAllByReqDateBetween(
+                LocalDateTime.of(startDate, LocalDateTime.MIN.toLocalTime()), LocalDateTime.of(endDate, LocalDateTime.MAX.toLocalTime()));
+
+        if (rawData.isEmpty()) {
+            return ResponseDTO.builder().build();
+        }
+
+        List<CategoryData> genderData = new ArrayList<>();
+        List<CategoryData> ageData = new ArrayList<>();
+
+        for (PaymentEntity paymentEntity : rawData.get()) {
+
+            // 성별 매출 내역
+            String genderCategory = paymentEntity.getUserContentEntity().getUserEntity().getUserGender().equals("male") ? "남성" : "여성";
+            genderData.add(new CategoryData(genderCategory, paymentEntity.getPaymentPrice()));
+
+            // 나이별 매출 내역
+            String birthday = paymentEntity.getUserContentEntity().getUserEntity().getUserBirthday();
+            int ageNum = now.getYear() - Integer.parseInt(birthday.substring(0, 4)) + 1;
+
+            String ageCategory = getAgeCategory(ageNum);
+
+            ageData.add(new CategoryData(ageCategory, paymentEntity.getPaymentPrice()));
+        }
+
+        // 중복된 카테고리들은 합쳐서 반환
+        genderData = mergeCategoryRevenueData(genderData);
+        ageData = mergeCategoryRevenueData(ageData).stream().sorted(Comparator.comparing(CategoryData::getCategory)).toList();
+
+        return ResponseDTO.builder()
+                .gender(genderData)
+                .age(ageData).build();
+    }
+
+    private List<CategoryData> mergeCategoryRevenueData(List<CategoryData> data) {
+        Map<String, CategoryData> mergedData = new HashMap<>();
+        for (CategoryData categoryRevenue: data) {
+            mergedData.computeIfAbsent(categoryRevenue.getCategory(), k -> new CategoryData(k, 0L));
+            CategoryData merged = mergedData.get(categoryRevenue.getCategory());
+            merged.setCount(merged.getCount() + categoryRevenue.getCount());
+        }
+        return new ArrayList<>(mergedData.values());
+    }
+
+    private List<CategoryData> mergeCategoryCountData(List<CategoryData> data) {
+        Map<String, CategoryData> mergedData = new HashMap<>();
+        for (CategoryData categoryRevenue: data) {
+            mergedData.computeIfAbsent(categoryRevenue.getCategory(), k -> new CategoryData(k, 0L));
+            CategoryData merged = mergedData.get(categoryRevenue.getCategory());
+            merged.setCount(merged.getCount() + 1);
+        }
+        return new ArrayList<>(mergedData.values());
+    }
+
+    public ResponseDTO getCustomerStatistics(String period) {
+
+        LocalDate startDate = now;
+        LocalDate endDate = LocalDate.now();
+
+        startDate = getStartDate(period, startDate);
+
+        Optional<List<UserEntity>> rawData = userRepository.findAllByCreateDateBetween(
+                Timestamp.valueOf(startDate.atStartOfDay()), Timestamp.valueOf(endDate.atStartOfDay().minusNanos(1)));
+
+        if (rawData.isEmpty()) {
+            return ResponseDTO.builder().build();
+        }
+
+        List<CategoryData> genderData = new ArrayList<>();
+        List<CategoryData> ageData = new ArrayList<>();
+
+        for (UserEntity userEntity : rawData.get()) {
+
+            // 성별 회원 가입 내역
+            String genderCategory = userEntity.getUserGender().equals("male") ? "남성" : "여성";
+            genderData.add(new CategoryData(genderCategory, 1L));
+
+            // 나이별 회원 가입 내역
+            String birthday = userEntity.getUserBirthday();
+            int ageNum = now.getYear() - Integer.parseInt(birthday.substring(0, 4)) + 1;
+
+            String ageCategory = getAgeCategory(ageNum);
+
+            ageData.add(new CategoryData(ageCategory, 1L));
+        }
+
+        // 중복된 카테고리들은 합쳐서 반환
+        genderData = mergeCategoryRevenueData(genderData);
+        ageData = mergeCategoryRevenueData(ageData).stream().sorted(Comparator.comparing(CategoryData::getCategory)).toList();
+
+        return ResponseDTO.builder()
+                .gender(genderData)
+                .age(ageData).build();
+    }
+
+    public ResponseDTO getDelayStatistics(String period, List<String> storeList) {
+
+        LocalDate startDate = now;
+        LocalDate endDate = LocalDate.now();
+
+        startDate = getStartDate(period, startDate);
+
+        Optional<List<Overdue>> rawData = overdueRepository.findAllByOverStartBetween(
+                startDate, endDate);
+
+        if (rawData.isEmpty()) {
+            return ResponseDTO.builder().build();
+        }
+
+        // 조건에 따른 필터
+        rawData = Optional.of(filterDelayData(rawData.get(), storeList));
+
+        List<CategoryData> genderData = new ArrayList<>();
+        List<CategoryData> ageData = new ArrayList<>();
+        List<CategoryData> genreData = new ArrayList<>();
+        List<CategoryData> storeData = new ArrayList<>();
+
+        for (Overdue overdue : rawData.get()) {
+
+            // 성별 연체 내역
+            String genderCategory = overdue.getRent().getUser().getUserGender().equals("male") ? "남성" : "여성";
+            genderData.add(new CategoryData(genderCategory, overdue.getOverPrice()));
+
+            // 나이별 연체 내역
+            String birthday = overdue.getRent().getUser().getUserBirthday();
+            int ageNum = now.getYear() - Integer.parseInt(birthday.substring(0, 4)) + 1;
+
+            String ageCategory = getAgeCategory(ageNum);
+
+            ageData.add(new CategoryData(ageCategory, overdue.getOverPrice()));
+
+            // 장르별 연체 내역
+            String genre = overdue.getRent().getBook().getBookInfoEntity().getGenre().getGenreName();
+
+            genreData.add(new CategoryData(genre, overdue.getOverPrice()));
+
+            // 지점별 연체 내역
+            String store = overdue.getRent().getStoreCode().getStoreName().split(" ", 2)[1];
+
+            storeData.add(new CategoryData(store, overdue.getOverPrice()));
+
+        }
+
+        // 중복된 카테고리들은 합쳐서 반환
+
+        genderData = mergeCategoryCountData(genderData);
+        ageData = mergeCategoryCountData(ageData).stream().sorted(Comparator.comparing(CategoryData::getCategory)).toList();
+        genreData = mergeCategoryCountData(genreData);
+        storeData = mergeCategoryCountData(storeData);
+
+        return ResponseDTO.builder()
+                .gender(genderData)
+                .age(ageData)
+                .genre(genreData)
+                .store(storeData).build();
+    }
+
+    private List<Overdue> filterDelayData(List<Overdue> overdues, List<String> storeList) {
+        return overdues.stream()
+                .filter(overdue -> storeList.isEmpty() || storeList.contains(overdue.getRent().getStoreCode().getStoreName().split(" ", 2)[1]))
+                .toList();
     }
 }

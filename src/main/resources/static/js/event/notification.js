@@ -4,6 +4,7 @@ function dateChange(data) {
     const formattedDate = date.toISOString().slice(0, 19).replace("T", " ");
     return formattedDate;
 }
+let selectedRecipients = new Set();
 
 $(document).ready(function() {	
 	// datatables 라이브러리 설정
@@ -42,13 +43,11 @@ $(document).ready(function() {
 	        dataSrc: 'data',                          // 데이터 소스 경로 설정
 	        data: function(d) {
 	            console.log(d);
-
 	            // 요청 중단 조건: 데이터 길이가 0인 경우
 	            if (d.length === 0) {
 	                console.log("No more data to send.");
 	                return false;
 	            }
-
 	            // 정렬 및 필터링 조건 설정
 	            const order = d.order[0];
 	            const columnIdx = order.column;
@@ -76,9 +75,18 @@ $(document).ready(function() {
 	        }
 	    },
 		
-		order: [[0, 'desc']], // 여기서 기본 정렬 조건 설정 (0번째 컬럼을 내림차순으로 정렬)
+		order: [[1, 'desc']], // 여기서 기본 정렬 조건 설정 (1번째 컬럼을 내림차순으로 정렬)
 	    
 	    columns: [
+			{
+                data: null,
+                title: '<input type="checkbox" id="select-all">',
+                orderable: false,
+				searchable: false, // 검색 제외
+                render: function (data, type, row) {
+                    return '<input type="checkbox" class="row-select" data-recipient="' + row.recipient + '" value="' + row.notiId + '">';
+                }
+            },
 	        { data: 'notiId', title: 'No.' },
 	        { data: 'recipient', title: '수신 아이디' },
 	        { data: 'notiContent', title: '알림 내용' },
@@ -141,16 +149,19 @@ $(document).ready(function() {
 	function triggerSearch() {
 		const columnMap = {
 		    "": null,
-		    "notiId": 0,
-		    "recipient": 1,
-		    "notiContent": 2,
-		    "notiType": 3,
-		    "notiStatus": 4,
-		    "notiSentDate": 5
+		    "notiId": 1,
+		    "recipient": 2,
+		    "notiContent": 3,
+		    "notiType": 4,
+		    "notiStatus": 5,
+		    "notiSentDate": 6
 		};
 		const column = $('#noti-columnSelect').val();
 		const columnIndex = columnMap[column];
 		const searchValue = $('#noti-table_filter input').val();
+		console.log("Selected Column:", column); // 디버깅: 선택한 컬럼
+	    console.log("Column Index:", columnIndex); // 디버깅: 매핑된 인덱스
+	    console.log("Search Value:", searchValue); // 디버깅: 검색 값
 		if (columnIndex !== null) {
 		    table.column(columnIndex).search(searchValue).draw();
 		} else {
@@ -168,8 +179,57 @@ $(document).ready(function () {
 	let notiStartDate = '';
 	let notiEndDate = '';
 	
+	$(document).on('click', '#select-all', function () {
+        const isChecked = $(this).is(':checked');
+        const filteredRows = table.rows({ filter: 'applied' }).data(); // 필터된 데이터만 가져오기
+        filteredRows.each(function (row) {
+            const recipient = row.recipient;
+            if (isChecked) {
+                // 이미 선택된 recipient는 건너뜀
+                if (!selectedRecipients.has(recipient)) {
+                    selectedRecipients.add(recipient); // 새로운 recipient 추가
+                    $(`.row-select[data-recipient="${recipient}"]`).first().prop('checked', true); // 첫 번째 체크박스만 선택
+                }
+            } else {
+                // 전체 선택 해제
+                selectedRecipients.delete(recipient); // 선택 취소
+                $(`.row-select[data-recipient="${recipient}"]`).prop('checked', false); // 모든 체크박스 해제
+            }
+        });
+		if(isChecked){
+			alert(`선택된 데이터의 총 개수: ${selectedRecipients.size}`);
+		}
+    });
+	
 	// DataTables의 'draw' 이벤트에 이벤트 리스너 등록
-    $('#noti-table tbody').on('click', 'tr', function () {
+    $('#noti-table tbody').on('click', 'tr', function (event) {
+		const cellIndex = $(event.target).closest('td').index(); // 클릭된 셀의 인덱스
+		// 체크박스 컬럼(첫 번째 컬럼)이 클릭된 경우 처리
+	    if (cellIndex === 0) {
+	        const checkbox = $(event.target).closest('td').find('.row-select'); // 체크박스 요소 찾기
+			const recipient = checkbox.val(); // 체크박스의 value 값 가져오기
+	        // 클릭한 요소가 체크박스 자체인 경우
+			if ($(event.target).is('.row-select')) {
+		        if ($(event.target).is(':checked') && selectedRecipients.has(recipient)) {
+		            alert('이미 체크된 아이디입니다.');
+		            $(event.target).prop('checked', false); // 체크를 취소
+		            return;
+		        }
+		        toggleCheckbox($(event.target)); // 체크박스 상태 반전 및 데이터 관리
+		        return;
+		    }
+	        // 클릭한 요소가 체크박스 외의 빈 공간인 경우
+			if (checkbox.length > 0) {
+		        if (!checkbox.prop('checked') && selectedRecipients.has(recipient)) {
+		            alert('이미 체크된 아이디입니다.');
+		            return;
+		        }
+
+		        checkbox.prop('checked', !checkbox.prop('checked')); // 현재 상태를 반대로 변경
+		        toggleCheckbox(checkbox); // 체크박스 상태 반전 및 데이터 관리
+		    }
+	        return; // 체크박스 컬럼 클릭 시 모달 열림 방지
+	    }
 		const rowData = table.row(this).data();  // 클릭된 행의 기본 데이터 가져오기
 	    const notiId = rowData.notiId;  // 알림 ID 추출
 	    $.ajax({
@@ -184,7 +244,7 @@ $(document).ready(function () {
 	            $('#noti-detailSentDate').text(dateChange(data.notiSentDate));
 
 	            // 모달 창 표시
-	            $('#noti-detailModal').show();
+	            $('#noti-detailModal').fadeIn();
 	        },
 	        error: function(error) {
 	            console.error("Error fetching noti details:", error);
@@ -195,7 +255,7 @@ $(document).ready(function () {
 	    // 모달 외부 클릭 시 닫기 이벤트 추가
 	    $(window).on('click.modalClose', function (event) {
 	        if ($(event.target).is($('#noti-detailModal'))) {
-	            $('#noti-detailModal').hide();
+	            $('#noti-detailModal').fadeOut();
 	            $(window).off('click.modalClose');
 	        }
 	    });
@@ -233,10 +293,10 @@ $(document).ready(function () {
   
 	// 알림 검색 필터 모달창 내 전송 날짜 설정
 	$.fn.dataTable.ext.search.push(function (data) {
-		
-		const rowNotiType = data[3];
-		const rownotiStatus = data[4];
-		const rowDate = data[5];
+		console.log(data[4]);
+		const rowNotiType = data[4];
+		const rownotiStatus = data[5];
+		const rowDate = data[6];
 		if (notiType && rowNotiType !== notiType) return false;
 		if (notiStatus && rownotiStatus !== notiStatus) return false;
 		if (notiStartDate || notiEndDate) {
@@ -245,27 +305,12 @@ $(document).ready(function () {
 			if (notiEndDate && date > new Date(notiEndDate)) return false;
     	}
 		return true;
-		
-//		const rowNotiType = data[3];
-//		const rowNotiStatus = data[4];
-//		const rowDateRange = data[5].split(" ~ ");
-//		const rowStartDate = new Date(rowDateRange[0]);
-//		const rowEndDate = new Date(rowDateRange[1]);
-//		const filterStartDate = notiStartDate ? new Date(notiStartDate) : null;
-//	    const filterEndDate = notiEndDate ? new Date(notiEndDate) : null;
-//		if (notiType && rowNotiType !== notiType) return false;
-//		if (notiStatus && rowNotiStatus !== notiStatus) return false;
-//		if (filterStartDate || filterEndDate) {
-//	        if (
-//	            (filterStartDate && filterStartDate <= rowEndDate && filterStartDate >= rowStartDate) || // 필터 시작 날짜가 기간에 포함
-//	            (filterEndDate && filterEndDate >= rowStartDate && filterEndDate <= rowEndDate) || // 필터 종료 날짜가 기간에 포함
-//	            (filterStartDate && filterEndDate && rowStartDate >= filterStartDate && rowEndDate <= filterEndDate) // 기간이 필터 범위에 완전히 포함
-//	        ) {
-//	            return true;
-//	        }
-//	        return false;
-//	    }
-//		return true;
+	});
+	
+	// 알림 전송 버튼 클릭
+	$('#noti-sendBtn').click(() => {
+		$('#noti-sendModal-content textarea').val('');
+		$('#noti-sendModal').fadeIn();
 	});
 
 	// 알림 검색 필터 버튼 눌렀을 때
@@ -280,13 +325,14 @@ $(document).ready(function () {
 		$('#notiStartDate').attr('max', '');
 		$('#notiStartDate').val('');
 		$('#notiEndDate').val('');
-    	$('#noti-filterModal').css('display', 'block');
+    	$('#noti-filterModal').fadeIn();
 	});
 
 	// 알림 검색 필터 모달창 닫기
 	$('.noti-modal-close').click(() => {
-		$('#noti-filterModal').css('display', 'none');
-		$('#noti-detailModal').css('display', 'none');
+		$('#noti-filterModal').fadeOut();
+		$('#noti-detailModal').fadeOut();
+		$('#noti-sendModal').fadeOut();
 	});
 
 	// 알림 검색 필터 모달창 내 완료 버튼
@@ -295,7 +341,7 @@ $(document).ready(function () {
     	notiEndDate = $('#notiEndDate').val();
     	displayAppliedFilters();
     	table.draw();
-    	$('#noti-filterModal').css('display', 'none');
+    	$('#noti-filterModal').fadeOut();
 	});
   
 	// 알림 검색 필터 모달창 내 startDate 선택시 endDate의 최소값 제한 
@@ -309,6 +355,16 @@ $(document).ready(function () {
 		const notiEndDateVal = $(this).val();
 		$('#notiStartDate').attr('max', notiEndDateVal);
 	});
+	
+	// 체크박스 처리
+	function toggleCheckbox(checkbox) {
+	    // 선택된 체크박스 값 관리
+	    if (checkbox.is(':checked')) {
+	        selectedRecipients.add(recipient); // 선택된 수신 아이디 추가
+	    } else {
+	        selectedRecipients.delete(recipient); // 선택 해제
+	    }
+	}
 
 	// 알림 검색 필터 모달창 내 선택된 버튼 이름 출력
 	function displayAppliedFilters() {

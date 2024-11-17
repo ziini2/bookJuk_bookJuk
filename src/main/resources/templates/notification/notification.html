@@ -30,6 +30,34 @@
 	<main id="main" class="main">
 	<div class="notification container my-4">
 		<h2 style="margin-bottom: 100px;">알림 메시지 관리</h2>
+		<div id="noti-sendModal">
+			<div class="noti-sendModal-content">
+			    <span class="noti-modal-close">&times;</span>
+			    <h3>알림 전송</h3>		    
+<!--			    <label>회원 검색</label>-->
+<!--			    <input type="text" id="noti-sendModal-title" placeholder="회원 아이디 입력" style="width: 100%;">-->
+<!--			    <label>이벤트 기간</label>-->
+<!--			    <div class="noti-date-container">-->
+<!--			      <input type="date" id="createStartDate"> ~ <input type="date" id="createEndDate">-->
+<!--			    </div>-->
+<!--				<div class="dropdown">-->
+<!--					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--				    	이벤트 유형-->
+<!--					</button>-->
+<!--					<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+<!--				    	<li><button id="couponPayment" class="dropdown-item">쿠폰 지급</button></li>-->
+<!--				    	<li><button id="rentalDiscount" class="dropdown-item">대여 할인</button></li>-->
+<!--				    	<li><button id="onePlusOne" class="dropdown-item">1 + 1</button></li>-->
+<!--					</ul>-->
+<!--				</div>-->
+			    <label>알림 내용</label>
+			    <div id="noti-sendModal-content">
+					<textarea style="width: 100%; height: 120px;" placeholder="알림 내용"></textarea>
+			    </div>
+			    <button id="noti-sendModal-apply">알림 전송</button>
+			</div>
+		</div>
+		<button id="noti-sendBtn">알림 전송</button>
 		<div id="noti-filterModal">
 			<div class="noti-filterModal-content">
 				<span class="noti-modal-close">&times;</span>		    
@@ -57,6 +85,7 @@
 	    <table id="noti-table" class="notification table table-striped table-bordered">
 	        <thead>
 	            <tr>
+					<th></th>
 	                <th>No.</th>
 	                <th>수신 아이디</th>
 	                <th>알림 내용</th>

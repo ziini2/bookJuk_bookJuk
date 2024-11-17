@@ -32,6 +32,7 @@ public class NotificationService {
 		try {
 			// 알림 관리 페이지
 			if(userNum == 0L) {
+				log.info("========================================");
 				return notiRepository.findAll(pageable).map(this::convertToDto);
 			}else {
 			// 유저 알림 페이지

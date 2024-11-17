@@ -97,7 +97,7 @@ $(document).ready(function() {
 	        }
 	    },
 		
-		order: [[0, 'desc']], // 여기서 기본 정렬 조건 설정 (0번째 컬럼을 내림차순으로 정렬)
+		order: [[0, 'desc']],
 	    
 	    columns: [
 	        { data: 'eventId', title: 'No.' },
@@ -108,7 +108,7 @@ $(document).ready(function() {
 	        { data: 'eventDate', title: '이벤트 기간' },
 			{ data: 'eventContent', title: '이벤트 내용', visible: false }
 	    ]
-	});
+	});	
 
 	//두번 연속 부르는걸 생각못함! 주석처리	
 	$(document).on('change', '.event-select', function() {

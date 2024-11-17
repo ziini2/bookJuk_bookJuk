@@ -285,8 +285,8 @@ $(document).ready(function () {
 				return;
 			}else{
 				eventConditions.push({
-					eventConditionType: manyWonsAmount + "원 이상 대여한 회원",
-					eventClearReward: manyWonsPoint + "p"
+					eventConditionType: manyWonsPoint + "원 이상 대여한 회원",
+					eventClearReward: manyWonsAmount + "p"
 				});
 			}
 		}
@@ -475,7 +475,7 @@ $(document).ready(function () {
 	            $('#event-detailStatus').text(data.eventStatus);
 	            $('#event-detailManager').text(data.eventManager);
 	            $('#event-detailDate').text(data.eventDate);
-	            $('#event-detailContent').text(data.eventContent);
+	            $('#event-detailContent').html(data.eventContent.replace(/\\n/g, '<br>'));
 
 	            // 조건 목록 출력
 				$('#event-detailCondition').html(data.eventCondition

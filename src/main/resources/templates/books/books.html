@@ -41,37 +41,40 @@
 		<div class="pagetitle mb-3">
 			<h1>전체/지점별 도서 조회</h1>
 		</div>
-
-
 		<div class="row g-3 align-items-center">
 			<div class="col-md-9">
 				<div class="d-flex gap-3">
 					<!-- 대여 상태 -->
-					<select class="form-select" name="rentalStatus" style="max-width: 200px;">
-						<option selected>대여상태</option>
-						<option value="1">대여가능</option>
-						<option value="2">대여불가</option>
+					<select class="form-select filter-item" name="rentalStatus"
+						id="rentalStatus" onchange="applyFilters()">
+						<option value="">대여상태</option>
+						<option value="1" th:selected="${rentalStatus == '1'}">대여가능</option>
+						<option value="0" th:selected="${rentalStatus == '0'}">대여불가</option>
 					</select>
 
-					<!-- 지점선택 드롭다운 -->
-					<select class="form-select" name="storeCode" id="storeCode"
-						style="max-width: 200px;">
-						<option value="" disabled selected>지점 선택</option>
+
+					<!-- 지점 선택 -->
+					<select class="form-select filter-item" name="storeCode"
+						id="storeFilter" onchange="applyFilters()">
+						<option value="">지점선택</option>
 						<option th:each="store : ${storeList}"
-							th:value="${store.storeCode}" th:text="${store.storeName}"></option>
+							th:value="${store.storeCode}" th:text="${store.storeName}"
+							th:selected="${storeCode != null and storeCode.equals(store.storeCode)}"></option>
 					</select>
 
 					<!-- 검색 -->
-					<div class="d-flex gap-2" style="flex: 1;">
-						<input type="text" class="form-control" id="search"
-							placeholder="검색어 입력" style="max-width: 400px;">
-						<button type="button" class="btn btn-secondary"
-							style="flex-shrink: 0;">검색</button>
-					</div>
+					<form id="searchForm" style="flex: 1;"
+						onsubmit="applyFilters(); return false;">
+						<div class="input-group">
+							<input type="text" name="search" class="form-control filter-item"
+								id="search" placeholder="도서명/작가명 검색" th:value="${search}">
+							<button type="button" class="btn btn-success"
+								onclick="applyFilters()">검색</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
-
 
 		<!-- 도서 테이블 -->
 		<div class="table-responsive">
@@ -99,12 +102,9 @@
 						<td th:text="${book.publish}"></td>
 						<td th:text="${#temporals.format(book.publishDate, 'yyyy-MM-dd')}"></td>
 						<td
-							th:text="${#dates.format(book.bookDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-						<td><span
-							th:text="${book.rentStatus != null ? (book.rentStatus ? '가능' : '불가') : '가능'}"></span></td>
-						<td
-							th:text="${book.bookStatus != null ? book.bookStatus.name() : 'GOOD'}"></td>
-						<!-- bookStatus 확인 -->
+							th:text="${#temporals.format(book.bookDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+						<td><span th:text="${book.rentStatus ? '가능' : '불가'}"></span></td>
+						<td th:text="${book.bookStatus.name()}"></td>
 						<td th:text="${book.rentMoney}"></td>
 					</tr>
 					<tr th:if="${#lists.isEmpty(bookList.content)}">
@@ -117,27 +117,29 @@
 		<!-- 페이지네이션 -->
 		<div class="pagination-container d-flex justify-content-center mt-4">
 			<nav aria-label="Page navigation example">
-				<ul class="pagination">
+				<ul class="pagination pagination-success mb-0">
 					<!-- 이전 페이지 -->
 					<li class="page-item"
 						th:classappend="${currentPage == 0} ? 'disabled'"><a
 						class="page-link"
-						th:href="@{/admin/books(page=${currentPage - 1}, size=${pageSize}, search=${search})}">이전</a>
-					</li>
+						th:href="@{/admin/books(page=${currentPage - 1}, size=${pageSize}, search=${search}, rentalStatus=${rentalStatus}, storeCode=${storeCode})}">
+							이전 </a></li>
 
 					<!-- 페이지 번호 -->
 					<li class="page-item"
-						th:each="i : ${#numbers.sequence(startPage + 1, endPage + 1)}"
+						th:each="i : ${#numbers.sequence((startPage ?: 0) + 1, (endPage ?: 0) + 1)}"
 						th:classappend="${currentPage + 1 == i} ? 'active'"><a
 						class="page-link"
-						th:href="@{/admin/books(page=${i - 1}, size=${pageSize}, search=${search})}"
-						th:text="${i}"></a></li>
+						th:href="@{/admin/books(page=${i - 1}, size=${pageSize}, search=${search}, rentalStatus=${rentalStatus}, storeCode=${storeCode})}"
+						th:text="${i}"></a>
+					</li>
 
 					<!-- 다음 페이지 -->
 					<li class="page-item"
 						th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
 						<a class="page-link"
-						th:href="@{/admin/books(page=${currentPage + 1}, size=${pageSize}, search=${search})}">다음</a>
+						th:href="@{/admin/books(page=${currentPage + 1}, size=${pageSize}, search=${search}, rentalStatus=${rentalStatus}, storeCode=${storeCode})}">
+							다음 </a>
 					</li>
 				</ul>
 			</nav>
@@ -278,7 +280,6 @@
 			</div>
 		</div>
 
-
 	</main>
 
 
@@ -287,5 +288,8 @@
 	<!-- 사이드바 열었다 닫았다 하는거 -->
 	<script th:src="@{/js/common/main.js}"></script>
 	<script th:src="@{/js/books/addBook.js}"></script>
+	<script th:src="@{/js/books/bookSearch.js}"></script>
+	<!-- jQuery CDN -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>

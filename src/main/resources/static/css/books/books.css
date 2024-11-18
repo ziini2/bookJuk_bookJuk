@@ -33,3 +33,15 @@ table {
 .d-flex.gap-3 {
 	align-items: center;
 }
+
+/* 테이블 셀 중앙 정렬 */
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* 빈 데이터 메시지 중앙 정렬 */
+.table .text-center {
+    text-align: center;
+    vertical-align: middle;
+}

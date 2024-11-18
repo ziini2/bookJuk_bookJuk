@@ -38,8 +38,8 @@ public class BookConverter {
                 .isbn(bookDTO.getIsbn()) // DTO에서 ISBN
                 .bookImage(bookDTO.getBookImage()) // DTO에서 이미지
                 .publishDate(bookDTO.getPublishDate()) // DTO에서 출판일
-                .rentMoney(bookDTO.getRentMoney()) // DTO에서 대여 금액
-                .rentCount(bookDTO.getRentCount()) // DTO에서 대여 횟수
+                .rentMoney(bookDTO.getRentMoney() != null ? bookDTO.getRentMoney() : 0L) // 기본값 처리
+                .rentCount(bookDTO.getRentCount() != null ? bookDTO.getRentCount() : 0L) // 기본값 처리
                 .bookDate(bookDTO.getBookDate())
                 .build();
     }

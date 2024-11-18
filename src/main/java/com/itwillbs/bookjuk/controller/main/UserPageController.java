@@ -68,6 +68,8 @@ public class UserPageController {
         model.addAttribute("booksInfo",userPaginationDTO);
         model.addAttribute("pagination", pagination);
 
+        //책 대여순 6가지 목록 가져와서 보여주기
+        model.addAttribute("bookRank", userPageService.getBookRank());
         //전체 모아보기에 보여줄 장르 List
         model.addAttribute("genreList", userPageService.getGenreList());
         //전체 모아보기에 보여줄 지점별 List

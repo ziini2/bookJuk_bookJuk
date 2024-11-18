@@ -84,8 +84,7 @@ public class BooksService {
         bookInfoEntity.setPublish(bookDTO.getPublish());
         bookInfoEntity.setPublishDate(bookDTO.getPublishDate());
         bookInfoEntity.setRentMoney(bookDTO.getRentMoney());
-
-        
+        bookInfoEntity.setRentCount(bookDTO.getRentCount() != null ? bookDTO.getRentCount() : bookInfoEntity.getRentCount()); // DTO 값 또는 기존 값 유지
         bookEntity.setBookStatus(bookDTO.getBookStatus());
        
         // 저장

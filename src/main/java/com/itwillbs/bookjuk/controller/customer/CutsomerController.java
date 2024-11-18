@@ -37,9 +37,7 @@ public class CutsomerController {
 			@RequestParam(value = "size", defaultValue = "15", required = false) int size,
 			@RequestParam(value = "search", defaultValue = "", required = false) String search) {
 
-		Pageable pageable = PageRequest.of(page - 1, size
-//				,Sort.by("storeCode").descending()
-		);
+		Pageable pageable = PageRequest.of(page - 1, size, Sort.by("storeRegiDate").descending());
 
 //		Page<StoreEntity> storeList = customerService.getStoreList(pageable);
 		// 검색어받아서 페이지네이션

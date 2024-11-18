@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -19,15 +19,12 @@
 <link href="/images/common/remixicon/remixicon.css" rel="stylesheet">
 
 <!--부트스트랩 외부링크-->
-<!-- jQuery CDN -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- 부트스트랩 JS -->
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <!-- Main CSS File -->
 <link href="/css/common/style.css" rel="stylesheet">
@@ -58,13 +55,12 @@
 
 					<!-- 지점 선택 -->
 					<select class="form-select filter-item" name="storeCode"
-						id="storeFilter" onchange="applyFilters(this.value)">
+						id="storeFilter" onchange="applyFilters()">
 						<option value="">지점선택</option>
 						<option th:each="store : ${storeList}"
 							th:value="${store.storeCode}" th:text="${store.storeName}"
 							th:selected="${storeCode != null and storeCode.equals(store.storeCode)}"></option>
 					</select>
-
 
 					<!-- 검색 -->
 					<form id="searchForm" style="flex: 1;"
@@ -81,10 +77,8 @@
 		</div>
 
 		<!-- 도서 테이블 -->
-		<!-- 도서 테이블 -->
 		<div class="table-responsive">
-			<table class="table table-striped text-center">
-				<!-- 추가된 'text-center' 클래스 -->
+			<table class="table table-striped">
 				<thead>
 					<tr>
 						<th>도서번호</th>
@@ -99,25 +93,24 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="book : ${bookList.content}"
-						onclick="showBookDetails(this)">
-						<td th:text="${book.booksId}" data-book-id="${book.booksId}"></td>
-						<td th:text="${book.isbn}" data-isbn="${book.isbn}"></td>
-						<td th:text="${book.bookName}" data-book-name="${book.bookName}"></td>
-						<td th:text="${book.author}" data-author="${book.author}"></td>
-						<td th:text="${book.publish}" data-publish="${book.publish}"></td>
-						<td th:text="${#temporals.format(book.publishDate, 'yyyy-MM-dd')}"
-							data-publish-date="${#temporals.format(book.publishDate, 'yyyy-MM-dd')}"></td>
-						<td><span th:text="${book.rentStatus ? '가능' : '불가'}"
-							data-rent-status="${book.rentStatus ? '가능' : '불가'}"></span></td>
-						<td th:text="${book.bookStatus.name()}"
-							data-book-status="${book.bookStatus.name()}"></td>
-						<td th:text="${book.rentMoney}"
-							data-rent-money="${book.rentMoney}"></td>
-					</tr>
-					<tr th:if="${#lists.isEmpty(bookList.content)}">
-						<td colspan="11" class="text-center">등록된 도서가 없습니다.</td>
-					</tr>
+					<tr th:each="book : ${bookList.content}" onclick="showBookDetails(this)">
+                  <td th:text="${book.booksId}" data-book-id="${book.booksId}"></td>
+                  <td th:text="${book.isbn}" data-isbn="${book.isbn}"></td>
+                  <td th:text="${book.bookName}" data-book-name="${book.bookName}"></td>
+                  <td th:text="${book.author}" data-author="${book.author}"></td>
+                  <td th:text="${book.publish}" data-publish="${book.publish}"></td>
+                  <td th:text="${#temporals.format(book.publishDate, 'yyyy-MM-dd')}"
+                     data-publish-date="${#temporals.format(book.publishDate, 'yyyy-MM-dd')}"></td>
+<!--                  <td th:text="${#temporals.format(book.bookDate, 'yyyy-MM-dd HH:mm:ss')}"-->
+<!--                     data-book-date="${#temporals.format(book.bookDate, 'yyyy-MM-dd HH:mm:ss')}"></td>-->
+                  <td><span th:text="${book.rentStatus ? '가능' : '불가'}"
+                        data-rent-status="${book.rentStatus ? '가능' : '불가'}"></span></td>
+                  <td th:text="${book.bookStatus.name()}" data-book-status="${book.bookStatus.name()}"></td>
+                  <td th:text="${book.rentMoney}" data-rent-money="${book.rentMoney}"></td>
+               </tr>
+               <tr th:if="${#lists.isEmpty(bookList.content)}">
+                  <td colspan="11" class="text-center">등록된 도서가 없습니다.</td>
+               </tr>
 				</tbody>
 			</table>
 		</div>
@@ -159,6 +152,7 @@
 			<button type="button" class="btn btn-success" data-bs-toggle="modal"
 				data-bs-target="#exampleModal" data-bs-whatever="@mdo">
 				도서등록</button>
+			<!--          <a class="btn btn-success" th:href="@{/admin/addBook}" role="button">도서등록</a> -->
 		</div>
 
 		<!-- 도서등록 모달 -->
@@ -278,15 +272,14 @@
 					<div class="modal-footer">
 						<button type="reset" class="btn btn-secondary"
 							data-bs-dismiss="modal">초기화</button>
-						<button type="button" class="btn btn-primary"
+						<button type="button" class="btn btn-success"
 							onclick="registerBook()">등록하기</button>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<!-- 모달로 정보 수정하기 -->
-		<!-- Modal -->
+		<!-- 도서수정모달 -->
 		<div class="modal fade" id="bookModal" tabindex="-1"
 			aria-labelledby="bookModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -297,37 +290,51 @@
 							aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<!-- 도서 정보가 여기에 동적으로 추가될 예정 -->
-						<p>
-							<strong>도서번호:</strong> <span id="modalBookId"></span>
-						</p>
-						<p>
-							<strong>ISBN:</strong> <span id="modalISBN"></span>
-						</p>
-						<p>
-							<strong>도서명:</strong> <span id="modalBookName"></span>
-						</p>
-						<p>
-							<strong>저자:</strong> <span id="modalAuthor"></span>
-						</p>
-						<p>
-							<strong>출판사:</strong> <span id="modalPublish"></span>
-						</p>
-						<p>
-							<strong>출판일:</strong> <span id="modalPublishDate"></span>
-						</p>
-
-						<p>
-							<strong>대여현황:</strong> <span id="modalRentStatus"></span>
-						</p>
-						<p>
-							<strong>도서상태:</strong> <span id="modalBookStatus"></span>
-						</p>
-						<p>
-							<strong>대여금액:</strong> <span id="modalRentMoney"></span>
-						</p>
+						<form action="/admin/oneBookUpdate" id="onbookupdateform"
+							method="post">
+							<!-- 도서 정보가 여기에 동적으로 추가될 예정 -->
+							<p>
+								<strong>도서번호:</strong> <span id="modalBookId"></span>
+							</p>
+							<input type="hidden" value="" id="modalBookId2" name="booksId"></input>
+							<p>
+								<strong>ISBN:</strong> <span id="modalISBN"></span>
+							</p>
+							<p>
+								<strong>도서명:</strong> <span id="modalBookName"></span>
+							</p>
+							<p>
+								<strong>저자:</strong> <span id="modalAuthor"></span>
+							</p>
+							<p>
+								<strong>출판사:</strong> <span id="modalPublish"></span>
+							</p>
+							<p>
+								<strong>출판일:</strong> <span id="modalPublishDate"></span>
+							</p>
+							<p>
+								<strong>대여현황:</strong> <select id="modalRentStatus"
+									class="form-select" name="rentStatus">
+									<option value=true>대여가능</option>
+									<option value=false>대여불가</option>
+								</select>
+							</p>
+							<p>
+								<strong>도서상태:</strong> <select id="modalBookStatus"
+									class="form-select" name="bookStatus">
+									<option value="GOOD">양호</option>
+									<option value="DISCARD">폐기</option>
+									<option value="LOST">분실</option>
+									<option value="STOLEN">도난</option>
+								</select>
+							</p>
+							<p>
+								<strong>대여금액:</strong> <span id="modalRentMoney"></span>
+							</p>
+						</form>
 					</div>
 					<div class="modal-footer">
+						<button type="button" class="btn btn-success" onclick="updateOneBook()" id="onebookupdate">수정</button>
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal">닫기</button>
 					</div>
@@ -337,13 +344,71 @@
 
 	</main>
 
+
 	<!-- End main -->
 
 	<!-- 사이드바 열었다 닫았다 하는거 -->
 	<script th:src="@{/js/common/main.js}"></script>
 	<script th:src="@{/js/books/addBook.js}"></script>
 	<script th:src="@{/js/books/bookSearch.js}"></script>
-	<script th:src="@{/js/books/updateBook.js}"></script>
+	<!-- jQuery CDN -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script>
+		function updateOneBook() {
+			const userConfirmed = confirm("수정하시겠습니까?");
+
+			if (userConfirmed) {
+				// 확인 버튼을 눌렀을 때 실행할 코드
+				let onebookform = document.getElementById('onbookupdateform');
+				onebookform.submit();
+			} else {
+				// 취소 버튼을 눌렀을 때 실행할 코드
+				return;
+			}
+		}
+	</script>
+
+	<script>
+		function showBookDetails(row) {
+			// 선택된 행의 데이터를 가져오기
+			const bookId = row.querySelector('[data-book-id]').textContent;
+			const isbn = row.querySelector('[data-isbn]').textContent;
+			const bookName = row.querySelector('[data-book-name]').textContent;
+			const author = row.querySelector('[data-author]').textContent;
+			const publish = row.querySelector('[data-publish]').textContent;
+			const publishDate = row.querySelector('[data-publish-date]').textContent;
+			const rentStatus = row.querySelector('[data-rent-status]').textContent
+					.trim();
+			const bookStatus = row.querySelector('[data-book-status]').textContent
+					.trim();
+			const rentMoney = row.querySelector('[data-rent-money]').textContent;
+
+			// 모달에 데이터 삽입
+			document.getElementById('modalBookId').textContent = bookId;
+			document.getElementById('modalBookId2').value = bookId;
+			document.getElementById('modalISBN').textContent = isbn;
+			document.getElementById('modalBookName').textContent = bookName;
+			document.getElementById('modalAuthor').textContent = author;
+			document.getElementById('modalPublish').textContent = publish;
+			document.getElementById('modalPublishDate').textContent = publishDate;
+			document.getElementById('modalRentMoney').textContent = rentMoney;
+
+			// 대여현황 (select에 값 설정)
+			const rentStatusSelect = document.getElementById('modalRentStatus');
+			rentStatusSelect.value = rentStatus === '가능' ? '1' : '0';
+
+			// 도서상태 (select에 값 설정)
+			const bookStatusSelect = document.getElementById('modalBookStatus');
+			bookStatusSelect.value = bookStatus;
+
+			// 모달 표시
+			const modal = new bootstrap.Modal(document
+					.getElementById('bookModal'));
+			modal.show();
+		}
+	</script>
 
 </body>
+
 </html>

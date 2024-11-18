@@ -1,6 +1,7 @@
 package com.itwillbs.bookjuk.service.statistics;
 
 import com.itwillbs.bookjuk.dto.dashboard.*;
+import com.itwillbs.bookjuk.entity.GenreEntity;
 import com.itwillbs.bookjuk.entity.StoreEntity;
 import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.pay.PaymentEntity;
@@ -31,6 +32,7 @@ public class DashRestService {
     private final RentRepository rentRepository;
     private final StoreRepository storeRepository;
     private final OverdueRepository overdueRepository;
+    private final GenreRepository genreRepository;
     private final JdbcTemplate jdbcTemplate;
     private final LocalDate now = LocalDate.now();
 
@@ -212,12 +214,7 @@ public class DashRestService {
     }
 
 
-    public List<String> getStores() {
-        List<StoreEntity> storelist = storeRepository.findAllStoreNameByStoreStatus("open");
-        return storelist.stream().map(StoreEntity::getStoreName).map(name -> {
-            return name.split(" ", 2)[1];
-        }).sorted().toList();
-    }
+
 
     public PointResponseDTO getPointStatistics(String period, List<String> storeList, String salesOption) {
         LocalDate startDate = now;
@@ -498,5 +495,19 @@ public class DashRestService {
         return overdues.stream()
                 .filter(overdue -> storeList.isEmpty() || storeList.contains(overdue.getRent().getStoreCode().getStoreName().split(" ", 2)[1]))
                 .toList();
+    }
+
+    // stores 드롭다운에 표기될 지점명
+    public List<String> getStores() {
+        List<StoreEntity> storelist = storeRepository.findAllStoreNameByStoreStatus("open");
+        return storelist.stream().map(StoreEntity::getStoreName).map(name -> {
+            return name.split(" ", 2)[1];
+        }).sorted().toList();
+    }
+
+    // genre 드롭다운에 표기될 장르명
+    public List<String> getGenres() {
+        List<GenreEntity> genreList = genreRepository.findAll();
+        return genreList.stream().map(GenreEntity::getGenreName).toList();
     }
 }

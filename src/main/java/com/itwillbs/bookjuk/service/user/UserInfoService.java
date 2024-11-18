@@ -2,6 +2,8 @@ package com.itwillbs.bookjuk.service.user;
 
 import com.itwillbs.bookjuk.domain.login.LoginType;
 import com.itwillbs.bookjuk.dto.*;
+import com.itwillbs.bookjuk.dto.BookRentInfoDTO;
+import com.itwillbs.bookjuk.dto.RentPaginationDTO;
 import com.itwillbs.bookjuk.entity.UserContentEntity;
 import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.pay.PointDealEntity;

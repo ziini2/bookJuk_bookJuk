@@ -18,6 +18,7 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

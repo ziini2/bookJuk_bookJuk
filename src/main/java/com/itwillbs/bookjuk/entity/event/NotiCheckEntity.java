@@ -1,5 +1,7 @@
 package com.itwillbs.bookjuk.entity.event;
 
+import java.sql.Timestamp;
+
 import com.itwillbs.bookjuk.entity.UserEntity;
 
 import jakarta.persistence.Column;
@@ -11,13 +13,21 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "noti_check")
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class NotiCheckEntity {
 
 	// 알림 확인 아이디
@@ -38,7 +48,7 @@ public class NotiCheckEntity {
 	
 	// 알림 확인 유무
 	@Column(name = "notiChecked", nullable = false)
-	private boolean notiChecked = false;
+	private boolean notiChecked;
 	
 	
 	

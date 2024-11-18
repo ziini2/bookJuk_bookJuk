@@ -56,7 +56,7 @@ $(document).ready(function() {
 	    dom: '<"d-flex justify-content-between align-items-end"<"d-flex align-items-end dataTables_filter_wrapper"f><"dataTables_length_wrapper"l>>rt<"d-flex justify-content-center"p>',
 	    
 	    ajax: {
-	        url: '/admin/getEvent',                   // 데이터 요청 URL
+	        url: '/getUserEvent',                   // 데이터 요청 URL
 	        type: 'POST',                             // HTTP 메서드 설정
 	        contentType: 'application/json; charset=UTF-8',  // 요청 Content-Type 설정
 	        dataSrc: 'data',                          // 데이터 소스 경로 설정
@@ -97,7 +97,7 @@ $(document).ready(function() {
 	        }
 	    },
 		
-		order: [[0, 'desc']], // 여기서 기본 정렬 조건 설정 (0번째 컬럼을 내림차순으로 정렬)
+		order: [[0, 'desc']],
 	    
 	    columns: [
 	        { data: 'eventId', title: 'No.' },
@@ -108,7 +108,7 @@ $(document).ready(function() {
 	        { data: 'eventDate', title: '이벤트 기간' },
 			{ data: 'eventContent', title: '이벤트 내용', visible: false }
 	    ]
-	});
+	});	
 
 	//두번 연속 부르는걸 생각못함! 주석처리	
 	$(document).on('change', '.event-select', function() {
@@ -195,261 +195,261 @@ $(document).ready(function () {
 	let eventStartDate = '';
 	let eventEndDate = '';
 	
-	$('#event-createModal-apply').click(function(){
-		const title = $('#event-createModal-title').val();
-	    const startDate = $('#createStartDate').val();
-	    const endDate = $('#createEndDate').val();
-	    const content = $('#event-createModal-content textarea').val();
-	    const firstButtonText = $('#couponOptions button:first').text().trim();
-		const newUserPointField = $('#newUserPointField span').text().trim();
-		const manyTimesPointField = $('#manyTimesPointField span').text().trim();
-		const manyWonsPointField = $('#manyWonsPointField span').text().trim();
-		const manyPeoplePointField = $('#manyPeoplePointField span').text().trim();
-		const newUserPoint = $('#newUserPointField input').val();
-		const manyTimesCount = $('#manyTimesPointField input').val();
-		const manyTimesPoint = $('#manyTimesPointField input:eq(1)').val();
-		const manyWonsPoint = $('#manyWonsPointField input').val();
-		const manyWonsAmount = $('#manyWonsPointField input:eq(1)').val();
-		const manyPeoplePoint = $('#manyPeoplePointField input').val();
-		let eventConditions = [];
-
-	    // 입력 검증
-	    if (!title) {
-	        alert('이벤트 제목을 입력해 주세요.');
-	        return;
-	    }
-		
-		if (!startDate) {
-	        alert('이벤트 시작 날짜를 설정해 주세요.');
-	        return;
-	    }
-		
-		if (!endDate) {
-	        alert('이벤트 종료 날짜를 설정해 주세요.');
-	        return;
-	    }
-		
-		if (!content) {
-	        alert('이벤트 내용을 입력해 주세요.');
-	        return;
-	    }
-		
-		if (firstButtonText.length === 0) {
-		    alert('이벤트 유형을 선택해주세요.');
-			return;
-		}
-		
-		if(newUserPointField.length === 0 &&
-		   manyTimesPointField.length === 0 &&
-		   manyWonsPointField.length === 0 &&
-	   	   manyPeoplePointField.length === 0) {
-			alert('쿠폰 지급 조건을 선택해주세요.');
-			return;
-		}
-		
-		if(newUserPointField.length !== 0){
-			if(newUserPoint <= 0){
-				alert('포인트를 입력해주세요.');
-				return;
-			}else{
-				eventConditions.push({
-					eventConditionType: "신규 가입자",
-					eventClearReward: newUserPoint + "p"
-				});
-			}
-		}
-		
-		if(manyTimesPointField.length !== 0){
-			if(manyTimesCount <= 0){
-				alert('대여 횟수를 입력해주세요.');
-				return;
-			}
-			if(manyTimesPoint <= 0){
-				alert('포인트를 입력해주세요.');
-				return;
-			}else{
-				eventConditions.push({
-					eventConditionType: manyTimesCount + "회 이상 대여한 회원",
-					eventClearReward: manyTimesPoint + "p"
-				});
-			}
-		}
+//	$('#event-createModal-apply').click(function(){
+//		const title = $('#event-createModal-title').val();
+//	    const startDate = $('#createStartDate').val();
+//	    const endDate = $('#createEndDate').val();
+//	    const content = $('#event-createModal-content textarea').val();
+//	    const firstButtonText = $('#couponOptions button:first').text().trim();
+//		const newUserPointField = $('#newUserPointField span').text().trim();
+//		const manyTimesPointField = $('#manyTimesPointField span').text().trim();
+//		const manyWonsPointField = $('#manyWonsPointField span').text().trim();
+//		const manyPeoplePointField = $('#manyPeoplePointField span').text().trim();
+//		const newUserPoint = $('#newUserPointField input').val();
+//		const manyTimesCount = $('#manyTimesPointField input').val();
+//		const manyTimesPoint = $('#manyTimesPointField input:eq(1)').val();
+//		const manyWonsPoint = $('#manyWonsPointField input').val();
+//		const manyWonsAmount = $('#manyWonsPointField input:eq(1)').val();
+//		const manyPeoplePoint = $('#manyPeoplePointField input').val();
+//		let eventConditions = [];
+//
+//	    // 입력 검증
+//	    if (!title) {
+//	        alert('이벤트 제목을 입력해 주세요.');
+//	        return;
+//	    }
+//		
+//		if (!startDate) {
+//	        alert('이벤트 시작 날짜를 설정해 주세요.');
+//	        return;
+//	    }
+//		
+//		if (!endDate) {
+//	        alert('이벤트 종료 날짜를 설정해 주세요.');
+//	        return;
+//	    }
+//		
+//		if (!content) {
+//	        alert('이벤트 내용을 입력해 주세요.');
+//	        return;
+//	    }
+//		
+//		if (firstButtonText.length === 0) {
+//		    alert('이벤트 유형을 선택해주세요.');
+//			return;
+//		}
+//		
+//		if(newUserPointField.length === 0 &&
+//		   manyTimesPointField.length === 0 &&
+//		   manyWonsPointField.length === 0 &&
+//	   	   manyPeoplePointField.length === 0) {
+//			alert('쿠폰 지급 조건을 선택해주세요.');
+//			return;
+//		}
+//		
+//		if(newUserPointField.length !== 0){
+//			if(newUserPoint <= 0){
+//				alert('포인트를 입력해주세요.');
+//				return;
+//			}else{
+//				eventConditions.push({
+//					eventConditionType: "신규 가입자",
+//					eventClearReward: newUserPoint + "p"
+//				});
+//			}
+//		}
+//		
+//		if(manyTimesPointField.length !== 0){
+//			if(manyTimesCount <= 0){
+//				alert('대여 횟수를 입력해주세요.');
+//				return;
+//			}
+//			if(manyTimesPoint <= 0){
+//				alert('포인트를 입력해주세요.');
+//				return;
+//			}else{
+//				eventConditions.push({
+//					eventConditionType: manyTimesCount + "회 이상 대여한 회원",
+//					eventClearReward: manyTimesPoint + "p"
+//				});
+//			}
+//		}
+//	
+//		if(manyWonsPointField.length !== 0){
+//			if(manyWonsAmount <= 0){
+//				alert('금액을 입력해주세요.');
+//				return;
+//			}
+//			if(manyWonsPoint <= 0){
+//				alert('포인트를 입력해주세요.');
+//				return;
+//			}else{
+//				eventConditions.push({
+//					eventConditionType: manyWonsAmount + "원 이상 대여한 회원",
+//					eventClearReward: manyWonsPoint + "p"
+//				});
+//			}
+//		}
+//		
+//		if(manyPeoplePointField.length !== 0){
+//			if(manyPeoplePoint <= 0){
+//				alert('포인트를 입력해주세요.');
+//				return;
+//			}else{
+//				eventConditions.push({
+//					eventConditionType: "로그인한 회원",
+//					eventClearReward: manyPeoplePoint + "p"
+//				});
+//			}
+//		}
+//		
+//		const conditionsText = eventConditions.map(condition => {
+//	        return `${condition.eventConditionType}에게 ${condition.eventClearReward} 쿠폰 지급`;
+//	    }).join("\n");
+//		
+//		const confirmMessage = `이벤트를 생성하시겠습니까?\n\n이벤트 제목 : ${title}\n이벤트 기간 : ${startDate} ~ ${endDate}\n이벤트 조건 : ${conditionsText}\n이벤트 내용 : \n${content}`;
+//		if(confirm(confirmMessage)){
+//			$.ajax({
+//		        url: '/admin/eventCreate',
+//		        method: 'POST',
+//		        contentType: 'application/json',
+//		        data: JSON.stringify({
+//		            eventTitle: title,
+//					eventContent: content,
+//					eventType: firstButtonText.replace(" 조건", ""),
+//					startEventDate: startDate,
+//					endEventDate: endDate,
+//					eventCondition: eventConditions
+//		        }),
+//		        success: function (response) {
+//					if(response.result === "success"){
+//			            alert("이벤트가 성공적으로 생성되었습니다.");
+//			            table.draw();
+//						$('#event-createModal').fadeOut();
+//					}else{
+//						alert("이벤트가 생성에 실패하였습니다.")
+//					}
+//		        },
+//		        error: function (error) {
+//					alert("오류: " + error.responseText);
+//		            console.error("이벤트 생성 실패:", error);
+//		        }
+//		    });
+//		}
+//	});
 	
-		if(manyWonsPointField.length !== 0){
-			if(manyWonsAmount <= 0){
-				alert('금액을 입력해주세요.');
-				return;
-			}
-			if(manyWonsPoint <= 0){
-				alert('포인트를 입력해주세요.');
-				return;
-			}else{
-				eventConditions.push({
-					eventConditionType: manyWonsPoint + "원 이상 대여한 회원",
-					eventClearReward: manyWonsAmount + "p"
-				});
-			}
-		}
-		
-		if(manyPeoplePointField.length !== 0){
-			if(manyPeoplePoint <= 0){
-				alert('포인트를 입력해주세요.');
-				return;
-			}else{
-				eventConditions.push({
-					eventConditionType: "로그인한 회원",
-					eventClearReward: manyPeoplePoint + "p"
-				});
-			}
-		}
-		
-		const conditionsText = eventConditions.map(condition => {
-	        return `${condition.eventConditionType}에게 ${condition.eventClearReward} 쿠폰 지급`;
-	    }).join("\n");
-		
-		const confirmMessage = `이벤트를 생성하시겠습니까?\n\n이벤트 제목 : ${title}\n이벤트 기간 : ${startDate} ~ ${endDate}\n이벤트 조건 : ${conditionsText}\n이벤트 내용 : \n${content}`;
-		if(confirm(confirmMessage)){
-			$.ajax({
-		        url: '/admin/eventCreate',
-		        method: 'POST',
-		        contentType: 'application/json',
-		        data: JSON.stringify({
-		            eventTitle: title,
-					eventContent: content,
-					eventType: firstButtonText.replace(" 조건", ""),
-					startEventDate: startDate,
-					endEventDate: endDate,
-					eventCondition: eventConditions
-		        }),
-		        success: function (response) {
-					if(response.result === "success"){
-			            alert("이벤트가 성공적으로 생성되었습니다.");
-			            table.draw();
-						$('#event-createModal').fadeOut();
-					}else{
-						alert("이벤트가 생성에 실패하였습니다.")
-					}
-		        },
-		        error: function (error) {
-					alert("오류: " + error.responseText);
-		            console.error("이벤트 생성 실패:", error);
-		        }
-		    });
-		}
-	});
-	
-	$('#couponPayment').on('click', function() {
-		// 이미 드롭다운이 생성되어 있으면 추가로 생성하지 않음
-		if ($('#couponOptions').length === 0) {
-	    // "쿠폰 지급 조건" 드롭다운을 동적으로 생성
-		var couponOptions = `
-			<hr class="coupon-divider">
-			<div class="dropdown mt-2" id="couponOptions">
-			<button id="coupon" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-				쿠폰 지급 조건
-	        </button>
-			<button type="button" class="btn-close ms-2" aria-label="Close" onclick="removeCouponOptions()"></button>
-	        <ul class="dropdown-menu">
-				<li><button id="newUserButton" class="dropdown-item">신규 가입자</button></li>
-				<li><button id="manyTimesBtn" class="dropdown-item">회 이상 대여한 자</button></li>
-				<li><button id="manyWons" class="dropdown-item">원 이상 대여한 자</button></li>
-				<li><button id="manyPeople" class="dropdown-item">로그인한 회원</button></li>
-	        </ul>
-			</div>
-	    `;
-	    
-	    // "쿠폰 지급 조건" 드롭다운을 기존 드롭다운 아래에 추가
-	    $(this).closest('.dropdown').after(couponOptions);
-	  }
-	});
-	
-	$(document).on('click', '#newUserButton', function() {
-		if ($('#newUserPointField').length === 0) {
-			const pointField = `
-				<div class="d-flex align-items-center mt-2" id="newUserPointField">
-					<span>신규 가입자에게 지급할 포인트 : </span>
-	            	<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0"> <span class="ms-1">p</span>
-	            	<button type="button" class="btn-close ms-2" aria-label="Close" onclick="removeNewUserField()"></button>
-				</div>
-	        `;
-	        $('#couponOptions').after(pointField);
-		}
-	});
-	
-	$(document).on('click', '#manyTimesBtn', function() {
-		if ($('#manyTimesPointField').length === 0) {
-			const pointField = `
-				<div class="d-flex align-items-center mt-2" id="manyTimesPointField">
-					<input type="number" class="form-control ms-2" style="width: 40px;" placeholder="0">
-					<span>회 이상 대여한 회원에게 지급할 포인트 : </span>
-		        	<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0"><span class="ms-1">p</span>
-		        	<button type="button" class="btn-close ms-2" aria-label="Close" onclick="manyTimesField()"></button>
-				</div>
-		    `;
-		    $('#couponOptions').after(pointField);
-		}
-	});
-	
-	$(document).on('click', '#manyWons', function() {
-		if ($('#manyWonsPointField').length === 0) {
-			const pointField = `
-				<div class="d-flex align-items-center mt-2" id="manyWonsPointField">
-					<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0">
-					<span>원 이상 대여한 회원에게 지급할 포인트 : </span>
-		        	<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0"><span class="ms-1">p</span>
-		        	<button type="button" class="btn-close ms-2" aria-label="Close" onclick="manyWonsField()"></button>
-				</div>
-		    `;
-		    $('#couponOptions').after(pointField);
-		}
-	});
-	
-	$(document).on('click', '#manyPeople', function() {
-		if ($('#manyPeoplePointField').length === 0) {
-			const pointField = `
-				<div class="d-flex align-items-center mt-2" id="manyPeoplePointField">
-					<span>로그인한 회원에게 지급할 포인트 : </span>
-					<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0"><span class="ms-1">p</span>
-		        	<button type="button" class="btn-close ms-2" aria-label="Close" onclick="manyPeopleField()"></button>
-				</div>
-		    `;
-		    $('#couponOptions').after(pointField);
-		}
-	});
+//	$('#couponPayment').on('click', function() {
+//		// 이미 드롭다운이 생성되어 있으면 추가로 생성하지 않음
+//		if ($('#couponOptions').length === 0) {
+//	    // "쿠폰 지급 조건" 드롭다운을 동적으로 생성
+//		var couponOptions = `
+//			<hr class="coupon-divider">
+//			<div class="dropdown mt-2" id="couponOptions">
+//			<button id="coupon" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+//				쿠폰 지급 조건
+//	        </button>
+//			<button type="button" class="btn-close ms-2" aria-label="Close" onclick="removeCouponOptions()"></button>
+//	        <ul class="dropdown-menu">
+//				<li><button id="newUserButton" class="dropdown-item">신규 가입자</button></li>
+//				<li><button id="manyTimesBtn" class="dropdown-item">회 이상 대여한 자</button></li>
+//				<li><button id="manyWons" class="dropdown-item">원 이상 대여한 자</button></li>
+//				<li><button id="manyPeople" class="dropdown-item">로그인한 회원</button></li>
+//	        </ul>
+//			</div>
+//	    `;
+//	    
+//	    // "쿠폰 지급 조건" 드롭다운을 기존 드롭다운 아래에 추가
+//	    $(this).closest('.dropdown').after(couponOptions);
+//	  }
+//	});
+//	
+//	$(document).on('click', '#newUserButton', function() {
+//		if ($('#newUserPointField').length === 0) {
+//			const pointField = `
+//				<div class="d-flex align-items-center mt-2" id="newUserPointField">
+//					<span>신규 가입자에게 지급할 포인트 : </span>
+//	            	<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0"> <span class="ms-1">p</span>
+//	            	<button type="button" class="btn-close ms-2" aria-label="Close" onclick="removeNewUserField()"></button>
+//				</div>
+//	        `;
+//	        $('#couponOptions').after(pointField);
+//		}
+//	});
+//	
+//	$(document).on('click', '#manyTimesBtn', function() {
+//		if ($('#manyTimesPointField').length === 0) {
+//			const pointField = `
+//				<div class="d-flex align-items-center mt-2" id="manyTimesPointField">
+//					<input type="number" class="form-control ms-2" style="width: 40px;" placeholder="0">
+//					<span>회 이상 대여한 회원에게 지급할 포인트 : </span>
+//		        	<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0"><span class="ms-1">p</span>
+//		        	<button type="button" class="btn-close ms-2" aria-label="Close" onclick="manyTimesField()"></button>
+//				</div>
+//		    `;
+//		    $('#couponOptions').after(pointField);
+//		}
+//	});
+//	
+//	$(document).on('click', '#manyWons', function() {
+//		if ($('#manyWonsPointField').length === 0) {
+//			const pointField = `
+//				<div class="d-flex align-items-center mt-2" id="manyWonsPointField">
+//					<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0">
+//					<span>원 이상 대여한 회원에게 지급할 포인트 : </span>
+//		        	<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0"><span class="ms-1">p</span>
+//		        	<button type="button" class="btn-close ms-2" aria-label="Close" onclick="manyWonsField()"></button>
+//				</div>
+//		    `;
+//		    $('#couponOptions').after(pointField);
+//		}
+//	});
+//	
+//	$(document).on('click', '#manyPeople', function() {
+//		if ($('#manyPeoplePointField').length === 0) {
+//			const pointField = `
+//				<div class="d-flex align-items-center mt-2" id="manyPeoplePointField">
+//					<span>로그인한 회원에게 지급할 포인트 : </span>
+//					<input type="number" class="form-control ms-2" style="width: 80px;" placeholder="0"><span class="ms-1">p</span>
+//		        	<button type="button" class="btn-close ms-2" aria-label="Close" onclick="manyPeopleField()"></button>
+//				</div>
+//		    `;
+//		    $('#couponOptions').after(pointField);
+//		}
+//	});
 	  
   	$(document).on('click', '.close-coupon', function() {
         $('#couponOptions').remove();
 		$('.coupon-divider').remove();
   	});
 	
-	$('#event-createBtn').click(function(){
-		const today = new Date();
-		const tomorrow = new Date(today);
-		tomorrow.setDate(today.getDate() + 1);
-
-		// yyyy-mm-dd 형식으로 변환
-		const year = tomorrow.getFullYear();
-		const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
-		const day = String(tomorrow.getDate()).padStart(2, '0');
-		const tomorrowDate = `${year}-${month}-${day}`;
-		removeCouponOptions();
-		$('#createEndDate').attr('min', '');
-		$('#createStartDate').attr('max', '');
-		$('#createStartDate').attr('min', tomorrowDate);
-		$('#createStartDate').val('');
-		$('#createEndDate').val('');
-		$('#event-createModal-title').val('');
-		$('#event-createModal-content textarea').val('');
-		$('#event-createModal').fadeIn();
-	});
+//	$('#event-createBtn').click(function(){
+//		const today = new Date();
+//		const tomorrow = new Date(today);
+//		tomorrow.setDate(today.getDate() + 1);
+//
+//		// yyyy-mm-dd 형식으로 변환
+//		const year = tomorrow.getFullYear();
+//		const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
+//		const day = String(tomorrow.getDate()).padStart(2, '0');
+//		const tomorrowDate = `${year}-${month}-${day}`;
+//		removeCouponOptions();
+//		$('#createEndDate').attr('min', '');
+//		$('#createStartDate').attr('max', '');
+//		$('#createStartDate').attr('min', tomorrowDate);
+//		$('#createStartDate').val('');
+//		$('#createEndDate').val('');
+//		$('#event-createModal-title').val('');
+//		$('#event-createModal-content textarea').val('');
+//		$('#event-createModal').fadeIn();
+//	});
 	
 	$('.event-modal-close').click(function(){
 		$('#event-createModal').fadeOut();
 	});
 	
-	$("#event-createModal-typeBtn").click(function() {
-	    $("#event-createModal-typeDropdown").toggle();
-	});
+//	$("#event-createModal-typeBtn").click(function() {
+//	    $("#event-createModal-typeDropdown").toggle();
+//	});
 	
 	$(".type-option").click(function() {
 	    var type = $(this).data("type");
@@ -466,7 +466,7 @@ $(document).ready(function () {
 	    const eventId = rowData.eventId;  // 이벤트 ID 추출
 	    // Ajax 요청으로 상세 정보 가져오기
 	    $.ajax({
-	        url: `/admin/event/${eventId}`,  // RESTful 경로로 이벤트 ID 사용
+	        url: `/event/${eventId}`,  // RESTful 경로로 이벤트 ID 사용
 	        method: 'GET',
 	        success: function(data) {
 	            // 가져온 데이터를 모달 창에 표시
@@ -475,14 +475,14 @@ $(document).ready(function () {
 	            $('#event-detailStatus').text(data.eventStatus);
 	            $('#event-detailManager').text(data.eventManager);
 	            $('#event-detailDate').text(data.eventDate);
-	            $('#event-detailContent').html(data.eventContent.replace(/\\n/g, '<br>'));
+	            $('#event-detailContent').text(data.eventContent);
 
 	            // 조건 목록 출력
 				$('#event-detailCondition').html(data.eventCondition
 				    .map(condition => {
 				        // 조건에 따라 rewardText 생성
 				        const rewardText = condition.eventRequiredValue == "0" ? '' : `${condition.eventRequiredValue}`; 
-				        return `[ ${condition.eventConditionType} ${rewardText}] [ ${condition.eventClearReward} ]`.trim();
+				        return `[ ${condition.eventConditionType} ${rewardText} ] [ ${condition.eventClearReward} ]`.trim();
 				    })
 				    .join('<br>')
 				);

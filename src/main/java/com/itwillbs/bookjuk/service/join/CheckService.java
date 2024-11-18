@@ -1,8 +1,10 @@
 package com.itwillbs.bookjuk.service.join;
 
+import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -14,7 +16,9 @@ import java.util.Optional;
 public class CheckService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    //회원가입시 중복확인 시 체크
     public boolean checkProcess(Map<String, String> checkData){
         log.info("checkProcess");
 
@@ -47,4 +51,14 @@ public class CheckService {
 
         return false;
     }
+
+    //비밀번호 변경 시 체크
+    public boolean userPasswordCheck(Long userNum, String currentUserPassword){
+        log.info("userPasswordCheck");
+        UserEntity user = userRepository.findByUserNum(userNum);
+        log.info("user; {} ", user.toString());
+        return bCryptPasswordEncoder.matches(currentUserPassword, user.getUserPassword());
+    }
+
+
 }

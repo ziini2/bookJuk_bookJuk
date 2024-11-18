@@ -115,33 +115,34 @@
 						<div class="carousel-inner px-4">
 							<div class="carousel-item active">
 								<div class="d-flex justify-content-around gap-1">
+									<!-- 책 카운트 에 따라 순위별로 1 ~ 3 , 4 ~ 6 나눠서 보여주면 됨 -->
+									<!-- 1위 -->
 									<div class="card">
-										<img src="https://www.nl.go.kr/seoji/fu/ecip/dbfiles/CIP_FILES_TBL/2021/05/06/9791170479512.jpg"
-											 alt="책이미지">
+										<img th:src="${bookRank[0]?.getBookImage()}" alt="rank1">
 									</div>
+									<!-- 2위 -->
 									<div class="card">
-										<img src="https://www.nl.go.kr/seoji/fu/ecip/dbfiles/CIP_FILES_TBL/2021/05/06/9791170479512.jpg"
-											 alt="책이미지">
+										<img th:src="${bookRank[1]?.getBookImage()}" alt="rank2">
 									</div>
+									<!-- 3위 -->
 									<div class="card">
-										<img src="https://www.nl.go.kr/seoji/fu/ecip/dbfiles/CIP_FILES_TBL/2021/05/06/9791170479512.jpg"
-											 alt="책이미지">
+										<img th:src="${bookRank[2]?.getBookImage()}" alt="rank3">
 									</div>
 								</div>
 							</div>
 							<div class="carousel-item active">
 								<div class="d-flex justify-content-around gap-1">
+									<!-- 4위 -->
 									<div class="card">
-										<img src="https://www.nl.go.kr/seoji/fu/ecip/dbfiles/CIP_FILES_TBL/2021/05/06/9791170479512.jpg"
-											 alt="책이미지">
+										<img th:src="${bookRank[3]?.getBookImage()}" alt="rank4">
 									</div>
+									<!-- 5위 -->
 									<div class="card">
-										<img src="https://www.nl.go.kr/seoji/fu/ecip/dbfiles/CIP_FILES_TBL/2021/05/06/9791170479512.jpg"
-											 alt="책이미지">
+										<img th:src="${bookRank[4]?.getBookImage()}" alt="rank5">
 									</div>
+									<!-- 6위 -->
 									<div class="card">
-										<img src="https://www.nl.go.kr/seoji/fu/ecip/dbfiles/CIP_FILES_TBL/2021/05/06/9791170479512.jpg"
-											 alt="책이미지">
+										<img th:src="${bookRank[5]?.getBookImage()}" alt="rank6">
 									</div>
 								</div>
 							</div>
@@ -193,7 +194,7 @@
 							<tbody>
 								<th:block th:each="books : ${booksInfo.getItems()}">
 									<tr th:attr="data-pk=${books.booksId}" onclick="getBooksInfo(this)">
-										<td th:text="${books.booksId}" scope="row">1</td>
+										<td th:text="${books.booksId}">1</td>
 										<td th:text="${books.getBookNum().getBookName()}"></td>
 										<td th:text="${books.getBookNum().getAuthor()}"></td>
 										<td th:text="${books.getBookNum().getGenre().getGenreName()}"></td>

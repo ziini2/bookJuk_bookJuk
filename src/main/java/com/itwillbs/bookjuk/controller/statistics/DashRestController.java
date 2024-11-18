@@ -73,7 +73,7 @@ public class DashRestController {
     public ResponseEntity<PointResponseDTO> getPointStatistics(
             @RequestParam(defaultValue = "week", name="period") String period,
             @RequestParam(defaultValue = "", name="storeList") List<String> storeList,
-            @RequestParam(defaultValue = "전체", name="") String salesOption) {
+            @RequestParam(defaultValue = "전체", name="salesOption") String salesOption) {
         return ResponseEntity.ok(dashRestService.getPointStatistics(period, storeList, salesOption));
     }
 

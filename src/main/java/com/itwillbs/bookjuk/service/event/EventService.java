@@ -21,13 +21,16 @@ import com.itwillbs.bookjuk.entity.event.CouponEntity;
 import com.itwillbs.bookjuk.entity.event.EventConditionEntity;
 import com.itwillbs.bookjuk.entity.event.EventCountEntity;
 import com.itwillbs.bookjuk.entity.event.EventEntity;
+import com.itwillbs.bookjuk.entity.event.NotiCheckEntity;
 import com.itwillbs.bookjuk.entity.event.NotificationEntity;
 import com.itwillbs.bookjuk.repository.UserRepository;
 import com.itwillbs.bookjuk.repository.event.CouponRepository;
 import com.itwillbs.bookjuk.repository.event.EventConditionRepository;
 import com.itwillbs.bookjuk.repository.event.EventCountRepository;
 import com.itwillbs.bookjuk.repository.event.EventRepository;
+import com.itwillbs.bookjuk.repository.event.NotiCheckRepository;
 import com.itwillbs.bookjuk.repository.event.NotificationRepository;
+import com.itwillbs.bookjuk.util.CouponUtil;
 import com.itwillbs.bookjuk.util.EventConditionParser;
 import com.itwillbs.bookjuk.util.SecurityUtil;
 
@@ -45,6 +48,7 @@ public class EventService {
 	private final EventCountRepository eventCountRepository;
 	private final CouponRepository couponRepository;
 	private final NotificationRepository notificationRepository;
+	private final NotiCheckRepository notiCheckRepository;
 	
 	@Transactional
 	public void createEvent(EventDTO eventDTO) {
@@ -97,7 +101,7 @@ public class EventService {
 	public Page<EventDTO> getFilteredEvent(String searchCriteria, String searchKeyword, List<Map<String, String>> filter,
 			Pageable pageable) {
 		try {
-	        return eventRepository.findByCriteriaAndFilter(searchCriteria, searchKeyword, 
+	        return eventRepository.eventTable(searchCriteria, searchKeyword, 
 	        		filter, pageable).map(this::convertToDto);
 	    } catch (Exception e) {
 	        // 로그 출력 및 예외 처리
@@ -152,17 +156,6 @@ public class EventService {
 	    });
 		eventConditionRepository.saveAll(endCondition);
 		
-        // 시작 날짜가 오늘이고 상태가 "시작 전"인 이벤트 목록을 "진행 중"으로 변경하고
-		// 이벤트 조건의 활성 유무를 true로 변경	
-//        List<EventEntity> eventsToStart = eventRepository.findByStartEventDateAndEventStatus(today, "시작 전");
-//        eventsToStart.forEach(event -> event.setEventStatus("진행 중"));        
-//        eventRepository.saveAll(eventsToStart);
-        
-
-        // 종료 날짜가 오늘 이전이고 상태가 "진행 중"인 이벤트 목록을 "종료"로 변경
-//        List<EventEntity> eventsToEnd = eventRepository.findByEndEventDateBeforeAndEventStatus(today, "진행 중");
-//        eventsToEnd.forEach(event -> event.setEventStatus("종료"));
-//        eventRepository.saveAll(eventsToEnd);
 	}
 
 	public EventDTO getEventDetail(Integer eventId) {
@@ -198,11 +191,18 @@ public class EventService {
                 .build();        
 	}
 	
-	// event_count, 쿠폰, 알림 데이터 생성 메서드
+	// event_count, 쿠폰, 알림, noti_check 데이터 생성 메서드
     @Transactional
     public void createEventEntitiesForUser(List<EventConditionEntity> resultList, UserEntity saveUser) {
     	    	
     	for(EventConditionEntity eventCondition : resultList) {
+    		
+    		String coupon;
+    		
+    		// 쿠폰 번호 생성(db에 중복된 쿠폰 번호가 있으면 중복 안될때까지 랜덤 문자 함수 호출) 
+            do {
+                coupon = CouponUtil.generateRandomCouponNum(16);
+            } while (couponRepository.existsByCouponNum(coupon));
     		
     		// event_count 생성
     		EventCountEntity eventCountEntity = EventCountEntity.builder()
@@ -218,9 +218,12 @@ public class EventService {
 			NotificationEntity notificationEntity = NotificationEntity.builder()
 					.notiRecipient(saveUser)
 					.notiSender(eventCondition.getEventId().getEventManager())
-					.notiContent("신규 가입자를 위한 쿠폰입니다.")
+					.notiContent("신규 가입자를 위한 무료 " +
+								 eventCondition.getEventClearReward() +
+								 " 쿠폰입니다.\n" +
+								 "쿠폰 번호 : " + coupon)
 					.notiType("쪽지")
-					.notiStatus("전송")
+					.notiStatus("성공")
 					.notiCreationDate(new Timestamp(System.currentTimeMillis()))
 					.notiSentDate(new Timestamp(System.currentTimeMillis()))
 					.build();
@@ -232,12 +235,20 @@ public class EventService {
 					.eventConditionId(eventCondition)
 					.notiId(notificationEntity)
 					.userNum(saveUser)
-					.couponNum("33333")
+					.couponNum(coupon)
 					.couponPeriod(Timestamp.valueOf(LocalDateTime.now().plusYears(1)))
 					.couponStatus("유효")
 					.couponType(eventCondition.getEventClearReward())
 					.build();
 			couponRepository.save(couponEntity);
+			
+			// noti_check 생성
+			NotiCheckEntity notiCheckEntity = NotiCheckEntity.builder()
+					.notiId(notificationEntity)
+					.notiRecipient(saveUser)
+					.notiChecked(false)
+					.build();
+			notiCheckRepository.save(notiCheckEntity);
 		}
     	
     }

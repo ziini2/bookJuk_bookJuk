@@ -10,47 +10,59 @@ button {
 div.dataTables_processing {
 	top: 30% !important;
 }
+#noti-notiDelete {
+	padding: 7px 16px;
+	font-size: 16px;
+	font-weight: 600;
+	color: #fff;
+	background-color: #007bff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
 
 
 
 
-/*--- 쿠폰 관리 페이지 datatables ↓ CSS ---*/
-#coupon-table tbody tr:hover td {
+/*--- 알림 관리 페이지 datatables ↓ CSS ---*/
+#noti-table tbody tr:hover td {
     background-color: #e0e0e0;
 }
-#coupon-table tbody tr{
+#noti-table tbody tr{
     cursor: pointer !important;
 }
-#coupon-table th, #coupon-table td {
+#noti-table th, #noti-table td {
 	text-align: center !important;
 	white-space: nowrap !important;
 }
-#coupon-table th:nth-child(1),
-#coupon-table td:nth-child(1) {
+#noti-table th:nth-child(1),
+#noti-table td:nth-child(1) {
 	width: 5% !important;
+	pointer-events: none !important;
+    cursor: default !important;
 }
-#coupon-table th:nth-child(2),
-#coupon-table td:nth-child(2) {
+#noti-table th:nth-child(2),
+#noti-table td:nth-child(2) {
+	width: 15% !important;
+}
+#noti-table th:nth-child(3),
+#noti-table td:nth-child(3) {
 	overflow: hidden !important; /* 넘친 텍스트 숨김 */
 	text-overflow: ellipsis !important; /* ... 표시 */
 	max-width: 200px !important; /* 원하는 최대 너비 설정 */
 }
-#coupon-table th:nth-child(3),
-#coupon-table td:nth-child(3) {
-	width: 15% !important;
-}
-#coupon-table th:nth-child(4),
-#coupon-table td:nth-child(4),
-#coupon-table th:nth-child(5),
-#coupon-table td:nth-child(5) {
+#noti-table th:nth-child(4),
+#noti-table td:nth-child(4),
+#noti-table th:nth-child(5),
+#noti-table td:nth-child(5) {
 	width: 10% !important;
 }
-#coupon-table th:nth-child(6),
-#coupon-table td:nth-child(6) {
+#noti-table th:nth-child(6),
+#noti-table td:nth-child(6) {
 	width: 15% !important;
 }
-/*쿠폰 검색 조건 드롭 박스*/
-#coupon-columnSelect {
+/*알림 검색 조건 드롭 박스*/
+#noti-columnSelect {
     -webkit-appearance: none; /* 크롬, 사파리 */
     -moz-appearance: none; /* 파이어폭스 */
     appearance: none; /* 기본 */
@@ -62,15 +74,20 @@ div.dataTables_processing {
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
 }
-/*--- 쿠폰 관리 페이지 datatables ↑ CSS ---*/
+#noti-table th:nth-child(1).sorting::after, 
+#noti-table th:nth-child(1).sorting_asc::after,  
+#noti-table th:nth-child(1).sorting_desc::after {
+    display: none !important;
+}
+/*--- 알림 관리 페이지 datatables ↑ CSS ---*/
 
 
 
 
 
-/*--- 쿠폰 상세 필터 모달창 ↓ CSS ---*/
-/*쿠폰 상세 필터 모달 창*/
-#coupon-detailModal {
+/*--- notification 알림 상세 필터 모달창 ↓ CSS ---*/
+/*알림 상세 필터 모달 창*/
+#noti-detailModal {
 	display: none;
 	position: fixed;
 	left: 0;
@@ -80,7 +97,7 @@ div.dataTables_processing {
 	background-color: rgba(0, 0, 0, 0.6) !important;
 	z-index: 1000;
 }
-.coupon-detailModal-content {
+.noti-detailModal-content {
 	position: absolute;
 	background-color: #fff !important;
 	padding: 30px !important;
@@ -92,15 +109,15 @@ div.dataTables_processing {
 	width: 420px;
 	max-width: 90%;
 }
-/*--- 쿠폰 상세 필터 모달창 ↑ CSS ---*/
+/*--- notification 알림 상세 필터 모달창 ↑ CSS ---*/
 
 
 
 
 
-/*--- 쿠폰 검색 필터 모달창 ↓ CSS ---*/
-/*쿠폰 검색 필터 버튼*/
-#coupon-filterBtn {
+/*--- notification 알림 검색 필터 모달창 ↓ CSS ---*/
+/*알림 검색 필터 버튼*/
+#noti-filterBtn {
 	padding: 7px 16px;
 	font-size: 16px;
 	font-weight: 600;
@@ -110,7 +127,7 @@ div.dataTables_processing {
 	border-radius: 5px;
 	cursor: pointer;
 }
-#coupon-filterBtn:hover {
+#noti-filterBtn:hover {
 	background-color: #0056b3;
 }
 .dataTables_filter {
@@ -129,8 +146,8 @@ div.dataTables_processing {
 div.dataTables_wrapper div.dataTables_filter input {
     margin-left: 0 !important;
 }
-/*쿠폰 검색 필터 모달 창*/
-#coupon-filterModal {
+/*알림 검색 필터 모달 창*/
+#noti-filterModal {
 	display: none;
 	position: fixed;
 	left: 0;
@@ -140,8 +157,8 @@ div.dataTables_wrapper div.dataTables_filter input {
 	background-color: rgba(0, 0, 0, 0.6) !important;
 	z-index: 1000;
 }
-/*쿠폰 검색 필터 모달창 완료 버튼*/
-#coupon-filterModal-apply {
+/*알림 검색 필터 모달창 완료 버튼*/
+#noti-filterModal-apply {
   width: 100%;
   padding: 12px;
   font-size: 16px;
@@ -152,10 +169,10 @@ div.dataTables_wrapper div.dataTables_filter input {
   cursor: pointer;
   margin-top: 20px;
 }
-#coupon-filterModal-apply:hover {
+#noti-filterModal-apply:hover {
   background-color: #0056b3;
 }
-.coupon-filterModal-content {
+.noti-filterModal-content {
 	position: absolute;
 	background-color: #fff !important;
 	padding: 30px !important;
@@ -167,34 +184,34 @@ div.dataTables_wrapper div.dataTables_filter input {
 	width: 420px;
 	max-width: 90%;
 }
-.coupon-filterModal-content label {
+.noti-filterModal-content label {
   display: block;
   font-weight: 500;
   margin: 10px 0 5px;
   color: #555;
 }
-.coupon-filterModal-content h3 {
+.noti-filterModal-content h3 {
   font-size: 1.2rem;
   font-weight: bold;
   color: #333;
   margin-bottom: 20px;
   text-align: center;
 }
-/*쿠폰 검색 필터 모달창 내 전송 날짜*/
-.coupon-date-container {
+/*알림 검색 필터 모달창 내 전송 날짜*/
+.noti-date-container {
 	display: flex;
 	align-items: center;
 	gap: 10px;
 	margin: 15px 0;
 }
-.coupon-date-container input[type="date"] {
+.noti-date-container input[type="date"] {
 	flex: 1;
 	padding: 8px;
 	border: 1px solid #ced4da;
 	border-radius: 4px;
 }
-/*쿠폰 검색 필터 모달창 내 버튼 클릭 스타일*/
-.coupon-filterModal-toggleBtn {
+/*알림 검색 필터 모달창 내 버튼 클릭 스타일*/
+.noti-filterModal-toggleBtn {
 	padding: 10px 20px;
 	margin: 5px;
 	border: 1px solid #ccc;
@@ -203,15 +220,15 @@ div.dataTables_wrapper div.dataTables_filter input {
 	background-color: #f8f9fa;
 	transition: background-color 0.1s;
 }
-.coupon-filterModal-toggleBtn.active {
+.noti-filterModal-toggleBtn.active {
 	background-color: #28a745; /* 활성화된 상태 - 녹색 */
 	color: #fff;
 	border: none;
 }
-.coupon-filterModal-toggleBtn:hover {
+.noti-filterModal-toggleBtn:hover {
   background-color: #4CAF50;
 }
-.coupon-modal-close {
+.noti-modal-close {
 	position: absolute;
 	right: 15px;
 	top: 15px;
@@ -220,29 +237,29 @@ div.dataTables_wrapper div.dataTables_filter input {
 	cursor: pointer !important;
 	color: #555;
 }
-.coupon-modal-close:hover {
+.noti-modal-close:hover {
   color: #000;
 }
-/*쿠폰 검색 필터 칩 스타일 */
-#coupon-selectedFilter {
+/*알림 검색 필터 칩 스타일 */
+#noti-selectedFilter {
 	display: flex;
 	gap: 5px;
 	flex-wrap: wrap;
 	margin-bottom: 5px;
 }
-.coupon-filterChip {
+.noti-filterChip {
     display: inline-block; 
     background-color: #e9ecef; 
     border-radius: 5px; 
     padding: 5px 10px; 
     position: relative;
 }
-.coupon-filterChip span {
+.noti-filterChip span {
     cursor: pointer; 
     margin-left: 5px; 
     color: red; 
 }
-/*--- 쿠폰 필터 모달창 ↑ CSS ---*/
+/*--- notification 필터 모달창 ↑ CSS ---*/
 
 
 

@@ -36,7 +36,7 @@ $(document).ready(function() {
 		dom: '<"d-flex justify-content-between align-items-end"<"d-flex align-items-end dataTables_filter_wrapper"f><"dataTables_length_wrapper"l>>rt<"d-flex justify-content-center"p>',
     
 		ajax: {
-	        url: '/admin/getCoupon',                   // 데이터 요청 URL
+	        url: '/getUserCoupon',                   // 데이터 요청 URL
 	        type: 'POST',                             // HTTP 메서드 설정
 	        contentType: 'application/json; charset=UTF-8',  // 요청 Content-Type 설정
 	        dataSrc: 'data',                          // 데이터 소스 경로 설정
@@ -81,7 +81,7 @@ $(document).ready(function() {
 	    columns: [
 	        { data: 'couponId', title: 'No.' },
 	        { data: 'eventTitle', title: '이벤트 제목' },
-	        { data: 'userId', title: '유저 아이디' },
+	        { data: 'couponNum', title: '쿠폰 번호' },
 	        { data: 'couponStatus', title: '쿠폰 상태' },
 	        { data: 'couponType', title: '쿠폰 종류' },
 	        { data: 'couponPeriod', title: '쿠폰 유효기간', render: function(data) { return dateChange(data); } }
@@ -106,7 +106,7 @@ $(document).ready(function() {
 	        <option value="">전체</option>
 	        <option value="couponId">NO</option>
 	        <option value="eventTitle">이벤트 제목</option>
-	        <option value="userId">유저 아이디</option>
+	        <option value="userId">쿠폰 번호</option>
 	        <option value="couponStatus">쿠폰 상태</option>
 	        <option value="couponType">쿠폰 종류</option>
 	        <option value="couponPeriod">쿠폰 유효기간</option>
@@ -172,7 +172,7 @@ $(document).ready(function () {
 		const rowData = table.row(this).data();  // 클릭된 행의 기본 데이터 가져오기
 	    const couponId = rowData.couponId;  // 알림 ID 추출
 	    $.ajax({
-	        url: `/admin/coupon/${couponId}`,  // RESTful 경로로 알림 ID 사용
+	        url: `/coupon/${couponId}`,  // RESTful 경로로 알림 ID 사용
 	        method: 'GET',
 	        success: function(data) {
 	            // 가져온 데이터를 모달 창에 표시
@@ -200,6 +200,37 @@ $(document).ready(function () {
 	        }
 	    });
     });
+	
+	// 쿠폰 사용 버튼
+	$('#coupon-couponUseBtn').click(function(){
+		$('#coupon-couponUseModal').fadeIn();
+	})
+	
+	// 쿠폰 입력시 유효성 검사
+	$('#coupon-couponUseModal-apply').click(function(){
+		const couponNum = $('#couponCode').val();
+		$.ajax({
+	        url: '/couponUse',
+	        method: 'POST',
+	        contentType: 'application/json',
+	        data: JSON.stringify({
+	            couponCode: couponNum,
+	        }),
+	        success: function (response) {
+				if(response.success){
+		            alert(response.message);
+		            table.draw();
+					$('#coupon-couponUseModal').fadeOut();
+				}else{
+					alert(response.message)
+				}
+	        },
+	        error: function (error) {
+				alert("오류: " + error.responseText);
+	            console.error("쿠폰 사용 실패", error);
+	        }
+	    });
+	})
 	
 	// 쿠폰 상세 모달창 닫기
 	$('.close').on('click', function () {
@@ -264,10 +295,11 @@ $(document).ready(function () {
     	$('#coupon-filterModal').css('display', 'block');
 	});
 
-	// 쿠폰 검색 필터 모달창 닫기
+	// 모달창 닫기
 	$('.coupon-modal-close').click(() => {
 		$('#coupon-filterModal').css('display', 'none');
 		$('#coupon-detailModal').css('display', 'none');
+		$('#coupon-couponUseModal').fadeOut();
 	});
 
 	// 쿠폰 검색 필터 모달창 내 완료 버튼

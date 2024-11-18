@@ -25,11 +25,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/user")
 public class UserEventController {
 
 	private final EventService eventService;
 	
-	@GetMapping("/userEvent")
+	@GetMapping("/event")
 	public String event() {
 		return "/event/userEvent";
 	}

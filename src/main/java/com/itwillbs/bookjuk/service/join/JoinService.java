@@ -17,6 +17,7 @@ import com.itwillbs.bookjuk.repository.event.EventConditionRepository;
 import com.itwillbs.bookjuk.repository.event.EventCountRepository;
 import com.itwillbs.bookjuk.repository.event.NotificationRepository;
 import com.itwillbs.bookjuk.service.event.EventService;
+import com.itwillbs.bookjuk.service.event.NotificationService;
 import com.itwillbs.bookjuk.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +39,7 @@ public class JoinService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final EventConditionRepository eventConditionRepository;
     private final EventService eventService;
+    private final NotificationService notificationService;
 
 
     //회원가입 프로세스
@@ -58,6 +60,9 @@ public class JoinService {
         UserContentEntity userContentEntity = new UserContentEntity();
         userContentEntity.setUserEntity(saveUser);
         UserContentEntity saveUserContent = userContentRepository.save(userContentEntity);
+        
+        //회원 가입시 가입인사 알림 발송(김주완)
+        notificationService.firstNoti(saveUser);
 
         //저장 성공 여부 확인
         if(saveUser != null) {

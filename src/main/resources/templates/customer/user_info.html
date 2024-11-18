@@ -46,14 +46,22 @@
 				<h1 class="d-flex align-items-center justify-content-between">
 					<div>
 						<span class="me-2" style="font-size: 25px;"
-							  th:text="|${userInfo.userName} (${userInfo.userId})|"></span>
+							th:text="|${userInfo.userName} (${userInfo.userId})|"></span>
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-							onclick="deleteUser()"
-							class="bi bi-trash me-2" viewBox="0 0 16 16" style="cursor: pointer;">
+							th:onclick="|deleteUser('${userInfo.userNum}', false)|" class="bi bi-trash me-2"
+							viewBox="0 0 16 16" style="cursor: pointer;">
 							<path
 								d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
 							<path
 								d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+						</svg>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16"
+						th:onclick="|deleteUser('${userInfo.userNum}', true)|" style="cursor: pointer;" >
+						  <path 
+						  	fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+						  <path 
+						  	d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"
+						  />
 						</svg>
 					</div>
 
@@ -100,7 +108,7 @@
 				</div>
 				<div class="col-4">
 					<div class="p-3 border bg-light">탈퇴여부<br>
-						<span th:text="${userInfo.activate} ? '활성' : '비활성'"></span>
+						<span id="userStatus" th:text="${userInfo.activate} ? '활성' : '비활성'"></span>
 					</div>
 				</div>
 				<div class="col-4">
@@ -116,17 +124,53 @@
 
 	</main><!-- End #main -->
 
+	<script>
+		// 유저탈퇴로 변경
+		function deleteUser(userNum, status) {
+			let deleteCheck = 0;
+			// 확인은 true, 취소는 false 반환
+			if (status === false) {
+				deleteCheck = confirm("탈퇴 상태로 변경됩니다.");
+			} else {
+				deleteCheck = confirm("활성 상태로 변경됩니다.");
+			}
+
+			if (deleteCheck) {
+				fetch('/admin/user/userDelete', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({userNum: userNum, status: status})
+				})
+					.then(response => response.text())
+					.then(data => {
+						if (data === 'false') {
+							console.log(data);
+							alert("변경됐습니다.");
+							document.getElementById("userStatus").textContent = '비활성';
+						} else if (data === 'true') {
+							console.log(data);
+							alert("변경됐습니다.");
+							document.getElementById("userStatus").textContent = '활성';
+						} else {
+							alert("변경에 실패했습니다.");
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						alert("에러가 발생했습니다.");
+					});
+			} else {
+				// 취소를 클릭한 경우
+				return;
+			}
+		}
+
+	</script>
 
 	<!-- 사이드바 열었다 닫았다 하는거 -->
 	<script th:src="@{/js/common/main.js}"></script>
-	
-	
-	<script>
-		function deleteUser(){
-			fetch
-		}
-	</script>
-
 
 </body>
 

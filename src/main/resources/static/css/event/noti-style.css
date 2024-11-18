@@ -50,7 +50,7 @@ div.dataTables_processing {
 	top: 50% !important;
 	left: 50% !important;
 	transform: translate(-50%, -50%) !important;
-	width: 580px;
+	width: 400px;
 	max-width: 90%;	
 }
 /*알림 보내기 모달창 완료 버튼*/

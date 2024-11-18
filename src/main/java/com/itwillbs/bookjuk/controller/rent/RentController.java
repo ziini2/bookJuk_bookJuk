@@ -26,12 +26,12 @@ public class RentController {
     @GetMapping("/rent/search")
     @ResponseBody
     public ResponseEntity<RentResponseDTO> searchRent(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "criteria", required = false) String criteria,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "rented", defaultValue = "true", required = false) Boolean rented,
-            @RequestParam(value = "returned", defaultValue = "true", required = false) Boolean returned) {
+            @RequestParam(value = "page", defaultValue = "0", name = "page") int page,
+            @RequestParam(value = "size", defaultValue = "10", name = "size") int size,
+            @RequestParam(value = "criteria", required = false, name = "criteria") String criteria,
+            @RequestParam(value = "keyword", required = false, name = "keyword") String keyword,
+            @RequestParam(value = "rented", defaultValue = "true", required = false, name = "rented") Boolean rented,
+            @RequestParam(value = "returned", defaultValue = "true", required = false, name = "returned") Boolean returned) {
 
         log.info("criteria: {}, keyword: {}, rented: {}, returned: {}", criteria, keyword, rented, returned);
 
@@ -52,6 +52,6 @@ public class RentController {
     }
 
     public record ReturnDTO(List<Long> rentNums, String criteria, String keyword,
-                        Boolean rented, Boolean returned, int page, int size) {
+                            Boolean rented, Boolean returned, int page, int size) {
     }
 }

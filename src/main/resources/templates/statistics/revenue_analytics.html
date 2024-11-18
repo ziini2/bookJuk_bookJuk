@@ -44,7 +44,7 @@
 
     <!-- 분석 페이지 -->
     <div class="statistics-container">
-        <div class="page-title"><h2>매출 분석</h2></div>
+        <div class="page-title"><h2>포인트 분석</h2></div>
         <!-- 상단 버튼 영역 -->
         <div class="d-flex justify-content-between mb-2">
             <div class="select-bar">
@@ -73,10 +73,9 @@
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
                         <li><a class="dropdown-item" onclick="selectOption('salesItem', '전체', 'salesItem')">전체</a>
                         </li>
-                        <li><a class="dropdown-item" onclick="selectOption('salesItem', '대여 수입', 'salesItem')">대여
-                            수입</a></li>
+                        <li><a class="dropdown-item" onclick="selectOption('salesItem', '대여료', 'salesItem')">대여료</a></li>
                         <li><a class="dropdown-item"
-                               onclick="selectOption('salesItem', '반납지연수입', 'salesItem')">반납지연수입</a>
+                               onclick="selectOption('salesItem', '연체료', 'salesItem')">연체료</a>
                         </li>
                     </ul>
                 </div>
@@ -125,21 +124,6 @@
             </table>
         </div>
         <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
         </ul>
     </div>
 </main>
@@ -167,6 +151,7 @@
     }
 </script>
 <script th:src="@{/js/statistics/dropdownStores.js}"></script>
+<script th:src="@{/js/statistics/getRevenueData.js}"></script>
 </body>
 
 </html>

@@ -165,13 +165,13 @@ xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 						</a>
 					</li>
 					<li>
-						<a href="/userCoupon">
+						<a th:href="@{/user/userCoupon}">
 							<i class="ri-checkbox-blank-circle-fill"></i>
 							<span>쿠폰관리</span>
 						</a>
 					</li>
 					<li>
-						<a href="/userNoti">
+						<a th:href="@{/user/userNoti}">
 							<i class="ri-checkbox-blank-circle-fill"></i>
 							<span>알림수신함</span>
 						</a>
@@ -181,7 +181,7 @@ xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 			<!-- 마이페이지 끝 -->
 
 			<li class="nav-item">
-				<a class="nav-link collapsed" href="/userEvent">
+				<a class="nav-link collapsed" th:href="@{/user/userEvent}">
 					<i class="ri-gift-fill"></i> 
 					<span>이벤트</span>
 				</a>

@@ -47,13 +47,21 @@
 					<div>
 						<span class="me-2" style="font-size: 25px;" th:text="${storeInfo.storeName}"></span>
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-							th:onclick="|deleteStore('${storeInfo.storeCode}')| 	" class="bi bi-trash me-2"
+							th:onclick="|deleteStore('${storeInfo.storeCode}', 'close')| 	" class="bi bi-trash me-2"
 							viewBox="0 0 16 16" style="cursor: pointer;">
 							<!-- deleteStore('${storeInfo.storeCode}') 이런식으로 데이터전달 가능 -->
 							<path
 								d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
 							<path
 								d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+						</svg>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+							class="bi bi-arrow-clockwise" viewBox="0 0 16 16"
+							th:onclick="|deleteStore('${storeInfo.storeCode}', true)|" style="cursor: pointer;">
+							<path fill-rule="evenodd"
+								d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
+							<path
+								d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
 						</svg>
 					</div>
 
@@ -110,7 +118,8 @@
 				</div>
 				<div class="col-3">
 					<div class="p-3 border bg-light">
-						지점상태<br><span id="storeStatusUp" th:text="${storeInfo.storeStatus == 'open' ? '운영중' : '폐점'}"></span>
+						지점상태<br><span id="storeStatusUp"
+							th:text="${storeInfo.storeStatus == 'open' ? '운영중' : '폐점'}"></span>
 					</div>
 				</div>
 			</div>
@@ -250,28 +259,36 @@
 
 	</script>
 
-	
+
 
 	<script>
 		// 지점상태변경(삭제)
-		function deleteStore(storeCode) {
+		function deleteStore(storeCode, status) {
+			let deleteCheck = 0;
 			// 확인은 true, 취소는 false 반환
-			const deleteCheck = confirm("폐점 상태로 변경됩니다.");
-
+			if (status === 'close') {
+				deleteCheck = confirm("폐점 상태로 변경됩니다.");
+			} else {
+				deleteCheck = confirm("운영 상태로 변경됩니다.");
+			}
 			if (deleteCheck) {
 				fetch('/admin/store/store_delete', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json'
 					},
-					body: JSON.stringify({storeCode: storeCode})
+					body: JSON.stringify({storeCode: storeCode, status: status})
 				})
 					.then(response => response.text())
 					.then(data => {
-						if (data === '1') {
+						if (data === 'close') {
 							console.log(data);
 							alert("변경됐습니다.");
 							document.getElementById("storeStatusUp").textContent = '폐점';
+						} else if (data === 'open') {
+							console.log(data);
+							alert("변경됐습니다.");
+							document.getElementById("storeStatusUp").textContent = '운영중';
 						} else {
 							alert("변경에 실패했습니다.");
 						}

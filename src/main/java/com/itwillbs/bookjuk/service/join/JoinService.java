@@ -134,4 +134,15 @@ public class JoinService {
         UserEntity updateUser = userRepository.save(user);
         return SecurityUtil.reloadUserRole(updateUser);
     }
+
+    //비밀변호 변경 저장
+    public boolean saveUserPassword(Long userNum, String password) {
+        UserEntity user = userRepository.findByUserNum(userNum);
+        if (user == null) {
+            return false;
+        }
+        user.setUserPassword(bCryptPasswordEncoder.encode(password));
+        userRepository.save(user);
+        return true;
+    }
 }

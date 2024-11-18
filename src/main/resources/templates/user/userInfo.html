@@ -63,7 +63,7 @@
 							<strong class="col-3 me-3">비밀번호</strong>
 							<div class="col-auto my-0" id="userInfo-password">
 								<div th:if="${userInfo.getLoginType().toString() == 'MANUAL'}">
-									<button class="btn btn-success btn-sm"> 변경 </button>
+									<button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#password-change"> 변경 </button>
 								</div>
 								<div th:if="${userInfo.getLoginType().toString() != 'MANUAL'}">
 									<button class="btn btn-success btn-sm" disabled> 변경 </button>
@@ -134,6 +134,7 @@
 					<h4 class="my-2">상세 보기</h4>
 				</div>
 				<hr class="my-2">
+				<!--책 대여 및 포인트 사용 상세 내역 -->
 				<div class="container mt-2">
 					<p class="d-inline-flex gap-1">
 						<button class="btn btn-sm btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#rentInfo" aria-expanded="false" aria-controls="rentInfo">
@@ -246,6 +247,43 @@
 					</div>
 				</div>
 			</div>
+
+			<div id="password-change" class="modal" tabindex="-1" role="dialog">
+				<div class="modal-dialog modal-dialog-centered"  role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">비밀번호 변경</h5>
+						</div>
+						<div class="modal-body">
+							<div id="modal-content" class="container">
+
+								<!-- 기존 userPassword 입력란 -->
+								<div class="input-group w-70">
+									<input id="userPassword" type="password" class="form-control" placeholder="기존 비밀번호">
+								</div>
+
+
+								<!-- 새 userPassword 입력란 -->
+								<div class="input-group mt-3 w-70">
+									<input id="newPassword1" type="password" class="form-control" placeholder="새 비밀번호 (8자 이상 영문, 숫자, 특수문자 조합)" disabled>
+								</div>
+
+								<!-- 새 userPassword 확인 입력란 -->
+								<div class="input-group mt-3 w-70">
+									<input id="newPassword2" type="password" class="form-control" placeholder="새 비밀번호 확인" disabled>
+								</div>
+
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button sec:authorize="isAuthenticated()" id="passChangeButton" type="button" class="btn btn-success" disabled>변경</button>
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</main>
 
@@ -254,5 +292,6 @@
 	<!-- jQuery CDN -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script th:src="@{/js/user/collapseStatus.js}"></script>
+	<script th:src="@{/js/user/passwordChange.js}"></script>
 </body>
 </html>

@@ -61,7 +61,6 @@ public class NotificationController {
 			Pageable pageable = PageRequest.of(page, length, sort);
 			long totalRecords = notiService.getAllNoti(userNum, Pageable.unpaged()).getTotalElements();
 			Page<NotiDTO> notiPage;
-			
 			if (searchKeyword.isEmpty()) {
 				if(filter.isEmpty()) {
 					notiPage = notiService.getAllNoti(userNum, pageable);

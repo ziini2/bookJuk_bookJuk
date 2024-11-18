@@ -134,13 +134,4 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
         long total = resultListto.size();
         return new PageImpl<>(resultList, pageable, total);
 	}
-	
-//	private Integer safeParseInt(String keyword) {
-//        try {
-//            return Integer.parseInt(keyword);
-//        } catch (NumberFormatException e) {
-//            return null;
-//        }
-//    }
-	
 }

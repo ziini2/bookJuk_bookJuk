@@ -23,7 +23,7 @@ $(document).ready(function () {
   //비밀번호2 유효성 검사
   const validatePassword2 = (password) => {
     const password1 = $("#join-userPassword1").val();
-    if (password1 === password && password.length > 0) {
+    if (password && password1 === password && password.length > 0) {
       return true;
     }
     return false;
@@ -289,7 +289,7 @@ $(document).ready(function () {
     });
   }
 
-  //#endregion 안녕
+  //#endregion
 
   //회원가입 버튼 클릭시
   $("#joinButton").on('click', async (e) => {
@@ -332,6 +332,5 @@ $(document).ready(function () {
     }
     else console.log("회원가입 실패: 유효성 검사 또는 중복 확인 실패")
   });
-
 });
 

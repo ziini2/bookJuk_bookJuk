@@ -19,4 +19,5 @@ public interface PaymentRepository extends JpaRepository<PaymentEntity, String> 
 	@Query("SELECT SUM(p.paymentPrice) FROM PaymentEntity p WHERE p.reqDate BETWEEN :startDate AND :endDate")
 	Optional<Long> sumAmountByReqDateBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
+	Optional<List<PaymentEntity>> findAllByReqDateBetween(LocalDateTime of, LocalDateTime of1);
 }

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.bookjuk.entity.UserEntity;
+import com.itwillbs.bookjuk.entity.event.EventEntity;
 import com.itwillbs.bookjuk.entity.event.NotificationEntity;
 
 import jakarta.persistence.EntityManager;
@@ -133,6 +134,9 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
                 .setFirstResult((int) pageable.getOffset())
                 .setMaxResults(pageable.getPageSize())
                 .getResultList();       
+        
+        List<NotificationEntity> resultListto = entityManager.createQuery(query)
+                .getResultList();
 
         // 필터링 된 데이터 개수 조회
         CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
@@ -140,7 +144,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
         countRoot.join("notiRecipient", JoinType.LEFT);
         countRoot.join("notiSender", JoinType.LEFT);
         countQuery.select(cb.count(countRoot)).where(cb.and(predicates.toArray(new Predicate[0])));
-        long total = entityManager.createQuery(countQuery).getSingleResult();
+        long total = resultListto.size();
         return new PageImpl<>(resultList, pageable, total);
 	}
 }

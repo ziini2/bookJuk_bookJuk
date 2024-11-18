@@ -21,4 +21,8 @@ public interface BookInfoRepository extends JpaRepository<BookInfoEntity, Long> 
 
     Optional<List<BookInfoEntity>> findAllByBookNameContaining(String keyword);
 
+    //책 대여카운트 별
+    @Query("SELECT b FROM BookInfoEntity b WHERE b.bookImage IS NOT NULL ORDER BY b.rentCount DESC")
+    List<BookInfoEntity> findByBooksByRentCount(Pageable pageable);
+
 }

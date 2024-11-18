@@ -36,7 +36,7 @@ $(document).ready(function() {
 		dom: '<"d-flex justify-content-between align-items-end"<"d-flex align-items-end dataTables_filter_wrapper"f><"dataTables_length_wrapper"l>>rt<"d-flex justify-content-center"p>',
     
 		ajax: {
-	        url: '/getUserCoupon',                   // 데이터 요청 URL
+	        url: '/user/getUserCoupon',                   // 데이터 요청 URL
 	        type: 'POST',                             // HTTP 메서드 설정
 	        contentType: 'application/json; charset=UTF-8',  // 요청 Content-Type 설정
 	        dataSrc: 'data',                          // 데이터 소스 경로 설정
@@ -172,7 +172,7 @@ $(document).ready(function () {
 		const rowData = table.row(this).data();  // 클릭된 행의 기본 데이터 가져오기
 	    const couponId = rowData.couponId;  // 알림 ID 추출
 	    $.ajax({
-	        url: `/coupon/${couponId}`,  // RESTful 경로로 알림 ID 사용
+	        url: `/user/coupon/${couponId}`,  // RESTful 경로로 알림 ID 사용
 	        method: 'GET',
 	        success: function(data) {
 	            // 가져온 데이터를 모달 창에 표시
@@ -210,7 +210,7 @@ $(document).ready(function () {
 	$('#coupon-couponUseModal-apply').click(function(){
 		const couponNum = $('#couponCode').val();
 		$.ajax({
-	        url: '/couponUse',
+	        url: '/user/couponUse',
 	        method: 'POST',
 	        contentType: 'application/json',
 	        data: JSON.stringify({

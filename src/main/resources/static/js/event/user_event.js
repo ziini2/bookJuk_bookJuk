@@ -56,7 +56,7 @@ $(document).ready(function() {
 	    dom: '<"d-flex justify-content-between align-items-end"<"d-flex align-items-end dataTables_filter_wrapper"f><"dataTables_length_wrapper"l>>rt<"d-flex justify-content-center"p>',
 	    
 	    ajax: {
-	        url: '/getUserEvent',                   // 데이터 요청 URL
+	        url: '/user/getUserEvent',                   // 데이터 요청 URL
 	        type: 'POST',                             // HTTP 메서드 설정
 	        contentType: 'application/json; charset=UTF-8',  // 요청 Content-Type 설정
 	        dataSrc: 'data',                          // 데이터 소스 경로 설정
@@ -466,7 +466,7 @@ $(document).ready(function () {
 	    const eventId = rowData.eventId;  // 이벤트 ID 추출
 	    // Ajax 요청으로 상세 정보 가져오기
 	    $.ajax({
-	        url: `/event/${eventId}`,  // RESTful 경로로 이벤트 ID 사용
+	        url: `/user/event/${eventId}`,  // RESTful 경로로 이벤트 ID 사용
 	        method: 'GET',
 	        success: function(data) {
 	            // 가져온 데이터를 모달 창에 표시

@@ -5,7 +5,6 @@ function dateChange(data) {
     return formattedDate;
 }
 let selectedRecipients = new Set();
-
 $(document).ready(function() {	
 	// datatables 라이브러리 설정
     const table = $('#noti-table').DataTable({
@@ -84,7 +83,7 @@ $(document).ready(function() {
                 orderable: false,
 				searchable: false, // 검색 제외
                 render: function (data, type, row) {
-                    return '<input type="checkbox" class="row-select" data-recipient="' + row.recipient + '" value="' + row.notiId + '">';
+                    return '<input type="checkbox" class="row-select" value="' + row.notiRecipient + '">';
                 }
             },
 	        { data: 'notiId', title: 'No.' },
@@ -183,23 +182,25 @@ $(document).ready(function () {
         const isChecked = $(this).is(':checked');
         const filteredRows = table.rows({ filter: 'applied' }).data(); // 필터된 데이터만 가져오기
         filteredRows.each(function (row) {
-            const recipient = row.recipient;
+            const recipient = String(row.notiRecipient);
             if (isChecked) {
                 // 이미 선택된 recipient는 건너뜀
                 if (!selectedRecipients.has(recipient)) {
+//					alert("야이놈아");
                     selectedRecipients.add(recipient); // 새로운 recipient 추가
-                    $(`.row-select[data-recipient="${recipient}"]`).first().prop('checked', true); // 첫 번째 체크박스만 선택
+                    $(`.row-select[value="${recipient}"]`).first().prop('checked', true); // 첫 번째 체크박스만 선택
                 }
             } else {
                 // 전체 선택 해제
                 selectedRecipients.delete(recipient); // 선택 취소
-                $(`.row-select[data-recipient="${recipient}"]`).prop('checked', false); // 모든 체크박스 해제
+                $(`.row-select[value="${recipient}"]`).prop('checked', false); // 모든 체크박스 해제
             }
         });
 		if(isChecked){
-			alert(`선택된 데이터의 총 개수: ${selectedRecipients.size}`);
+			alert(`선택된 회원의 수: ${selectedRecipients.size}`);
 		}
     });
+	
 	
 	// DataTables의 'draw' 이벤트에 이벤트 리스너 등록
     $('#noti-table tbody').on('click', 'tr', function (event) {
@@ -207,27 +208,13 @@ $(document).ready(function () {
 		// 체크박스 컬럼(첫 번째 컬럼)이 클릭된 경우 처리
 	    if (cellIndex === 0) {
 	        const checkbox = $(event.target).closest('td').find('.row-select'); // 체크박스 요소 찾기
-			const recipient = checkbox.val(); // 체크박스의 value 값 가져오기
 	        // 클릭한 요소가 체크박스 자체인 경우
 			if ($(event.target).is('.row-select')) {
-		        if ($(event.target).is(':checked') && selectedRecipients.has(recipient)) {
-		            alert('이미 체크된 아이디입니다.');
-		            $(event.target).prop('checked', false); // 체크를 취소
-		            return;
-		        }
-		        toggleCheckbox($(event.target)); // 체크박스 상태 반전 및 데이터 관리
+				toggleCheckbox(checkbox); // 체크박스 상태 반전 및 데이터 관리
 		        return;
 		    }
-	        // 클릭한 요소가 체크박스 외의 빈 공간인 경우
-			if (checkbox.length > 0) {
-		        if (!checkbox.prop('checked') && selectedRecipients.has(recipient)) {
-		            alert('이미 체크된 아이디입니다.');
-		            return;
-		        }
-
-		        checkbox.prop('checked', !checkbox.prop('checked')); // 현재 상태를 반대로 변경
-		        toggleCheckbox(checkbox); // 체크박스 상태 반전 및 데이터 관리
-		    }
+			checkbox.prop('checked', !checkbox.prop('checked')); // 상태 반전
+			toggleCheckbox(checkbox);
 	        return; // 체크박스 컬럼 클릭 시 모달 열림 방지
 	    }
 		const rowData = table.row(this).data();  // 클릭된 행의 기본 데이터 가져오기
@@ -312,6 +299,42 @@ $(document).ready(function () {
 		$('#noti-sendModal-content textarea').val('');
 		$('#noti-sendModal').fadeIn();
 	});
+	
+	$('#noti-sendModal-apply').click(() => {
+		// 1. 선택된 데이터 확인
+	    if (selectedRecipients.size === 0) {
+	        alert("선택된 회원이 없습니다.");
+	        return;
+	    }
+		// 2. 알림 내용 가져오기
+	    const notiContent = $('#noti-sendModal-content textarea').val().trim();
+	    if (!notiContent) {
+	        alert("알림 내용을 입력하세요.");
+	        return;
+	    }
+		// 3. 서버로 데이터 전송
+		if(confirm("정말 알림을 보내시겠습니까?")){
+		    $.ajax({
+		        url: '/admin/sendNotifications', // 서버 API 엔드포인트
+		        method: 'POST',
+		        contentType: 'application/json',
+		        data: JSON.stringify({
+		            notiRecipient: Array.from(selectedRecipients), // Set을 배열로 변환
+		            notiContent: notiContent // 알림 내용
+		        }),
+		        success: (response) => {
+		            alert(response);
+		            $('#noti-sendModal').fadeOut(); // 모달 닫기
+		            selectedRecipients.clear(); // 전송 완료 후 선택 데이터 초기화
+		        },
+		        error: (error) => {
+		            alert("알림 전송 중 오류가 발생했습니다.");
+		            console.error(error);
+		        }
+		    });
+		}
+		table.draw();
+	});
 
 	// 알림 검색 필터 버튼 눌렀을 때
 	$('#noti-filterBtn').click(() => {
@@ -358,11 +381,20 @@ $(document).ready(function () {
 	
 	// 체크박스 처리
 	function toggleCheckbox(checkbox) {
-	    // 선택된 체크박스 값 관리
+		const recip = checkbox.val();
 	    if (checkbox.is(':checked')) {
-	        selectedRecipients.add(recipient); // 선택된 수신 아이디 추가
+			if(selectedRecipients.has(recip)){
+				alert('이미 체크된 아이디입니다');
+				checkbox.prop('checked', false);
+			}else{
+//				alert(recip);
+//				alert("1");
+				selectedRecipients.add(recip); // 선택된 수신 아이디 추가	
+			}
 	    } else {
-	        selectedRecipients.delete(recipient); // 선택 해제
+//			alert(recip);
+//			alert("2");
+	        selectedRecipients.delete(recip); // 선택 해제
 	    }
 	}
 

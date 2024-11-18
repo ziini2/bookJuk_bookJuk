@@ -59,8 +59,8 @@ public class RentService {
     // 전체 RentEntity를 RentResponseDTO로 반환
     public RentResponseDTO findAllWithDTO(Boolean rented, Boolean returned, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("rentNum").descending());
-        Page<RentEntity> rentPage = null;
-        List<RentDTO> content = null;
+        Page<RentEntity> rentPage;
+        List<RentDTO> content;
 
         if (rented && returned) {
             rentPage = rentRepository.findAll(pageable);

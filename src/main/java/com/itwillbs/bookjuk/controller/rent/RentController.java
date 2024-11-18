@@ -1,6 +1,6 @@
 package com.itwillbs.bookjuk.controller.rent;
 
-import com.itwillbs.bookjuk.dto.RentResponseDTO;
+import com.itwillbs.bookjuk.dto.rent.RentResponseDTO;
 import com.itwillbs.bookjuk.service.rent.RentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -20,5 +20,7 @@ public interface PointDealRepository extends JpaRepository<PointDealEntity, Long
 
     Optional<List<PointDealEntity>> findAllFirstByReqDateBetweenOrderByReqDateDesc(LocalDateTime of, LocalDateTime of1);
 
+    Page<PointDealEntity> findAllFirstByReqDateBetweenOrderByReqDateDesc(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
+    Page<PointDealEntity> findAllFirstByReqDateBetweenAndPointPayNameOrderByReqDateDesc(LocalDateTime startDate, LocalDateTime endDate, String pointOption, Pageable pageable);
 }

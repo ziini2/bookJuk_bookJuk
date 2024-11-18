@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class StatisticsController {
 
     @GetMapping("/revenueStatic")
-    public String revenueAnalytics(Model) {
+    public String revenueAnalytics(Model model) {
         return "statistics/revenue_analytics";
     }
 

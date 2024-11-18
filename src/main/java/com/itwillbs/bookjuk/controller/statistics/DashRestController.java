@@ -53,7 +53,8 @@ public class DashRestController {
 
     // weekly or more dashboard
     @GetMapping("period/total")
-    public ResponseEntity<List<TotalStatisticsDTO>> getTotalStatistics(@RequestParam(defaultValue = "week") String period) {
+    public ResponseEntity<List<TotalStatisticsDTO>> getTotalStatistics(
+            @RequestParam(defaultValue = "week", name="period") String period) {
         return ResponseEntity.ok(dashRestService.getConsolidatedStatisticsWithFilledDates(period));
     }
 
@@ -70,28 +71,28 @@ public class DashRestController {
 
     @GetMapping("period/point")
     public ResponseEntity<PointResponseDTO> getPointStatistics(
-            @RequestParam(defaultValue = "week") String period,
-            @RequestParam(defaultValue = "") List<String> storeList,
-            @RequestParam(defaultValue = "전체") String salesOption) {
+            @RequestParam(defaultValue = "week", name="period") String period,
+            @RequestParam(defaultValue = "", name="storeList") List<String> storeList,
+            @RequestParam(defaultValue = "전체", name="") String salesOption) {
         return ResponseEntity.ok(dashRestService.getPointStatistics(period, storeList, salesOption));
     }
 
     @GetMapping("period/delay")
     public ResponseEntity<ResponseDTO> getDelayStatistics(
-            @RequestParam(defaultValue = "week") String period,
-            @RequestParam(defaultValue = "") List<String> storeList) {
+            @RequestParam(defaultValue = "week", name="period") String period,
+            @RequestParam(defaultValue = "", name="storeList") List<String> storeList) {
         return ResponseEntity.ok(dashRestService.getDelayStatistics(period, storeList));
     }
 
     @GetMapping("period/revenue")
     public ResponseEntity<ResponseDTO> getRevenueStatistics(
-            @RequestParam(defaultValue = "week") String period) {
+            @RequestParam(defaultValue = "week", name="period") String period) {
         return ResponseEntity.ok(dashRestService.getRevenueStatistics(period));
     }
 
     @GetMapping("period/customer")
     public ResponseEntity<ResponseDTO> getCustomerStatistics(
-            @RequestParam(defaultValue = "week") String period) {
+            @RequestParam(defaultValue = "week", name="period") String period) {
         return ResponseEntity.ok(dashRestService.getCustomerStatistics(period));
     }
 

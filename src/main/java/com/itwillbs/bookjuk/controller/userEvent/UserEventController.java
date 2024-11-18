@@ -1,4 +1,4 @@
-package com.itwillbs.bookjuk.controller.event;
+package com.itwillbs.bookjuk.controller.userEvent;
 
 import java.util.List;
 import java.util.Map;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.itwillbs.bookjuk.dto.CouponDTO;
-import com.itwillbs.bookjuk.service.event.CouponService;
+import com.itwillbs.bookjuk.dto.EventDTO;
+import com.itwillbs.bookjuk.service.event.EventService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,21 +25,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/admin")
-public class CouponController {
+public class UserEventController {
 
-	private final CouponService couponService;
+	private final EventService eventService;
 	
-	@GetMapping("/coupon")
-	public String coupon() {
-		return "/coupon/coupon";
+	@GetMapping("/userEvent")
+	public String event() {
+		return "/event/userEvent";
 	}
 	
-	@PostMapping(value = "/getCoupon", produces = "application/json; charset=UTF-8")
+	@PostMapping(value = "/getUserEvent", produces = "application/json; charset=UTF-8")
 	@ResponseBody
-	public Map<String, Object> getCoupon(@RequestBody Map<String, Object> payload){
+	public Map<String, Object> getEvent(@RequestBody Map<String, Object> payload){
 		try {
-			Long userNum = 0L;
 			String searchCriteria = (String) payload.get("searchCriteria");
 		    String searchKeyword = (String) payload.get("searchKeyword");
 		    @SuppressWarnings("unchecked")
@@ -50,35 +48,32 @@ public class CouponController {
 		    Integer draw = (Integer) payload.get("draw");
 		    String sortColumn = (String) payload.get("sortColumn");
 		    String sortDirection = (String) payload.get("sortDirection");
-		    if(sortColumn.equals("userId")) {
-		    	sortColumn = "userNum";
-		    }
-		    if(sortColumn.equals("eventTitle")) {
-		    	sortColumn = "eventId";
-		    }
 			int page = start / length;
+			if(sortColumn.equals("eventDate")) {
+				sortColumn = "startEventDate";
+			}
 			Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortColumn);
 			Pageable pageable = PageRequest.of(page, length, sort);
-			long totalRecords = couponService.getAllCoupon(userNum, Pageable.unpaged()).getTotalElements();
-			Page<CouponDTO> couponPage;
+			long totalRecords = eventService.getAllEvent(Pageable.unpaged()).getTotalElements();
+			Page<EventDTO> eventPage;
 			
 			if (searchKeyword.isEmpty()) {
 				if(filter.isEmpty()) {
-					couponPage = couponService.getAllCoupon(userNum, pageable);
+					eventPage = eventService.getAllEvent(pageable);
 				}else {
-					couponPage = couponService.getFilteredCoupon(userNum, searchCriteria, searchKeyword, 
+					eventPage = eventService.getFilteredEvent(searchCriteria, searchKeyword, 
 			    			filter, pageable);
 				}			
 		    } else {
-		    	couponPage = couponService.getFilteredCoupon(userNum, searchCriteria, searchKeyword, 
+		    	eventPage = eventService.getFilteredEvent(searchCriteria, searchKeyword, 
 		    			filter, pageable);
 		    }
 			return Map.of(
 				"result", "SUCCESS",
 				"draw", draw,
-		        "data", couponPage.getContent(),
+		        "data", eventPage.getContent(),
 		        "recordsTotal", totalRecords,
-		        "recordsFiltered", couponPage.getTotalElements()
+		        "recordsFiltered", eventPage.getTotalElements()
 		    );
 		} catch (Exception e) {
 	        log.error("Failed to process getEvent request", e);
@@ -86,18 +81,19 @@ public class CouponController {
 	            "result", "FAIL",
 	            "message", e.getMessage()
 	        );
-		}		
+	    }
 	}
-	
-	@GetMapping("/coupon/{couponId}")
-	public ResponseEntity<CouponDTO> getCouponDetail(@PathVariable("couponId") Long couponId) {
-		CouponDTO couponDetail = couponService.getCouponDetail(couponId);                
-        if (couponDetail != null) {
-        	log.info("Coupon Content: {}", couponDetail.getCouponStatus());
-            return ResponseEntity.ok(couponDetail);
+
+	@GetMapping("/event/{eventId}")
+	public ResponseEntity<EventDTO> getEventDetail(@PathVariable("eventId") Integer eventId) {
+        EventDTO eventDetail = eventService.getEventDetail(eventId);                
+        if (eventDetail != null) {
+        	log.info("Event Condition: {}", eventDetail.getEventCondition());
+            return ResponseEntity.ok(eventDetail);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
-		
+	
+	
 }

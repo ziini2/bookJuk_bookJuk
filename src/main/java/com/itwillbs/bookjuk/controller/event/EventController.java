@@ -95,14 +95,7 @@ public class EventController {
 	        );
 	    }
 	}
-	
-	@GetMapping("/updateStatus")
-    public String updateEventStatus() {
-        eventService.updateEventStatus();
-        log.info("===========");
-        return "/event/event";
-    }
-	
+
 	@GetMapping("/event/{eventId}")
 	public ResponseEntity<EventDTO> getEventDetail(@PathVariable("eventId") Integer eventId) {
         EventDTO eventDetail = eventService.getEventDetail(eventId);                

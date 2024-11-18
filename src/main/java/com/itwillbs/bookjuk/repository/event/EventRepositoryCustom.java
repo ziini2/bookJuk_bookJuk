@@ -9,7 +9,9 @@ import org.springframework.data.domain.Pageable;
 import com.itwillbs.bookjuk.entity.event.EventEntity;
 
 public interface EventRepositoryCustom {
-	Page<EventEntity> findByCriteriaAndFilter(String searchCriteria, 
+	
+	// 이벤트 관리 페이지 리스트 출력
+	Page<EventEntity> eventTable(String searchCriteria, 
 										  String searchKeyword, 
 										  List<Map<String, String>> filter, 
 										  Pageable pageable);

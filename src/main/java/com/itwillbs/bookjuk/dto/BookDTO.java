@@ -2,6 +2,7 @@ package com.itwillbs.bookjuk.dto;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.itwillbs.bookjuk.domain.books.BookStatus;
 
@@ -32,7 +33,7 @@ public class BookDTO {
 	private Long genreId; // 장르ID
 	private Long storeCode; // 지점코드
 	private BookStatus bookStatus; // 도서상태
-	private Timestamp bookDate; // 입고일
+	private LocalDateTime bookDate; // 입고일
 	private Long rentMoney; // 대여금액
 	private Long rentCount; // 대여횟수
 	private Boolean rentStatus; // 대여현황

@@ -57,22 +57,18 @@
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                         지점명: <span id="branch">전체</span>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                        <li><a class="dropdown-item" href="#" onclick="selectOption('branch', '전체', 'branch')">전체</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="selectOption('branch', '강남점', 'branch')">강남점</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="selectOption('branch', '부산점', 'branch')">부산점</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="selectOption('branch', '대구점', 'branch')">대구점</a></li>
+                    <ul class="dropdown-menu dropdown-branch" aria-labelledby="dropdownMenuButton2">
+                        <li><a class="dropdown-item" onclick="selectOption('branch', '전체', 'branch')">전체</a></li>
+
                     </ul>
                 </div>
                 <div class="dropdown me-2">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
                         장르: <span id="genre">전체</span>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
-                        <li><a class="dropdown-item" href="#" onclick="selectOption('genre', '전체', 'genre')">전체</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="selectOption('genre', '소설', 'genre')">소설</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="selectOption('genre', '경제', 'genre')">경제</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="selectOption('genre', '자기계발', 'genre')">자기계발</a></li>
+                    <ul class="dropdown-menu dropdown-genre" aria-labelledby="dropdownMenuButton4">
+                        <li><a class="dropdown-item" onclick="selectOption('genre', '전체', 'genre')">전체</a></li>
+
                     </ul>
                 </div>
             </div>
@@ -189,6 +185,7 @@
 
     }
 </script>
+<script th:src="@{/js/statistics/dropdownStores.js}"></script>
 </body>
 
 </html>

@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RentPaginationDTO implements PaginationDTO<BookRentInfoDTO>{
+public class RentPaginationDTO implements PaginationDTO<BookRentInfoDTO> {
 
     private List<BookRentInfoDTO> items;
     //페이지네이션 관련

@@ -63,6 +63,11 @@ public class DashRestController {
         return ResponseEntity.ok(dashRestService.getStores());
     }
 
+    @GetMapping("genre")
+    public ResponseEntity<List<String>> getGenres() {
+        return ResponseEntity.ok(dashRestService.getGenres());
+    }
+
     @GetMapping("period/point")
     public ResponseEntity<PointResponseDTO> getPointStatistics(
             @RequestParam(defaultValue = "week") String period,
@@ -89,6 +94,8 @@ public class DashRestController {
             @RequestParam(defaultValue = "week") String period) {
         return ResponseEntity.ok(dashRestService.getCustomerStatistics(period));
     }
+
+
 
 
 }

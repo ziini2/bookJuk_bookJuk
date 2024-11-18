@@ -257,7 +257,7 @@ public class EventService {
     }
     
     public void checkEventForPayment(UserEntity user, EventConditionEntity condition, int count) {
-    	EventCountEntity checkCountEntity = eventCountRepository.find
+    	List<EventCountEntity> checkCountEntity = eventCountRepository.findByUserNumAndEventConditionId(user, condition);
     	EventCountEntity countEntity = EventCountEntity.builder()
     			.userNum(user)
     			.eventConditionId(condition)

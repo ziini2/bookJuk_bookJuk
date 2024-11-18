@@ -1,4 +1,4 @@
-package com.itwillbs.bookjuk.dto;
+package com.itwillbs.bookjuk.dto.rent;
 
 import lombok.*;
 

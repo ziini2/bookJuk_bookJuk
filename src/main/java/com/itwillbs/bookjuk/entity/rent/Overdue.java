@@ -29,6 +29,7 @@ public class Overdue {
     @Column(name = "over_start", nullable = false)
     private LocalDate overStart;
 
+
     @Column(name = "over_end", nullable = false)
     private LocalDate overEnd;
 
@@ -43,4 +44,8 @@ public class Overdue {
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "rent_num", nullable = false) // RentEntity를 외래 키로 참조
     private RentEntity rent;
+
+    @Column(name = "overdue_days")
+    private Integer overdueDays;
+
 }

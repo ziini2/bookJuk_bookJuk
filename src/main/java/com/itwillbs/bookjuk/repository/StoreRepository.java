@@ -24,8 +24,8 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Long> {
 	// 테이블이름과 컬럼이름은 엔티티클래스를 따라야함
 	@Transactional
 	@Modifying
-	@Query("UPDATE StoreEntity s SET s.storeStatus = 'close', s.storeUpdateDate = now() WHERE s.storeCode = :storeCode")
-	void deleteStore(@Param("storeCode") Long storeCode);
+	@Query("UPDATE StoreEntity s SET s.storeStatus = :status, s.storeUpdateDate = now() WHERE s.storeCode = :storeCode")
+	void deleteStore(@Param("storeCode") Long storeCode, @Param("status") String status);
 
 	// 지점 컬럼검색 쿼리
 	// 테이블이름과 컬럼이름은 엔티티클래스를 따라야함
@@ -44,7 +44,7 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Long> {
 	@Transactional
 	@Modifying
 	@Query("UPDATE UserEntity u SET u.activate = :status WHERE u.userNum = :userNum")
-	void deleteUser(@Param("userNum") Long userNum, @Param("status") int status);
+	void deleteUser(@Param("userNum") Long userNum, @Param("status") Boolean status);
 
 	List<StoreEntity> findAllStoreNameByStoreStatus(String storeStatus);
 

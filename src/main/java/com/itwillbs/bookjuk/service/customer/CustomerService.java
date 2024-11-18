@@ -50,8 +50,8 @@ public class CustomerService {
 		storeRepository.save(storeEntity);
 	}
 	
-	public void deleteStore(Long storeCode) {
-		storeRepository.deleteStore(storeCode);
+	public void deleteStore(Long storeCode, String status) {
+		storeRepository.deleteStore(storeCode, status);
 	}
 
 	public List<UserEntity> getMemberList() {
@@ -70,9 +70,8 @@ public class CustomerService {
 //		return userContentRepository.findByUserNum(userNum);
 //	}
 
-	public void deleteUser(Long userNum) {
-		int status = 0;
-		storeRepository.deleteUser(userNum, status);
+	public void deleteUser(Long string, Boolean status) {
+		storeRepository.deleteUser(string, status);
 	}
 	
 	

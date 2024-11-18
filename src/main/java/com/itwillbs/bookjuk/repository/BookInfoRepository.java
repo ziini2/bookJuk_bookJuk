@@ -13,18 +13,16 @@ import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
 
 public interface BookInfoRepository extends JpaRepository<BookInfoEntity, Long> {
 
-	// 대여등록 책검색
-	Optional<BookInfoEntity> findByIsbn(String isbn);
+    // 대여등록 책검색
+    Optional<BookInfoEntity> findByIsbn(String isbn);
 
-
-	@Query("SELECT bi FROM BookInfoEntity bi WHERE bi.bookName LIKE %:search%")
-	Page<BookInfoEntity> findByBookNameContaining(@Param("search") String search, Pageable pageable);
-
-
+    @Query("SELECT bi FROM BookInfoEntity bi WHERE bi.bookName LIKE %:search%")
+    Page<BookInfoEntity> findByBookNameContaining(@Param("search") String search, Pageable pageable);
 
     Optional<List<BookInfoEntity>> findAllByBookNameContaining(String keyword);
 
-    //장바구니 추가
-	//List<BookInfoEntity> fin
+    //책 대여카운트 별
+    @Query("SELECT b FROM BookInfoEntity b WHERE b.bookImage IS NOT NULL ORDER BY b.rentCount DESC")
+    List<BookInfoEntity> findByBooksByRentCount(Pageable pageable);
 
 }

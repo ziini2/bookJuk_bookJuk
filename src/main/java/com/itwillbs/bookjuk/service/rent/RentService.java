@@ -1,8 +1,8 @@
 package com.itwillbs.bookjuk.service.rent;
 
 import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
-import com.itwillbs.bookjuk.dto.RentDTO;
-import com.itwillbs.bookjuk.dto.RentResponseDTO;
+import com.itwillbs.bookjuk.dto.rent.RentDTO;
+import com.itwillbs.bookjuk.dto.rent.RentResponseDTO;
 import com.itwillbs.bookjuk.entity.UserContentEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
 import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
@@ -59,8 +59,8 @@ public class RentService {
     // 전체 RentEntity를 RentResponseDTO로 반환
     public RentResponseDTO findAllWithDTO(Boolean rented, Boolean returned, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("rentNum").descending());
-        Page<RentEntity> rentPage = null;
-        List<RentDTO> content = null;
+        Page<RentEntity> rentPage;
+        List<RentDTO> content;
 
         if (rented && returned) {
             rentPage = rentRepository.findAll(pageable);
@@ -165,11 +165,13 @@ public class RentService {
                 log.info("연체료 부과{}", rent.getRentNum());
                 int perDay = 500;
                 LocalDate now = now();
-                int overPrice = (int) ((rent.getRentEnd().toEpochDay() - now.toEpochDay()) * perDay);
+                int overdue_days = (int) (now.toEpochDay() - rent.getRentEnd().toEpochDay()) * -1;
+                int overPrice = overdue_days * perDay * -1;
 
                 // 1. overdue 테이블에 연체 기록 추가
                 Overdue overdue = Overdue.builder()
                         .rent(rent)
+                        .overdueDays(overdue_days)
                         .overPrice(overPrice)
                         .overStart(rent.getRentEnd().plusDays(1))
                         .overEnd(now)

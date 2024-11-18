@@ -1,6 +1,6 @@
 package com.itwillbs.bookjuk.controller.rent;
 
-import com.itwillbs.bookjuk.dto.RentResponseDTO;
+import com.itwillbs.bookjuk.dto.rent.RentResponseDTO;
 import com.itwillbs.bookjuk.service.rent.RentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ public class RentController {
 
     private final RentService rentService;
 
-    @GetMapping("rent")
+    @GetMapping("/rent")
     public String rent() {
         return "rent/rent";
     }
@@ -30,8 +30,8 @@ public class RentController {
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "criteria", required = false) String criteria,
             @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "rented", required = false) Boolean rented,
-            @RequestParam(value = "returned", required = false) Boolean returned) {
+            @RequestParam(value = "rented", defaultValue = "true", required = false) Boolean rented,
+            @RequestParam(value = "returned", defaultValue = "true", required = false) Boolean returned) {
 
         log.info("criteria: {}, keyword: {}, rented: {}, returned: {}", criteria, keyword, rented, returned);
 

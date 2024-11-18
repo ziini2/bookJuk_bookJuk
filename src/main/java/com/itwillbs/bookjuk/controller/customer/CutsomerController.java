@@ -99,12 +99,13 @@ public class CutsomerController {
 	// 지점 폐점 처리하는 함수(비동기)
 	@ResponseBody
 	@PostMapping("/admin/store/store_delete") // json, Map으로 받을수 있음 
-	public String storeDelete(@RequestBody Map<String, Long> requestBody) {
+	public String storeDelete(@RequestBody Map<String, Object> requestBody) {
 		log.info("storeDelete : " + requestBody.get("storeCode"));
 
-		customerService.deleteStore(requestBody.get("storeCode"));
+		customerService.deleteStore(Long.valueOf(requestBody.get("storeCode").toString()), 
+									requestBody.get("status").toString());
 
-		return "1";
+		return requestBody.get("status").toString();
 	}
 
 	// 유저목록 가져오는 함수
@@ -152,10 +153,10 @@ public class CutsomerController {
 	// 유저 탈퇴상태 함수 (비동기)
 	@ResponseBody
 	@PostMapping("/admin/user/userDelete")
-	public int userDelete(@RequestBody Map<String, Long> requestBody) {
-
-		customerService.deleteUser(requestBody.get("userNum"));
-
-		return 1;
+	public String userDelete(@RequestBody Map<String, Object> requestBody) {
+		log.info("userdel {}", requestBody.get("userNum"));
+		customerService.deleteUser(Long.valueOf(requestBody.get("userNum").toString()),
+								   Boolean.valueOf(requestBody.get("status").toString()));
+		return requestBody.get("status").toString();
 	}
 }

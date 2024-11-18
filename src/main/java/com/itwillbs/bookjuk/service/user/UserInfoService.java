@@ -2,9 +2,10 @@ package com.itwillbs.bookjuk.service.user;
 
 import com.itwillbs.bookjuk.domain.login.LoginType;
 import com.itwillbs.bookjuk.dto.*;
+import com.itwillbs.bookjuk.dto.BookRentInfoDTO;
+import com.itwillbs.bookjuk.dto.RentPaginationDTO;
 import com.itwillbs.bookjuk.entity.UserContentEntity;
 import com.itwillbs.bookjuk.entity.UserEntity;
-import com.itwillbs.bookjuk.entity.books.BooksEntity;
 import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
 import com.itwillbs.bookjuk.entity.rent.RentEntity;
 import com.itwillbs.bookjuk.repository.PointDealRepository;
@@ -62,7 +63,7 @@ public class UserInfoService {
             userInfoDTO.setUserPoint(userContentEntity.getUserPoint());
             userInfoDTO.setBringBook(userContentEntity.getBringBook());
         } else {
-            log.warn("UserContentEntity is null for userNum={}", userEntity.getUserNum());
+            log.warn("UserContentEntity null, user, {}", userEntity.getUserNum());
             userInfoDTO.setUserPoint(0); // 기본값 설정
             userInfoDTO.setBringBook(0); // 기본값 설정
         }

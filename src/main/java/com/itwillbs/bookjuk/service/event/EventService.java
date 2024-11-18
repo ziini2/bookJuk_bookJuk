@@ -249,8 +249,29 @@ public class EventService {
 					.notiChecked(false)
 					.build();
 			notiCheckRepository.save(notiCheckEntity);
-		}
-    	
+		}    	
+    }
+    
+    public List<EventConditionEntity> checkEventCondition(String eventConditionType){
+    	return eventConditionRepository.findByEventIsActiveTrueAndEventConditionType(eventConditionType);
+    }
+    
+    public void checkEventForPayment(UserEntity user, EventConditionEntity condition, int count) {
+    	EventCountEntity checkCountEntity = eventCountRepository.find
+    	EventCountEntity countEntity = EventCountEntity.builder()
+    			.userNum(user)
+    			.eventConditionId(condition)
+    			.eventNowCount(0)
+    			.lastUpdate(new Timestamp(System.currentTimeMillis()))
+    			.clearEvent(false)
+    			.build();
+    	int nowCount = countEntity.getEventNowCount(); // 이벤트 달성 유형에 대한 현재까지 달성한 값
+    	int targetCount = condition.getEventRequiredValue(); // 이벤트 달성을 위한 목표 값
+    	if(nowCount >= targetCount) {
+    		countEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+    		countEntity.setClearEvent(true);
+    	}
+    	eventCountRepository.save(countEntity);
     }
 
 }

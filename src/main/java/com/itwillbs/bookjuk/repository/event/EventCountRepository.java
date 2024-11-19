@@ -15,6 +15,6 @@ public interface EventCountRepository extends JpaRepository<EventCountEntity, Lo
 //	void save(EventCountEntity eventCountEntity);
 	
 	// userNum, event_condition_id를 통해 이벤트 카운트 조회
-	List<EventCountEntity> findByUserNumAndEventConditionId(UserEntity userNum, EventConditionEntity eventConditionId);
+	List<EventCountEntity> findByUserNumAndEventConditionIdIn(UserEntity userNum, List<EventConditionEntity> eventConditionId);
 	
 }

@@ -4,8 +4,10 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -252,26 +254,69 @@ public class EventService {
 		}    	
     }
     
-    public List<EventConditionEntity> checkEventCondition(String eventConditionType){
-    	return eventConditionRepository.findByEventIsActiveTrueAndEventConditionType(eventConditionType);
+    // 이벤트 컨디션 타입에 따른 이벤트 활성값 true 조회
+    public List<EventConditionEntity> checkEventCondition(List<String> eventConditionType){
+    	return eventConditionRepository.findByEventIsActiveTrueAndEventConditionTypeIn(eventConditionType);
+    }
+    // 오버로딩 : checkEventCondition(String)
+    public List<EventConditionEntity> checkEventCondition(String eventConditionType) {        
+        return checkEventCondition(Collections.singletonList(eventConditionType));
     }
     
-    public void checkEventForPayment(UserEntity user, EventConditionEntity condition, int count) {
-    	List<EventCountEntity> checkCountEntity = eventCountRepository.findByUserNumAndEventConditionId(user, condition);
-    	EventCountEntity countEntity = EventCountEntity.builder()
-    			.userNum(user)
-    			.eventConditionId(condition)
-    			.eventNowCount(0)
-    			.lastUpdate(new Timestamp(System.currentTimeMillis()))
-    			.clearEvent(false)
-    			.build();
-    	int nowCount = countEntity.getEventNowCount(); // 이벤트 달성 유형에 대한 현재까지 달성한 값
-    	int targetCount = condition.getEventRequiredValue(); // 이벤트 달성을 위한 목표 값
-    	if(nowCount >= targetCount) {
-    		countEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-    		countEntity.setClearEvent(true);
+    // 유저 엔티티와 이벤트 컨디션 엔티티에 따른 이벤트 카운트 조회
+    public List<EventCountEntity> checkEventCount(UserEntity user, List<EventConditionEntity> condition) {
+    	return eventCountRepository.findByUserNumAndEventConditionIdIn(user, condition);
+    }
+    
+    public void checkEventForPayment(UserEntity user, int numberOfRental, int rentalAmount) {
+    	// 조회할 이벤트 컨디션 설정
+    	List<String> eventConditionType = List.of("대여 횟수", "대여 금액");
+    	// 이벤트 컨디션 타입에 따른 이벤트 활성값 true 조회
+    	List<EventConditionEntity> eventConditionEntities = checkEventCondition(eventConditionType);
+    	
+    	if(eventConditionEntities.isEmpty()) { return; }
+    	List<EventCountEntity> eventCountEntities = checkEventCount(user, eventConditionEntities);
+
+    	Set<Integer> existingConditionIds = eventCountEntities.stream()
+    		    .map(eventCount -> eventCount.getEventConditionId().getEventConditionId())
+    		    .collect(Collectors.toSet());
+    	
+    	List<EventConditionEntity> missingConditions = eventConditionEntities.stream()
+    		    .filter(conditions -> !existingConditionIds.contains(conditions.getEventConditionId()))
+    		    .collect(Collectors.toList());
+    	
+    	if (!missingConditions.isEmpty()) {
+    	    for (EventConditionEntity missingCondition : missingConditions) {
+    	    	String type = missingCondition.getEventConditionType();
+    	    	int countValue = "대여 횟수".equals(type) ? numberOfRental : rentalAmount;
+    	    	int clear = missingCondition.getEventRequiredValue();
+    	    	EventCountEntity countEntity = EventCountEntity.builder()
+    	    			.userNum(user)
+    	    			.eventConditionId(missingCondition)
+    	    			.eventNowCount(countValue)
+    	    			.lastUpdate(new Timestamp(System.currentTimeMillis()))
+    	    			.clearEvent(countValue >= clear)
+    	    			.build();
+    	    	eventCountRepository.save(countEntity);
+    	    }
     	}
-    	eventCountRepository.save(countEntity);
+    	
+    	
+    	
+//    	EventCountEntity countEntity = EventCountEntity.builder()
+//    			.userNum(user)
+//    			.eventConditionId(condition)
+//    			.eventNowCount(0)
+//    			.lastUpdate(new Timestamp(System.currentTimeMillis()))
+//    			.clearEvent(false)
+//    			.build();
+//    	int nowCount = countEntity.getEventNowCount(); // 이벤트 달성 유형에 대한 현재까지 달성한 값
+//    	int targetCount = condition.getEventRequiredValue(); // 이벤트 달성을 위한 목표 값
+//    	if(nowCount >= targetCount) {
+//    		countEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+//    		countEntity.setClearEvent(true);
+//    	}
+//    	eventCountRepository.save(countEntity);
     }
 
 }

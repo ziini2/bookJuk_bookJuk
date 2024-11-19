@@ -14,7 +14,7 @@ public interface EventConditionRepository extends JpaRepository<EventConditionEn
 	
 	List<EventConditionEntity> findByEventId(EventEntity event);
 	
-	List<EventConditionEntity> findByEventIsActiveTrueAndEventConditionType(String eventConditionType);
+	List<EventConditionEntity> findByEventIsActiveTrueAndEventConditionTypeIn(List<String> eventConditionType);
 	
 	// 이벤트 시작 날짜가 오늘이고 상태가 "시작 전"인 이벤트 조회
 	@Query("SELECT ec FROM EventConditionEntity ec WHERE DATE(ec.eventId.startEventDate) = :today AND ec.eventId.eventStatus = :status")

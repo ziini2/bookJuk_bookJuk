@@ -16,11 +16,14 @@ public interface PointDealRepository extends JpaRepository<PointDealEntity, Long
     Page<PointDealEntity> findByUserContentEntity_MemberNum(Long userNum, Pageable pageable);
 
     // dashboard에서 사용
-    @Query("SELECT SUM(p.pointPrice) FROM PointDealEntity p WHERE p.reqDate BETWEEN :startOfDay AND :endOfDay")
-    Optional<Long> sumAmountByReqDateBetween(@Param("startOfDay") LocalDateTime startOfDay, 
+    @Query("SELECT SUM(p.pointPrice) FROM PointDealEntity p WHERE p.reqDate BETWEEN :startOfDay AND :endOfDay AND p.pointPayName IN ('대여료', '연체료')")
+    Optional<Long> sumAmountByReqDateBetween(@Param("startOfDay") LocalDateTime startOfDay,
                                              @Param("endOfDay") LocalDateTime endOfDay);
 
-    Optional<List<PointDealEntity>> findAllFirstByReqDateBetweenOrderByReqDateDesc(LocalDateTime of, LocalDateTime of1);
+    @Query("SELECT p FROM PointDealEntity p WHERE p.reqDate BETWEEN :startDate AND :endDate AND p.pointPayName IN :pointOptions ORDER BY p.reqDate DESC")
+Optional<List<PointDealEntity>> findAllByReqDateBetweenAndPointPayNameInOrderByReqDateDesc(@Param("startDate") LocalDateTime startDate,
+                                                                                          @Param("endDate") LocalDateTime endDate,
+                                                                                          @Param("pointOptions") List<String> pointOptions);
 
     Page<PointDealEntity> findAllFirstByReqDateBetweenOrderByReqDateDesc(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 

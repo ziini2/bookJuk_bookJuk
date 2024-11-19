@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -295,15 +294,43 @@ public class EventService {
     
     // 유저 엔티티와 이벤트 컨디션 엔티티에 따른 이벤트 카운트 조회
     public EventCountEntity checkEventCount(UserEntity user, EventConditionEntity condition) {
-    	return eventCountRepository.findByUserNumAndEventConditionId(user, condition);
+    	return eventCountRepository.findByUserNumAndEventConditionIdAndClearEventFalse(user, condition);
     }
+    
+    public List<EventConditionEntity> filterEvent(List<EventConditionEntity> eventConditions) {
+    	
+    	// 1. eventConditionEntities에서 eventConditionId 추출
+        List<Integer> eventConditionIds = eventConditions.stream()
+            .map(EventConditionEntity::getEventConditionId)
+            .collect(Collectors.toList());
+
+        // 2. couponRepository에서 이미 존재하는 eventConditionId 조회
+        List<EventConditionEntity> existingEventConditions = couponRepository.findEventConditionsWithCoupons(eventConditionIds);
+
+        // 3. 없는 EventConditionEntity 필터링
+        return eventConditions.stream()
+            .filter(eventCondition -> !existingEventConditions.contains(eventCondition))
+            .collect(Collectors.toList());
+    	
+//        // 1. couponRepository에서 이미 존재하는 EventConditionEntity 조회
+//        List<EventConditionEntity> existingCouponConditions = couponRepository.findEventConditionsWithCoupons(eventConditionEntities);
+//
+//        // 2. 없는 EventConditionEntity 필터링
+//        List<EventConditionEntity> filteredEventConditions = eventConditionEntities.stream()
+//            .filter(eventCondition -> !existingCouponConditions.contains(eventCondition))
+//            .collect(Collectors.toList());
+//
+//        return filteredEventConditions;
+    }
+
     
     @Transactional
     public void checkEventForPayment(UserEntity user, int numberOfRental, int rentalAmount) {
     	// 조회할 이벤트 컨디션 설정
     	List<String> eventConditionType = List.of("대여 횟수", "대여 금액");
     	// 이벤트 컨디션 타입에 따른 이벤트 활성값 true 조회
-    	List<EventConditionEntity> eventConditionEntities = checkEventCondition(eventConditionType);
+    	List<EventConditionEntity> eventConditionEntiti = checkEventCondition(eventConditionType);
+    	List<EventConditionEntity> eventConditionEntities = filterEvent(eventConditionEntiti);
     	// 없으면 함수 종료
     	if(eventConditionEntities.isEmpty()) { return; }
     	

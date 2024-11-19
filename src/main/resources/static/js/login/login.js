@@ -37,7 +37,7 @@ $(document).ready(function () {
 	// 알림 개수 조회 함수
 	function fetchUnreadNotifications() {
 	    $.ajax({
-	        url: `/user/notifications/${userId}`,
+	        url: `/user/notifications`,
 	        type: 'GET',
 	        success: function (count) {
 				if (count > 0) {

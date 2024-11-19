@@ -7,8 +7,11 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.itwillbs.bookjuk.entity.event.CouponEntity;
+import com.itwillbs.bookjuk.entity.event.EventConditionEntity;
 
 public interface CouponRepository extends JpaRepository<CouponEntity, Long>, CouponRepositoryCustom {
 
@@ -26,5 +29,14 @@ public interface CouponRepository extends JpaRepository<CouponEntity, Long>, Cou
 
 	// 쿠폰 사용시 유효성 검사
 	Optional<CouponEntity> findByUserNum_UserNumAndCouponNumAndCouponStatus(Long userNum, String couponNum, String couponStatus);
+	
+	@Query("SELECT DISTINCT c.eventConditionId FROM CouponEntity c WHERE c.eventConditionId.eventConditionId IN :eventConditionIds")
+	List<EventConditionEntity> findEventConditionsWithCoupons(@Param("eventConditionIds") List<Integer> eventConditionIds);
+	
+	
+	
+//	@Query("SELECT DISTINCT c.eventCondition FROM CouponEntity c WHERE c.eventCondition IN :eventConditions")
+//    List<EventConditionEntity> findEventConditionsWithCoupons(@Param("eventConditions") List<EventConditionEntity> eventConditions);
+
 
 }

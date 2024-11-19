@@ -74,7 +74,7 @@ public class PaymentService {
     }
 
 	
-	//결제 검증 후 저장(클라이언트가 조작 가격 조작 못하게)
+	//결제 검증 후 저장(클라이언트가 조작 가격 조작 못하게 함)
     public void verifyAndSavePayment(PaymentDTO paymentDTO) throws IamportResponseException, IOException {
     
 	  try {

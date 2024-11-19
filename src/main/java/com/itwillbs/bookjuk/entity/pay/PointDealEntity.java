@@ -77,6 +77,6 @@ public class PointDealEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "payment_id")
 	private PaymentEntity paymentEntity;  // 단방향 참조
-
+  
 
 }

@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +26,7 @@ import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class PaymentService {
 
@@ -35,6 +34,7 @@ public class PaymentService {
 	 private final PaymentRepository paymentRepository;
 	 private final UserContentRepository userContentRepository;
 	 private final UserRepository userRepository;
+	
 	 
 
 
@@ -121,6 +121,7 @@ public class PaymentService {
             .reqDate(LocalDateTime.now())
             .pointUsed(pointUsed)
             .build();
+	        
 	        
 	        paymentRepository.save(paymentEntity);
 	        // 결제 금액에 따른 포인트 업데이트
@@ -311,7 +312,17 @@ public class PaymentService {
         }
     }
 
+    //유저번호 불러오기
 	public Optional<UserEntity> getUserNum(Long userNum) {
 		return userRepository.findById(userNum);
+	}
+	
+	public Page<PaymentEntity> getPaymentList(Pageable pageable) {
+		return paymentRepository.findAll(pageable);
+	}
+	
+	//검색
+	public Page<PaymentEntity> findByPaymentIdContaining(Pageable pageable, String search) {
+		return paymentRepository.findByPaymentIdContaining(pageable, search);
 	}
 }

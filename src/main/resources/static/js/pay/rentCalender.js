@@ -2,7 +2,7 @@ $(document).ready(function() {
     // 오늘 날짜와 일주일 후 날짜 설정
     const today = new Date();
     const nextWeek = new Date();
-    nextWeek.setDate(today.getDate() + 7); // 일주일 후 날짜 설정
+    nextWeek.setDate(today.getDate() + 6); // 일주일 후 날짜 설정
 
     // Inline Datepicker 초기화
     $('#inline-datepicker').datepicker({

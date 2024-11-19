@@ -41,7 +41,7 @@ public class CartController {
         if (currentUserNum == null) {
             // 유저가 로그인하지 않은 경우, 로그인 페이지로 리다이렉트
             return "redirect:/login";
-        }
+        }  
 
         // 세션에 저장된 유저 ID와 현재 유저 ID 비교
         Long sessionUserNum = (Long) session.getAttribute("userNum");

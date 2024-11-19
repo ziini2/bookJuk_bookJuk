@@ -197,7 +197,12 @@ $(document).ready(function () {
 	            $('#noti-detailType').text(data.notiType);
 	            $('#noti-detailStatus').text(data.notiChecked);
 	            $('#noti-detailSentDate').text(dateChange(data.notiSentDate));
-
+				localStorage.setItem('unreadCount', data.count);
+				if (data.count > 0) {
+		            $('#notification-count').text(data.count);
+		        }else{
+					$('#notification-count').text('');
+				}
 	            // 모달 창 표시
 	            $('#noti-detailModal').show();
 	        },

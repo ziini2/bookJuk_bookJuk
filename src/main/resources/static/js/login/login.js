@@ -18,6 +18,7 @@ $(document).ready(function () {
       },
       success: function (response) {
         console.log("로그인 성공" );
+		fetchUnreadNotifications();
         window.location.href = "/";
       },
       error: function (xhr, status, error) {
@@ -32,6 +33,23 @@ $(document).ready(function () {
         }
       }
     });
+	
+	// 알림 개수 조회 함수
+	function fetchUnreadNotifications() {
+	    $.ajax({
+	        url: `/user/notifications/${userId}`,
+	        type: 'GET',
+	        success: function (count) {
+				if (count > 0) {
+					localStorage.setItem('unreadCount', count);
+		            $('#notification-count').text(count);
+		        }
+	        },
+	        error: function () {
+	            console.error('Failed to fetch unread notifications');
+	        }
+	    });
+	}
+	
   });
-
 });

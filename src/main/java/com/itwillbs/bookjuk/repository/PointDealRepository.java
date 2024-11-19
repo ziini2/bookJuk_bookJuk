@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface PointDealRepository extends JpaRepository<PointDealEntity, Long> {
 
-    Page<PointDealEntity> findByUserContentEntity_MemberNum(Long userNum, Pageable pageable);
+    Page<PointDealEntity> findByUserContentEntity_UserEntity_UserNum(Long userNum, Pageable pageable);
 
     // dashboard에서 사용
     @Query("SELECT SUM(p.pointPrice) FROM PointDealEntity p WHERE p.reqDate BETWEEN :startOfDay AND :endOfDay AND p.pointPayName IN ('대여료', '연체료')")

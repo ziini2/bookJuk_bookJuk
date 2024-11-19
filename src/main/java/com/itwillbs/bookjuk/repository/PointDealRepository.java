@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface PointDealRepository extends JpaRepository<PointDealEntity, Long> {
 
-    Page<PointDealEntity> findByUserContentEntity_UserEntity_UserNum(Long userNum, Pageable pageable);
+    Page<PointDealEntity> findByUserContentEntity_MemberNum(Long userNum, Pageable pageable);
 
     // dashboard에서 사용
     @Query("SELECT SUM(p.pointPrice) FROM PointDealEntity p WHERE p.reqDate BETWEEN :startOfDay AND :endOfDay AND p.pointPayName IN ('대여료', '연체료')")
@@ -21,16 +21,20 @@ public interface PointDealRepository extends JpaRepository<PointDealEntity, Long
                                              @Param("endOfDay") LocalDateTime endOfDay);
 
     @Query("SELECT p FROM PointDealEntity p WHERE p.reqDate BETWEEN :startDate AND :endDate AND p.pointPayName IN :pointOptions ORDER BY p.reqDate DESC")
-Optional<List<PointDealEntity>> findAllByReqDateBetweenAndPointPayNameInOrderByReqDateDesc(@Param("startDate") LocalDateTime startDate,
-                                                                                          @Param("endDate") LocalDateTime endDate,
-                                                                                          @Param("pointOptions") List<String> pointOptions);
+    Optional<List<PointDealEntity>> findAllByReqDateBetweenAndPointPayNameInOrderByReqDateDesc(@Param("startDate") LocalDateTime startDate,
+                                                                                               @Param("endDate") LocalDateTime endDate,
+                                                                                               @Param("pointOptions") List<String> pointOptions);
 
     @Query("SELECT p FROM PointDealEntity p WHERE p.reqDate BETWEEN :startDate AND :endDate AND p.pointPayName IN :pointOptions ORDER BY p.reqDate DESC")
     Page<PointDealEntity> findAllByReqDateBetweenAndPointPayNameInOrderByReqDateDescPage(@Param("startDate") LocalDateTime startDate,
-                                                                                               @Param("endDate") LocalDateTime endDate,
-                                                                                               @Param("pointOptions") List<String> pointOptions, Pageable pageable);
+                                                                                         @Param("endDate") LocalDateTime endDate,
+                                                                                         @Param("pointOptions") List<String> pointOptions, Pageable pageable);
 
     Page<PointDealEntity> findAllFirstByReqDateBetweenOrderByReqDateDesc(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
     Page<PointDealEntity> findAllFirstByReqDateBetweenAndPointPayNameOrderByReqDateDesc(LocalDateTime startDate, LocalDateTime endDate, String pointOption, Pageable pageable);
+
+    Page<PointDealEntity> findByUserContentEntity_UserEntity_UserNum(Long userNum, Pageable pageable);
+
+    Optional<List<PointDealEntity>> findAllFirstByReqDateBetweenAndPointPayNameOrderByReqDateDesc(LocalDateTime startDate, LocalDateTime endDate, String pointOption);
 }

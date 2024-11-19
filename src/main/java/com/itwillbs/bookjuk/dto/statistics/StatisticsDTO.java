@@ -23,5 +23,22 @@ public class StatisticsDTO {
     private String author;
     private long userNum;
 
+    // customer parameter
+    private long num;
+    private LocalDate joinDate;
+    private long totalRentPrice;
+    private long totalOverduePrice;
+    private long totalPaymentPrice;
+    private long totalCouponPrice;
+    private String gender;
+    private int age;
+    private long totalRentDays;
+    private long totalRentCount;
+    private long totalOverdueDays;
+    private long totalOverdueCount;
+
+
+
+
 
 }

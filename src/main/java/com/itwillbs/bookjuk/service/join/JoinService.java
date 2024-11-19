@@ -13,7 +13,6 @@ import com.itwillbs.bookjuk.exception.ValidationException;
 import com.itwillbs.bookjuk.repository.UserContentRepository;
 import com.itwillbs.bookjuk.repository.UserRepository;
 import com.itwillbs.bookjuk.repository.event.CouponRepository;
-import com.itwillbs.bookjuk.repository.event.EventConditionRepository;
 import com.itwillbs.bookjuk.repository.event.EventCountRepository;
 import com.itwillbs.bookjuk.repository.event.NotificationRepository;
 import com.itwillbs.bookjuk.service.event.EventService;
@@ -37,7 +36,6 @@ public class JoinService {
     private final UserRepository userRepository;
     private final UserContentRepository userContentRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final EventConditionRepository eventConditionRepository;
     private final EventService eventService;
     private final NotificationService notificationService;
 
@@ -68,11 +66,12 @@ public class JoinService {
         if(saveUser != null) {
         	
         	// event_condition 테이블에서 event_is_active = true 이면서 event_condition_type = "신규 가입" 인 데이터 조회 
-        	List<EventConditionEntity> resultList = eventConditionRepository.findByEventIsActiveTrueAndEventConditionType("신규 가입");
+//        	List<EventConditionEntity> resultList = eventConditionRepository.findByEventIsActiveTrueAndEventConditionType("신규 가입");
+        	List<EventConditionEntity> resultList = eventService.checkEventCondition("신규 가입");
         	
         	// 조건에 맞는 데이터가 있으면 
         	if(!resultList.isEmpty()) {
-        		
+
         		// event_count, coupon, notification 데이터 생성
         		eventService.createEventEntitiesForUser(resultList, saveUser);
         	}

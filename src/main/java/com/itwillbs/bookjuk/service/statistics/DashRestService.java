@@ -80,7 +80,7 @@ public class DashRestService {
 
     public long getDailyDelay() {
 
-        Optional<Long> delay = rentRepository.countByRentEndAfterAndRentStatusIsFalse(now);
+        Optional<Long> delay = rentRepository.countByRentEndBeforeAndRentStatusIsFalse(now);
 
         return delay.orElse(0L);
     }

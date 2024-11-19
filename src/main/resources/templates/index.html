@@ -62,43 +62,43 @@
     </div>
 
     <section class="dashboard-container">
-        <div class="banners">
-            <div class="banner">
+    <div class="banners">
+            <div class="banner" th:onclick="|window.location.href='/admin/user/user_list'|">
                 <div class="banner-title">금일 신규가입자</div>
                 <div class="banner-content">
                     <div class="banner-content-number numbers-of-new-customers">0</div>
                     <div class="banner-content-unit">명</div>
                 </div>
             </div>
-            <div class="banner">
+            <div class="banner" th:onclick="|window.location.href='/admin/pay_list'|">
                 <div class="banner-title">금일 매출</div>
                 <div class="banner-content">
                     <div class="banner-content-number daily-revenue">0</div>
                     <div class="banner-content-unit">원</div>
                 </div>
             </div>
-            <div class="banner">
+            <div class="banner" th:onclick="|window.location.href='/admin/revenueStatic'|">
                 <div class="banner-title">금일 사용 포인트</div>
                 <div class="banner-content">
                     <div class="banner-content-number daily-point">0</div>
                     <div class="banner-content-unit">P</div>
                 </div>
             </div>
-            <div class="banner">
+            <div class="banner" th:onclick="|window.location.href='/admin/rent'|">
                 <div class="banner-title">대여 현황</div>
                 <div class="banner-content">
                     <div class="banner-content-number daily-rental">0</div>
                     <div class="banner-content-unit">건</div>
                 </div>
             </div>
-            <div class="banner">
+            <div class="banner" th:onclick="|window.location.href='/admin/rent'|">
                 <div class="banner-title">반납지연 현황</div>
                 <div class="banner-content">
                     <div class="banner-content-number daily-delay">0</div>
                     <div class="banner-content-unit">건</div>
                 </div>
             </div>
-            <div class="banner">
+            <div class="banner" th:onclick="|window.location.href='/admin/event'|">
                 <div class="banner-title">진행 중인 이벤트</div>
                 <div class="banner-content">
                     <div class="banner-content-number numbers-of-events">0</div>

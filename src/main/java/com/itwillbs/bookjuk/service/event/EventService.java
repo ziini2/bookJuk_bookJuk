@@ -374,4 +374,16 @@ public class EventService {
     		}
     	}
     }
+
+    @Transactional
+	public void stopEvent(Integer eventId) {
+		EventEntity event = eventRepository.findById(eventId)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid event ID"));
+		List<EventConditionEntity> conditionEntity = eventConditionRepository.findByEventId(event);
+		for(EventConditionEntity entity : conditionEntity) {
+			entity.setEventIsActive(false);
+		}
+        event.setEventStatus("중지");
+        eventRepository.save(event);
+	}
 }

@@ -26,11 +26,6 @@
   <link th:href="@{/css/common/userStyle.css}" rel="stylesheet">
   <link th:href="@{/css/pay/rentCalender.css}" rel="stylesheet">
 
-  <!--달력 조회-->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
 
 
 </head>
@@ -43,7 +38,6 @@
 
   <!-- 사이드바 열었다 닫았다 하는거 -->
   <script th:src="@{/js/common/main.js}"></script>
-  <script th:src="@{/js/pay/rentCalender.js}"></script>
 
   <main id="main" class="main">
   	<div class="container" style="height: auto;">
@@ -73,7 +67,7 @@
 			<!--장바구니 틀-->
 		
 		
-			<hr style="border:1px color= silver; width: 90%;">
+			<hr style="border:1px; color: silver; width: 90%;">
 			
 			<div class="d-flex gap-3">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eyeglasses" viewBox="0 0 16 16">
@@ -85,7 +79,7 @@
 			<div class="progress" style="height: 2px; width: 90%;">
 			  <div class="progress-bar" role="progressbar" style="width: 8%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
 			</div>
-			<hr style="border:1px color= silver; width: 90%;">
+			<hr style="border:1px; color: silver; width: 90%;">
 		
 		
 		<div class="d-flex">			
@@ -107,7 +101,7 @@
 			</div>  
 			</div>
 			
-			<hr style="border:1px color= silver; width: 100%;">
+			<hr style="border:1px; color: silver; width: 100%;">
 			
 			
 			<form id="checkoutForm" method="POST" action="/rentDetail">
@@ -173,7 +167,7 @@
 				</div>
 			</div>
 			
-			<hr style="border:1px color= silver; padding-top: 5px; padding-bottom: 5px;">
+			<hr style="border:1px; color: silver; padding-top: 5px; padding-bottom: 5px;">
 			
 			<div class="row">
 				<div class="col">

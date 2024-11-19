@@ -45,6 +45,14 @@
 
    <div class="pagetitle">
      <h1>결제/환불 전체 조회</h1>
+     <nav>
+       <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="pay_list#">결제 완료</a></li>
+         <li class="breadcrumb-item">환불 완료</li>
+		 <li class="breadcrumb-item">환불 진행</li>
+   
+       </ol>
+     </nav>
    </div><!-- End Page Title -->
 
    <section class="section">
@@ -53,6 +61,63 @@
 
          <div class="card">
            <div class="card-body">
+		 
+<!--		   검색 카드-->
+<!--		   <div class="card">-->
+<!--		   <div class="card-body">-->
+<!--		   <h5 class="card-title" style="padding-left: 12%;">검색 조건</h5>-->
+		                   
+<!--		      <nav>-->
+<!--		      <ol class="breadcrumb" style="justify-content: center;">-->
+<!--		      <li class="breadcrumb-item" style="padding-top: 2%;"><a href="#">결제 상태:</a></li>-->
+		                           
+<!--		      결제 상태 드롭바-->
+<!--		      <div class="dropdown-payStatus" style="padding-top: 0.8%;">-->
+<!--		          <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--				   선택-->
+<!--		          </button>-->
+<!--		          <ul class="dropdown-menu align-middle">-->
+<!--		              <li><a class="dropdown-item" href="#">결제 완료</a></li>-->
+<!--		              <li><a class="dropdown-item" href="#">결제 확정</a></li>-->
+<!--		              <li><a class="dropdown-item" href="#">결제 취소</a></li>-->
+<!--		          </ul>-->
+<!--		      </div>-->
+<!--		      결제 상태 드롭바 End-->
+		                           
+		                           
+<!--		      <li class="breadcrumb-item" style="padding-left: 10%; padding-top: 2%;"><a href="#">기간별: </a></li>-->
+		                           
+<!--		      달력-->
+<!--			  <div class="custom-date-picker" style="padding-top: 0.8%;">-->
+<!--			    <form autocomplete="off">-->
+<!--			  <div class="input-group input-daterange custom-date-picker">-->
+<!--			   <input type="text" class="form-control input1" placeholder="Start Date" readonly>-->
+<!--			    <input type="text" class="form-control input2" placeholder="End Date" readonly>-->
+<!--			     </div>-->
+<!--			      </form>-->
+<!--			      </div>-->
+
+<!--			  <li class="breadcrumb-item active" style="padding-left: 10%; padding-top: 2%;">검색: </li>-->
+		      
+<!--			  <form action="/search/pay_list" method="GET">                         -->
+<!--		      <div class="search-bar">-->
+<!--		          <form class="d-flex">-->
+<!--		          <input onkeyup="enterkey()" name="searchValue" class="form-control me-2" type="search" aria-label="Search">-->
+<!--		          <button class="btn btn-outline-success" type="submit">Search</button>-->
+<!--		          </form>-->
+<!--		      </div>-->
+<!--			  </form>-->
+		      <!-- End Search Bar -->
+		                               
+<!--		      <li class="breadcrumb-item active" style="padding-left: 2%; padding-top: 1%;">고객명: </li>-->
+		                               
+<!--		      <div class="search-bar">-->
+<!--		          <form class="d-flex">-->
+<!--		          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--		          <button class="btn btn-outline-success" type="submit">Search</button>-->
+<!--		          </form>-->
+<!--		      </div>-->
+		      <!-- End Search Bar -->
 			  
 			  <!--     검색 카드-->
 			           <div class="card">
@@ -89,7 +154,7 @@
 			               </form>
 			               </div>
 			                 
-			               <li class="breadcrumb-item active" style="padding-left: 2%; padding-top: 1%;">고객번호 검색: </li>
+			               <li class="breadcrumb-item active" style="padding-left: 2%; padding-top: 1%;">검색: </li>
 			                 
 			               <div class="search-bar">
 			               <form class="d-flex" method="GET" action="/admin/pay_list">
@@ -139,27 +204,7 @@
 				</tbody>
 		     </table>
 		     <!-- 테이블 끝 -->
-			 <!--페이지네이션 버튼-->
-			<nav aria-label="Page navigation example" th:if="${paymentList != null}">
-				<ul class="pagination">
-					<li class="page-item"><a class="page-link"
-							th:href="|@{/admin/pay_list(page=${currentPage}-1, search=${search})}|"
-							th:text="이전" th:if="${currentPage > 1}"></a></li>
-
-					<li class="page-item" th:each="page:${#numbers.sequence(startPage, endPage)}">
-						<span class="page-link" th:if="${page == currentPage}" th:text="${page}"></span>
-						<span th:unless="${page == currentPage}">
-							<a class="page-link"
-								th:href="|@{/admin/pay_list(page=${page}, search=${search})}|"
-								th:text="${page}"></a>
-						</span>
-					</li>
-
-					<li class="page-item"><a class="page-link"
-							th:href="|@{/admin/pay_list(page=${currentPage}+1, search=${search})}|"
-							th:text="다음" th:if="${currentPage < totalPages}"></a></li>
-				</ul>
-			</nav>
+ 
 		     </div>
 		     </div>
 

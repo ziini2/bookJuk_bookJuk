@@ -60,10 +60,10 @@
 	<div class="d-flex" style="padding-top: 10%;">
 		<div><h2><b>포인트 충전</b></h2></div>
 		<div style="padding-left: 50%; padding-top: 20px;"><h5><b>보유</b></h5></div>
-		<div style="padding-left: 10px; padding-top: 20px;"><h5><b><span style="color: blue;" th:text="${userPoint}"></span>P</b></h5></div>
+		<div style="padding-left: 10px; padding-top: 20px;"><h5><b><span style="color: blue;" th:text="${#numbers.formatInteger(userPoint, 3, 'COMMA')}"></span>P</b></h5></div>
 	</div>
 	
-	<hr style="border:1px color= silver; width: 80%;">
+	<hr style="border:1px; color: silver; width: 80%;">
 					
 		<div class="justify-content-center" style="width: 80%">
 			

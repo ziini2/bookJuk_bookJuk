@@ -1,5 +1,6 @@
 plugins {
 	id 'java'
+	id 'war'
 	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.1.6'
 }
@@ -33,7 +34,7 @@ dependencies {
     //elk사용을 위한 logback 사용
     // Logback 관련 의존성
     implementation 'net.logstash.logback:logstash-logback-encoder:7.2'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly('org.springframework.boot:spring-boot-devtools')
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -52,9 +53,12 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+	//포트원 검증 작업
 	implementation 'com.github.iamport:iamport-rest-client-java:0.2.9'
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+

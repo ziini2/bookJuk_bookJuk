@@ -78,6 +78,11 @@ public class PayController {
 //		return "/pay/cart";
 //	}
 	
+	@GetMapping("/user/pay_detail")
+	public String payDetail() {
+
+		return "/pay/pay_detail";
+	}
 	
 //	@GetMapping("/pay_add")
 //	public String payAdd(Model model) {
@@ -117,7 +122,7 @@ public class PayController {
 	    String userEmail = paymentService.getUserEmail(userNum);
 
 	    // userPoint는 user_content 테이블에서 memberNum으로 조회
-	    Long userPoint = paymentService.getUserPoint(userEntity.get().getUserNum());
+	    int userPoint = paymentService.getUserPoint(userEntity.get().getUserNum());
 
 	    // 결제 내역을 조회할 때 memberNum을 사용
 	    List<PaymentEntity> userPayments = paymentService.getPaymentsByMemberNum(userNum);

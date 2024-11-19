@@ -172,9 +172,10 @@
 
 					<!--오른쪽: 마이 포인트 -->
 					<div class="d-flex align-items-center">
-						<div th:if="${userPoint != null}">
+						<div class="d-flex align-items-center" th:if="${userPoint != null}">
 							<img th:src="@{/images/main/myPoint-icon.png}" alt="myPoint" style="width: 32px; height: 32px;">
 							<h4 class="mx-2 my-0" th:if="${userPoint != 0}"> <span th:text="${#numbers.formatInteger(userPoint, 3, 'COMMA')}"></span>p</h4>
+							<h5 class="mx-2 my-0" th:if="${userPoint == 0}">보유 포인트 없음</h5>
 						</div>
 					</div>
 				</div>

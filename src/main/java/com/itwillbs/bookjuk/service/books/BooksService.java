@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.bookjuk.domain.books.BookStatus;
 import com.itwillbs.bookjuk.dto.BookDTO;
 import com.itwillbs.bookjuk.entity.GenreEntity;
 import com.itwillbs.bookjuk.entity.StoreEntity;
@@ -73,24 +74,8 @@ public class BooksService {
         return BookConverter.convertToBookDTO(bookEntity);
     }
 
-    // 도서 수정
-    public void updateBook(BookDTO bookDTO) {
-        BooksEntity bookEntity = booksRepository.findById(bookDTO.getBooksId())
-                .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + bookDTO.getBooksId()));
-
-        BookInfoEntity bookInfoEntity = bookEntity.getBookInfoEntity();
-        bookInfoEntity.setBookName(bookDTO.getBookName());
-        bookInfoEntity.setAuthor(bookDTO.getAuthor());
-        bookInfoEntity.setPublish(bookDTO.getPublish());
-        bookInfoEntity.setPublishDate(bookDTO.getPublishDate());
-        bookInfoEntity.setRentMoney(bookDTO.getRentMoney());
-
-        
-        bookEntity.setBookStatus(bookDTO.getBookStatus());
-       
-        // 저장
-        bookInfoRepository.save(bookInfoEntity);
-        booksRepository.save(bookEntity);
-    }
+    public void oneBookUpdate(BookStatus bookStatus, Boolean rentStatus, Long booksId) {
+        bookInfoRepository.oneBookUpdate(bookStatus, rentStatus, booksId);
+     }
 
 }

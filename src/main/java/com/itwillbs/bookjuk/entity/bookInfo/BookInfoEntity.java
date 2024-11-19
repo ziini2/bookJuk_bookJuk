@@ -1,5 +1,6 @@
 package com.itwillbs.bookjuk.entity.bookInfo;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -69,7 +70,7 @@ public class BookInfoEntity {
 	private String isbn;
 
 	// 출판일
-	@JsonFormat(pattern = "yyyy-MM-dd")
+//	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(nullable = false)
 	private LocalDate publishDate;
 
@@ -79,20 +80,19 @@ public class BookInfoEntity {
  
 	// 대여횟수
 	@Column(nullable = false)
-	private Long rentCount;
+	private Long rentCount = 0L;
 
 	// 입고일
 	@CreationTimestamp
 	@Column(name = "book_date", nullable = true, updatable = false)
-	private LocalDateTime bookDate;
+	private Timestamp bookDate;
 
-	//엔티티가 처음 저장되기 전에 bookDate가 null일 경우 ,
-	//현재 시간으로 설정할 수 있도록 한다.
-	  @PrePersist
-	    public void prePersist() {
-	        if (this.bookDate == null) {
-	            this.bookDate = LocalDateTime.now();
-	        }
-	    }
+	// 엔티티가 처음 저장되기 전에 bookDate가 null일 경우 현재 시간으로 설정
+	@PrePersist
+	public void prePersist() {
+	    this.bookDate = (this.bookDate == null) ? Timestamp.valueOf(LocalDateTime.now()) : this.bookDate;
+	}
+
+
 	
 }

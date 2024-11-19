@@ -156,7 +156,7 @@ body:not(.toggle-sidebar1) .sidebar {
 	position: relative;
 	display: inline-block;
 	box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5), 7px 7px 20px
-		0px rgba(0, 0, 0, .1), 4px 4px 5px 0px rgba(0, 0, 0, .1);
+		0 rgba(0, 0, 0, .1), 4px 4px 5px 0 rgba(0, 0, 0, .1);
 	outline: none;
 }
 
@@ -384,6 +384,11 @@ body:not(.toggle-sidebar1) .sidebar {
 
 .sidebar-nav .nav-content a.active i {
 	background-color: #e8f1a5;
+}
+
+.headerName{
+	font-weight: bolder;
+	color: #3c9559;
 }
 
 /* 사이드바 메뉴 클릭 시 포커스 및 활성 상태에서 배경과 테두리를 제거 */

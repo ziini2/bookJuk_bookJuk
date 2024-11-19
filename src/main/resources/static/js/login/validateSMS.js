@@ -25,7 +25,7 @@ validateSMS = () => {
 
   $.ajax({
     type: "POST",
-    url: "/login/sendSmsCodeTest",
+    url: "/login/sendSmsCode",
     contentType: "application/json",
     data: userPhone.val(),
     success: (res) => {

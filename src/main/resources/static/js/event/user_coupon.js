@@ -203,6 +203,7 @@ $(document).ready(function () {
 	
 	// 쿠폰 사용 버튼
 	$('#coupon-couponUseBtn').click(function(){
+		$('#couponCode').val('');
 		$('#coupon-couponUseModal').fadeIn();
 	})
 	

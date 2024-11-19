@@ -94,7 +94,7 @@ public class CutsomerController {
 		return "redirect:/admin/store/store_info?storeCode=" + storeEntity.getStoreCode();
 	}
 	
-	// 지점 폐점 처리하는 함수(비동기)
+	// 지점 폐점, 운영 처리하는 함수(비동기)
 	@ResponseBody
 	@PostMapping("/admin/store/store_delete") // json, Map으로 받을수 있음 
 	public String storeDelete(@RequestBody Map<String, Object> requestBody) {
@@ -113,7 +113,7 @@ public class CutsomerController {
 			@RequestParam(value = "search", defaultValue = "", required = false) String search) {
 
 		Pageable pageable = PageRequest.of(page - 1, size
-//				,Sort.by("storeCode").descending()
+//				,Sort.by("").descending()
 		);
 
 		Page<UserEntity> userList = customerService.findByUserContaining(pageable, search);
@@ -148,7 +148,7 @@ public class CutsomerController {
 		return "customer/user_info";
 	}
 
-	// 유저 탈퇴상태 함수 (비동기)
+	// 유저 탈퇴, 활성 함수 (비동기)
 	@ResponseBody
 	@PostMapping("/admin/user/userDelete")
 	public String userDelete(@RequestBody Map<String, Object> requestBody) {

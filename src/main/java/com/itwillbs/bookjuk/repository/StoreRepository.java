@@ -40,7 +40,7 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Long> {
 			+ "CAST(u.createDate AS string) LIKE %:search%")
 	Page<UserEntity> findByUserContaining(Pageable pageable, @Param("search") String search);
 
-	// 회원탈퇴처리 쿼리
+	// 회원탈퇴상태 처리 쿼리
 	@Transactional
 	@Modifying
 	@Query("UPDATE UserEntity u SET u.activate = :status WHERE u.userNum = :userNum")

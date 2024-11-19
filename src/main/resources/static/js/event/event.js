@@ -195,6 +195,33 @@ $(document).ready(function () {
 	let eventStartDate = '';
 	let eventEndDate = '';
 	
+	$('#event-detail-stop').click(function(){
+		const eventId = $(this).data('eee'); // 버튼에서 이벤트 ID 가져오기
+	    if (!eventId) {
+	        alert("이벤트 ID를 찾을 수 없습니다.");
+	        return;
+	    }
+		if(confirm("정말 이벤트를 중지하시겠습니까?")){
+			$.ajax({
+		        url: `/admin/eventStop/${eventId}`,  // RESTful 경로로 이벤트 ID 사용
+		        method: 'POST',
+		        success: function(response) {
+					if (response.result === "success") {
+		                alert("이벤트가 성공적으로 중지되었습니다.");
+		                $('#event-detailModal').hide(); // 모달 닫기
+		                table.draw(); // 테이블 새로고침
+		            } else {
+		                alert("이벤트 중지 중 오류가 발생했습니다: " + response.message);
+		            }
+		        },
+		        error: function(error) {
+		            console.error("Error fetching event details:", error);
+		            alert("이벤트 중지에 실패하였습니다.");
+		        }
+		    });
+		}
+	})
+	
 	$('#event-createModal-apply').click(function(){
 		const title = $('#event-createModal-title').val();
 	    const startDate = $('#createStartDate').val();
@@ -327,7 +354,7 @@ $(document).ready(function () {
 			            table.draw();
 						$('#event-createModal').fadeOut();
 					}else{
-						alert("이벤트가 생성에 실패하였습니다.")
+						alert("이벤트 생성에 실패하였습니다.")
 					}
 		        },
 		        error: function (error) {
@@ -476,6 +503,7 @@ $(document).ready(function () {
 	            $('#event-detailManager').text(data.eventManager);
 	            $('#event-detailDate').text(data.eventDate);
 	            $('#event-detailContent').html(data.eventContent.replace(/\\n/g, '<br>'));
+				$('#event-detail-stop').data('eee', eventId);
 
 	            // 조건 목록 출력
 				$('#event-detailCondition').html(data.eventCondition

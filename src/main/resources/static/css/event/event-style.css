@@ -365,6 +365,17 @@ div.dataTables_wrapper div.dataTables_filter input {
 
 
 /*--- 이벤트 상세 모달창 ↓ CSS ---*/
+#event-detail-stop {
+	width: 100%;
+	padding: 7px 16px;
+	font-size: 16px;
+	font-weight: 600;
+	color: #fff;
+	background-color: #007bff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
 /*이벤트 상세 모달 창*/
 #event-detailModal {
 	display: none;

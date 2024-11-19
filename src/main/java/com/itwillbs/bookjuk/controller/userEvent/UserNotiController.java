@@ -111,9 +111,7 @@ public class UserNotiController {
 	
 	@GetMapping("/notifications/{userId}")
     public ResponseEntity<Integer> getUnreadNotificationCount(@PathVariable("userId") String userId) {
-		log.info("=========================userId" + userId);
         int unreadCount = notiService.getUnreadNotificationCount(userId);
-        log.info("======================unreadCount" + unreadCount);
         return ResponseEntity.ok(unreadCount);
     }
 	

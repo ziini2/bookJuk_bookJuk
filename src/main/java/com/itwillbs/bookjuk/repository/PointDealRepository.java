@@ -25,7 +25,14 @@ Optional<List<PointDealEntity>> findAllByReqDateBetweenAndPointPayNameInOrderByR
                                                                                           @Param("endDate") LocalDateTime endDate,
                                                                                           @Param("pointOptions") List<String> pointOptions);
 
+    @Query("SELECT p FROM PointDealEntity p WHERE p.reqDate BETWEEN :startDate AND :endDate AND p.pointPayName IN :pointOptions ORDER BY p.reqDate DESC")
+    Page<PointDealEntity> findAllByReqDateBetweenAndPointPayNameInOrderByReqDateDescPage(@Param("startDate") LocalDateTime startDate,
+                                                                                               @Param("endDate") LocalDateTime endDate,
+                                                                                               @Param("pointOptions") List<String> pointOptions, Pageable pageable);
+
     Page<PointDealEntity> findAllFirstByReqDateBetweenOrderByReqDateDesc(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
     Page<PointDealEntity> findAllFirstByReqDateBetweenAndPointPayNameOrderByReqDateDesc(LocalDateTime startDate, LocalDateTime endDate, String pointOption, Pageable pageable);
+
+    Optional<List<PointDealEntity>> findAllFirstByReqDateBetweenAndPointPayNameOrderByReqDateDesc(LocalDateTime startDate, LocalDateTime endDate, String pointOption);
 }

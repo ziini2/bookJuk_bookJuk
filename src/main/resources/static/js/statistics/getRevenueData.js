@@ -53,6 +53,33 @@ $(document).ready(function () {
 
                 // 페이지네이션 생성
                 generatePagination(data.totalPages);
+
+                // 버튼 클릭 시 현재 페이지 엑셀 다운로드
+                $('.revenue-current-page-excel').click(function () {
+                    // 필요한 데이터만 골라서 추출
+                    const refinedData = data.content.map(item => ({
+                        storeName: item.storeName,
+                        pointPayName: item.pointPayName,
+                        pointPrice: item.pointPrice,
+                        rentStart: item.rentStart,
+                        rentEnd: item.rentEnd,
+                        returnDate: item.returnDate,
+                        overdueDays: item.overdueDays,
+                        isbn: item.isbn,
+                        genre: item.genre,
+                        author: item.author,
+                        userNum: item.userNum
+                    }));
+
+                    // 엑셀로 다운로드
+                    if (refinedData.length > 0) {
+                        window.downloadExcel(refinedData);
+                    } else {
+                        alert("다운로드할 데이터가 없습니다.");
+                    }
+                });
+
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error("Ajax 요청 오류:", textStatus, errorThrown);
@@ -119,5 +146,46 @@ $(document).ready(function () {
         page = 0; // 검색 조건 변경 시 페이지 번호 초기화
         populateTable(); // 테이블 재로드
     });
+
+    $('.revenue-current-all-excel').click(function () {
+        $.ajax({
+            url: '/admin/statistics/revenueAll',
+            method: 'GET',
+            data: {
+                startDate: startDate,
+                endDate: endDate,
+                pointOption: pointOption,
+                storeName: storeName,
+                genre: genre
+            },
+            success: function (data) {
+                // 필요한 데이터만 골라서 추출
+                const refinedData = data.map(item => ({
+                    storeName: item.storeName,
+                    pointPayName: item.pointPayName,
+                    pointPrice: item.pointPrice,
+                    rentStart: item.rentStart,
+                    rentEnd: item.rentEnd,
+                    returnDate: item.returnDate,
+                    overdueDays: item.overdueDays,
+                    isbn: item.isbn,
+                    genre: item.genre,
+                    author: item.author,
+                    userNum: item.userNum
+                }));
+
+                // 엑셀로 다운로드
+                if (refinedData.length > 0) {
+                    window.downloadExcel(refinedData);
+                } else {
+                    alert("다운로드할 데이터가 없습니다.");
+                }
+
+            }
+
+        });
+    })
+
+
 
 });

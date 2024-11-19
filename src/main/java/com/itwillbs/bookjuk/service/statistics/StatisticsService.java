@@ -62,7 +62,7 @@ public class StatisticsService {
 
         // 포인트 항목별 필터
         if (pointOption.equals("전체")) {
-            pointDealPage = pointDealRepository.findAllFirstByReqDateBetweenOrderByReqDateDesc(startDate, endDate, pageable);
+            pointDealPage = pointDealRepository.findAllByReqDateBetweenAndPointPayNameInOrderByReqDateDescPage(startDate, endDate, List.of("대여료", "연체료"), pageable);
         } else  {
             pointDealPage = pointDealRepository.findAllFirstByReqDateBetweenAndPointPayNameOrderByReqDateDesc(startDate, endDate, pointOption, pageable);
         }
@@ -90,11 +90,6 @@ public class StatisticsService {
     }
 
     public StatisticsResponseDTO getCustomerData(StatisticsRestController.StatisticsCustomerRequestDTO statisticsCustomerRequestDTO) {
-
-        Pageable pageable = PageRequest.of
-                (statisticsCustomerRequestDTO.page(), statisticsCustomerRequestDTO.size());
-        Page<PointDealEntity> pointDealPage;
-        List<StatisticsDTO> content;
 
         LocalDateTime startDate = LocalDateTime.of(statisticsCustomerRequestDTO.startDate(), LocalTime.from(LocalDateTime.MIN));
         LocalDateTime endDate = LocalDateTime.of(statisticsCustomerRequestDTO.endDate(), LocalTime.from(LocalDateTime.MAX));
@@ -162,5 +157,104 @@ public class StatisticsService {
                 .totalPages(1)
                 .totalElements(statisticsDTOS.size())
                 .build();
+    }
+
+    public List<StatisticsDTO> getCustomerAllData(StatisticsRestController.StatisticsCustomerRequestDTOPage statisticsCustomerRequestDTO) {
+
+        LocalDateTime startDate = LocalDateTime.of(statisticsCustomerRequestDTO.startDate(), LocalTime.from(LocalDateTime.MIN));
+        LocalDateTime endDate = LocalDateTime.of(statisticsCustomerRequestDTO.endDate(), LocalTime.from(LocalDateTime.MAX));
+
+        String sql = """
+        WITH RentalSummary AS (
+            SELECT
+                u.user_num,
+                u.create_date AS create_date,
+                SUM(CASE WHEN p.point_pay_name = '대여료' THEN p.point_price ELSE 0 END) AS sum_rental_fee,
+                SUM(CASE WHEN p.point_pay_name = '연체료' THEN p.point_price ELSE 0 END) AS sum_overdue_fee,
+                SUM(CASE WHEN p.point_pay_name = '충전' THEN p.point_price ELSE 0 END) AS sum_recharge,
+                SUM(CASE WHEN p.point_pay_name = '쿠폰' THEN p.point_price ELSE 0 END) AS sum_coupon,
+                u.user_gender,
+                substring(u.user_birthday, 1, 4) AS user_birthday,
+                sum(o.overdue_days) as overdue_days,
+                COUNT(o.overdue_days) AS overdue_count,
+                COUNT(p.rent_num) AS rent_count
+            FROM
+                point_deal p
+                    LEFT JOIN user_content uc ON p.member_num = uc.member_num
+                    LEFT JOIN users u ON uc.user_num = u.user_num
+                    LEFT JOIN overdue o ON p.over_num = o.over_num
+            WHERE
+                p.point_pay_name IN ('대여료', '연체료', '충전', '쿠폰')
+               And p.req_date BETWEEN ? AND ?
+            GROUP BY
+                u.user_num,
+                u.create_date,
+                u.user_gender,
+                substring(u.user_birthday, 1, 4)
+        )
+        SELECT *
+        FROM RentalSummary
+        ORDER BY sum_recharge DESC
+        """;
+
+        return jdbcTemplate.query(
+                sql, new Object[]{startDate, endDate}, (rs, rowNum) -> StatisticsDTO.builder()
+                        .num(rowNum)
+                        .userNum(rs.getLong("user_num"))
+                        .joinDate(rs.getDate("create_date").toLocalDate())
+                        .totalRentPrice(rs.getLong("sum_rental_fee") * -1)
+                        .totalOverduePrice(rs.getLong("sum_overdue_fee") * -1)
+                        .totalPaymentPrice(rs.getLong("sum_recharge"))
+                        .totalCouponPrice(rs.getLong("sum_coupon"))
+                        .gender(rs.getString("user_gender").equals("male") ? "남" : "여")
+                        .age(LocalDate.now().getYear() - Integer.parseInt(rs.getString("user_birthday")))
+                        .totalRentDays(rs.getLong("rent_count") * 5)
+                        .totalRentCount(rs.getLong("rent_count"))
+                        .totalOverdueDays(rs.getLong("overdue_days"))
+                        .totalOverdueCount(rs.getLong("overdue_count"))
+                        .build()
+        );
+
+    }
+
+    public List<StatisticsDTO> getRevenueAllData(StatisticsRequestDTO statisticsRequestDTO) {
+
+        Optional<List<PointDealEntity>> pointDealList;
+        List<StatisticsDTO> content;
+
+
+        LocalDateTime startDate = LocalDateTime.of(statisticsRequestDTO.getStartDate(), LocalTime.from(LocalDateTime.MIN));
+        LocalDateTime endDate = LocalDateTime.of(statisticsRequestDTO.getEndDate(), LocalTime.from(LocalDateTime.MAX));
+        String pointOption = statisticsRequestDTO.getPointOption();
+        String genre = statisticsRequestDTO.getGenre();
+        String storeName = statisticsRequestDTO.getStoreName();
+
+        // 포인트 항목별 필터
+        if (pointOption.equals("전체")) {
+            pointDealList = pointDealRepository.findAllByReqDateBetweenAndPointPayNameInOrderByReqDateDesc(startDate, endDate, List.of("대여료", "연체료"));
+        } else  {
+            pointDealList = pointDealRepository.findAllFirstByReqDateBetweenAndPointPayNameOrderByReqDateDesc(startDate, endDate, pointOption);
+        }
+
+        if (pointDealList.isEmpty()) {
+            return List.of();
+        }
+
+        content = pointDealList.get().stream().map(this::toDTO).toList();
+
+        // 지점별 필터
+        if (!storeName.equals("전체")) {
+            content = content.stream().filter(statisticsDTO -> statisticsDTO.getStoreName().split(" ", 2)[1].equals(storeName)).toList();
+        }
+
+        // 장르별 필터
+        if (!genre.equals("전체")) {
+            content = content.stream().filter(statisticsDTO -> statisticsDTO.getGenre().trim().equals(genre)).toList();
+        }
+
+        return content;
+
+
+
     }
 }

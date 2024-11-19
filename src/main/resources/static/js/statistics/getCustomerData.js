@@ -7,6 +7,12 @@ $(document).ready(function () {
     let page = 0;
     let size = 20;
 
+    // 버튼 클릭 시 전체 페이지 엑셀 다운로드
+    $('.customer-current-all-excel').click(function () {
+        downloadAllExcel();
+    });
+
+
     const populateTable = function () {
         $.ajax({
             url: '/admin/statistics/customer',
@@ -50,6 +56,11 @@ $(document).ready(function () {
                 }
                 // 페이지네이션 생성
                 generatePagination(data.totalPages);
+
+                // 버튼 클릭 시 현재 페이지 엑셀 다운로드
+                downloadExcel('.customer-current-page-excel', data);
+
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error("Ajax 요청 오류:", textStatus, errorThrown);
@@ -104,7 +115,7 @@ $(document).ready(function () {
     }
 
 
-        populateTable();
+    populateTable();
 
 
     // 검색 버튼 클릭 이벤트
@@ -117,4 +128,68 @@ $(document).ready(function () {
         populateTable(); // 테이블 재로드
     });
 
+    function downloadExcel(tag, data) {
+        $(tag).click(function () {
+            // 필요한 데이터만 골라서 추출
+            const refinedData = data.content.map(item => ({
+                userNum: item.userNum,
+                joinDate: item.joinDate,
+                totalRentPrice: item.totalRentPrice,
+                totalOverduePrice: item.totalOverduePrice,
+                totalPaymentPrice: item.totalPaymentPrice,
+                totalCouponPrice: item.totalCouponPrice,
+                gender: item.gender,
+                age: item.age,
+                totalRentDays: item.totalRentDays,
+                totalRentCount: item.totalRentCount,
+                totalOverdueDays: item.totalOverdueDays,
+                totalOverdueCount: item.totalOverdueCount
+            }));
+
+            // 엑셀로 다운로드
+            if (refinedData.length > 0) {
+                window.downloadExcel(refinedData);
+            } else {
+                alert("다운로드할 데이터가 없습니다.");
+            }
+        });
+    }
+
+    function downloadAllExcel() {
+            $.ajax({
+                url: '/admin/statistics/customerAll',
+                method: 'GET',
+                data: {
+                    startDate: startDate,
+                    endDate: endDate,
+                    startDate: startDate,
+                    endDate: endDate,
+                    gender: gender,
+                    age: age
+                },
+                success: function (data) {
+                    const refinedData = data.map(item => ({
+                        userNum: item.userNum,
+                        joinDate: item.joinDate,
+                        totalRentPrice: item.totalRentPrice,
+                        totalOverduePrice: item.totalOverduePrice,
+                        totalPaymentPrice: item.totalPaymentPrice,
+                        totalCouponPrice: item.totalCouponPrice,
+                        gender: item.gender,
+                        age: item.age,
+                        totalRentDays: item.totalRentDays,
+                        totalRentCount: item.totalRentCount,
+                        totalOverdueDays: item.totalOverdueDays,
+                        totalOverdueCount: item.totalOverdueCount
+                    }));
+
+                    // 엑셀로 다운로드
+                    if (refinedData.length > 0) {
+                        window.downloadExcel(refinedData);
+                    } else {
+                        alert("다운로드할 데이터가 없습니다.");
+                    }
+                }
+            })
+        }
 });

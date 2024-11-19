@@ -9,10 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 
 public interface BooksRepository extends JpaRepository<BooksEntity, Long> {
 
@@ -23,7 +21,8 @@ public interface BooksRepository extends JpaRepository<BooksEntity, Long> {
 	List<BooksEntity> findByStoreEntity_StoreCode(Long storeCode);
 
 	// 장바구니
-	List<BooksEntity> findByBookInfoEntity(BookInfoEntity bookInfoEntity);
+	@Query("SELECT b FROM BooksEntity b WHERE b.booksId IN :bookNums")
+	List<BooksEntity> findByBooksIdList(@Param("bookNums") List<Long> bookNums);
 
 	// 전체 대여가능 목록 데이터 가져오기
 	@Query("SELECT b " + "FROM BooksEntity b JOIN b.bookInfoEntity bi JOIN bi.genre g JOIN b.storeEntity s "
@@ -41,4 +40,7 @@ public interface BooksRepository extends JpaRepository<BooksEntity, Long> {
 			+ "AND (:storeCode IS NULL OR b.storeEntity.storeCode = :storeCode)")
 	Page<BooksEntity> findBooksByFilters(@Param("search") String search, @Param("rentalStatus") Boolean rentalStatus,
 			@Param("storeCode") Long storeCode, Pageable pageable);
+
+	BooksEntity findByBooksId(Long booksID);
+
 }

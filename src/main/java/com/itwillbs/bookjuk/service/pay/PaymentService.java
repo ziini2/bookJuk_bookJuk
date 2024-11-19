@@ -164,11 +164,10 @@ public class PaymentService {
     
     
     //유저의 포인트 값 가져오기
-    public Long getUserPoint(Long userEntity) {
-    	
-    	Optional<UserContentEntity> nowPoint = userContentRepository.findById(userEntity); // memberNum으로 엔티티 조회
-    	return nowPoint.map(content -> (long) content.getUserPoint()) // int -> long으로 변환
-                .orElse(0L); // Optional이 비어있으면 기본값 0L을 반환
+    public int getUserPoint(Long userEntity) {
+    	UserContentEntity nowPoint = userContentRepository.findByUserEntity_UserNum(userEntity); // memberNum으로 엔티티 조회
+        int userPoint = nowPoint.getUserPoint();
+    	return nowPoint.getUserPoint() == 0 ? 0 : nowPoint.getUserPoint();
     }
     
     //결제가 완료되었을 때 포인트로 업데이트

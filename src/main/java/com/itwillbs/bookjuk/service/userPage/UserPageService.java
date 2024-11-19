@@ -61,7 +61,7 @@ public class UserPageService {
 
     //userNum 값으로 userContentEntity 가져와서 포인트만 반환
     public int getUserPoint(Long userNum) {
-        UserContentEntity userContentEntity = userContentRepository.findById(userNum).orElse(null);
+        UserContentEntity userContentEntity = userContentRepository.findByUserEntity_UserNum(userNum);
         if (userContentEntity != null){
             return userContentEntity.getUserPoint();
         }

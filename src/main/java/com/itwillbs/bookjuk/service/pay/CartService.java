@@ -2,10 +2,12 @@ package com.itwillbs.bookjuk.service.pay;
 
 import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
 import com.itwillbs.bookjuk.entity.UserContentEntity;
+import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
 import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
 import com.itwillbs.bookjuk.entity.rent.RentEntity;
 import com.itwillbs.bookjuk.repository.*;
+import com.itwillbs.bookjuk.service.event.EventService;
 import com.itwillbs.bookjuk.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ public class CartService {
 	private final UserRepository userRepository;
 	private final UserContentRepository userContentRepository;
 	private final PointDealRepository pointDealRepository;
+	private final EventService eventService;
 
 	public List<BooksEntity> getUserCartItems(List<Long> bookList) {
 		// 세션에서 장바구니 리스트 가져오기
@@ -50,6 +53,10 @@ public class CartService {
 		List<BooksEntity> myCartBooks = booksRepository.findByBooksIdList(myCartBookId);
 		//1.총 금액과 , 나의포인트 비교 해서 내 포인트가 총금액과 같거나 많아야함. (userContent table)
 		int totalBookPrice = getTotalBookPrice(myCartBooks);
+		
+		// 대여 이벤트 확인하기 위해 유저 엔티티 불러오기
+		UserEntity userEntity = userRepository.findByUserNum(SecurityUtil.getUserNum());
+		
 		if (myPoint != null && totalBookPrice <= myPoint ){
 			//2.포인트를 사용하고 포인트 거래 내역에 추가 한다 (pointDeal table)
 			UserContentEntity user = userContentRepository.findByUserEntity_UserNum(SecurityUtil.getUserNum());
@@ -84,6 +91,9 @@ public class CartService {
 						.build();
 				pointDealRepository.save(newPointDeal);
 			}
+			
+			// 대여 이벤트가 진행 중일 경우 event_count 테이블에 값을 생성 혹은 업데이트하고 이벤트 목표 달성시 이벤트 보상(쿠폰) 지급
+			eventService.checkEventForPayment(userEntity, myCartBooks.size(), totalBookPrice);
 			return true;
 		}
 		return false;

@@ -113,7 +113,7 @@ public class CutsomerController {
 			@RequestParam(value = "search", defaultValue = "", required = false) String search) {
 
 		Pageable pageable = PageRequest.of(page - 1, size
-//				,Sort.by("").descending()
+				,Sort.by("createDate").descending()
 		);
 
 		Page<UserEntity> userList = customerService.findByUserContaining(pageable, search);

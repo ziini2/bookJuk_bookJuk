@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -48,5 +49,63 @@ public class UserCartPageAPIController {
         session.setAttribute("myCartBookId", myCartBookIdList);
         log.info("Updated myCartBookIdList: {}", myCartBookIdList);
         return Map.of("response", "success", "myCartBookIdList", myCartBookIdList);
+    }
+    
+
+    @PostMapping("/bookCart/remove")
+    @ResponseBody
+    public Map<String, Object> bookCartRemove(@RequestBody Map<String, Object> request, HttpSession session) {
+        Long booksId = Long.valueOf(request.get("booksId").toString());  // 책 ID 추출
+
+        // 세션에서 장바구니 리스트 가져오기
+        ArrayList<Long> myCartBookIdList = (ArrayList<Long>) session.getAttribute("myCartBookId");
+        if (myCartBookIdList == null) {
+            myCartBookIdList = new ArrayList<>();
+        }
+
+        // 책 ID가 리스트에 존재하면 제거
+        boolean removed = myCartBookIdList.remove(booksId);
+
+        // 제거 후 리스트를 세션에 업데이트
+        session.setAttribute("myCartBookId", myCartBookIdList);
+        
+        // 로그로 삭제 여부 확인
+        if (removed) {
+            log.info("책이 성공적으로 삭제되었습니다. ID: {}", booksId);
+        } else {
+            log.warn("장바구니에서 해당 책을 찾을 수 없습니다. ID: {}", booksId);
+        }
+
+        // 응답 반환
+        return Map.of("response", "success", "myCartBookIdList", myCartBookIdList);
+    }
+
+  
+
+
+    // 장바구니 조회
+    @GetMapping("/bookCart/view")
+    @ResponseBody
+    public Map<String, Object> bookCartView(HttpSession session) {
+        // 세션에서 장바구니 리스트 가져오기
+        ArrayList<Long> myCartBookIdList = (ArrayList<Long>) session.getAttribute("myCartBookId");
+        if (myCartBookIdList == null) {
+            myCartBookIdList = new ArrayList<>();
+        }
+
+        log.info("Current myCartBookIdList: {}", myCartBookIdList);
+
+        return Map.of("response", "success", "myCartBookIdList", myCartBookIdList);
+    }
+
+    // 장바구니 초기화 (옵션)
+    @PostMapping("/bookCart/clear")
+    @ResponseBody
+    public Map<String, Object> bookCartClear(HttpSession session) {
+        // 세션에서 장바구니 리스트 삭제
+        session.removeAttribute("myCartBookId");
+        log.info("Cart cleared");
+
+        return Map.of("response", "success", "message", "Cart has been cleared");
     }
 }

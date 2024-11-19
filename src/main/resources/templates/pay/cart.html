@@ -2,8 +2,6 @@
 
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<html xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -29,6 +27,13 @@
 
   <link th:href="@{/css/common/userStyle.css}" rel="stylesheet">
   <link th:href="@{/css/pay/paystyle.css}" rel="stylesheet">
+  <link th:href="@{/css/pay/rentCalender.css}" rel="stylesheet">
+
+  <!--달력 조회-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
 
 </head>
 
@@ -40,195 +45,214 @@
 
   <!-- 사이드바 열었다 닫았다 하는거 -->
   <script th:src="@{/js/common/main.js}"></script>
+  <script th:src="@{/js/pay/rentCalender.js}"></script>
 
   <main id="main" class="main">
-  	<div class="container" style="height: 1100px;">
-		
-	<div class="d-flex gap-4">
-		<h2 style="padding-top: 10%;"><b>장바구니</b></h2>
-		
-		<div style="padding-top: 10%;">
-		<button type="button" class="btn btn-success">
-		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
-		<path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"></path>
-		</svg>
-		서면점
-		</button>
-		</div>
-	</div>
-	
-	<!-- 페이지 순서 -->
-	<nav style="--bs-breadcrumb-divider: '>'; padding-left: 70%;" aria-label="breadcrumb">
-	    <ol class="breadcrumb">
-		    <li class="breadcrumb-item"><a href="#">① 장바구니</a></li>
-		    <li class="breadcrumb-item active" aria-current="page">② 대여 상세 페이지</li>
-			<li class="breadcrumb-item active" aria-current="page">③ 대여 완료</li>
-		 </ol>
-	</nav>
-	
-	<!--장바구니 틀-->
-		
-		
-			<hr style="border:1px color= silver; width: 90%;">
-			
-			<div class="d-flex gap-3">
-			
-			<!--전체 체크박스-->
-			<div>
-			<input class="form-check-input all-input" type="checkbox" name="selectall" value="selectall" onclick="selectAll(this)">
-			전체
-			</div>
-			<!--전체 체크박스 END-->
-			
-			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eyeglasses" viewBox="0 0 16 16">
-			  <path d="M4 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4m2.625.547a3 3 0 0 0-5.584.953H.5a.5.5 0 0 0 0 1h.541A3 3 0 0 0 7 8a1 1 0 0 1 2 0 3 3 0 0 0 5.959.5h.541a.5.5 0 0 0 0-1h-.541a3 3 0 0 0-5.584-.953A2 2 0 0 0 8 6c-.532 0-1.016.208-1.375.547M14 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0"/>
-			</svg>
-			<p class="text"><b>500</b>권만 더 담으면 골드 등급이에요!</p>
-			</div>
-			
-			<div class="progress" style="height: 2px; width: 90%;">
-			  <div class="progress-bar" role="progressbar" style="width: 8%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-			</div>
-			<hr style="border:1px color= silver; width: 90%;">
-		
+    	<div class="container" style="height: auto;">
+  		
+  	<div class="d-flex gap-4">
+  		<h2 style="padding-top: 10%;"><b>장바구니</b></h2>
+  		
+  		<div style="padding-top: 10%;">
+  		<button type="button" class="btn btn-success">
+  		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+  		<path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"></path>
+  		</svg>
+  		서면점
+  		</button>
+  		</div>
+  	</div>
+  	
+  	<!-- 페이지 순서 -->
+  	<nav style="--bs-breadcrumb-divider: '>'; padding-left: 70%;" aria-label="breadcrumb">
+  	    <ol class="breadcrumb">
+  		    <li class="breadcrumb-item"><a href="#">① 장바구니</a></li>
+  		    <li class="breadcrumb-item active" aria-current="page">② 대여 상세 페이지</li>
+  			<li class="breadcrumb-item active" aria-current="page">③ 대여 완료</li>
+  		 </ol>
+  	</nav>
+  	
+  	<!--장바구니 틀-->
+  		
+  		
+  			<hr style="border:1px color= silver; width: 90%;">
+  			
+  			<div class="d-flex gap-3">
+  			
+  			<!--전체 체크박스-->
+  			<div>
+  			<input class="form-check-input all-input" type="checkbox" name="selectall" value="selectall" onclick="selectAll(this)">
+  			전체
+  			</div>
+  			<!--전체 체크박스 END-->
+  			
+  			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eyeglasses" viewBox="0 0 16 16">
+  			  <path d="M4 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4m2.625.547a3 3 0 0 0-5.584.953H.5a.5.5 0 0 0 0 1h.541A3 3 0 0 0 7 8a1 1 0 0 1 2 0 3 3 0 0 0 5.959.5h.541a.5.5 0 0 0 0-1h-.541a3 3 0 0 0-5.584-.953A2 2 0 0 0 8 6c-.532 0-1.016.208-1.375.547M14 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0"/>
+  			</svg>
+  			<p class="text"><b>500</b>권만 더 담으면 골드 등급이에요!</p>
+  			</div>
+  			
+  			<div class="progress" style="height: 2px; width: 90%;">
+  			  <div class="progress-bar" role="progressbar" style="width: 8%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+  			</div>
+  			<hr style="border:1px color= silver; width: 90%;">
 		
 		<div class="d-flex">			
-		<div class="col-8">
+			<div class="col-8">
 			<!-- 장바구니 항목 시작 -->
-			<div class="card card-item-body rounded-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded" th:each="bookInfo : ${bookInfoList}">
-			  <form method="post" action="/cart/add">
-			    <div class="d-flex gap-3">
-			      <!-- 상품 체크박스 -->
-			      <input class="form-check-input" type="checkbox" name="book" value="item" onclick="checkSelectAll()">
-			      
-			      <div class="card card-item-image rounded-3">
-			        <img src="/resources/static/css/pay/book.jpg" class="rounded" alt="...">
-			      </div>
-			  
-			      <div class="row" style="padding-left: 10px;">
-			        <!-- 동적으로 책 제목과 저자 정보 출력 -->
-			        <p class="item-title-text" th:text="${bookInfo.bookName}"></p>  <!-- 실제 책 이름 -->
-			        <p class="item-author-text" th:text="'저자| ' + ${bookInfo.author}"></p> <!-- 저자 정보 -->
-			      </div>
-			      
-			      <div class="row" style="padding-left: 235px;">
-			        <!-- 제거 버튼 -->
-			        <div class="x-button">
-			          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-			            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-			          </svg>
+			
+			<form method="post" th:action="@{/bookCart/add}">
+			        <div th:each="bookInfo : ${bookInfoList}">
+			            <div id="cartItems" class="card card-item-body rounded-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+			                <div class="d-flex gap-3">
+			                    <!-- 상품 체크박스 -->
+			                    <input class="form-check-input" type="checkbox" name="booksId" th:value="${bookInfo.bookNum}" onclick="checkSelectAll()">
+
+			                    <div class="row" style="padding-left: 10px;">
+			                        <!-- 동적으로 책 제목과 저자 정보 출력 -->
+			                        <p class="item-title-text" th:text="${bookInfo.bookName}"></p> <!-- 실제 책 이름 -->
+			                        <p class="item-author-text" th:text="'저자| ' + ${bookInfo.author}"></p> <!-- 저자 정보 -->
+			                    </div>
+
+			                    <div class="row" style="padding-left: 235px;">
+			                        <!-- 제거 버튼 -->
+			                        <div class="x-button" data-books-id="${bookInfo.bookNum}" onclick="removeBookFromCart(this)">
+			                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+			                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+			                            </svg>
+			                        </div>
+			                        <!-- 가격 및 재고 -->
+			                        <p class="item-price-text"><b th:text="${bookInfo.rentMoney}"></b>P</p>
+			                        <p class="item-inventory-text">현재 <span style="color: blue;">서면점</span> 대여 가능</p>
+			                    </div>
+			                </div>
+			            </div>
 			        </div>
-			        <!-- 가격 및 재고 -->
-			        <p class="item-price-text"><b>1000</b>P</p>
-			        <p class="item-inventory-text">현재 <span style="color: blue;">서면점</span> 대여 가능 재고: 8</p>
-			      </div>
-			  
-			      <!-- 상품 추가할 때 필요한 input 필드 (bookNum, quantity) -->
-			      <input type="hidden" name="bookNum" th:value="${bookInfo.bookNum}"> <!-- 실제 bookNum -->
-			      <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 60px;">
-			  
-			      <!-- 장바구니에 추가하기 버튼 -->
-			      <button type="submit" class="btn btn-primary">장바구니에 추가</button>
-			    </div> 
-			  </form>
-			</div>
-			<!-- 장바구니 항목 끝 -->
-
-			<!--장바구니 항목-->
-<!--			<div class="card card-item-body rounded-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded">-->
-<!--				<div class="d-flex gap-3">-->
-<!--					<input class="form-check-input" type="checkbox" name="book" value="item" onclick="checkSelectAll()">-->
-<!--					<div class="card card-item-image rounded-3">-->
-<!--					<img src="/resources/static/css/pay/book.jpg" class="rounded" alt="...">-->
-<!--					</div>-->
-		
-<!--					<div class="row" style="padding-left: 10px;">-->
-<!--						<p class="item-title-text">소년이 온다</p>-->
-<!--						<p class="item-author-text">저자| 한강</p>-->
-<!--					</div>-->
-					
-<!--					<div class="row" style="padding-left: 235px;">-->
-<!--						<div class="x-button">-->
-<!--						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">-->
-<!--						  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>-->
-<!--						</svg>-->
-<!--						</div>-->
-<!--						<p class="item-price-text"><b>1000</b>P</p>-->
-<!--						<p class="item-inventory-text">현재 <span style="color: blue;">서면점</span> 대여 가능 재고: 8</p>-->
-<!--					</div>-->
-<!--				</div> -->
-<!--			</div>-->
-			
-			<!--장바구니 항목-->
-<!--			<div class="card card-item-body rounded-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded">-->
-<!--				<div class="d-flex gap-3">-->
-<!--					<input class="form-check-input" type="checkbox" name="book" value="item" onclick="checkSelectAll()">-->
-<!--					<div class="card card-item-image rounded-3">-->
-<!--					<img src="/resources/static/css/pay/book.jpg" class="rounded" alt="...">-->
-<!--					</div>-->
-		
-<!--					<div class="row" style="padding-left: 10px;">-->
-<!--						<p class="item-title-text">소년이 온다</p>-->
-<!--						<p class="item-author-text">저자| 한강</p>-->
-<!--					</div>-->
-					
-<!--					<div class="row" style="padding-left: 235px;">-->
-<!--						<div class="x-button">-->
-<!--						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">-->
-<!--						  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>-->
-<!--						</svg>-->
-<!--						</div>-->
-<!--						<p class="item-price-text"><b>1000</b>P</p>-->
-<!--						<p class="item-inventory-text">현재 <span style="color: blue;">서면점</span> 대여 가능 재고: 8</p>-->
-<!--					</div>-->
-<!--				</div> -->
-<!--			</div>-->
-			<button type="button" class="btn btn-secondary">도서 추가하기</button>	
-			
-			
-		</div><!--col-8 끝-->
-		
-		
-		<div class="col-3">
-			<div class="d-flex justify-content-center" style="padding-top: 15%;">
-			<div class="card cart-card rounded-3">
-			<div class="card-body">
+			    </form>
 				
-			<div class="row">
-				<div class="col">
-			    <div class="card-text">대여 권수</div>
-			    </div>
-			    <div class="col">
-			    <div class="card-text">0권</div>
-			    </div>
-			</div>
+				<button type="button" class="btn btn-secondary" onclick="window.location.href='/'">도서 추가하기</button>
+				
+				
+				
+				
+				
+				<div class="d-flex gap-4">
+						<h2 style="padding-top: 10%;"><b>결제/픽업</b></h2>
+						
+						<div style="padding-top: 10%;">
+						<button type="button" class="btn btn-success">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+						<path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"></path>
+						</svg>
+						서면점
+						</button>
+						</div>
+					</div>
+				
+				
+					<!--대여 정보-->
+								<div class="card text-center card-info-body">
+								<div class="card-body">
+									<div class="d-flex gap-2 mt-3">
+									    <p class="rent-name" style="padding-left: 70px;">대여자 이름</p>
+										<input class="form-control infoinput1" type="text">
+									    <p class="rent-name" style="padding-left: 30px;">대여자 전화번호</p>
+										<input class="form-control infoinput2" type="text">
+									</div>
+						
+									<!--달력-->
+									<div class="custom-date-picker" id="inline-datepicker"></div>
+							  		
+								</div>  
+								</div>
+								
+								<hr style="border:1px color= silver; width: 100%;">
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			
-			<div class="row">
-				<div class="col">
-				<div class="card-text">결제 금액</div>
-				</div>
-				<div class="col">
-				<div class="card-text">500P</div>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="col">
-				<div class="card-text" style="width: 120%;">적립 예정 포인트</div>
-				</div>
-				<div class="col">
-				<div class="card-text">0P</div>
-				</div>
-			</div>
-			
-			<hr style="border:1px color= silver; padding-top: 10px; padding-bottom: 5px;">
-
-			<button type="button" class="btn btn-rent">대여하기</button>
-			
-			</div>
-			</div>
-			</div>
-		</div><!--col-3 끝-->
+			</div><!--col-8 끝-->
+		
+			<div class="col-3">
+						<div class="d-flex justify-content-center" style="padding-top: 15%;">
+						<div class="card cart-card rounded-3">
+						<div class="card-body">
+							
+						<div class="row">
+							<div class="col">
+						    <div class="card-text">대여 권수</div>
+						    </div>
+						    <div class="col">
+						    <div class="card-text">5권</div>
+						    </div>
+						</div>
+						
+						<div class="row">
+							<div class="col">
+							<div class="card-text">결제 금액</div>
+							</div>
+							<div class="col">
+							<div class="card-text">500P</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col">
+							<div class="card-text" style="width: 120%;">적립 예정 포인트</div>
+							</div>
+							<div class="col">
+							<div class="card-text">0P</div>
+							</div>
+						</div>
+						
+						<hr style="border:1px color= silver; padding-top: 5px; padding-bottom: 5px;">
+						
+						<div class="row">
+							<div class="col">
+							<div class="card-text" style="width: 120%;"><b>총 결제 금액</b></div>
+							</div>
+							<div class="col">
+								<div class="card-text-price"><span style="color: blue;"></span>500P</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col">
+							<div class="card-text" style="width: 120%;">결제 후 잔여 포인트</div>
+							</div>
+							<div class="col">
+							<div class="card-text">0P</div>
+							</div>
+						</div>
+						<div style="padding-top: 7%; padding-bottom: 7%;">
+						<button type="button" class="btn btn-add" onclick="window.location.href='/pay_add'">포인트 충전</button>
+							
+						</div>
+						
+						<div class="agree">
+							<input class="form-check-input" type="checkbox" name="book" value="item" onclick="checkSelectAll()">
+							[필수] 북적북적 대여 약관 동의
+						</div>
+						<div class="agree">
+							<input class="form-check-input" type="checkbox" name="book" value="item" onclick="checkSelectAll()">
+							[선택] 알림 수신
+						</div>
+						
+						<div style="padding-top: 5%;">
+						 <button type="button" class="btn btn-rent" id="rentBooks">대여하기</button>
+						</div>
+						
+						</div>
+						</div>
+						</div>
+					</div><!--col-3 끝-->
 	</div>
 		
 	</div>
@@ -241,10 +265,10 @@
 	function checkSelectAll()  {
 	  // 전체 체크박스
 	  const checkboxes 
-	    = document.querySelectorAll('input[name="book"]');
+	    = document.querySelectorAll('input[name="booksId"]');
 	  // 선택된 체크박스
 	  const checked 
-	    = document.querySelectorAll('input[name="book"]:checked');
+	    = document.querySelectorAll('input[name="booksId"]:checked');
 	  // select all 체크박스
 	  const selectAll 
 	    = document.querySelector('input[name="selectall"]');
@@ -259,12 +283,43 @@
 
 	function selectAll(selectAll)  {
 	  const checkboxes 
-	     = document.getElementsByName('book');
+	     = document.getElementsByName('booksId');
 	  
 	  checkboxes.forEach((checkbox) => {
 	    checkbox.checked = selectAll.checked
 	  })
 	}
+	
+	document.getElementById("rentBooks").addEventListener("click", function () {
+	    const selectedBooks = [];
+	    document.querySelectorAll('input[name="booksId"]:checked').forEach((checkbox) => {
+	        selectedBooks.push(checkbox.value);
+	    });
+
+	    if (selectedBooks.length === 0) {
+	        alert("대여할 도서를 선택하세요.");
+	        return;
+	    }
+
+	    fetch("/rentBooks", {
+	        method: "POST",
+	        headers: {
+	            "Content-Type": "application/json",
+	        },
+	        body: JSON.stringify(selectedBooks),
+	    })
+	    .then((response) => response.json())
+	    .then((data) => {
+	        alert(data);
+	        location.reload(); // 성공 시 페이지 새로고침
+	    })
+	    .catch((error) => {
+	        alert("대여 중 오류가 발생했습니다.");
+	        console.error(error);
+	    });
+	});
+
+
 </script>
   
   

@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const height = 260;
                 const margin = { top: 20, right: 30, bottom: 40, left: 40 };
 
+
                 // SVG 생성
                 const svg = d3.select(".delay-bar")
                     .append("svg")
@@ -115,9 +116,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 let selectedOption = $("input[name='delay-option']:checked").val();
 
                 function renderInitialChart() {
-                    const initialData = data[selectedOption];
+                    let initialData = data[selectedOption];
                     if (selectedOption === 'store') {
-                        initialData.sort((a, b) => b.count - a.count).slice(0, 5);
+                       initialData = initialData.sort((a, b) => b.count - a.count).slice(0, 5);
                     }
                     updateAxis(initialData);
                     updateChart(initialData);

@@ -1,6 +1,5 @@
 package com.itwillbs.bookjuk.service.event;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -114,7 +113,6 @@ public class CouponService {
 		return couponRepository.existsByCouponIdAndUserNum_UserNum(couponId, userNum);
 	}
 
-	
 	// 유저 pk, 쿠폰 번호, 쿠폰 상태가 유효 인지 조회해서 데이터가 있으면 쿠폰 상태 완료로 변경
 	@Transactional
 	public boolean useCoupon(Long userNum, String couponNum) {

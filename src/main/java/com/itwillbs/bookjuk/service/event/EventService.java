@@ -254,6 +254,36 @@ public class EventService {
 		}    	
     }
     
+    // coupon 생성
+    public void createCoupon(EventConditionEntity eventCondition, NotificationEntity notificationEntity, UserEntity user) {
+    	String coupon;
+		// 쿠폰 번호 생성(db에 중복된 쿠폰 번호가 있으면 중복 안될때까지 랜덤 문자 함수 호출) 
+        do {
+            coupon = CouponUtil.generateRandomCouponNum(16);
+        } while (couponRepository.existsByCouponNum(coupon));
+    	CouponEntity couponEntity = CouponEntity.builder()
+				.eventId(eventCondition.getEventId())
+				.eventConditionId(eventCondition)
+				.notiId(notificationEntity)
+				.userNum(user)
+				.couponNum(coupon)
+				.couponPeriod(Timestamp.valueOf(LocalDateTime.now().plusYears(1)))
+				.couponStatus("유효")
+				.couponType(eventCondition.getEventClearReward())
+				.build();
+		couponRepository.save(couponEntity);
+    }
+    
+    // noti_check 생성
+    public void createNotiCheck(UserEntity user, NotificationEntity notificationEntity) {
+    	NotiCheckEntity notiCheckEntity = NotiCheckEntity.builder()
+				.notiId(notificationEntity)
+				.notiRecipient(user)
+				.notiChecked(false)
+				.build();
+		notiCheckRepository.save(notiCheckEntity);
+    }
+    
     // 이벤트 컨디션 타입에 따른 이벤트 활성값 true 조회
     public List<EventConditionEntity> checkEventCondition(List<String> eventConditionType){
     	return eventConditionRepository.findByEventIsActiveTrueAndEventConditionTypeIn(eventConditionType);
@@ -264,59 +294,84 @@ public class EventService {
     }
     
     // 유저 엔티티와 이벤트 컨디션 엔티티에 따른 이벤트 카운트 조회
-    public List<EventCountEntity> checkEventCount(UserEntity user, List<EventConditionEntity> condition) {
-    	return eventCountRepository.findByUserNumAndEventConditionIdIn(user, condition);
+    public EventCountEntity checkEventCount(UserEntity user, EventConditionEntity condition) {
+    	return eventCountRepository.findByUserNumAndEventConditionId(user, condition);
     }
     
+    @Transactional
     public void checkEventForPayment(UserEntity user, int numberOfRental, int rentalAmount) {
     	// 조회할 이벤트 컨디션 설정
     	List<String> eventConditionType = List.of("대여 횟수", "대여 금액");
     	// 이벤트 컨디션 타입에 따른 이벤트 활성값 true 조회
     	List<EventConditionEntity> eventConditionEntities = checkEventCondition(eventConditionType);
-    	
+    	// 없으면 함수 종료
     	if(eventConditionEntities.isEmpty()) { return; }
-    	List<EventCountEntity> eventCountEntities = checkEventCount(user, eventConditionEntities);
-
-    	Set<Integer> existingConditionIds = eventCountEntities.stream()
-    		    .map(eventCount -> eventCount.getEventConditionId().getEventConditionId())
-    		    .collect(Collectors.toSet());
     	
-    	List<EventConditionEntity> missingConditions = eventConditionEntities.stream()
-    		    .filter(conditions -> !existingConditionIds.contains(conditions.getEventConditionId()))
-    		    .collect(Collectors.toList());
-    	
-    	if (!missingConditions.isEmpty()) {
-    	    for (EventConditionEntity missingCondition : missingConditions) {
-    	    	String type = missingCondition.getEventConditionType();
-    	    	int countValue = "대여 횟수".equals(type) ? numberOfRental : rentalAmount;
-    	    	int clear = missingCondition.getEventRequiredValue();
-    	    	EventCountEntity countEntity = EventCountEntity.builder()
-    	    			.userNum(user)
-    	    			.eventConditionId(missingCondition)
-    	    			.eventNowCount(countValue)
-    	    			.lastUpdate(new Timestamp(System.currentTimeMillis()))
-    	    			.clearEvent(countValue >= clear)
-    	    			.build();
-    	    	eventCountRepository.save(countEntity);
+    	// 유저 엔티티와 이벤트 컨디션에 따른 이벤트 카운트 조회
+    	for (EventConditionEntity eventConditionEntity : eventConditionEntities) {
+    		EventCountEntity eventCountEntity = checkEventCount(user, eventConditionEntity);
+    		int countValue = "대여 횟수".equals(eventConditionEntity.getEventConditionType()) ? numberOfRental : rentalAmount;
+    		boolean isClear = false;
+    		if (eventCountEntity != null) {
+    			// 기존 값 업데이트
+    	        eventCountEntity.setEventNowCount(eventCountEntity.getEventNowCount() + countValue);
+    	        isClear = eventCountEntity.getEventNowCount() >= eventConditionEntity.getEventRequiredValue();
+    	        eventCountEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+    	        eventCountEntity.setClearEvent(isClear);
+    	        eventCountRepository.save(eventCountEntity);
+    	    } else {
+    	    	// 새로운 이벤트 카운트 생성
+    	        isClear = countValue >= eventConditionEntity.getEventRequiredValue();
+    	        EventCountEntity newEventCountEntity = EventCountEntity.builder()
+    	            .userNum(user)
+    	            .eventConditionId(eventConditionEntity)
+    	            .eventNowCount(countValue)
+    	            .lastUpdate(new Timestamp(System.currentTimeMillis()))
+    	            .clearEvent(isClear)
+    	            .build();
+    	        eventCountRepository.save(newEventCountEntity);
     	    }
+    		if(isClear) {
+    			String coupon;
+        		// 쿠폰 번호 생성(db에 중복된 쿠폰 번호가 있으면 중복 안될때까지 랜덤 문자 함수 호출) 
+    	        do {
+    	            coupon = CouponUtil.generateRandomCouponNum(16);
+    	        } while (couponRepository.existsByCouponNum(coupon));
+    			NotificationEntity notificationEntity = NotificationEntity.builder()
+    					.notiRecipient(user)
+    					.notiSender(eventConditionEntity.getEventId().getEventManager())
+    					.notiContent("대여 이벤트 기간동안 발행되는 " +
+    							eventConditionEntity.getEventClearReward() +
+    								 " 쿠폰입니다.\n" +
+    								 "쿠폰 번호 : " + coupon)
+    					.notiType("쪽지")
+    					.notiStatus("성공")
+    					.notiCreationDate(new Timestamp(System.currentTimeMillis()))
+    					.notiSentDate(new Timestamp(System.currentTimeMillis()))
+    					.build();
+    			notificationRepository.save(notificationEntity);
+    			
+    			// 쿠폰 생성
+    			CouponEntity couponEntity = CouponEntity.builder()
+    					.eventId(eventConditionEntity.getEventId())
+    					.eventConditionId(eventConditionEntity)
+    					.notiId(notificationEntity)
+    					.userNum(user)
+    					.couponNum(coupon)
+    					.couponPeriod(Timestamp.valueOf(LocalDateTime.now().plusYears(1)))
+    					.couponStatus("유효")
+    					.couponType(eventConditionEntity.getEventClearReward())
+    					.build();
+    			couponRepository.save(couponEntity);
+    			
+    			// noti_check 생성
+    			NotiCheckEntity notiCheckEntity = NotiCheckEntity.builder()
+    					.notiId(notificationEntity)
+    					.notiRecipient(user)
+    					.notiChecked(false)
+    					.build();
+    			notiCheckRepository.save(notiCheckEntity);
+    		}
     	}
-    	
-    	
-    	
-//    	EventCountEntity countEntity = EventCountEntity.builder()
-//    			.userNum(user)
-//    			.eventConditionId(condition)
-//    			.eventNowCount(0)
-//    			.lastUpdate(new Timestamp(System.currentTimeMillis()))
-//    			.clearEvent(false)
-//    			.build();
-//    	int nowCount = countEntity.getEventNowCount(); // 이벤트 달성 유형에 대한 현재까지 달성한 값
-//    	int targetCount = condition.getEventRequiredValue(); // 이벤트 달성을 위한 목표 값
-//    	if(nowCount >= targetCount) {
-//    		countEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-//    		countEntity.setClearEvent(true);
-//    	}
-//    	eventCountRepository.save(countEntity);
     }
-
 }

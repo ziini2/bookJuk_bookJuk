@@ -73,6 +73,10 @@ public class PointDealEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "rent_num")
 	private RentEntity rent;  // 단방향 참조
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "payment_id")
+	private PaymentEntity paymentEntity;  // 단방향 참조
 
 
 }

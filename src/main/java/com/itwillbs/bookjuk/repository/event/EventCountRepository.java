@@ -1,7 +1,5 @@
 package com.itwillbs.bookjuk.repository.event;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.itwillbs.bookjuk.entity.UserEntity;
@@ -15,6 +13,6 @@ public interface EventCountRepository extends JpaRepository<EventCountEntity, Lo
 //	void save(EventCountEntity eventCountEntity);
 	
 	// userNum, event_condition_id를 통해 이벤트 카운트 조회
-	List<EventCountEntity> findByUserNumAndEventConditionIdIn(UserEntity userNum, List<EventConditionEntity> eventConditionId);
+	EventCountEntity findByUserNumAndEventConditionId(UserEntity userNum, EventConditionEntity eventConditionId);
 	
 }

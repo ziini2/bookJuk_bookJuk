@@ -1,5 +1,4 @@
-<header id="header" class="header fixed-top d-flex align-items-center"
-    th:fragment="header2"
+<header id="header" class="header fixed-top d-flex align-items-center" th:fragment="header2"
     xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 
     <!-- 로고 이미지 -->
@@ -9,11 +8,9 @@
                 <img src="/images/common/book.png" alt="bookjuk">
             </span>
         </a>
-
         <!-- 로그인한 상태에서만 사이드바 메뉴버튼 보이기 -->
         <i class="ri-menu-line toggle-sidebar-btn" sec:authorize="isAuthenticated()"></i>
     </div>
-
     <!-- End 로고 -->
 
     <div class="container">
@@ -22,45 +19,43 @@
                 <!-- 로그인했을 때 -->
                 <div sec:authorize="isAuthenticated()">
                     <div sec:authorize="hasRole('ROLE_USER')">
+
+                        <span class="me-3 headerName" th:text="${#authentication.principal.name + ' 님'}"></span>
                         <!-- 내 포인트-->
-                        <a href="/pay_add" style="margin-right: 10px;">
+                        <a class="me-2" th:href="@{/user/pay_add}">
                             <i class="ri-coins-fill" style="font-size: 28px;"></i>
-<!--                             <span sec:authentication="name"></span>님 -->
-                          <span th:text="${userName}"></span>님
                         </a>
                         
                         <!-- 장바구니, 마이페이지로 이동 -->
-                        <a href="/user/cart" style="margin-right: 10px;">
+                        <a class="me-2" th:href="@{/user/cart}">
                             <i class="ri-shopping-cart-2-line" style="font-size: 28px;"></i>
                         </a>
-                        <a href="/mypage">
+                        <a th:href="@{/user/info}">
                             <i class="ri-user-line" style="font-size: 28px;"></i>
                         </a>
                         <button class="custom-btn btn-13" onclick="location.href='/logout'">로그아웃</button>
                     </div>
                    </div>
                     
-                    <!-- 관리자가 로그인했을 때 -->
-                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                <!-- 관리자가 로그인했을 때 -->
+                <div sec:authorize="hasRole('ROLE_ADMIN')">
 <!--                           <span th:text="${userName}"></span>님 -->
                           
                         <button class="custom-btn btn-13" onclick="location.href='/logout'">로그아웃</button>
 						<button class="custom-btn btn-16" id="userPagebtn" onclick="location.href='/userMain'">회원페이지</button>
 						<button class="custom-btn btn-16" id="adminPagebtn" onclick="location.href='/admin/dashboard'">관리자페이지</button>
-                        
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 비로그인 시 -->
-			<div class="col d-flex justify-content-end"
-				sec:authorize="isAnonymous()">
-				<!-- 로그인하지 않은 상태에서 로그인 버튼만 보임 -->
-				<button type="button" class="custom-btn btn-13"
-					onclick="location.href='/login'">로그인</button>
-			</div>
 
-		</div>
+                    </div>
+            </div>
+        </div>
+            
+        <!-- 비로그인 시 -->
+        <div class="col d-flex justify-content-end" sec:authorize="isAnonymous()">
+            <!-- 로그인하지 않은 상태에서 로그인 버튼만 보임 -->
+            <button type="button" class="custom-btn btn-13" onclick="location.href='/login'">로그인</button>
+        </div>
+
+    </div>
 
     <!-- 관리자일때 페이지 이동 버튼 전환-->
 <script>

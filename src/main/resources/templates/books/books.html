@@ -2,33 +2,30 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-<title>전체/지점별 도서조회</title>
+	<title>전체/지점별 도서조회</title>
 
-<!-- 구글폰트 -->
-<link href="https://fonts.gstatic.com" rel="preconnect">
-<link
-	href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-	rel="stylesheet">
-
-<!-- 사이드바 아이콘 -->
-<link href="/images/common/bootstrap-icons/bootstrap-icons.css"
-	rel="stylesheet">
-<link href="/images/common/remixicon/remixicon.css" rel="stylesheet">
-
-<!--부트스트랩 외부링크-->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- 구글폰트 -->
+	<link href="https://fonts.gstatic.com" rel="preconnect">
+	<link
+		href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+		rel="stylesheet">
 
 
-<!-- Main CSS File -->
-<link href="/css/common/style.css" rel="stylesheet">
-<link href="/css/books/books.css" rel="stylesheet">
+	<!-- 사이드바 아이콘 -->
+	<link th:href="@{/images/common/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+	<link th:href="@{/images/common/remixicon/remixicon.css}" rel="stylesheet">
+
+	<!--부트스트랩 외부링크-->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+	<!-- Main CSS File -->
+	<link th:href="@{/css/common/style.css}" rel="stylesheet">
+	<link th:href="@{/css/books/books.css}" rel="stylesheet">
 
 </head>
 
@@ -45,8 +42,8 @@
 			<div class="col-md-9">
 				<div class="d-flex gap-3">
 					<!-- 대여 상태 -->
-					<select class="form-select filter-item" name="rentalStatus"
-						id="rentalStatus" onchange="applyFilters()">
+					<select class="form-select filter-item" name="rentalStatus" id="rentalStatus"
+						onchange="applyFilters()">
 						<option value="">대여상태</option>
 						<option value="1" th:selected="${rentalStatus == '1'}">대여가능</option>
 						<option value="0" th:selected="${rentalStatus == '0'}">대여불가</option>
@@ -54,22 +51,19 @@
 
 
 					<!-- 지점 선택 -->
-					<select class="form-select filter-item" name="storeCode"
-						id="storeFilter" onchange="applyFilters()">
+					<select class="form-select filter-item" name="storeCode" id="storeFilter" onchange="applyFilters()">
 						<option value="">지점선택</option>
-						<option th:each="store : ${storeList}"
-							th:value="${store.storeCode}" th:text="${store.storeName}"
+						<option th:each="store : ${storeList}" th:value="${store.storeCode}"
+							th:text="${store.storeName}"
 							th:selected="${storeCode != null and storeCode.equals(store.storeCode)}"></option>
 					</select>
 
 					<!-- 검색 -->
-					<form id="searchForm" style="flex: 1;"
-						onsubmit="applyFilters(); return false;">
+					<form id="searchForm" style="flex: 1;" onsubmit="applyFilters(); return false;">
 						<div class="input-group">
-							<input type="text" name="search" class="form-control filter-item"
-								id="search" placeholder="도서명/작가명 검색" th:value="${search}">
-							<button type="button" class="btn btn-success"
-								onclick="applyFilters()">검색</button>
+							<input type="text" name="search" class="form-control filter-item" id="search"
+								placeholder="도서명/작가명 검색" th:value="${search}">
+							<button type="button" class="btn btn-success" onclick="applyFilters()">검색</button>
 						</div>
 					</form>
 				</div>
@@ -94,23 +88,23 @@
 				</thead>
 				<tbody>
 					<tr th:each="book : ${bookList.content}" onclick="showBookDetails(this)">
-                  <td th:text="${book.booksId}" data-book-id="${book.booksId}"></td>
-                  <td th:text="${book.isbn}" data-isbn="${book.isbn}"></td>
-                  <td th:text="${book.bookName}" data-book-name="${book.bookName}"></td>
-                  <td th:text="${book.author}" data-author="${book.author}"></td>
-                  <td th:text="${book.publish}" data-publish="${book.publish}"></td>
-                  <td th:text="${#temporals.format(book.publishDate, 'yyyy-MM-dd')}"
-                     data-publish-date="${#temporals.format(book.publishDate, 'yyyy-MM-dd')}"></td>
-<!--                  <td th:text="${#temporals.format(book.bookDate, 'yyyy-MM-dd HH:mm:ss')}"-->
-<!--                     data-book-date="${#temporals.format(book.bookDate, 'yyyy-MM-dd HH:mm:ss')}"></td>-->
-                  <td><span th:text="${book.rentStatus ? '가능' : '불가'}"
-                        data-rent-status="${book.rentStatus ? '가능' : '불가'}"></span></td>
-                  <td th:text="${book.bookStatus.name()}" data-book-status="${book.bookStatus.name()}"></td>
-                  <td th:text="${book.rentMoney}" data-rent-money="${book.rentMoney}"></td>
-               </tr>
-               <tr th:if="${#lists.isEmpty(bookList.content)}">
-                  <td colspan="11" class="text-center">등록된 도서가 없습니다.</td>
-               </tr>
+						<td th:text="${book.booksId}" data-book-id="${book.booksId}"></td>
+						<td th:text="${book.isbn}" data-isbn="${book.isbn}"></td>
+						<td th:text="${book.bookName}" data-book-name="${book.bookName}"></td>
+						<td th:text="${book.author}" data-author="${book.author}"></td>
+						<td th:text="${book.publish}" data-publish="${book.publish}"></td>
+						<td th:text="${#temporals.format(book.publishDate, 'yyyy-MM-dd')}"
+							data-publish-date="${#temporals.format(book.publishDate, 'yyyy-MM-dd')}"></td>
+						<!--                  <td th:text="${#temporals.format(book.bookDate, 'yyyy-MM-dd HH:mm:ss')}"-->
+						<!--                     data-book-date="${#temporals.format(book.bookDate, 'yyyy-MM-dd HH:mm:ss')}"></td>-->
+						<td><span th:text="${book.rentStatus ? '가능' : '불가'}"
+								data-rent-status="${book.rentStatus ? '가능' : '불가'}"></span></td>
+						<td th:text="${book.bookStatus.name()}" data-book-status="${book.bookStatus.name()}"></td>
+						<td th:text="${book.rentMoney}" data-rent-money="${book.rentMoney}"></td>
+					</tr>
+					<tr th:if="${#lists.isEmpty(bookList.content)}">
+						<td colspan="11" class="text-center">등록된 도서가 없습니다.</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -120,25 +114,20 @@
 			<nav aria-label="Page navigation example">
 				<ul class="pagination pagination-success mb-0">
 					<!-- 이전 페이지 -->
-					<li class="page-item"
-						th:classappend="${currentPage == 0} ? 'disabled'"><a
-						class="page-link"
-						th:href="@{/admin/books(page=${currentPage - 1}, size=${pageSize}, search=${search}, rentalStatus=${rentalStatus}, storeCode=${storeCode})}">
+					<li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'"><a class="page-link"
+							th:href="@{/admin/books(page=${currentPage - 1}, size=${pageSize}, search=${search}, rentalStatus=${rentalStatus}, storeCode=${storeCode})}">
 							이전 </a></li>
 
 					<!-- 페이지 번호 -->
-					<li class="page-item"
-						th:each="i : ${#numbers.sequence((startPage ?: 0) + 1, (endPage ?: 0) + 1)}"
-						th:classappend="${currentPage + 1 == i} ? 'active'"><a
-						class="page-link"
-						th:href="@{/admin/books(page=${i - 1}, size=${pageSize}, search=${search}, rentalStatus=${rentalStatus}, storeCode=${storeCode})}"
-						th:text="${i}"></a></li>
+					<li class="page-item" th:each="i : ${#numbers.sequence((startPage ?: 0) + 1, (endPage ?: 0) + 1)}"
+						th:classappend="${currentPage + 1 == i} ? 'active'"><a class="page-link"
+							th:href="@{/admin/books(page=${i - 1}, size=${pageSize}, search=${search}, rentalStatus=${rentalStatus}, storeCode=${storeCode})}"
+							th:text="${i}"></a></li>
 
 					<!-- 다음 페이지 -->
-					<li class="page-item"
-						th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+					<li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
 						<a class="page-link"
-						th:href="@{/admin/books(page=${currentPage + 1}, size=${pageSize}, search=${search}, rentalStatus=${rentalStatus}, storeCode=${storeCode})}">
+							th:href="@{/admin/books(page=${currentPage + 1}, size=${pageSize}, search=${search}, rentalStatus=${rentalStatus}, storeCode=${storeCode})}">
 							다음 </a>
 					</li>
 				</ul>
@@ -149,21 +138,19 @@
 
 		<!-- 도서 등록 및 수정 버튼 -->
 		<div class="d-grid gap-2 d-md-block">
-			<button type="button" class="btn btn-success" data-bs-toggle="modal"
-				data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+			<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal"
+				data-bs-whatever="@mdo">
 				도서등록</button>
 			<!--          <a class="btn btn-success" th:href="@{/admin/addBook}" role="button">도서등록</a> -->
 		</div>
 
 		<!-- 도서등록 모달 -->
-		<div class="modal fade" id="exampleModal" tabindex="-1"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h1 class="modal-title fs-5" id="exampleModalLabel">도서 등록</h1>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<form method="post" id="addBook">
@@ -172,8 +159,8 @@
 								<!-- 도서 이미지 -->
 								<div class="me-4">
 									<div class="card" style="width: 150px;">
-										<img id="bookImage" alt="도서 이미지" class="card-img-top"
-											name="bookImage" src="/images/books/noimage.png"
+										<img id="bookImage" alt="도서 이미지" class="card-img-top" name="bookImage"
+											src="/images/books/noimage.png"
 											style="width: 150px; height: 200px; object-fit: contain; border: 1px solid #ccc;">
 										<input type="hidden" id="bookImage" name="bookImage">
 									</div>
@@ -183,8 +170,7 @@
 								<div style="flex: 1;">
 									<!-- ISBN -->
 									<div class="mb-3 d-flex align-items-center">
-										<label for="isbn" class="col-form-label me-2"
-											style="width: 80px;">ISBN</label>
+										<label for="isbn" class="col-form-label me-2" style="width: 80px;">ISBN</label>
 										<div class="input-group" style="flex: 1;">
 											<input type="text" class="form-control" id="isbn" name="isbn">
 											<button type="button" class="btn btn-dark"
@@ -196,13 +182,13 @@
 									<div class="row mb-3" style="align-items: center;">
 										<div class="col-md-6 d-flex align-items-center">
 											<label for="bookName" class="col-form-label me-2"
-												style="width: 80px;">도서명</label> <input type="text"
-												class="form-control" id="bookName" name="bookName">
+												style="width: 80px;">도서명</label> <input type="text" class="form-control"
+												id="bookName" name="bookName">
 										</div>
 										<div class="col-md-6 d-flex align-items-center">
 											<label for="author" class="col-form-label me-2"
-												style="width: 80px;">저자</label> <input type="text"
-												class="form-control" id="author" name="author">
+												style="width: 80px;">저자</label> <input type="text" class="form-control"
+												id="author" name="author">
 										</div>
 									</div>
 
@@ -210,20 +196,19 @@
 									<div class="row mb-3">
 										<div class="col-md-6 d-flex align-items-center">
 											<label for="publish" class="col-form-label me-2"
-												style="width: 80px;">출판사</label> <input type="text"
-												class="form-control" id="publish" name="publish">
+												style="width: 80px;">출판사</label> <input type="text" class="form-control"
+												id="publish" name="publish">
 										</div>
 										<div class="col-md-6 d-flex align-items-center">
 											<label for="publishDate" class="col-form-label me-2"
-												style="width: 80px;">출판일</label> <input type="text"
-												class="form-control" id="publishDate" name="publishDate">
+												style="width: 80px;">출판일</label> <input type="text" class="form-control"
+												id="publishDate" name="publishDate">
 										</div>
 									</div>
 									<!-- 책소개 바로 위치 -->
 									<div class="mb-3">
 										<label for="story" class="col-form-label">책소개</label>
-										<textarea class="form-control" id="story" name="story"
-											rows="3"></textarea>
+										<textarea class="form-control" id="story" name="story" rows="3"></textarea>
 									</div>
 								</div>
 							</div>
@@ -235,14 +220,13 @@
 										class="form-control" id="genreId" name="genreId">
 										<option value="" disabled selected>장르를 선택하세요</option>
 										<th:block th:each="genre : ${genreList}">
-											<option th:value="${genre.genreId}"
-												th:text="${genre.genreName}"></option>
+											<option th:value="${genre.genreId}" th:text="${genre.genreName}"></option>
 										</th:block>
 									</select>
 								</div>
 								<div class="col-md-6">
-									<label for="bookDate" class="col-form-label">입고일</label> <input
-										type="date" class="form-control" id="bookDate" name="bookDate">
+									<label for="bookDate" class="col-form-label">입고일</label> <input type="date"
+										class="form-control" id="bookDate" name="bookDate">
 								</div>
 							</div>
 
@@ -252,46 +236,39 @@
 									<label for="storeCode" class="col-form-label">지점ID</label> <select
 										class="form-select" name="storeCode" id="storeCode">
 										<option value="" disabled selected>지점 선택</option>
-										<option th:each="store : ${storeList}"
-											th:value="${store.storeCode}" th:text="${store.storeName}"></option>
+										<option th:each="store : ${storeList}" th:value="${store.storeCode}"
+											th:text="${store.storeName}"></option>
 									</select>
 								</div>
 								<div class="col-md-6">
-									<label for="rentMoney" class="col-form-label">대여금액</label> <input
-										type="text" class="form-control" name="rentMoney"
-										id="rentMoney" placeholder="금액 입력">
+									<label for="rentMoney" class="col-form-label">대여금액</label> <input type="text"
+										class="form-control" name="rentMoney" id="rentMoney" placeholder="금액 입력">
 								</div>
 							</div>
 
 							<!-- 도서상태 -->
-							<input type="hidden" name="bookStatus" id="bookStatus"
-								value="GOOD">
+							<input type="hidden" name="bookStatus" id="bookStatus" value="GOOD">
 						</form>
 					</div>
 
 					<div class="modal-footer">
-						<button type="reset" class="btn btn-secondary"
-							data-bs-dismiss="modal">초기화</button>
-						<button type="button" class="btn btn-success"
-							onclick="registerBook()">등록하기</button>
+						<button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">초기화</button>
+						<button type="button" class="btn btn-success" onclick="registerBook()">등록하기</button>
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<!-- 도서수정모달 -->
-		<div class="modal fade" id="bookModal" tabindex="-1"
-			aria-labelledby="bookModalLabel" aria-hidden="true">
+		<div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="bookModalLabel">도서 정보</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
+						<h5 class="modal-title" id="bookModalLabel">도서 정보 수정</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<form action="/admin/oneBookUpdate" id="onbookupdateform"
-							method="post">
+						<form action="/admin/oneBookUpdate" id="onbookupdateform" method="post">
 							<!-- 도서 정보가 여기에 동적으로 추가될 예정 -->
 							<p>
 								<strong>도서번호:</strong> <span id="modalBookId"></span>
@@ -313,15 +290,15 @@
 								<strong>출판일:</strong> <span id="modalPublishDate"></span>
 							</p>
 							<p>
-								<strong>대여현황:</strong> <select id="modalRentStatus"
-									class="form-select" name="rentStatus">
+								<strong>대여현황:</strong> <select id="modalRentStatus" class="form-select"
+									name="rentStatus">
 									<option value=true>대여가능</option>
 									<option value=false>대여불가</option>
 								</select>
 							</p>
 							<p>
-								<strong>도서상태:</strong> <select id="modalBookStatus"
-									class="form-select" name="bookStatus">
+								<strong>도서상태:</strong> <select id="modalBookStatus" class="form-select"
+									name="bookStatus">
 									<option value="GOOD">양호</option>
 									<option value="DISCARD">폐기</option>
 									<option value="LOST">분실</option>
@@ -329,14 +306,14 @@
 								</select>
 							</p>
 							<p>
-								<strong>대여금액:</strong> <span id="modalRentMoney"></span>
+								<strong>대여금액: </strong><span id="modalRentMoney"></span>원
 							</p>
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-success" onclick="updateOneBook()" id="onebookupdate">수정</button>
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">닫기</button>
+						<button type="button" class="btn btn-success" onclick="updateOneBook()"
+							id="onebookupdate">수정</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 					</div>
 				</div>
 			</div>
@@ -379,9 +356,9 @@
 			const publish = row.querySelector('[data-publish]').textContent;
 			const publishDate = row.querySelector('[data-publish-date]').textContent;
 			const rentStatus = row.querySelector('[data-rent-status]').textContent
-					.trim();
+				.trim();
 			const bookStatus = row.querySelector('[data-book-status]').textContent
-					.trim();
+				.trim();
 			const rentMoney = row.querySelector('[data-rent-money]').textContent;
 
 			// 모달에 데이터 삽입
@@ -394,9 +371,13 @@
 			document.getElementById('modalPublishDate').textContent = publishDate;
 			document.getElementById('modalRentMoney').textContent = rentMoney;
 
-			// 대여현황 (select에 값 설정)
+			// 대여현황 (값 매핑)
 			const rentStatusSelect = document.getElementById('modalRentStatus');
-			rentStatusSelect.value = rentStatus === '가능' ? '1' : '0';
+			if (rentStatus === "대여가능") {
+				rentStatusSelect.value = "true";
+			} else if (rentStatus === "대여불가") {
+				rentStatusSelect.value = "false";
+			}
 
 			// 도서상태 (select에 값 설정)
 			const bookStatusSelect = document.getElementById('modalBookStatus');
@@ -404,7 +385,7 @@
 
 			// 모달 표시
 			const modal = new bootstrap.Modal(document
-					.getElementById('bookModal'));
+				.getElementById('bookModal'));
 			modal.show();
 		}
 	</script>

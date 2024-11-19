@@ -33,6 +33,8 @@ public class StatisticsRestController {
             @RequestParam(defaultValue = "0", name = "page") int page,
             @RequestParam(defaultValue = "20", name = "size") int size) {
 
+        log.info("startDate: {}, endDate: {}, pointOption: {}, genre: {}, storeName: {}", startDate, endDate, pointOption, genre, storeName);
+
         LocalDate rowStartDate = startDate;
         LocalDate rowEndDate = endDate;
 
@@ -40,6 +42,8 @@ public class StatisticsRestController {
             rowStartDate = LocalDate.now().minusMonths(1);
             rowEndDate = LocalDate.now();
         }
+
+
 
         StatisticsRequestDTO statisticsDTO = StatisticsRequestDTO.builder()
                 .startDate(rowStartDate)
@@ -59,8 +63,8 @@ public class StatisticsRestController {
     public ResponseEntity<StatisticsResponseDTO> getCustomerData(
             @RequestParam(defaultValue = "1000-01-01", name = "startDate") LocalDate startDate,
             @RequestParam(defaultValue = "1000-01-01", name = "endDate") LocalDate endDate,
-            @RequestParam("gender") String gender,
-            @RequestParam("age") String age,
+            @RequestParam(defaultValue = "전체", name = "gender") String gender,
+            @RequestParam(defaultValue = "전체", name = "age") String age,
             @RequestParam(defaultValue = "0", name = "page") int page,
             @RequestParam(defaultValue = "20", name = "size") int size) {
 
@@ -83,7 +87,6 @@ public class StatisticsRestController {
 
     public record StatisticsCustomerRequestDTO(
             LocalDate startDate, LocalDate endDate, String gender, String age, int page, int size) {}
-
 
 
 }

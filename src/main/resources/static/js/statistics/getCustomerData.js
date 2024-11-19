@@ -30,16 +30,17 @@ $(document).ready(function () {
                         const item = data.content[i];
                         const tempHtml = `
                             <tr>
-                                <td>${data.totalElements - page * size - i}</td>
-                                <td>${data.userNum}</td>
+                                <td>${data.totalElements - (page * size) - i}</td>
+                                <td>${item.userNum}</td>
                                 <td>${item.joinDate}</td>
                                 <td>${item.totalRentPrice}</td>
                                 <td>${item.totalOverduePrice}</td>
                                 <td>${item.totalPaymentPrice}</td>
+                                <td>${item.totalCouponPrice}</td>
                                 <td>${item.gender}</td>
                                 <td>${item.age}</td>
                                 <td>${item.totalRentDays}</td>
-                                 <td>${item.totalRentCount}</td>
+                                <td>${item.totalRentCount}</td>
                                 <td>${item.totalOverdueDays}</td>
                                 <td>${item.totalOverdueCount}</td>
                             </tr>
@@ -92,7 +93,7 @@ $(document).ready(function () {
         `);
 
         // 페이지 클릭 이벤트 바인딩
-        $('.page-link').on('click', function (e) {
+        $('.page-link').off('click').on('click', function (e) {
             e.preventDefault();
             const selectedPage = $(this).data('page');
             if (selectedPage >= 0 && selectedPage < totalPages) {
@@ -102,18 +103,18 @@ $(document).ready(function () {
         });
     }
 
-    // 초기 테이블 데이터 로드
-    populateTable();
+
+        populateTable();
+
 
     // 검색 버튼 클릭 이벤트
     $('#search-button').on('click', function () {
         startDate = $('#startDate').val();
         endDate = $('#endDate').val();
-        gender = $('#gender').val();
-        age = $('#age').val();
+        gender = $('#dropdownMenuButton3').text().trim(); // 드롭다운에서 선택된 성별 값 반영
+        age = $('#dropdownMenuButton4').text().trim(); // 드롭다운에서 선택된 나이 값 반영
         page = 0; // 검색 조건 변경 시 페이지 번호 초기화
         populateTable(); // 테이블 재로드
     });
-
 
 });

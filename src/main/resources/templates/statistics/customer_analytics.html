@@ -55,34 +55,8 @@
                         <input type="date" class="form-control" id="endDate" placeholder="종료 날짜">
                     </div>
                 </div>
-                <div class="dropdown me-2">
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
-                        성별: <span id="gender">전체</span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                        <li><a class="dropdown-item" onclick="selectOption('gender', '전체', 'gender')">전체</a></li>
-                        <li><a class="dropdown-item" onclick="selectOption('gender', '남', 'gender')">남</a></li>
-                        <li><a class="dropdown-item" onclick="selectOption('gender', '여', 'gender')">여</a></li>
-                    </ul>
-                </div>
-                <div class="dropdown me-2">
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
-                        나이: <span id="age">전체</span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
-                        <li><a class="dropdown-item" onclick="selectOption('age', '전체', 'age')">전체</a></li>
-                        <li><a class="dropdown-item" onclick="selectOption('age', '10대', 'age')">10대</a></li>
-                        <li><a class="dropdown-item" onclick="selectOption('age', '20대', 'age')">20대</a></li>
-                        <li><a class="dropdown-item" onclick="selectOption('age', '30대', 'age')">30대</a></li>
-                        <li><a class="dropdown-item" onclick="selectOption('age', '40대', 'age')">40대</a></li>
-                        <li><a class="dropdown-item" onclick="selectOption('age', '50대', 'age')">50대</a></li>
-                        <li><a class="dropdown-item" onclick="selectOption('age', '60대 이상', 'age')">60대 이상</a></li>
-                    </ul>
-                </div>
             </div>
             <div class="select-bar">
-                <button type="button" class="btn btn-success me-2" onclick="sendRequest('current')">엑셀다운 (현재 페이지)</button>
-                <button type="button" class="btn btn-success" onclick="sendRequest('all')">엑셀다운 (전체 페이지)</button>
                 <button class="btn btn-primary" type="button" id="search-button" aria-expanded="false">
                     검색
                 </button>
@@ -100,6 +74,7 @@
                     <th>누적대여금액</th>
                     <th>누적연체금액</th>
                     <th>누적매출금액</th>
+                    <th>사용쿠폰포인트</th>
                     <th>성별</th>
                     <th>나이</th>
                     <th>누적대여일</th>
@@ -141,6 +116,7 @@
     }
 </script>
 <script th:src="@{/js/statistics/dropdownStores.js}"></script>
+<script th:src="@{/js/statistics/getCustomerData.js}"></script>
 </body>
 
 </html>

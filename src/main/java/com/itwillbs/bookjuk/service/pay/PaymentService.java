@@ -39,8 +39,8 @@ public class PaymentService {
 	 private final UserRepository userRepository;
 	 private final PointDealRepository pointDealRepository;
 
-	
-	 
+
+
 
 
 	//모든 결제 정보를 DB에서 조회하는 메서드
@@ -129,14 +129,14 @@ public class PaymentService {
             .pointUsed(pointUsed)
             .build();
 	        
-	        
+
 	        paymentRepository.save(paymentEntity);
 	        // 결제 금액에 따른 포인트 업데이트
 	        int amount = iamportPayment.getAmount().intValue(); //결제 금액 정수형으로 변환
 	        updateUserPoint(user, amount); // 결제 금액을 기반으로 포인트 업데이트
 	        
 	        updatePointDealTable(amount, userContentEntity, paymentEntity, PointPayStatus.SUCCESSFUL);
-	        
+
 
 	    } catch (IamportResponseException e) {
 	        // 아임포트 API 호출 실패 시
@@ -309,7 +309,7 @@ public class PaymentService {
                 updateCancelPoint.setUserPoint(updatedPoints);
                 userContentRepository.save(updateCancelPoint);
                 updatePointDealTable(-amount, updateCancelPoint, paymentEntity, PointPayStatus.CANCEL);
-                
+
                 System.out.println("결제 정보5>>" + updateCancelPoint);
                 
                 System.out.println("포인트 차감 완료: " + pointsToCancel + "포인트");
@@ -319,7 +319,7 @@ public class PaymentService {
         } else {
             System.out.println("결제 정보가 없습니다.");
         }
-        
+
 
     }
 
@@ -327,18 +327,18 @@ public class PaymentService {
 	public Optional<UserEntity> getUserNum(Long userNum) {
 		return userRepository.findById(userNum);
 	}
-	
+
 	public Page<PaymentEntity> getPaymentList(Pageable pageable) {
 		return paymentRepository.findAll(pageable);
 	}
-	
+
 	//검색
 	public Page<PaymentEntity> findByPaymentIdContaining(Pageable pageable, String search) {
 		return paymentRepository.findByPaymentIdContaining(pageable, search);
 	}
-	
-	
-	//1.point_deal table 업데이트 메서드 
+
+
+	//1.point_deal table 업데이트 메서드
 	private void updatePointDealTable(int amount, UserContentEntity userContentEntity,
 	                                      PaymentEntity paymentEntity, PointPayStatus pointPayStatus) {
 	        PointDealEntity pointDealEntity = PointDealEntity.builder()

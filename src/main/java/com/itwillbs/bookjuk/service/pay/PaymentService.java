@@ -309,7 +309,7 @@ public class PaymentService {
                 // 업데이트된 포인트 저장
                 updateCancelPoint.setUserPoint(updatedPoints);
                 userContentRepository.save(updateCancelPoint);
-                updatePointDealTable(amount, updateCancelPoint, paymentEntity, PointPayStatus.CANCEL);
+                updatePointDealTable(-amount, updateCancelPoint, paymentEntity, PointPayStatus.CANCEL);
                 
                 System.out.println("결제 정보5>>" + updateCancelPoint);
                 

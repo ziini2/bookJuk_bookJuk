@@ -33,6 +33,4 @@ Optional<List<PointDealEntity>> findAllByReqDateBetweenAndPointPayNameInOrderByR
     Page<PointDealEntity> findAllFirstByReqDateBetweenOrderByReqDateDesc(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
     Page<PointDealEntity> findAllFirstByReqDateBetweenAndPointPayNameOrderByReqDateDesc(LocalDateTime startDate, LocalDateTime endDate, String pointOption, Pageable pageable);
-
-    Optional<List<PointDealEntity>> findAllFirstByReqDateBetweenAndPointPayNameOrderByReqDateDesc(LocalDateTime startDate, LocalDateTime endDate, String pointOption);
 }

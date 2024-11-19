@@ -87,6 +87,7 @@
 						<th>대여현황</th>
 						<th>도서상태</th>
 						<th>대여금액</th>
+						<th>지점명</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -104,6 +105,13 @@
 								data-rent-status="${book.rentStatus ? '가능' : '불가'}"></span></td>
 						<td th:text="${book.bookStatus.name()}" data-book-status="${book.bookStatus.name()}"></td>
 						<td th:text="${book.rentMoney}" data-rent-money="${book.rentMoney}"></td>
+						<td>
+						    <span th:each="store : ${storeList}" 
+						          th:if="${store.storeCode == book.storeCode}" 
+						          th:text="${store.storeName}"> 
+						    </span>
+						</td>
+
 					</tr>
 					<tr th:if="${#lists.isEmpty(bookList.content)}">
 						<td colspan="11" class="text-center">등록된 도서가 없습니다.</td>

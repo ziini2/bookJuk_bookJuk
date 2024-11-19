@@ -33,15 +33,16 @@ document.addEventListener('DOMContentLoaded', function () {
             success: function (data) {
                 // 상위 5개 지점만 필터링
                 if (data[selectedOption]) {
-                    const filteredData = data[selectedOption]
+                    let filteredData = data[selectedOption]
                     if (selectedOption === "store") {
 
-                        filteredData.sort((a, b) => (b.rentalFee + b.overdueFee) - (a.rentalFee + a.overdueFee)) // 총 매출을 기준으로 정렬
+                        filteredData = filteredData.sort((a, b) => (b.rentalFee + b.overdueFee) - (a.rentalFee + a.overdueFee)) // 총 매출을 기준으로 정렬
                             .slice(0, 5); // 상위 5개 항목 선택
                     }
-
                     updateChart(filteredData);
-                } else {
+
+
+                }  else {
                     console.error("데이터 형식이 올바르지 않습니다.", data);
                 }
 
@@ -49,12 +50,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 d3.selectAll("input[name='point-option']").on("change", function () {
                     selectedOption = this.value;
                     if (data[selectedOption]) {
-                        const filteredData = data[selectedOption]
+                        let filteredData = data[selectedOption]
                         if (selectedOption === "store") {
-                            filteredData.sort((a, b) => (b.rentalFee + b.overdueFee) - (a.rentalFee + a.overdueFee)) // 총 매출을 기준으로 정렬
+                            filteredData = filteredData.sort((a, b) => (b.rentalFee + b.overdueFee) - (a.rentalFee + a.overdueFee)) // 총 매출을 기준으로 정렬
                                 .slice(0, 5); // 상위 5개 항목 선택
 
-                            updateChart(filteredData);
                         }
                         updateChart(filteredData);
                     } else {

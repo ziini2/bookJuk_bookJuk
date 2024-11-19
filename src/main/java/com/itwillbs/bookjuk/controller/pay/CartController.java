@@ -1,29 +1,38 @@
 package com.itwillbs.bookjuk.controller.pay;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
-import com.itwillbs.bookjuk.entity.books.BooksEntity;
 import com.itwillbs.bookjuk.service.pay.CartService;
-import com.itwillbs.bookjuk.service.userPage.UserPageService;
 import com.itwillbs.bookjuk.util.SecurityUtil;
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
-@RequiredArgsConstructor
 public class CartController {
 
+    @Autowired
     private final CartService cartService;
-    private final UserPageService userPageService;
 
+    public CartController(CartService cartService) {
+        this.cartService = cartService;
+    }
 
     @GetMapping("/user/cart")
     public String getCartItems(HttpSession session, Model model) {
@@ -32,29 +41,24 @@ public class CartController {
         if (currentUserNum == null) {
             // 유저가 로그인하지 않은 경우, 로그인 페이지로 리다이렉트
             return "redirect:/login";
-        }  
+        }
 
+        // 세션에 저장된 유저 ID와 현재 유저 ID 비교
+        Long sessionUserNum = (Long) session.getAttribute("userNum");
+        if (sessionUserNum == null || !sessionUserNum.equals(currentUserNum)) {
+            // 세션 초기화 후 현재 유저 정보 저장
+            session.setAttribute("userNum", currentUserNum);
+            session.setAttribute("myCartBookId", new ArrayList<>());
+        }
 
-        //여기서 세션에 저장된 arrayList 가져와서 책 조회해서 책 정보 보내고
-        List<BooksEntity> bookList = cartService.getUserCartItems((ArrayList<Long>) session.getAttribute("myCartBookId"));
-        log.info("bookList: {}", bookList);
-        model.addAttribute("selectMyBooks", bookList);
-        //총 책권수 및 총 금액
-        Map<String, Integer> MyCartBookInfoList = cartService.getMyCartBookInfo(bookList);
-        model.addAttribute("MyCartBookInfoList", MyCartBookInfoList);
-        addCommonAttributes(model);
-        //그다음에 그 책 정보로 대여중으로 바궈놓는 로직 그리고 포인트 차감 + 포인트사용내역 포함
+        // 장바구니 데이터를 가져옵니다.
+        List<BookInfoEntity> bookInfoList = cartService.getUserCartItems(session);
+
+        // Model에 bookInfoList 추가
+        model.addAttribute("bookInfoList", bookInfoList);
 
         // cart.html 뷰로 이동
         return "/pay/cart";
-    }
-
-    //유저 포인트를 모델에 담아주는 메서드
-    private void addCommonAttributes(Model model) {
-        // 현재 로그인된 유저의 정보를 모델에 추가
-        if (SecurityUtil.getUserNum() != null) {
-            model.addAttribute("userPoint", userPageService.getUserPoint(SecurityUtil.getUserNum()));
-        }
     }
 
 //    @PostMapping("/rent")

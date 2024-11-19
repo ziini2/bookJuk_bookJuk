@@ -35,13 +35,13 @@ public class PayController {
     		@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 			@RequestParam(value = "size", defaultValue = "15", required = false) int size,
 			@RequestParam(value = "search", defaultValue = "", required = false) String search) {
-
+    	
 
 		Pageable pageable = PageRequest.of(page-1, size, Sort.by("paymentId").descending());
 
 //		Page<StoreEntity> storeList = customerService.getStoreList(pageable);
 		Page<PaymentEntity> paymentList = paymentService.findByPaymentIdContaining(pageable, search);
-
+		
 		model.addAttribute("paymentList", paymentList);
 		model.addAttribute("currentPage", page);
 		model.addAttribute("pageSize", size);
@@ -56,8 +56,8 @@ public class PayController {
 		}
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
-
-
+    	
+    	
         //List<PaymentEntity> payments = paymentService.getAllPayments();
         model.addAttribute("paymentList", paymentList);
 
@@ -77,7 +77,12 @@ public class PayController {
 //
 //		return "/pay/cart";
 //	}
+	
+	@GetMapping("/user/pay_detail")
+	public String payDetail() {
 
+		return "/pay/pay_detail";
+	}
 	
 //	@GetMapping("/pay_add")
 //	public String payAdd(Model model) {
@@ -117,7 +122,7 @@ public class PayController {
 	    String userEmail = paymentService.getUserEmail(userNum);
 
 	    // userPoint는 user_content 테이블에서 memberNum으로 조회
-	    int userPoint = paymentService.getUserPoint(userEntity.get().getUserNum());
+	    Long userPoint = paymentService.getUserPoint(userEntity.get().getUserNum());
 
 	    // 결제 내역을 조회할 때 memberNum을 사용
 	    List<PaymentEntity> userPayments = paymentService.getPaymentsByMemberNum(userNum);

@@ -14,6 +14,7 @@ public class SmsService {
 
     //실제 SMS 인증 서비스
     public String sendSMS(String phoneNumber){
+        log.info("sendSMS phoneNumber: {}", phoneNumber);
         String code = Integer.toString((int)(Math.random() * (999999 - 100000 + 1)) + 100000);
         smsCertificationUtil.sendSMS(phoneNumber, code);
         return code;

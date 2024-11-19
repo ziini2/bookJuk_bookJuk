@@ -33,3 +33,45 @@ table {
 .d-flex.gap-3 {
 	align-items: center;
 }
+
+/* 테이블 셀 중앙 정렬 */
+.table th, .table td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+/* 빈 데이터 메시지 중앙 정렬 */
+.table .text-center {
+	text-align: center;
+	vertical-align: middle;
+}
+
+/* 기본 행 스타일 */
+.table-striped tbody tr {
+	transition: background-color 0.2s ease, box-shadow 0.2s ease, transform
+		0.2s ease;
+}
+
+/* 커서가 올라갔을 때의 스타일 */
+.table-striped tbody tr:hover {
+	background-color: #cdd3da; /* 더 어두운 배경색 */
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.7); /* 그림자 강도를 조절 */
+	border: 1px solid #ced4da; /* 경계선을 추가하여 명확한 구분 */
+/* 	transform: scale(1.01); 덜 확대되도록 설정 */
+	cursor: pointer; /* 커서를 포인터로 변경 */
+}
+
+.pagination {
+    --bs-pagination-color: #fff;
+    --bs-pagination-bg: #198753;
+    --bs-pagination-border-color: #198753;
+    --bs-pagination-hover-color: #fff;
+    --bs-pagination-hover-bg: #157347;
+    --bs-pagination-hover-border-color: #198754;
+    --bs-pagination-active-color: #fff;
+    --bs-pagination-active-bg: #157347;
+    --bs-pagination-active-border-color: #157347;
+
+    --bs-pagination-focus-color: #fff;
+    --bs-pagination-focus-bg: #115c3a;
+}

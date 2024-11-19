@@ -7,15 +7,20 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.bookjuk.domain.pay.PaymentStatus;
+import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
 import com.itwillbs.bookjuk.dto.PaymentDTO;
 import com.itwillbs.bookjuk.entity.UserContentEntity;
 import com.itwillbs.bookjuk.entity.UserEntity;
 import com.itwillbs.bookjuk.entity.pay.PaymentEntity;
+import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
 import com.itwillbs.bookjuk.repository.PaymentRepository;
+import com.itwillbs.bookjuk.repository.PointDealRepository;
 import com.itwillbs.bookjuk.repository.UserContentRepository;
 import com.itwillbs.bookjuk.repository.UserRepository;
 import com.itwillbs.bookjuk.util.SecurityUtil;
@@ -24,10 +29,7 @@ import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class PaymentService {
 
@@ -35,6 +37,9 @@ public class PaymentService {
 	 private final PaymentRepository paymentRepository;
 	 private final UserContentRepository userContentRepository;
 	 private final UserRepository userRepository;
+	 private final PointDealRepository pointDealRepository;
+
+	
 	 
 
 
@@ -59,15 +64,17 @@ public class PaymentService {
                           @Value("${iamport.api_secret}") String apiSecret,
                           PaymentRepository paymentRepository,
                           UserContentRepository userContentRepository,
-                          UserRepository userRepository) {
+                          UserRepository userRepository,
+                          PointDealRepository pointDealRepository) {
         this.iamportClient = new IamportClient(apiKey, apiSecret);
         this.paymentRepository = paymentRepository;
         this.userContentRepository = userContentRepository;
         this.userRepository = userRepository;
+        this.pointDealRepository = pointDealRepository;
     }
 
 	
-	//결제 검증 후 저장(클라이언트가 조작 가격 조작 못하게)
+	//결제 검증 후 저장(클라이언트가 조작 가격 조작 못하게 함)
     public void verifyAndSavePayment(PaymentDTO paymentDTO) throws IamportResponseException, IOException {
     
 	  try {
@@ -122,10 +129,13 @@ public class PaymentService {
             .pointUsed(pointUsed)
             .build();
 	        
+	        
 	        paymentRepository.save(paymentEntity);
 	        // 결제 금액에 따른 포인트 업데이트
 	        int amount = iamportPayment.getAmount().intValue(); //결제 금액 정수형으로 변환
 	        updateUserPoint(user, amount); // 결제 금액을 기반으로 포인트 업데이트
+	        
+	        updatePointDealTable(amount, userContentEntity, paymentEntity, PointPayStatus.SUCCESSFUL);
 	        
 
 	    } catch (IamportResponseException e) {
@@ -299,6 +309,7 @@ public class PaymentService {
                 // 업데이트된 포인트 저장
                 updateCancelPoint.setUserPoint(updatedPoints);
                 userContentRepository.save(updateCancelPoint);
+                updatePointDealTable(-amount, updateCancelPoint, paymentEntity, PointPayStatus.CANCEL);
                 
                 System.out.println("결제 정보5>>" + updateCancelPoint);
                 
@@ -309,9 +320,38 @@ public class PaymentService {
         } else {
             System.out.println("결제 정보가 없습니다.");
         }
+        
+
     }
 
+    //유저번호 불러오기
 	public Optional<UserEntity> getUserNum(Long userNum) {
 		return userRepository.findById(userNum);
 	}
+	
+	public Page<PaymentEntity> getPaymentList(Pageable pageable) {
+		return paymentRepository.findAll(pageable);
+	}
+	
+	//검색
+	public Page<PaymentEntity> findByPaymentIdContaining(Pageable pageable, String search) {
+		return paymentRepository.findByPaymentIdContaining(pageable, search);
+	}
+	
+	
+	//1.point_deal table 업데이트 메서드 
+	private void updatePointDealTable(int amount, UserContentEntity userContentEntity,
+	                                      PaymentEntity paymentEntity, PointPayStatus pointPayStatus) {
+	        PointDealEntity pointDealEntity = PointDealEntity.builder()
+	                .pointPrice(amount)
+	                .pointPayStatus(pointPayStatus)
+	                .reqDate(LocalDateTime.now())
+	                .pointPayName("충전")
+	                .userContentEntity(userContentEntity)
+	                .paymentEntity(paymentEntity)
+	                .build();
+
+	        pointDealRepository.save(pointDealEntity);
+	    }
+
 }

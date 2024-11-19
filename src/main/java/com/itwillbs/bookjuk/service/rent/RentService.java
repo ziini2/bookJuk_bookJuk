@@ -45,7 +45,7 @@ public class RentService {
                 rent.getUser().getUserId(),
                 rent.getUser().getUserName(),
                 rent.getUser().getUserPhone(),
-                rent.getBook().getBookInfoEntity().getBookNum(),
+                rent.getBook().getBooksId(),
                 rent.getBook().getBookInfoEntity().getIsbn(),
                 rent.getBook().getBookInfoEntity().getBookName(),
                 rent.getStoreCode().getStoreName(),

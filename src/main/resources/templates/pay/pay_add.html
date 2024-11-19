@@ -328,7 +328,7 @@
                     console.log("결제 완료");
                     //결제 성공 후, 서버로 결제 정보 전송 (POST 방식)
                     $.ajax({
-                        url: "/payment/process", //결제 검증 후 DB에 저장하는 엔드포인트
+                        url: "/user/payment/process", //결제 검증 후 DB에 저장하는 엔드포인트
                         method: "POST",
                         contentType: "application/json",
                         data: JSON.stringify({
@@ -380,7 +380,7 @@
 	    function cancelPay(paymentId, refundButton) {
 	        // 서버에 결제 취소 요청 보내기
 	        $.ajax({
-	            url: "/payment/cancel",  //결제 취소를 처리할 서버 엔드포인트
+	            url: "/user/payment/cancel",  //결제 취소를 처리할 서버 엔드포인트
 	            method: "POST",
 	            data: JSON.stringify({ paymentId: paymentId }),
 	            contentType: "application/json",

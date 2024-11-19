@@ -80,7 +80,7 @@ public class DashRestService {
 
     public long getDailyDelay() {
 
-        Optional<Long> delay = rentRepository.countByRentEndAfterAndRentStatusIsFalse(now);
+        Optional<Long> delay = rentRepository.countByRentEndBeforeAndRentStatusIsFalse(now);
 
         return delay.orElse(0L);
     }
@@ -222,8 +222,10 @@ public class DashRestService {
 
         startDate = getStartDate(period, startDate);
 
-        Optional<List<PointDealEntity>> rawData = pointDealRepository.findAllFirstByReqDateBetweenOrderByReqDateDesc(
-                LocalDateTime.of(startDate, LocalDateTime.MIN.toLocalTime()), LocalDateTime.of(endDate, LocalDateTime.MAX.toLocalTime()));
+        List<String> pointOptions = List.of("대여료", "연체료");
+
+        Optional<List<PointDealEntity>> rawData = pointDealRepository.findAllByReqDateBetweenAndPointPayNameInOrderByReqDateDesc(
+                LocalDateTime.of(startDate, LocalDateTime.MIN.toLocalTime()), LocalDateTime.of(endDate, LocalDateTime.MAX.toLocalTime()), pointOptions);
 
         if (rawData.isEmpty()) {
             return PointResponseDTO.builder().build();

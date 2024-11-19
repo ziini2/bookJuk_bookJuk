@@ -115,7 +115,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 let selectedOption = $("input[name='delay-option']:checked").val();
 
                 function renderInitialChart() {
-                    const initialData = data[selectedOption]; // 초기 데이터: 성별
+                    const initialData = data[selectedOption];
+                    if (selectedOption === 'store') {
+                        initialData.sort((a, b) => b.count - a.count).slice(0, 5);
+                    }
                     updateAxis(initialData);
                     updateChart(initialData);
                 }

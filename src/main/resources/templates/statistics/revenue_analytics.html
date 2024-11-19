@@ -44,7 +44,7 @@
 
     <!-- 분석 페이지 -->
     <div class="statistics-container">
-        <div class="page-title"><h2>매출 분석</h2></div>
+        <div class="page-title"><h2>포인트 분석</h2></div>
         <!-- 상단 버튼 영역 -->
         <div class="d-flex justify-content-between mb-2">
             <div class="select-bar">
@@ -73,10 +73,9 @@
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
                         <li><a class="dropdown-item" onclick="selectOption('salesItem', '전체', 'salesItem')">전체</a>
                         </li>
-                        <li><a class="dropdown-item" onclick="selectOption('salesItem', '대여 수입', 'salesItem')">대여
-                            수입</a></li>
+                        <li><a class="dropdown-item" onclick="selectOption('salesItem', '대여료', 'salesItem')">대여료</a></li>
                         <li><a class="dropdown-item"
-                               onclick="selectOption('salesItem', '반납지연수입', 'salesItem')">반납지연수입</a>
+                               onclick="selectOption('salesItem', '연체료', 'salesItem')">연체료</a>
                         </li>
                     </ul>
                 </div>
@@ -92,9 +91,8 @@
                 </div>
             </div>
             <div class="select-bar">
-                <button type="button" class="btn btn-success me-2" onclick="sendRequest('current')">엑셀다운 (현재 페이지)
-                </button>
-                <button type="button" class="btn btn-success" onclick="sendRequest('all')">엑셀다운 (전체 페이지)</button>
+                <button type="button" class="btn btn-success me-2 revenue-current-page-excel">엑셀다운 (현재 페이지)</button>
+                <button type="button" class="btn btn-success me-2 revenue-current-all-excel">엑셀다운 (전체 페이지)</button>
                 <button class="btn btn-primary" type="button" id="search-button" aria-expanded="false">
                     검색
                 </button>
@@ -125,21 +123,6 @@
             </table>
         </div>
         <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
         </ul>
     </div>
 </main>
@@ -166,7 +149,12 @@
         const genre = selectedOptions.genre;
     }
 </script>
+<script th:src="@{/js/statistics/excelDownload.js}"></script>
 <script th:src="@{/js/statistics/dropdownStores.js}"></script>
+<script th:src="@{/js/statistics/getRevenueData.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+
 </body>
 
 </html>

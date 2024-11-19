@@ -62,51 +62,51 @@
          <div class="card">
            <div class="card-body">
 		 
-		   <!--검색 카드-->
-		   <div class="card">
-		   <div class="card-body">
-		   <h5 class="card-title" style="padding-left: 12%;">검색 조건</h5>
+<!--		   검색 카드-->
+<!--		   <div class="card">-->
+<!--		   <div class="card-body">-->
+<!--		   <h5 class="card-title" style="padding-left: 12%;">검색 조건</h5>-->
 		                   
-		      <nav>
-		      <ol class="breadcrumb" style="justify-content: center;">
-		      <li class="breadcrumb-item" style="padding-top: 2%;"><a href="#">결제 상태:</a></li>
+<!--		      <nav>-->
+<!--		      <ol class="breadcrumb" style="justify-content: center;">-->
+<!--		      <li class="breadcrumb-item" style="padding-top: 2%;"><a href="#">결제 상태:</a></li>-->
 		                           
-		      <!--결제 상태 드롭바-->
-		      <div class="dropdown-payStatus" style="padding-top: 0.8%;">
-		          <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-				   선택
-		          </button>
-		          <ul class="dropdown-menu align-middle">
-		              <li><a class="dropdown-item" href="#">결제 완료</a></li>
-		              <li><a class="dropdown-item" href="#">결제 확정</a></li>
-		              <li><a class="dropdown-item" href="#">결제 취소</a></li>
-		          </ul>
-		      </div>
-		      <!--결제 상태 드롭바 End-->
+<!--		      결제 상태 드롭바-->
+<!--		      <div class="dropdown-payStatus" style="padding-top: 0.8%;">-->
+<!--		          <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--				   선택-->
+<!--		          </button>-->
+<!--		          <ul class="dropdown-menu align-middle">-->
+<!--		              <li><a class="dropdown-item" href="#">결제 완료</a></li>-->
+<!--		              <li><a class="dropdown-item" href="#">결제 확정</a></li>-->
+<!--		              <li><a class="dropdown-item" href="#">결제 취소</a></li>-->
+<!--		          </ul>-->
+<!--		      </div>-->
+<!--		      결제 상태 드롭바 End-->
 		                           
 		                           
-		      <li class="breadcrumb-item" style="padding-left: 10%; padding-top: 2%;"><a href="#">기간별: </a></li>
+<!--		      <li class="breadcrumb-item" style="padding-left: 10%; padding-top: 2%;"><a href="#">기간별: </a></li>-->
 		                           
-		      <!--달력-->
-			  <div class="custom-date-picker" style="padding-top: 0.8%;">
-			    <form autocomplete="off">
-			  <div class="input-group input-daterange custom-date-picker">
-			   <input type="text" class="form-control input1" placeholder="Start Date" readonly>
-			    <input type="text" class="form-control input2" placeholder="End Date" readonly>
-			     </div>
-			      </form>
-			      </div>
+<!--		      달력-->
+<!--			  <div class="custom-date-picker" style="padding-top: 0.8%;">-->
+<!--			    <form autocomplete="off">-->
+<!--			  <div class="input-group input-daterange custom-date-picker">-->
+<!--			   <input type="text" class="form-control input1" placeholder="Start Date" readonly>-->
+<!--			    <input type="text" class="form-control input2" placeholder="End Date" readonly>-->
+<!--			     </div>-->
+<!--			      </form>-->
+<!--			      </div>-->
 
-			  <li class="breadcrumb-item active" style="padding-left: 10%; padding-top: 2%;">검색: </li>
+<!--			  <li class="breadcrumb-item active" style="padding-left: 10%; padding-top: 2%;">검색: </li>-->
 		      
-			  <form action="/search/pay_list" method="GET">                         
-		      <div class="search-bar">
-		          <form class="d-flex">
-		          <input onkeyup="enterkey()" name="searchValue" class="form-control me-2" type="search" aria-label="Search">
-		          <button class="btn btn-outline-success" type="submit">Search</button>
-		          </form>
-		      </div>
-			  </form>
+<!--			  <form action="/search/pay_list" method="GET">                         -->
+<!--		      <div class="search-bar">-->
+<!--		          <form class="d-flex">-->
+<!--		          <input onkeyup="enterkey()" name="searchValue" class="form-control me-2" type="search" aria-label="Search">-->
+<!--		          <button class="btn btn-outline-success" type="submit">Search</button>-->
+<!--		          </form>-->
+<!--		      </div>-->
+<!--			  </form>-->
 		      <!-- End Search Bar -->
 		                               
 <!--		      <li class="breadcrumb-item active" style="padding-left: 2%; padding-top: 1%;">고객명: </li>-->
@@ -118,7 +118,51 @@
 <!--		          </form>-->
 <!--		      </div>-->
 		      <!-- End Search Bar -->
-		                           
+			  
+			  <!--     검색 카드-->
+			           <div class="card">
+			             <div class="card-body">
+			               <h5 class="card-title" style="padding-left: 4%;">검색 조건</h5>
+			           
+			               <nav>
+			                 <ol class="breadcrumb" style="justify-content: center;">
+			                   <li class="breadcrumb-item" style="padding-top: 1%; padding-left:10%"><a href="#">결제 상태:</a></li>
+			               
+			               <!--결제 상태 드롭바-->
+			               <div class="dropdown-payStatus" style="padding-top: 0.5%;">
+			                 <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+			                   선택
+			                 </button>
+			                 <ul class="dropdown-menu align-middle">
+			                   <li><a class="dropdown-item" href="#">결제 완료</a></li>
+			                   <li><a class="dropdown-item" href="#">결제 취소</a></li>
+							   <li><a class="dropdown-item" href="#">구매 확정</a></li>
+			                 </ul>
+			               </div>
+			               <!--결제 상태 드롭바 End-->
+			               
+			               
+			               <li class="breadcrumb-item" style="padding-left: 2%; padding-top: 1%;"><a href="#">기간별: </a></li>
+			               
+			               <!--달력-->
+			               <div class="custom-date-picker">
+			               <form autocomplete="off">
+			                   <div class="input-group input-daterange custom-date-picker">
+			                   <input type="text" class="form-control input1" placeholder="Start Date" readonly>
+			                   <input type="text" class="form-control input2" placeholder="End Date" readonly>
+			                   </div>
+			               </form>
+			               </div>
+			                 
+			               <li class="breadcrumb-item active" style="padding-left: 2%; padding-top: 1%;">검색: </li>
+			                 
+			               <div class="search-bar">
+			               <form class="d-flex" method="GET" action="/admin/pay_list">
+			                   <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+			                    <button class="btn btn-outline-success" type="submit">Search</button>
+			                </form>
+			                </div>
+			                <!-- End Search Bar -->
 		      </ol>
 		      </nav>
 		     </div>
@@ -143,7 +187,7 @@
 		         </thead>
 		                  
 				<tbody>
-					<tr th:each="payment : ${payments}">
+					<tr th:each="payment : ${paymentList}">
 				        <td th:text="${payment.userContentEntity.userEntity.userNum}"></td>
 						<td th:text="${payment.userContentEntity.userEntity.userName}"></td>
 						<td th:text="${payment.priceName}"></td>

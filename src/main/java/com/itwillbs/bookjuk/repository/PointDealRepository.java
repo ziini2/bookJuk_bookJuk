@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,7 +17,8 @@ public interface PointDealRepository extends JpaRepository<PointDealEntity, Long
 
     // dashboard에서 사용
     @Query("SELECT SUM(p.pointPrice) FROM PointDealEntity p WHERE p.reqDate BETWEEN :startOfDay AND :endOfDay")
-    Optional<Long> sumAmountByReqDateBetween(LocalDateTime startOfDay, LocalDateTime endOfDay);
+    Optional<Long> sumAmountByReqDateBetween(@Param("startOfDay") LocalDateTime startOfDay, 
+                                             @Param("endOfDay") LocalDateTime endOfDay);
 
     Optional<List<PointDealEntity>> findAllFirstByReqDateBetweenOrderByReqDateDesc(LocalDateTime of, LocalDateTime of1);
 

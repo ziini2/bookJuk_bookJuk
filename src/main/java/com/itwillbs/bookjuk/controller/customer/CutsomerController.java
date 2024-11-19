@@ -37,9 +37,7 @@ public class CutsomerController {
 			@RequestParam(value = "size", defaultValue = "15", required = false) int size,
 			@RequestParam(value = "search", defaultValue = "", required = false) String search) {
 
-		Pageable pageable = PageRequest.of(page - 1, size
-//				,Sort.by("storeCode").descending()
-		);
+		Pageable pageable = PageRequest.of(page - 1, size, Sort.by("storeRegiDate").descending());
 
 //		Page<StoreEntity> storeList = customerService.getStoreList(pageable);
 		// 검색어받아서 페이지네이션
@@ -96,15 +94,16 @@ public class CutsomerController {
 		return "redirect:/admin/store/store_info?storeCode=" + storeEntity.getStoreCode();
 	}
 	
-	// 지점 폐점 처리하는 함수(비동기)
+	// 지점 폐점, 운영 처리하는 함수(비동기)
 	@ResponseBody
 	@PostMapping("/admin/store/store_delete") // json, Map으로 받을수 있음 
-	public String storeDelete(@RequestBody Map<String, Long> requestBody) {
+	public String storeDelete(@RequestBody Map<String, Object> requestBody) {
 		log.info("storeDelete : " + requestBody.get("storeCode"));
 
-		customerService.deleteStore(requestBody.get("storeCode"));
+		customerService.deleteStore(Long.valueOf(requestBody.get("storeCode").toString()), 
+									requestBody.get("status").toString());
 
-		return "1";
+		return requestBody.get("status").toString();
 	}
 
 	// 유저목록 가져오는 함수
@@ -114,7 +113,7 @@ public class CutsomerController {
 			@RequestParam(value = "search", defaultValue = "", required = false) String search) {
 
 		Pageable pageable = PageRequest.of(page - 1, size
-//				,Sort.by("storeCode").descending()
+//				,Sort.by("").descending()
 		);
 
 		Page<UserEntity> userList = customerService.findByUserContaining(pageable, search);
@@ -149,13 +148,13 @@ public class CutsomerController {
 		return "customer/user_info";
 	}
 
-	// 유저 탈퇴상태 함수 (비동기)
+	// 유저 탈퇴, 활성 함수 (비동기)
 	@ResponseBody
 	@PostMapping("/admin/user/userDelete")
-	public int userDelete(@RequestBody Map<String, Long> requestBody) {
-
-		customerService.deleteUser(requestBody.get("userNum"));
-
-		return 1;
+	public String userDelete(@RequestBody Map<String, Object> requestBody) {
+		log.info("userdel {}", requestBody.get("userNum"));
+		customerService.deleteUser(Long.valueOf(requestBody.get("userNum").toString()),
+								   Boolean.valueOf(requestBody.get("status").toString()));
+		return requestBody.get("status").toString();
 	}
 }

@@ -1,15 +1,14 @@
 package com.itwillbs.bookjuk.service.userPage;
 
+import com.itwillbs.bookjuk.dto.BookRankDTO;
 import com.itwillbs.bookjuk.dto.UserPageBooksDTO;
 import com.itwillbs.bookjuk.dto.UserPaginationDTO;
 import com.itwillbs.bookjuk.entity.GenreEntity;
 import com.itwillbs.bookjuk.entity.StoreEntity;
 import com.itwillbs.bookjuk.entity.UserContentEntity;
+import com.itwillbs.bookjuk.entity.bookInfo.BookInfoEntity;
 import com.itwillbs.bookjuk.entity.books.BooksEntity;
-import com.itwillbs.bookjuk.repository.BooksRepository;
-import com.itwillbs.bookjuk.repository.GenreRepository;
-import com.itwillbs.bookjuk.repository.StoreRepository;
-import com.itwillbs.bookjuk.repository.UserContentRepository;
+import com.itwillbs.bookjuk.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +25,7 @@ public class UserPageService {
     private final UserContentRepository userContentRepository;
     private final GenreRepository genreRepository;
     private final StoreRepository storeRepository;
+    private final BookInfoRepository bookInfoRepository;
 
 
     //대여가능한 책 리스트 반환
@@ -73,7 +73,20 @@ public class UserPageService {
         return genreRepository.findAll();
     }
 
+    //전체 지점 리스트 반환
     public List<StoreEntity> getStoreList() {
         return storeRepository.findAll();
+    }
+
+
+    //대여 랭킹순 책 이미지 리스트 반환
+    public List<BookRankDTO> getBookRank() {
+        Pageable pageable = PageRequest.of(0, 6);
+        List<BookInfoEntity> bookInfoEntityList = bookInfoRepository.findByBooksByRentCount(pageable);
+        return bookInfoEntityList.stream().map(book -> BookRankDTO.builder()
+                .bookImage(book.getBookImage())
+                .rentCount(book.getRentCount())
+                .bookName(book.getBookName())
+                .build()).toList();
     }
 }

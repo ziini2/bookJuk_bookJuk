@@ -44,14 +44,13 @@ public class SecurityConfig {
 
         //접근 권한에 대한 설정 부분
         http.authorizeHttpRequests((auth) -> auth
-                //개발단계에서 사용할 부분(배포때 지워야함)
-//                .requestMatchers("/**").permitAll()
                 //소셜로그인 회원은 전화번호 입력하지않으면 계속해서 전화번호 입력창으로 리다이렉트!
                 .requestMatchers("/login/phone").hasAnyRole("INACTIVE")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/", "/userMain", "/main/**", "/login/**").permitAll()
                 .requestMatchers("/user/**").hasAnyRole("ADMIN", "USER") //여기에 로그인 된사람만 할수있는 페이지 추가
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated() //다른요청 로그인된 유저만 사용가능
+                .anyRequest().denyAll() //다른요청 모두 불가
         );
 
         //권한이 없는 페이지에 접근할 때 설정

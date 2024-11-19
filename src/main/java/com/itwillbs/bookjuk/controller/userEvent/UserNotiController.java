@@ -27,11 +27,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/user")
 public class UserNotiController {
 
 	private final NotificationService notiService;
 	
-	@GetMapping("/userNoti")
+	@GetMapping("/noti")
 	public String notification() {
 		return "/notification/userNotification";
 	}

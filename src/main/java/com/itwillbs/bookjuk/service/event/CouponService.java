@@ -1,5 +1,6 @@
 package com.itwillbs.bookjuk.service.event;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +12,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
 import com.itwillbs.bookjuk.dto.CouponDTO;
 import com.itwillbs.bookjuk.entity.UserContentEntity;
 import com.itwillbs.bookjuk.entity.event.CouponEntity;
+import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
+import com.itwillbs.bookjuk.repository.PointDealRepository;
 import com.itwillbs.bookjuk.repository.UserContentRepository;
 import com.itwillbs.bookjuk.repository.event.CouponRepository;
 
@@ -27,6 +31,7 @@ public class CouponService {
 	
 	private final CouponRepository couponRepository;
 	private final UserContentRepository userContentRepository;
+	private final PointDealRepository pointDealRepository;
 	
 	public Page<CouponDTO> getAllCoupon(Long userNum, Pageable pageable) {
 		try {
@@ -126,6 +131,17 @@ public class CouponService {
             int reward = userContentEntity.getUserPoint() + couponReward;
             userContentEntity.setUserPoint(reward);
             userContentRepository.save(userContentEntity);
+            
+            PointDealEntity pointDealEntity = PointDealEntity.builder()
+    				.pointPrice(couponReward)
+    				.pointPayStatus(PointPayStatus.SUCCESSFUL)
+    				.reqDate(LocalDateTime.now())
+    				.pointPayName("쿠폰")
+    				.couponId(coupon)
+    				.userContentEntity(userContentEntity)
+    				.build();
+            pointDealRepository.save(pointDealEntity);
+            
             return true;
         }
         return false;

@@ -63,7 +63,7 @@ public class UserInfoService {
             userInfoDTO.setUserPoint(userContentEntity.getUserPoint());
             userInfoDTO.setBringBook(userContentEntity.getBringBook());
         } else {
-            log.warn("UserContentEntity is null for userNum={}", userEntity.getUserNum());
+            log.warn("UserContentEntity null, user, {}", userEntity.getUserNum());
             userInfoDTO.setUserPoint(0); // 기본값 설정
             userInfoDTO.setBringBook(0); // 기본값 설정
         }

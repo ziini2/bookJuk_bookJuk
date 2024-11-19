@@ -2,11 +2,13 @@ package com.itwillbs.bookjuk.controller.event;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.bookjuk.dto.NotiDTO;
 import com.itwillbs.bookjuk.service.event.NotificationService;
+import com.itwillbs.bookjuk.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -100,6 +103,23 @@ public class NotificationController {
             return ResponseEntity.notFound().build();
         }
     }
+	
+	@PostMapping("/sendNotifications")
+	public ResponseEntity<?> sendNotifications(@RequestBody Map<String, Object> request) {
+	    try {
+	    	Long userNum = SecurityUtil.getUserNum();
+	    	@SuppressWarnings("unchecked")
+			List<String> selectedRecipient = (List<String>) request.get("notiRecipient");
+	    	List<Long> selectedRecipients = selectedRecipient.stream()
+	    	        .map(Long::valueOf) // Long으로 변환
+	    	        .collect(Collectors.toList());
+	    	String notiContent = (String)request.get("notiContent");
+	    	notiService.sendNotifications(selectedRecipients, notiContent, userNum);
+	        return ResponseEntity.ok("알림 전송 성공");
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("알림 전송 실패: " + e.getMessage());
+	    }
+	}
 	
 	
 }

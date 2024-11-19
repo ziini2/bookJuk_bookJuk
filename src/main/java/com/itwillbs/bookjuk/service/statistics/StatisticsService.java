@@ -15,7 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -39,7 +38,7 @@ public class StatisticsService {
                 .rentStart(pointDeal.getRent().getRentStart())
                 .rentEnd(pointDeal.getRent().getRentEnd())
                 .returnDate(pointDeal.getRent().getReturnDate())
-                .overdueDays(pointDeal.getOverdue().getOverdueDays())
+                .overdueDays(pointDeal.getOverdue() == null ? 0 : pointDeal.getOverdue().getOverdueDays())
                 .isbn(pointDeal.getRent().getBook().getBookInfoEntity().getIsbn())
                 .genre(pointDeal.getRent().getBook().getBookInfoEntity().getGenre().getGenreName())
                 .author(pointDeal.getRent().getBook().getBookInfoEntity().getAuthor())
@@ -93,8 +92,6 @@ public class StatisticsService {
 
         LocalDateTime startDate = LocalDateTime.of(statisticsCustomerRequestDTO.startDate(), LocalTime.from(LocalDateTime.MIN));
         LocalDateTime endDate = LocalDateTime.of(statisticsCustomerRequestDTO.endDate(), LocalTime.from(LocalDateTime.MAX));
-        String gender = statisticsCustomerRequestDTO.gender();
-        String age = statisticsCustomerRequestDTO.age();
         int page = statisticsCustomerRequestDTO.page();
         int size = statisticsCustomerRequestDTO.size();
 

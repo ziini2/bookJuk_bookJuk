@@ -166,13 +166,12 @@ public class PaymentService {
     //유저의 포인트 값 가져오기
     public int getUserPoint(Long userEntity) {
     	UserContentEntity nowPoint = userContentRepository.findByUserEntity_UserNum(userEntity); // memberNum으로 엔티티 조회
-        int userPoint = nowPoint.getUserPoint();
     	return nowPoint.getUserPoint() == 0 ? 0 : nowPoint.getUserPoint();
     }
     
     //결제가 완료되었을 때 포인트로 업데이트
     public void updateUserPoint(Long memberNum, int amount) {
-    UserContentEntity updatePoint = userContentRepository.findByMemberNum(memberNum);
+    UserContentEntity updatePoint = userContentRepository.findByUserEntity_UserNum(memberNum);
 
 	 int nowPoint = updatePoint.getUserPoint(); // 현재 포인트 가져오기
 	 
@@ -282,7 +281,7 @@ public class PaymentService {
         System.out.println("결제 정보>>" + paymentEntity);
         if (paymentEntity != null) {
             Long user = SecurityUtil.getUserNum();
-            UserContentEntity updateCancelPoint = userContentRepository.findByMemberNum(user);
+            UserContentEntity updateCancelPoint = userContentRepository.findByUserEntity_UserNum(user);
 
             System.out.println("결제 정보1>>" + updateCancelPoint);
             if (updateCancelPoint != null) {

@@ -73,6 +73,10 @@ public class RentService {
             content = rentPage.getContent().stream().map(this::toDTO).toList();
         }
 
+        for (RentDTO rentDTO : content) {
+            rentDTO.setStoreName(rentDTO.getStoreName().split(" ", 2)[1]);
+        }
+
         return new RentResponseDTO(content, rentPage.getNumber(), rentPage.getTotalPages(), rentPage.getTotalElements());
     }
 
@@ -137,7 +141,11 @@ public class RentService {
         }
 
 
-        List<RentDTO> content = rentPage.getContent().stream().map(this::toDTO).collect(Collectors.toList());
+        List<RentDTO> content = rentPage.getContent().stream().map(this::toDTO).toList();
+
+        for (RentDTO rentDTO : content) {
+            rentDTO.setStoreName(rentDTO.getStoreName().split(" ", 2)[1]);
+        }
 
 
         return new RentResponseDTO(content, rentPage.getNumber(), rentPage.getTotalPages(), rentPage.getTotalElements());

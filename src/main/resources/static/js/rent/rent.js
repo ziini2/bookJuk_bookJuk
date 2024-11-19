@@ -90,7 +90,7 @@ $(document).ready(function () {
                     <td>${rent.userPhone}</td>
                     <td>${rent.bookNum}</td>
                     <td>${rent.isbn}</td>
-                    <td>${rent.bookName}</td>
+                    <td class="book-title">${rent.bookName}</td>
                     <td>${rentStart}</td>
                     <td>${rentEnd}</td>
                     <td>${returnDate}</td>

@@ -60,3 +60,10 @@ body {
 .input-group .btn {
   margin-left: 10px;
 }
+
+.book-title {
+  max-width: 150px; /* 원하는 너비로 설정 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -26,12 +26,14 @@ async function isbnSearch() {
 			//책 이미지 URL 설정
 			const bookImageURL = book.TITLE_URL || ""; // 이미지 URL을 가져옵니다.
 			const bookImageElement = document.getElementById("bookImage");
+			
 			if (bookImageURL) {
 				bookImageElement.src = bookImageURL;  // URL이 있으면 src에 설정
+				document.getElementById("bookImageHidden").value = bookImageURL;
 			} else {
 				bookImageElement.src = "noimage.png";  // 기본 이미지를 설정
 			}
-
+			
 			// 줄거리 대신 책 소개나 다른 필드 사용
 			const bookDescription = book.DESCRIPTION || book.INTRO || "책 소개 없음";
 			document.getElementById("story").value = bookDescription;
@@ -81,7 +83,7 @@ async function registerBook() {
 		bookDate: formattedBookDate,
 		genreId: formData.get("genreId"),
 		rentMoney: formData.get("rentMoney"),
-
+		bookImage: formData.get("bookImage")
 	};
 	console.log(JSON.stringify(data));
 

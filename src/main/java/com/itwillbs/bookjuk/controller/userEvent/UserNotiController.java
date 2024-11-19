@@ -1,5 +1,6 @@
 package com.itwillbs.bookjuk.controller.userEvent;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.bookjuk.dto.NotiDTO;
 import com.itwillbs.bookjuk.service.event.NotificationService;
@@ -96,7 +98,9 @@ public class UserNotiController {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Map.of("result", "FAIL", "message", "Access denied"));
 		}
-		NotiDTO notiDetail = notiService.getNotiDetail(notiId);                
+		NotiDTO notiDetail = notiService.getNotiDetail(notiId);
+		int count = notiService.updateCount(userNum);
+		notiDetail.setCount(count);
         if (notiDetail != null) {
         	log.info("Noti Content: {}", notiDetail.getNotiContent());
             return ResponseEntity.ok(notiDetail);
@@ -105,5 +109,12 @@ public class UserNotiController {
         }
     }
 	
+	@GetMapping("/notifications/{userId}")
+    public ResponseEntity<Integer> getUnreadNotificationCount(@PathVariable("userId") String userId) {
+		log.info("=========================userId" + userId);
+        int unreadCount = notiService.getUnreadNotificationCount(userId);
+        log.info("======================unreadCount" + unreadCount);
+        return ResponseEntity.ok(unreadCount);
+    }
 	
 }

@@ -51,6 +51,8 @@ public class NotiDTO {
 	// 알림 확인 유무
 	private String notiChecked;
 	
+	private Integer count;
+	
 	public static class NotiDTOBuilder {
 		public NotiDTOBuilder notiChecked(Boolean notiChecked) {
 			this.notiChecked = notiChecked != null && notiChecked ? "읽음" : "읽지 않음";

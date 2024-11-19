@@ -154,7 +154,7 @@ public class RentService {
 
             // 2. Books 테이블에 대여 가능으로 변경
             BooksEntity book = rent.getBook();
-            book.setRentStatus(false);
+            book.setRentStatus(true);
             booksRepository.save(book);
 
             // 연체시

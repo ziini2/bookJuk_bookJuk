@@ -186,15 +186,15 @@ public class PaymentService {
     private int calculatePoints(int amount) {
     	
         //포인트 조정
-    	if (amount == 100) {
+    	if (amount == 6000) {
             return 5000;
-        } else if (amount == 200) {
+        } else if (amount == 12000) {
             return 10000;
-        } else if (amount == 300) {
+        } else if (amount == 36000) {
             return 30000;
-        } else if (amount == 400) {
+        } else if (amount == 60000) {
             return 50000;
-        } else if (amount == 500) {
+        } else if (amount == 120000) {
             return 100000;
         }
     	

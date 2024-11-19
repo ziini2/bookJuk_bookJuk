@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import com.itwillbs.bookjuk.domain.books.BookStatus;
 import com.itwillbs.bookjuk.dto.BookDTO;
+import com.itwillbs.bookjuk.entity.StoreEntity;
 import com.itwillbs.bookjuk.service.books.BooksService;
+import com.itwillbs.bookjuk.service.customer.CustomerService;
+
+import jakarta.mail.Store;
 
 import java.util.List;
 
@@ -25,6 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 public class BooksController {
 
 	private final BooksService booksService;
+	
+	private final CustomerService customerService;
 
 	@GetMapping("/books")
 	public String books(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
@@ -49,7 +55,7 @@ public class BooksController {
 		int pageBlock = 10; // 한 블록에 표시할 페이지 수
 		int firstPageInBlock = (page / pageBlock) * pageBlock; // 블록의 첫 페이지
 		int lastPageInBlock = Math.min(firstPageInBlock + pageBlock - 1, totalPages - 1); // 블록의 마지막 페이지
-
+	    
 		model.addAttribute("bookList", bookList);
 		model.addAttribute("currentPage", page);
 		model.addAttribute("pageSize", size);

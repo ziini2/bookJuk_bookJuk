@@ -1,8 +1,8 @@
 // 날짜 형식을 YYYY-MM-DD 00:00:00 으로 변경
 function dateChange(data) {
     const date = new Date(data);
-    const formattedDate = date.toISOString().slice(0, 19).replace("T", " ");
-    return formattedDate;
+    const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    return offsetDate.toISOString().slice(0, 19).replace("T", " ");
 }
 
 $(document).ready(function() {	

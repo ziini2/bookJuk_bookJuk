@@ -5,6 +5,7 @@ function rentBooks(){
     url: "/user/rentDetail",
     success: (res) => {
       if (res.response === "success") {
+		fetchUnreadNotifications();
         alert("대여 성공");
         location.href="/";
       } else {
@@ -16,3 +17,21 @@ function rentBooks(){
     }
   });
 }
+
+function fetchUnreadNotifications() {
+    $.ajax({
+        url: `/user/notifications`,
+        type: 'GET',
+        success: function (count) {
+			if (count > 0) {
+				localStorage.setItem('unreadCount', count);
+	            $('#notification-count').text(count);
+	        }
+        },
+        error: function () {
+            console.error('Failed to fetch unread notifications');
+        }
+    });
+}
+
+

@@ -84,7 +84,6 @@ public class UserPageController {
         if (SecurityUtil.getUserNum() != null) {
             model.addAttribute("userPoint", userPageService.getUserPoint(SecurityUtil.getUserNum()));
         }
-        model.addAttribute("userName", SecurityUtil.getUserName());
     }
     
     

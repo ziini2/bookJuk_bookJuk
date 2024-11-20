@@ -117,6 +117,7 @@ public class UserInfoService {
                 .reqDate(point.getReqDate().toString())
                 .pointPrice(point.getPointPrice())
                 .pointPayName(point.getPointPayName())
+                .pointPayStatus(point.getPointPayStatus().toString())
                 .build()).toList();
 
         return PointPaginationDTO.builder()

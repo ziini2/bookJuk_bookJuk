@@ -215,8 +215,10 @@
 									<th:block th:each="point : ${pointInfo.getItems()}">
 										<tr>
 											<td th:text="${point.getReqDate()}"></td>
-											<td th:text="${point.getPointPrice()}"></td>
-											<td th:text="${point.getPointPayName()}"></td>
+											<td th:if="${point.pointPayStatus == 'CANCEL'}" th:text="${'-' + point.getPointPrice()}"></td>
+											<td th:if="${point.pointPayStatus != 'CANCEL'}" th:text="${point.getPointPrice()}"></td>
+											<td th:if="${point.pointPayStatus != 'CANCEL'}" th:text="${point.getPointPayName()}"></td>
+											<td th:if="${point.pointPayStatus == 'CANCEL'}" th:text="${'포인트 환불'}"></td>
 										</tr>
 									</th:block>
 								</tbody>

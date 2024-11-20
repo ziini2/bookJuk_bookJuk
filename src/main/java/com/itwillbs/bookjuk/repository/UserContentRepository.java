@@ -15,7 +15,7 @@ public interface UserContentRepository extends JpaRepository<UserContentEntity, 
 	 // memberNum을 기준으로 userNum을 조회
 //	@Query("SELECT uce.userEntity.userNum FROM UserContentEntity uce WHERE uce.memberNum = :memberNum")
 //	Long findUserNumByMemberNum(Long memberNum);
-	@Query("SELECT uce.userEntity.userNum FROM UserContentEntity uce WHERE uce.memberNum = :memberNum")
+	@Query("SELECT uce.userEntity.userNum FROM UserContentEntity uce JOIN uce.userEntity ue WHERE ue.userNum = :memberNum")
 	Long findUserNumByMemberNum(@Param("memberNum") Long memberNum);
 
 	//유저 포인트 조회용 (유저메인페이지)

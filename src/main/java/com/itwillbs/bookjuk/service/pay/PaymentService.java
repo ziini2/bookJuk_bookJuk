@@ -108,7 +108,7 @@ public class PaymentService {
 	        System.out.println("로그인된 유저 번호: " + user);
 	        
 	        
-	        UserContentEntity userContentEntity = userContentRepository.findByMemberNum(user);
+	        UserContentEntity userContentEntity = userContentRepository.findByUserEntity_UserNum(user);
 	        
 	        System.out.println("유저엔티티 " + userContentEntity.toString());
 	        

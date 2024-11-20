@@ -54,7 +54,7 @@ public class PaymentService {
     
     public List<PaymentEntity> getPaymentsByMemberNum(Long memberNum) {
     //로그인한 유저의 결제 내역만 가져오기(유저번호 기준으로)
-    return paymentRepository.findByUserContentEntity_MemberNumOrderByReqDateDesc(memberNum);
+    return paymentRepository.findByUserContentEntity_UserEntity_UserNumOrderByReqDateDesc(memberNum);
     }
     
 	@Autowired
@@ -110,7 +110,7 @@ public class PaymentService {
 	        
 	        UserContentEntity userContentEntity = userContentRepository.findByUserEntity_UserNum(user);
 	        
-	        System.out.println("유저엔티티 " + userContentEntity.toString());
+	        System.out.println("유저엔티티 ==========================================" + userContentEntity.toString());
 	        
 	        boolean pointUsed = paymentDTO.getPaidAmount() != iamportPayment.getAmount().intValue();
 
@@ -306,6 +306,7 @@ public class PaymentService {
                 // 업데이트된 포인트 저장
                 updateCancelPoint.setUserPoint(updatedPoints);
                 userContentRepository.save(updateCancelPoint);
+
                 updatePointDealTable(amount, updateCancelPoint, paymentEntity, PointPayStatus.CANCEL);
 
                 System.out.println("결제 정보5>>" + updateCancelPoint);

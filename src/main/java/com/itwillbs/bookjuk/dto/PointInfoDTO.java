@@ -1,5 +1,6 @@
 package com.itwillbs.bookjuk.dto;
 
+import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +16,6 @@ public class PointInfoDTO {
     private String reqDate;
     private int pointPrice;
     private String pointPayName;
+    private String pointPayStatus;
 
 }

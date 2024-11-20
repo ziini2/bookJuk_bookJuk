@@ -242,11 +242,12 @@ public class DashRestService {
         for (PointDealEntity pointDealEntity : rawData.get()) {
 
             // 성별 포인트 사용 내역
-            String genderCategory = pointDealEntity.getUserContentEntity().getUserEntity().getUserGender().equals("male") ? "남성" : "여성";
+            String gender = pointDealEntity.getUserContentEntity().getUserEntity().getUserGender() == null ? "미정" : pointDealEntity.getUserContentEntity().getUserEntity().getUserGender();
+            String genderCategory = gender.equals("male") ? "남성" : "여성";
             genderData.add(getCategoryData(genderCategory, pointDealEntity));
 
             // 나이별 포인트 사용 내역
-            String birthday = pointDealEntity.getUserContentEntity().getUserEntity().getUserBirthday();
+            String birthday = pointDealEntity.getUserContentEntity().getUserEntity().getUserBirthday() == null ? String.valueOf(LocalDate.now().plusYears(150)) : pointDealEntity.getUserContentEntity().getUserEntity().getUserBirthday();
             int ageNum = now.getYear() - Integer.parseInt(birthday.substring(0, 4)) + 1;
 
             String ageCategory = getAgeCategory(ageNum);
@@ -309,7 +310,9 @@ public class DashRestService {
             case 3 -> "30대";
             case 4 -> "40대";
             case 5 -> "50대";
-            default -> "60대 이상";
+            case 6, 7, 8, 9, 10, 11, 12 -> "60대 이상";
+            default -> "미정";
+
         };
     }
 
@@ -349,11 +352,12 @@ public class DashRestService {
         for (PaymentEntity paymentEntity : rawData.get()) {
 
             // 성별 매출 내역
-            String genderCategory = paymentEntity.getUserContentEntity().getUserEntity().getUserGender().equals("male") ? "남성" : "여성";
+            String gender = paymentEntity.getUserContentEntity().getUserEntity().getUserGender() == null ? "미정" : paymentEntity.getUserContentEntity().getUserEntity().getUserGender();
+            String genderCategory = gender.equals("male") ? "남성" : "여성";
             genderData.add(new CategoryData(genderCategory, paymentEntity.getPaymentPrice()));
 
             // 나이별 매출 내역
-            String birthday = paymentEntity.getUserContentEntity().getUserEntity().getUserBirthday();
+            String birthday = paymentEntity.getUserContentEntity().getUserEntity().getUserBirthday() == null ? String.valueOf(LocalDate.now().plusYears(150)) : paymentEntity.getUserContentEntity().getUserEntity().getUserBirthday();
             int ageNum = now.getYear() - Integer.parseInt(birthday.substring(0, 4)) + 1;
 
             String ageCategory = getAgeCategory(ageNum);
@@ -410,11 +414,11 @@ public class DashRestService {
         for (UserEntity userEntity : rawData.get()) {
 
             // 성별 회원 가입 내역
-            String genderCategory = userEntity.getUserGender().equals("male") ? "남성" : "여성";
+            String genderCategory = userEntity.getUserGender() == null ? "미정" : userEntity.getUserGender().equals("male") ? "남성" : "여성";
             genderData.add(new CategoryData(genderCategory, 1L));
 
             // 나이별 회원 가입 내역
-            String birthday = userEntity.getUserBirthday();
+            String birthday = (userEntity.getUserBirthday() == null) ? LocalDate.now().plusYears(150).toString() : userEntity.getUserBirthday();
             int ageNum = now.getYear() - Integer.parseInt(birthday.substring(0, 4)) + 1;
 
             String ageCategory = getAgeCategory(ageNum);
@@ -456,11 +460,11 @@ public class DashRestService {
         for (Overdue overdue : rawData.get()) {
 
             // 성별 연체 내역
-            String genderCategory = overdue.getRent().getUser().getUserGender().equals("male") ? "남성" : "여성";
+            String genderCategory = overdue.getRent().getUser().getUserGender() == null ? "미정" : overdue.getRent().getUser().getUserGender().equals("male") ? "남성" : "여성";
             genderData.add(new CategoryData(genderCategory, overdue.getOverPrice()));
 
             // 나이별 연체 내역
-            String birthday = overdue.getRent().getUser().getUserBirthday();
+            String birthday = overdue.getRent().getUser().getUserBirthday() == null ? String.valueOf(LocalDate.now().plusYears(150)) : overdue.getRent().getUser().getUserBirthday();
             int ageNum = now.getYear() - Integer.parseInt(birthday.substring(0, 4)) + 1;
 
             String ageCategory = getAgeCategory(ageNum);

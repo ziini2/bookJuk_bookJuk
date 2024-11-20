@@ -341,7 +341,6 @@ public class EventService {
     	
     	// 유저 엔티티와 이벤트 컨디션에 따른 이벤트 카운트 조회
     	for (EventConditionEntity eventConditionEntity : eventConditionEntities) {
-    		if(!eventCountRepository.existsByEventConditionIdAndClearEventTrue(eventConditionEntity)) {
     			EventCountEntity eventCountEntity = checkEventCount(user, eventConditionEntity);
 	    		int countValue = "대여 횟수".equals(eventConditionEntity.getEventConditionType()) ? numberOfRental : rentalAmount;
 	    		boolean isClear = false;
@@ -406,7 +405,6 @@ public class EventService {
 	    			notiCheckRepository.save(notiCheckEntity);
 	    		}
     		}
-    	}
     }
 
     @Transactional

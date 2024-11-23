@@ -23,5 +23,6 @@ public interface EventConditionRepository extends JpaRepository<EventConditionEn
 	// 종료 날짜가 오늘 이전이고 상태가 "진행 중"인 이벤트 조회
 	@Query("SELECT ec FROM EventConditionEntity ec WHERE DATE(ec.eventId.endEventDate) < :today AND ec.eventId.eventStatus = :status")
 	List<EventConditionEntity> findConditionsToEnd(@Param("today") LocalDate today, @Param("status") String status);
+
 	
 }

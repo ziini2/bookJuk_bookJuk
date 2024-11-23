@@ -1,8 +1,8 @@
 // 날짜 형식을 YYYY-MM-DD 00:00:00 으로 변경
 function dateChange(data) {
     const date = new Date(data);
-    const formattedDate = date.toISOString().slice(0, 19).replace("T", " ");
-    return formattedDate;
+    const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    return offsetDate.toISOString().slice(0, 19).replace("T", " ");
 }
 
 $(document).ready(function() {	
@@ -197,7 +197,12 @@ $(document).ready(function () {
 	            $('#noti-detailType').text(data.notiType);
 	            $('#noti-detailStatus').text(data.notiChecked);
 	            $('#noti-detailSentDate').text(dateChange(data.notiSentDate));
-
+				localStorage.setItem('unreadCount', data.count);
+				if (data.count > 0) {
+		            $('#notification-count').text(data.count);
+		        }else{
+					$('#notification-count').text('');
+				}
 	            // 모달 창 표시
 	            $('#noti-detailModal').show();
 	        },

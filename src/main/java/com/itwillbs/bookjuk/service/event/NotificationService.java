@@ -197,5 +197,14 @@ public class NotificationService {
 		notiCheckRepository.save(notiCheckEntity);
 	}
 
+	public int getUnreadNotificationCount(String userId) {
+		return notiCheckRepository.countByNotiRecipient_UserIdAndNotiCheckedFalse(userId);
+	}
+	
+
+	public int updateCount(Long userNum) {
+		return notiCheckRepository.countByNotiRecipient_UserNumAndNotiCheckedFalse(userNum);
+	}
+
 	
 }

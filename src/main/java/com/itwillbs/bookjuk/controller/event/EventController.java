@@ -34,6 +34,17 @@ public class EventController {
 	public String event() {
 		return "/event/event";
 	}
+	
+	@PostMapping("/eventStop/{eventId}")
+	@ResponseBody
+	public Map<String, String> eventStop(@PathVariable("eventId") Integer eventId) {
+		try {
+	        eventService.stopEvent(eventId); // 서비스 계층 호출
+	        return Map.of("result", "success");
+	    } catch (Exception e) {
+	        return Map.of("result", "error", "message", e.getMessage());
+	    }
+	}
 
 	@PostMapping("/eventCreate")
 	@ResponseBody

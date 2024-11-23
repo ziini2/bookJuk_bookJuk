@@ -33,5 +33,4 @@ public class StatisticsController {
         return "statistics/book_analytics";
     }
 
-
 }

@@ -42,6 +42,7 @@ public class UserInfoController {
 
         //1.책 대여 내역 넘겨줘야함 (유저 별)
         RentPaginationDTO rentPaginationDTO = userInfoService.getBookRentInfo(SecurityUtil.getUserNum(), PAGE_SIZE, rentPage);
+        log.info("rentPaginationDTO: {}", rentPaginationDTO.getItems());
         Map<String, Object> paginationRent = PaginationUtil.getPagination(rentPaginationDTO.getCurrentPage(), rentPaginationDTO.getTotalPages(), PAGE_BLOCK_SIZE);
 
         model.addAttribute("bookRentInfo", rentPaginationDTO);

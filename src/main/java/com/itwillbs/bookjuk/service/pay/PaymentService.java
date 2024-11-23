@@ -5,8 +5,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.itwillbs.bookjuk.domain.pay.PointPayStatus;
+import com.itwillbs.bookjuk.entity.pay.PointDealEntity;
+import com.itwillbs.bookjuk.repository.PointDealRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +29,7 @@ import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class PaymentService {
 
@@ -35,6 +37,7 @@ public class PaymentService {
 	 private final PaymentRepository paymentRepository;
 	 private final UserContentRepository userContentRepository;
 	 private final UserRepository userRepository;
+     private final PointDealRepository pointDealRepository;
 	 
 
 
@@ -51,7 +54,7 @@ public class PaymentService {
     
     public List<PaymentEntity> getPaymentsByMemberNum(Long memberNum) {
     //로그인한 유저의 결제 내역만 가져오기(유저번호 기준으로)
-    return paymentRepository.findByUserContentEntity_MemberNumOrderByReqDateDesc(memberNum);
+    return paymentRepository.findByUserContentEntity_UserEntity_UserNumOrderByReqDateDesc(memberNum);
     }
     
 	@Autowired
@@ -59,11 +62,13 @@ public class PaymentService {
                           @Value("${iamport.api_secret}") String apiSecret,
                           PaymentRepository paymentRepository,
                           UserContentRepository userContentRepository,
-                          UserRepository userRepository) {
+                          UserRepository userRepository,
+                          PointDealRepository pointDealRepository ) {
         this.iamportClient = new IamportClient(apiKey, apiSecret);
         this.paymentRepository = paymentRepository;
         this.userContentRepository = userContentRepository;
         this.userRepository = userRepository;
+        this.pointDealRepository = pointDealRepository;
     }
 
 	
@@ -103,9 +108,9 @@ public class PaymentService {
 	        System.out.println("로그인된 유저 번호: " + user);
 	        
 	        
-	        UserContentEntity userContentEntity = userContentRepository.findByMemberNum(user);
+	        UserContentEntity userContentEntity = userContentRepository.findByUserEntity_UserNum(user);
 	        
-	        System.out.println("유저엔티티 " + userContentEntity.toString());
+	        System.out.println("유저엔티티 ==========================================" + userContentEntity.toString());
 	        
 	        boolean pointUsed = paymentDTO.getPaidAmount() != iamportPayment.getAmount().intValue();
 
@@ -122,10 +127,13 @@ public class PaymentService {
             .pointUsed(pointUsed)
             .build();
 	        
+	        
 	        paymentRepository.save(paymentEntity);
-	        // 결제 금액에 따른 포인트 업데이트
+          // 결제 금액에 따른 포인트 업데이트
 	        int amount = iamportPayment.getAmount().intValue(); //결제 금액 정수형으로 변환
 	        updateUserPoint(user, amount); // 결제 금액을 기반으로 포인트 업데이트
+
+          updatePointDealTable(amount, userContentEntity, paymentEntity, PointPayStatus.SUCCESSFUL);
 	        
 
 	    } catch (IamportResponseException e) {
@@ -146,6 +154,7 @@ public class PaymentService {
 	        e.printStackTrace();
 	        throw new RuntimeException("예기치 못한 오류 발생", e);  // 예외를 던져서 상위 로직에서 처리할 수 있도록 합니다.
 	    }
+
 	}
     
 	 
@@ -163,16 +172,14 @@ public class PaymentService {
     
     
     //유저의 포인트 값 가져오기
-    public Long getUserPoint(Long userEntity) {
-    	
-    	Optional<UserContentEntity> nowPoint = userContentRepository.findById(userEntity); // memberNum으로 엔티티 조회
-    	return nowPoint.map(content -> (long) content.getUserPoint()) // int -> long으로 변환
-                .orElse(0L); // Optional이 비어있으면 기본값 0L을 반환
+    public int getUserPoint(Long userEntity) {
+    	UserContentEntity nowPoint = userContentRepository.findByUserEntity_UserNum(userEntity); // memberNum으로 엔티티 조회
+    	return nowPoint.getUserPoint() == 0 ? 0 : nowPoint.getUserPoint();
     }
     
     //결제가 완료되었을 때 포인트로 업데이트
     public void updateUserPoint(Long memberNum, int amount) {
-    UserContentEntity updatePoint = userContentRepository.findByMemberNum(memberNum);
+    UserContentEntity updatePoint = userContentRepository.findByUserEntity_UserNum(memberNum);
 
 	 int nowPoint = updatePoint.getUserPoint(); // 현재 포인트 가져오기
 	 
@@ -187,15 +194,15 @@ public class PaymentService {
     private int calculatePoints(int amount) {
     	
         //포인트 조정
-    	if (amount == 100) {
+    	if (amount == 6000) {
             return 5000;
-        } else if (amount == 200) {
+        } else if (amount == 12000) {
             return 10000;
-        } else if (amount == 300) {
+        } else if (amount == 36000) {
             return 30000;
-        } else if (amount == 400) {
+        } else if (amount == 60000) {
             return 50000;
-        } else if (amount == 500) {
+        } else if (amount == 120000) {
             return 100000;
         }
     	
@@ -282,7 +289,7 @@ public class PaymentService {
         System.out.println("결제 정보>>" + paymentEntity);
         if (paymentEntity != null) {
             Long user = SecurityUtil.getUserNum();
-            UserContentEntity updateCancelPoint = userContentRepository.findByMemberNum(user);
+            UserContentEntity updateCancelPoint = userContentRepository.findByUserEntity_UserNum(user);
 
             System.out.println("결제 정보1>>" + updateCancelPoint);
             if (updateCancelPoint != null) {
@@ -299,7 +306,9 @@ public class PaymentService {
                 // 업데이트된 포인트 저장
                 updateCancelPoint.setUserPoint(updatedPoints);
                 userContentRepository.save(updateCancelPoint);
-                
+
+                updatePointDealTable(amount, updateCancelPoint, paymentEntity, PointPayStatus.CANCEL);
+
                 System.out.println("결제 정보5>>" + updateCancelPoint);
                 
                 System.out.println("포인트 차감 완료: " + pointsToCancel + "포인트");
@@ -311,7 +320,31 @@ public class PaymentService {
         }
     }
 
+    //유저번호 불러오기
 	public Optional<UserEntity> getUserNum(Long userNum) {
 		return userRepository.findById(userNum);
 	}
+	
+	public Page<PaymentEntity> getPaymentList(Pageable pageable) {
+		return paymentRepository.findAll(pageable);
+	}
+	
+	//검색
+	public Page<PaymentEntity> findByPaymentIdContaining(Pageable pageable, String search) {
+		return paymentRepository.findByPaymentIdContaining(pageable, search);
+	}
+
+    private void updatePointDealTable(int amount, UserContentEntity userContentEntity,
+                                      PaymentEntity paymentEntity, PointPayStatus pointPayStatus) {
+        PointDealEntity pointDealEntity = PointDealEntity.builder()
+                .pointPrice(amount)
+                .pointPayStatus(pointPayStatus)
+                .reqDate(LocalDateTime.now())
+                .pointPayName("충전")
+                .userContentEntity(userContentEntity)
+                .paymentEntity(paymentEntity)
+                .build();
+
+        pointDealRepository.save(pointDealEntity);
+    }
 }

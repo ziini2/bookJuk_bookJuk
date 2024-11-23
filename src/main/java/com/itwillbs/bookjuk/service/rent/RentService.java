@@ -45,7 +45,7 @@ public class RentService {
                 rent.getUser().getUserId(),
                 rent.getUser().getUserName(),
                 rent.getUser().getUserPhone(),
-                rent.getBook().getBookInfoEntity().getBookNum(),
+                rent.getBook().getBooksId(),
                 rent.getBook().getBookInfoEntity().getIsbn(),
                 rent.getBook().getBookInfoEntity().getBookName(),
                 rent.getStoreCode().getStoreName(),
@@ -71,6 +71,10 @@ public class RentService {
         } else {
             rentPage = rentRepository.findAllByRentStatusIsFalse(pageable);
             content = rentPage.getContent().stream().map(this::toDTO).toList();
+        }
+
+        for (RentDTO rentDTO : content) {
+            rentDTO.setStoreName(rentDTO.getStoreName().split(" ", 2)[1]);
         }
 
         return new RentResponseDTO(content, rentPage.getNumber(), rentPage.getTotalPages(), rentPage.getTotalElements());
@@ -137,7 +141,11 @@ public class RentService {
         }
 
 
-        List<RentDTO> content = rentPage.getContent().stream().map(this::toDTO).collect(Collectors.toList());
+        List<RentDTO> content = rentPage.getContent().stream().map(this::toDTO).toList();
+
+        for (RentDTO rentDTO : content) {
+            rentDTO.setStoreName(rentDTO.getStoreName().split(" ", 2)[1]);
+        }
 
 
         return new RentResponseDTO(content, rentPage.getNumber(), rentPage.getTotalPages(), rentPage.getTotalElements());
@@ -154,7 +162,7 @@ public class RentService {
 
             // 2. Books 테이블에 대여 가능으로 변경
             BooksEntity book = rent.getBook();
-            book.setRentStatus(false);
+            book.setRentStatus(true);
             booksRepository.save(book);
 
             // 연체시
@@ -200,6 +208,4 @@ public class RentService {
             }
         });
     }
-
-
 }

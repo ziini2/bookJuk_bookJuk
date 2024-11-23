@@ -78,6 +78,27 @@
 		window.addEventListener('load', headerScrolled)
 		onscroll(document, headerScrolled)
 	}
+	
+	/**
+	 * Sidebar unread notification count
+	 */
+	const updateUnreadNotifications = () => {
+		const unreadCount = localStorage.getItem('unreadCount'); // 로컬 스토리지에서 값 가져오기
+		const notificationCountEl = select('#notification-count'); // 사이드바의 알림 표시 요소 선택
+
+		if (unreadCount !== null && notificationCountEl) {
+			if (parseInt(unreadCount) > 0) {
+				notificationCountEl.textContent = unreadCount; // 알림 개수 업데이트
+				notificationCountEl.style.display = 'inline'; // 보이게 설정
+			} else {
+				notificationCountEl.style.display = 'none'; // 0개면 숨김
+			}
+		} else if (notificationCountEl) {
+			notificationCountEl.style.display = 'none'; // 데이터 없으면 숨김
+		}
+	}
+	
+	window.addEventListener('load', updateUnreadNotifications);
 
 
 })();

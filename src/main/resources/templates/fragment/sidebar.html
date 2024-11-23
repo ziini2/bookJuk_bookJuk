@@ -20,7 +20,7 @@ xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 					class="nav-content collapse" 
 					data-bs-parent="#admin-sidebar-nav">
 					<li><a href="/admin/revenueStatic"> <i
-							class="ri-checkbox-blank-circle-fill"></i><span>매출 분석</span>
+							class="ri-checkbox-blank-circle-fill"></i><span>포인트 분석</span>
 					</a></li>
 					<li><a href="/admin/customerStatic"> <i
 							class="ri-checkbox-blank-circle-fill"></i><span>고객 분석</span>
@@ -107,9 +107,6 @@ xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 					<li><a href="/admin/pay_list"> <i
 							class="ri-checkbox-blank-circle-fill"></i><span>결제/환불조회</span>
 					</a></li>
-					<li><a href="/admin/refund"> <i
-							class="ri-checkbox-blank-circle-fill"></i><span>환불 요청</span>
-					</a></li>
 				</ul></li>
 			<!-- 결제관리 끝 -->
 
@@ -159,7 +156,7 @@ xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 						</a>
 					</li>
 					<li>
-						<a href="/pay_detail">
+						<a th:href="@{/user/pay_add}">
 							<i class="ri-checkbox-blank-circle-fill"></i>
 							<span>충전/결제내역</span>
 						</a>
@@ -173,7 +170,7 @@ xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 					<li>
 						<a th:href="@{/user/noti}">
 							<i class="ri-checkbox-blank-circle-fill"></i>
-							<span>알림수신함</span>
+							<span>알림수신함</span>&nbsp<span id="notification-count" style="color: red; margin-bottom: 10px;"></span>
 						</a>
 					</li>
 				</ul>

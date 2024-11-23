@@ -24,6 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Data
@@ -49,7 +50,7 @@ public class PointDealEntity {
 	private PointPayStatus pointPayStatus;
 	 
 	//요청일시
-	@Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@CreationTimestamp
 	private LocalDateTime reqDate;
 		
 	//포인트거래품목
@@ -73,6 +74,10 @@ public class PointDealEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "rent_num")
 	private RentEntity rent;  // 단방향 참조
-
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "payment_id")
+	private PaymentEntity paymentEntity;  // 단방향 참조
+  
 
 }

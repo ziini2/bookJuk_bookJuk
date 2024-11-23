@@ -74,6 +74,8 @@ public class UserInfoService {
     //책 대여 정보 가져오기
     public RentPaginationDTO getBookRentInfo(Long userNum, int pageSize, int rentPage) {
         log.info("getBookRentInfo userNum={}", userNum);
+        log.info("getBookRentInfo pageSize={}", pageSize);
+        log.info("getBookRentInfo rentPage={}", rentPage);
         Pageable pageable = PageRequest.of(rentPage, pageSize, Sort.by("rentStart").descending());
         Page<RentEntity> rentEntityPage = rentRepository.findByUser_UserNum(userNum, pageable);
         return toRentPagination(rentEntityPage);
@@ -104,7 +106,7 @@ public class UserInfoService {
     public PointPaginationDTO getPointInfo(Long userNum, int pageSize, int pointPage) {
         log.info("getPointInfo userNum={}", userNum);
         Pageable pageable = PageRequest.of(pointPage, pageSize, Sort.by("reqDate").descending());
-        Page<PointDealEntity> pointDealEntityPage = pointDealRepository.findByUserContentEntity_MemberNum(userNum, pageable);
+        Page<PointDealEntity> pointDealEntityPage = pointDealRepository.findByUserContentEntity_UserEntity_UserNum(userNum, pageable);
         log.info("getPointInfo pointDealEntityPage={}", pointDealEntityPage.toString());
         return toPointPagination(pointDealEntityPage);
     }
@@ -115,6 +117,7 @@ public class UserInfoService {
                 .reqDate(point.getReqDate().toString())
                 .pointPrice(point.getPointPrice())
                 .pointPayName(point.getPointPayName())
+                .pointPayStatus(point.getPointPayStatus().toString())
                 .build()).toList();
 
         return PointPaginationDTO.builder()

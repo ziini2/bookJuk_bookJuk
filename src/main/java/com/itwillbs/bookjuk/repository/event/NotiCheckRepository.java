@@ -15,4 +15,8 @@ public interface NotiCheckRepository extends JpaRepository<NotiCheckEntity, Long
 	
 	Optional<NotiCheckEntity> findByNotiId_NotiId(Long notiId);
 	
+	// userId를 통해 안읽은 알림 메시지 갯수 반환
+	int countByNotiRecipient_UserIdAndNotiCheckedFalse(String userId);
+	// userNum을 통해 안읽은 알림 메시지 갯수 반환
+	int countByNotiRecipient_UserNumAndNotiCheckedFalse(Long userNum);
 }

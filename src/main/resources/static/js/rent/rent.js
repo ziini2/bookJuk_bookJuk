@@ -64,11 +64,15 @@ $(document).ready(function () {
                 const returnDateObj = new Date(rent.returnDate);
                 const diff = returnDateObj - rentEndDate;
                 delayPayment = Math.floor(diff / (1000 * 60 * 60 * 24)) * 500;
+
             } else {
                 const rentEndDate = new Date(rent.rentEnd);
                 const today = new Date();
                 const diff = today - rentEndDate;
                 delayPayment = (Math.floor(diff / (1000 * 60 * 60 * 24)) + 1 ) * 500;
+            }
+            if (delayPayment < 0) {
+                delayPayment = 0;
             }
 
             if (rent.returnDate) {
@@ -86,7 +90,7 @@ $(document).ready(function () {
                     <td>${rent.userPhone}</td>
                     <td>${rent.bookNum}</td>
                     <td>${rent.isbn}</td>
-                    <td>${rent.bookName}</td>
+                    <td class="book-title">${rent.bookName}</td>
                     <td>${rentStart}</td>
                     <td>${rentEnd}</td>
                     <td>${returnDate}</td>

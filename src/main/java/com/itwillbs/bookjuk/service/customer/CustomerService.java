@@ -1,5 +1,6 @@
 package com.itwillbs.bookjuk.service.customer;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +48,7 @@ public class CustomerService {
 	}
 
 	public void storeUpdate(StoreEntity storeEntity) {
+		storeEntity.setStoreStatus("open");
 		storeRepository.save(storeEntity);
 	}
 	
